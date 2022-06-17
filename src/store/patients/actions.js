@@ -1288,10 +1288,11 @@ export const patientVitals = async ({
   commit
 }, {
   patientId,
-  deviceType
+  deviceType,
+  filter,
 }) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient'] + '/' + patientId + '/vital?deviceType=' + deviceType, null, null).then((response) => {
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientId}/vital?deviceType=${deviceType+filter}`, null, null).then((response) => {
       // if(response.data.data.length > 0) {
       commit('patientVitals', response.data.data)
       // }

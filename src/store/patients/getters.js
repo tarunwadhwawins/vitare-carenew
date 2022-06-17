@@ -41,6 +41,12 @@ export const patientsRecord = (state)=>{
     })
   }
 
+  export const patientVitalsTimeline = (state) => {
+    return computed(() => {
+      return state.patientVitalsTimeline
+    })
+  }
+
   
  
 

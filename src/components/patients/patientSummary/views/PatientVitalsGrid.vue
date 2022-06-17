@@ -12,7 +12,7 @@
       <VitalsGrid
         v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"
-        :activeKey="activeKey1"
+        :deviceId="device.deviceTypeId"
         :tableColumns="bloodPressureColumns"
         :tableData="bloodPressure"
         :chartOptions="bloodPressureOptions"
@@ -23,7 +23,7 @@
       <VitalsGrid
         v-if="device.deviceType == 'Glucose'"
         title="Blood Glucose"
-        :activeKey="activeKey2"
+        :deviceId="device.deviceTypeId"
         :tableColumns="bloodGlucoseColumns"
         :tableData="bloodGlucose"
         :chartOptions="bloodGlucoseOptions"
@@ -34,7 +34,7 @@
       <VitalsGrid
         v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
-        :activeKey="activeKey3"
+        :deviceId="device.deviceTypeId"
         :tableColumns="bloodOxygenColumns"
         :tableData="bloodOxygen"
         :chartOptions="bloodOxygenOptions"
@@ -123,9 +123,16 @@ export default {
     if((bloodPressure.value != null && bloodPressure.value.length > 0) || (bloodGlucose.value != null && bloodGlucose.value.length > 0) || (bloodOxygen.value != null && bloodOxygen.value.length > 0)) {
       showVitals.value = true;
     }
-    const bloodPressureGraph = patients.value.bloodPressureGraph
-    const bloodOxygenGraph = patients.value.bloodOxygenGraph
-    const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
+    const bloodPressureGraph = computed(() => {
+      return store.state.patients.bloodPressureGraph
+    })
+    const bloodOxygenGraph = computed(() => {
+      return store.state.patients.bloodOxygenGraph
+    })
+    const bloodGlucoseGraph = computed(() => {
+      return store.state.patients.bloodGlucoseGraph
+    })
+
     const patientDevices = patients.value.devices
 
     const showAddBPModal = () => {
@@ -144,19 +151,19 @@ export default {
       title.value = 'Blood Glucose';
     };
     
-    if(bloodPressureGraph != null) {
-      bloodPressureSeries.value = bloodPressureGraph.records
-      bloodPressureTimesArray.value = bloodPressureGraph.timesArray
+    if(bloodPressureGraph.value != null) {
+      bloodPressureSeries.value = bloodPressureGraph.value.records
+      bloodPressureTimesArray.value = bloodPressureGraph.value.timesArray
     }
 
-    if(bloodGlucoseGraph != null) {
-      bloodGlucoseSeries.value = bloodGlucoseGraph.records
-      bloodGlucoseTimesArray.value = bloodGlucoseGraph.timesArray
+    if(bloodGlucoseGraph.value != null) {
+      bloodGlucoseSeries.value = bloodGlucoseGraph.value.records
+      bloodGlucoseTimesArray.value = bloodGlucoseGraph.value.timesArray
     }
 
-    if(bloodOxygenGraph != null) {
-      bloodOxygenSeries.value = bloodOxygenGraph.records
-      bloodOxygenTimesArray.value = bloodOxygenGraph.timesArray
+    if(bloodOxygenGraph.value != null) {
+      bloodOxygenSeries.value = bloodOxygenGraph.value.records
+      bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
     }
     
     const bloodPressureOptions = {

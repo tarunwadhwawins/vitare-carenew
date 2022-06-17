@@ -531,6 +531,10 @@ export const patientTimelineSuccess = (state, timeline) => {
   state.patientTimeline = timeline
 }
 
+export const patientVitalsTimeline = (state, timeline) => {
+  state.patientVitalsTimeline = timeline
+}
+
 export const addCondition = (state, data) => {
   state.addCondition = data
 }
@@ -881,6 +885,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+    console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {

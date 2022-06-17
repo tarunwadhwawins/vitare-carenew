@@ -14,7 +14,7 @@
         <template v-if="idDevice != 101">
           <a-col :sm="8" :xs="24" :xl="12" v-for="field in vitalFieldsByDeviceId" :key="field.id" :value="field.id">
             <div class="form-group">
-              <a-form-item :label="field.field" :id="field.id" :name="field.fieldName" :rules="[{ required: true, message: field.field+' '+$t('global.validation')  }]">
+              <a-form-item :label="field.fieldName == 'spo2' ? field.field+' (%)' : field.field" :id="field.id" :name="field.fieldName" :rules="[{ required: true, message: field.field+' '+$t('global.validation')  }]">
                 <a-input @change="checkChangeInput($event)" v-model="addVitalForm.value" style="width: 100%" size="large" />
               </a-form-item>
             </div>
