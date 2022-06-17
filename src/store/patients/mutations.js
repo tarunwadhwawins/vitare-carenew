@@ -156,7 +156,7 @@ export const patient = (state, data) => {
         element.weight = element.weight ? element.weight : '',
         element.bp = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
         element.spo2 = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
-        element.glucose = element.patientVitals.data.length > 0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : ''
+        element.glucose = element.patientVitals.data.length && !element.glucose > 0 ? element.patientVitals.data.map(vitalData => { let glucose = ''; if (vitalData.deviceType == 'Glucose' && glucose=='') { glucose =  vitalData.value } console.log("glucse",glucose); return glucose; }) : ''
 
         /* if(flagTimeStamp != null && flagTimeStamp != "") {
           const flagTimeDate = dateOnlyFormatSImple(flagTimeStamp)
