@@ -10,7 +10,7 @@
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Patient List" name="patientId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation') }]">
-                        <PatientDropDown :listHeight="100" v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
+                        <PatientDropDown :listHeight="110" v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
                       </a-form-item>
                 </div>
             </a-col>

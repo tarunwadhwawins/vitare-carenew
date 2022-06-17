@@ -1,8 +1,10 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import {
   API_ENDPOINTS,
-  messages
 } from '@/config/apiConfig';
+import {
+  messages
+} from '@/config/messages';
 import {
   errorSwal,
   errorLogWithDeviceInfo,
@@ -114,7 +116,6 @@ const permission = async ({
       } else {
         errorLogWithDeviceInfo(error);
       }
-      errorSwal(error.response.data.message);
     });
 };
 export const logoutUser = async ({
