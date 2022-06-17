@@ -106,6 +106,7 @@ export default {
             if (!objact) {
                 store.dispatch("getStaffs", store.state.careCoordinatorSummary.staffSummary);
             }
+            
             emit("is-visible", false);
         }
 

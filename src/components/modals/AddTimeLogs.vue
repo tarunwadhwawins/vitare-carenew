@@ -59,7 +59,7 @@
 
 				<a-col :sm="24" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
 							<GlobalCodeDropDown v-model:value="addTimeLogForm.flag" :globalCode="flagsList"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
 						</a-form-item>
@@ -68,7 +68,7 @@
         
         <a-col :sm="24" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('timeLogs.note')" name="note" :rules="[{ required: true, message: $t('timeLogs.note')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('timeLogs.note')" name="note" :rules="[{ required: false, message: $t('timeLogs.note')+' '+$t('global.validation')  }]">
               <a-textarea @change="changedValue" v-model:value="addTimeLogForm.note" size="large" style="width: 100%" />
             </a-form-item>
           </div>
@@ -259,6 +259,10 @@ export default defineComponent({
             data: data
           }).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false
@@ -282,6 +286,10 @@ export default defineComponent({
           const patientId = route.params.udid;
           store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false

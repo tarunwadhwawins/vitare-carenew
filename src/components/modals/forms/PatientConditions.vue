@@ -21,7 +21,7 @@
       <a-col :md="8" :sm="6" :xs="24" :xl="6">
         <div class="form-group">
           <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: false, message: $t('global.endDate')+' '+$t('global.validation') }]">
-            <a-date-picker @change="changedValue();dateChange();" v-model:value="conditions.endDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(conditions.startDate)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+            <a-date-picker @change="changedValue();dateChange();" v-model:value="conditions.endDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(conditions.startDate) || d.isSameOrAfter(dateSelect)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
           </a-form-item>
         </div>

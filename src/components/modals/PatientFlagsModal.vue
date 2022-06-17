@@ -1,16 +1,17 @@
 <template>
-	<a-modal width="50%" height="500px" :title="title">
+	<a-modal width="50%" height="500px" :title="title" @cancel="closeModal()" :maskClosable="false">
     <a-form ref="formRef" :model="addFlagForm" @finish="submitForm" layout="vertical">
       <a-row :gutter="24">
+       
         <a-col :span="24" v-if="flags.length==0">
           <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
-            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" />
+            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" @change="checkChangeInput()"/>
             <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
           </a-form-item>
         </a-col>
         <a-col :span="24">
           <a-form-item :label="$t('common.reason')" name="reason" :rules="[{ required: true, message: $t('common.reason')+' '+$t('global.validation') }]">
-            <a-textarea v-model:value="addFlagForm.reason" allow-clear />
+            <a-textarea v-model:value="addFlagForm.reason" allow-clear @change="checkChangeInput()"/>
             <ErrorMessage v-if="errorMsg" :name="errorMsg.reason ? errorMsg.reason[0] : ''" />
           </a-form-item>
         </a-col>
@@ -29,6 +30,8 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import { warningSwal} from "@/commonMethods/commonMethod";
+import {  messages} from "../../config/messages";
 export default {
 	components: {
 		Loader,
@@ -59,14 +62,33 @@ export default {
       const form = reactive({ ...addFlagForm })
 
       const submitForm = () => {
-        store.dispatch('addPatientFlag', {
+        if(props.flags.length>0){
+        store.dispatch('updatePatientFlag', {
+         
+          flag:props.flags,reason:addFlagForm.reason
+        }).then(() => {
+          store.dispatch('patientTimeline', {id:route.params.udid, type:store.state.patients.tabvalue.join(",")});
+          store.dispatch('patientFlagsList', patientUdid).then(() => {
+           /// title.value = latestFlag.value && latestFlag.value != null ? 'Update Flag' : 'Add Flag'
+          })
+           store.commit('checkChangeInput', false)
+          formRef.value.resetFields();
+          Object.assign(addFlagForm, form);
+           emit("closeModal", {
+            modal: 'addFlag',
+            value: false
+          });
+        })
+        }else{
+          store.dispatch('addPatientFlag', {
           patientUdid: patientUdid,
           data: addFlagForm
         }).then(() => {
-          store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+          store.dispatch('patientTimeline', {id:route.params.udid, type:store.state.patients.tabvalue.join(",")});
           store.dispatch('patientFlagsList', patientUdid).then(() => {
             title.value = latestFlag.value && latestFlag.value != null ? 'Update Flag' : 'Add Flag'
           })
+           store.commit('checkChangeInput', false)
           formRef.value.resetFields();
           Object.assign(addFlagForm, form);
           emit("closeModal", {
@@ -74,14 +96,48 @@ export default {
             value: false
           });
         })
+        }
       }
+ function checkChangeInput() {
+            store.commit('checkChangeInput', true)
+        }
 
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        })
+
+        function closeModal() {
+          
+            if (checkFieldsData.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        formRef.value.resetFields();
+                       Object.assign(addFlagForm, form);
+                        emit("closeModal", {
+            modal: 'addFlag',
+            value: false
+          });
+                       
+                        store.commit('checkChangeInput', false)
+                    } else {
+                       emit("closeModal", {
+            modal: 'addFlag',
+            value: true
+          });
+                        
+                    }
+                });
+            } 
+            formRef.value.resetFields();
+        }
       return {
 				formRef,
 				flagsForPatients,
 				addFlagForm,
 				submitForm,
 				title,
+        checkChangeInput,
+        closeModal
 			}
 		}
 }

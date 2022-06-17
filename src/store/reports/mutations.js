@@ -3,7 +3,9 @@ import {
   globalDateFormat,
   convertResponse,
   convertData,
-  convertChartResponse,
+  timerFromTimestamp,
+  secondsToTime
+  // convertChartResponse,
 } from "@/commonMethods/commonMethod";
 export const cptTimeline = (state, data) => {
 
@@ -17,12 +19,26 @@ export const cptCodes = (state, data) => {
   })
 }
 
-
+let totalMinutes =null
 export const reportDetailList = (state, data) => {
   state.reportDetailList = data
   if (state.reportDetailList.device.length > 0) {
     state.reportDetailList.device[0]['issueDate'] = dateOnlyFormat(data.device[0].issueDate, globalDateFormat)
     state.reportDetailList.device[0]['setupDate'] = dateOnlyFormat(data.device[0].setupDate, globalDateFormat)
+  }
+  totalMinutes = null
+  if (state.reportDetailList.call.length > 0) {
+    state.reportDetailList.call.map(item=>{
+      const seconds = item.endTime-item.startTime;
+      totalMinutes+=seconds
+      item.minutes = secondsToTime(seconds)
+      item.date = dateOnlyFormat(item.date, globalDateFormat)
+      item.startTime = timerFromTimestamp(item.startTime,'HH:mm:ss A')
+      item.endTime = timerFromTimestamp(item.endTime,'HH:mm:ss A')
+      return item
+    })
+
+    state.reportDetailList['totalMinutes'] = secondsToTime(totalMinutes)
   }
 
 
@@ -59,7 +75,7 @@ export const patientReportVitals = (state, vitals) => {
 
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
-    const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+    // const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
 
     
     //days counter
@@ -88,35 +104,31 @@ export const patientReportVitals = (state, vitals) => {
       map[date] = map[date] || [];
       map[date].push(val)
     });
-
-    state.dateWiseSortVitals = map
+    
     //datewise sorting end
-
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
-          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodPressureGraph = patientGraphData;
-          console.log(patientGraphData)
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null
+          state.bloodPressureData = map
           break;
         case 'Oximeter':
-          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodOxygenGraph = patientGraphData;
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null
+          state.bloodOxygenData = map
           break;
         case 'Glucose':
-          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodGlucoseGraph = patientGraphData;
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null
+          state.bloodGlucoseData = map
           break;
         default:
           break;
       }
     });
-
-
+  
     state.bloodPressureColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
@@ -150,8 +162,8 @@ export const patientReportVitals = (state, vitals) => {
 
     state.bloodOxygenColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
@@ -177,8 +189,8 @@ export const patientReportVitals = (state, vitals) => {
 
     state.bloodGlucoseColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",

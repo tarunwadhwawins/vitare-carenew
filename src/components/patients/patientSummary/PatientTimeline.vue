@@ -2,6 +2,13 @@
 <div :class="className">
     <a-checkbox-group v-model:value="tab" @change="chnageTab('change')">
         <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{timeline.name}}</a-checkbox>
+        <!-- <a-tooltip v-if="value1.length>0" placement="bottom">
+        <template #title>
+          <span>Flag Submit</span>
+        </template>
+        <a class="icons" @click="showAddFlagModal">
+          <CheckCircleOutlined /></a>
+      </a-tooltip> -->
         <a-tooltip v-if="visibleRemoveAll" placement="bottom">
             <template #title>
                 <span>Unselect All</span>
@@ -10,72 +17,68 @@
                 <CloseCircleOutlined /></a>
         </a-tooltip>
     </a-checkbox-group>
-
-    <a-timeline class="defaultTimeline">
+    <div class="customBtn" v-if="value1.length>0">
+        <a-button type="primary" @click="showAddFlagModal">Clear Flag</a-button>
+        
+    </div>
+                  <a-checkbox 
+                  v-if="tab.find((item) =>item==7)!=undefined"
+      v-model:checked="checkAll"
+      
+      @change="onCheckAllChange"
+    >
+      Check all
+    </a-checkbox>
+    <a-timeline class="defaultTimeline" style="height:calc(100vh - 330px)">
         <TableLoader />
         <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
-    <a-checkbox-group v-model:value="value1" style="width: 100%">
-            <template v-for="timeline in patientTimeline" :key="timeline.id">
-                <a-timeline-item color="blue">
-                    <template #dot>
-                        <BellOutlined class="yellowIcon" v-if="timeline.type==1" />
-                        <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2" />
-                        <HeatMapOutlined class="brownIcon" v-if="timeline.type==3" />
-                        <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4" />
-                        <FilePdfOutlined class="tealIcon" v-if="timeline.type==5" />
-                        <FileTextOutlined class="blueIcon" v-if="timeline.type==6" />
-                        <FlagOutlined class="redIcon" v-if="timeline.type==7" />
-                        <PushpinOutlined class="greenIcon" v-if="timeline.type==8" />
-                        <MessageOutlined class="messageIcon" v-if="timeline.type==9" />
-                        <!-- <InfoCircleOutlined class="messageIcon" /> -->
-                    </template>
-                    <div class="timelineInner">
-                        <div class="timelineHeader">
-                            <div class="title">
-                                <h4>{{ timeline.heading }}</h4>
-                                <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+            <a-checkbox-group v-model:value="value1" style="width: 100%" @change="onChangeCheckBox">
+                <template v-for="timeline in patientTimeline" :key="timeline.id">
+       
+                    <a-timeline-item color="blue">
+                        <template #dot>
+                            <BellOutlined class="yellowIcon" v-if="timeline.type==1" />
+                            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2" />
+                            <HeatMapOutlined class="brownIcon" v-if="timeline.type==3" />
+                            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4" />
+                            <FilePdfOutlined class="tealIcon" v-if="timeline.type==5" />
+                            <FileTextOutlined class="blueIcon" v-if="timeline.type==6" />
+                            <FlagOutlined class="redIcon" v-if="timeline.type==7" />
+                            <PushpinOutlined class="greenIcon" v-if="timeline.type==8" />
+                            <MessageOutlined class="messageIcon" v-if="timeline.type==9" />
+                            <!-- <InfoCircleOutlined class="messageIcon" /> -->
+                        </template>
+                        <div class="timelineInner">
+                            <div class="timelineHeader">
+                                <div class="title">
+                                    <h4>{{ timeline.heading }}</h4>
+                                    <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+                                </div>
+
+                                <a-checkbox v-model:value="timeline.entity.data.id" v-if="timeline.type==7 && timeline.entity.data" @click="checkBox"></a-checkbox>
+
                             </div>
-                            
-                               
-<a-checkbox v-model:value="timeline.id" v-if="timeline.type==7" @click="checkBox"></a-checkbox>
-                              
-                            
-                        </div>
-                        <div class="timelineBody">
-                            <div class="content">
-                                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                            <div class="timelineBody">
+                                <div class="content">
+                                    <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a-timeline-item>
-            </template>
-           </a-checkbox-group>
+                    </a-timeline-item>
+                </template>
+            </a-checkbox-group>
         </div>
         <div v-else class="noData">
             No Data
         </div>
     </a-timeline>
 </div>
-<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="state"/>
+<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="profileId?profileId : patientDetails.id" @closeModal="handleOk" :flags="flagsRecord" />
 </template>
 
 <script>
-import {
-  FolderOpenOutlined,
-  FilePdfOutlined,
-  BellOutlined,
-  HeatMapOutlined,
-  ClockCircleOutlined,
-  FileTextOutlined,
-  PushpinOutlined,
-  MessageOutlined,
-  // InfoCircleOutlined,
-  FlagOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons-vue";
-import {
-  dateFormat,
-} from '@/commonMethods/commonMethod';
+import {  FolderOpenOutlined, FilePdfOutlined, BellOutlined, HeatMapOutlined, ClockCircleOutlined, FileTextOutlined, PushpinOutlined, MessageOutlined,  FlagOutlined, CloseCircleOutlined } from "@ant-design/icons-vue";
+import { dateFormat } from '@/commonMethods/commonMethod';
 import { computed, ref, onMounted, reactive, toRefs, watchEffect,defineAsyncComponent} from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
@@ -95,7 +98,8 @@ export default {
         FlagOutlined,
         CloseCircleOutlined,
         TableLoader,
-        PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
+        //CheckCircleOutlined,
+        PatientFlagsModal: defineAsyncComponent(() => import("@/components/modals/PatientFlagsModal")),
     },
     props: {
         className: {
@@ -112,38 +116,41 @@ export default {
         const route = useRoute();
         const router = useRouter()
         const pId = ref(props.profileId)
-       const flagsModalVisible =ref(false)
-       const patientDetails = computed(() => {
-      return store.state.patients.patientDetails
-    })
+        const flagsModalVisible = ref(false)
+        const patientDetails = computed(() => {
+            return store.state.patients.patientDetails
+        })
         const tabvalue = reactive({
             tab: []
         });
         const state = reactive({
-          value1:[]
+            value1: [],
+            checkAll:false
         })
         watchEffect(() => {
-            if (store.state.patients.tabvalue) {
-                tabvalue.tab = [store.state.patients.tabvalue]
-                store.commit('loadingTableStatus', true)
-                store.dispatch('patientTimeline', {
-                    id: route.params.udid ? route.params.udid : pId.value,
-                    type: store.state.patients.tabvalue
-                }).then(() => {
-                    visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
-                    store.commit('loadingTableStatus', false)
-                })
+            if (store.state.patients.tabvalue.length > 0) {
+                state.value1 = []
+                state.checkAll=false
+                tabvalue.tab = store.state.patients.tabvalue
+
             }
         })
+         const patientTimeline = computed(() => {
+            return store.state.patients.patientTimeline;
+        })
+       
+        const meta = store.getters.patientTimelineMeta
+        let data = []
+        let scroller = ''
         onMounted(() => {
             if (route.name == 'PatientSummary') {
                 store.dispatch('timeLineType').then(() => {
                     if (route.query.filter) {
-
-                        tabvalue.tab = [4, 7]
+                        store.state.patients.tabvalue = [4, 7]
+                        tabvalue.tab = store.state.patients.tabvalue
                         store.dispatch('patientTimeline', {
                             id: route.params.udid ? route.params.udid : pId.value,
-                            type: '4,7'
+                            type: store.state.patients.tabvalue.join(",")
                         }).then(() => {
                             visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
                             store.commit('loadingTableStatus', false)
@@ -163,23 +170,68 @@ export default {
                     type: ''
                 });
             }
+        
+    
+
+    var tableContent = document.querySelector(".defaultTimeline");
+    tableContent.addEventListener("scroll", (event) => {
+       
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+       
+        if (currentScroll >= maxScroll) {
+             let current_page = meta.value.current_page + 1;
+            if (current_page <= meta.value.total_pages) {
+                scroller = maxScroll;
+                meta.patientMeta = "";
+                store.state.patients.patientTimelineMeta = ""
+                data =patientTimeline.value;
+                
+
+                store
+                    .dispatch(
+                        "patientTimeline",{
+                        page:current_page,
+                       id: route.params.udid,
+                       type: store.state.patients.tabvalue.join(",")
+                        }
+                    )
+                    .then(() => {
+                        loadMoredata();
+                    });
+            }
+        }
+    })
 
         })
+        function loadMoredata() {
+    const newData = patientTimeline.value;
+    newData.forEach((element) => {
+        data.push(element);
+    });
+    store.state.patients.patientTimeline = data;
+    var tableContent = document.querySelector(".defaultTimeline");
+
+    setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+    }, 50);
+}
         //const check = ref(true)
-        const patientTimeline = computed(() => {
-            return store.state.patients.patientTimeline;
-        })
+       
 
         const showModalCustom = () => {
             custom.value = true;
         };
 
         function chnageTab(value) {
-            store.state.patients.tabvalue = null
+            state.value1 = []
+            state.checkAll=false
+            store.state.patients.tabvalue = []
             store.commit('loadingTableStatus', true)
             var type = ''
             if (value == 'change') {
                 type = tabvalue.tab.length == 0 ? '' : tabvalue.tab.join(",")
+                store.state.patients.tabvalue = tabvalue.tab
             } else {
                 router.replace({
                     query: {}
@@ -200,11 +252,47 @@ export default {
                 store.commit('loadingTableStatus', false)
             })
         }
- function checkBox(){
-  flagsModalVisible.value = true
-console.log("check",state)
- }
+        const flagsRecord = ref([])
+
+        function showAddFlagModal() {
+            console.log("check",state.value1)
+            flagsRecord.value = state.value1
+            flagsModalVisible.value = true
+
+        }
+        const handleOk = ({
+            modal,
+            value
+        }) => {
+            flagsModalVisible.value = value
+            if (value == false) {
+                state.value1 = []
+                state.checkAll=false
+            }
+            console.log(modal)
+
+        }
+        const onCheckAllChange = e => {
+            if(e.target.checked){
+               patientTimeline.value.map((item)=>{
+                if(item.type==7 && item.entity.data){
+                    state.value1.push(item.entity.data.id)
+                }
+               }) 
+            }else{
+                state.value1=[]
+            }
+     
+    };
+    function onChangeCheckBox(){
+state.value1.length>0 ? '' : state.checkAll=false
+    }
         return {
+            onChangeCheckBox,
+            
+            onCheckAllChange,
+            handleOk,
+            showAddFlagModal,
             pId,
             showModalCustom,
             custom,
@@ -216,7 +304,8 @@ console.log("check",state)
             dateFormat,
             visibleRemoveAll,
             ...toRefs(state),
-            checkBox,
+
+            flagsRecord,
             flagsModalVisible,
             patientDetails
         }

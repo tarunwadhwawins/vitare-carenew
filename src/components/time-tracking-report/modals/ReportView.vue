@@ -7,23 +7,51 @@
             <TableLoader />
         </a-col>
     </a-row>
+    <a-row :gutter="24" class="row" v-if="devicesList?.entity == 'call'">
+        <a-col :sm="24" :xs="24">
+            <a-table rowKey="id" :columns="callColumns" :data-source="devicesList?.call" :pagination="false" @change="onChange">
+            <template #staff="{ record }" >
+             <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.staffId } }">{{ record.staff }}</router-link>
+            </template>
+            </a-table>
+            
+            <TableLoader />
+        </a-col>
+        <a-col :sm="20" :xs="24" class="totalHrs">
+        <h3>Total Duration: {{devicesList.totalMinutes}}</h3>
+        </a-col>
+    </a-row>
     <a-row :gutter="24" v-else>
        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodPressure?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
+                <!-- <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" /> -->
+              <a-collapse v-model:activeKey="activeKey" accordion >  
+                <a-collapse-panel  :header="i+' ('+'Count - '+data.length+')'" v-for="(data,i,key) in vitals.bloodPressureData" :key="key" >
+                  <VitalsTable :columns="vitals.bloodPressureColumns" :data="data" />
+                </a-collapse-panel>
+                </a-collapse>
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodOxygen?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
+                <!-- <VitalsTable :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" /> -->
+                <a-collapse v-model:activeKey="activeKey" accordion >
+                <a-collapse-panel  :header="i+' ('+'Count - '+data.length+')'" v-for="(data,i,key) in vitals.bloodOxygenData" :key="key" >
+                  <VitalsTable :columns="vitals.bloodOxygenColumns" :data="data" />
+                </a-collapse-panel>
+                </a-collapse>
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodGlucose?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
+                <!-- <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" /> -->
+                <a-collapse v-model:activeKey="activeKey" accordion >
+                <a-collapse-panel  :header="i+' ('+'Count - '+data.length+')'" v-for="(data,i,key) in vitals.bloodGlucoseData" :key="key" >
+                  <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="data" />
+                </a-collapse-panel>
+                </a-collapse>
             </a-card>
         </a-col>
-
         <TableLoader />
     </a-row>
 </a-modal>
@@ -49,7 +77,7 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const modalTitle = ref()
-
+    const activeKey = ref([]);
     const devicesList = computed(() => {
       return store.state.reports.reportDetailList;
     });
@@ -58,7 +86,11 @@ export default defineComponent({
         if (devicesList.value.device.length > 0) {
           modalTitle.value =
             devicesList.value.device.length > 0 ? "Device Details" : "Details";
-        } else {
+        } if (devicesList.value.call.length > 0) {
+          modalTitle.value =
+          devicesList.value.call.length > 0 ? "Call Details" : "Details";
+        }
+        else {
           if (devicesList.value.vital[0]?.deviceType == "Blood Pressure") {
             modalTitle.value = "Vital Detail - Blood Pressure";
           } else if (devicesList.value.vital[0]?.deviceType == "Oximeter") {
@@ -100,6 +132,40 @@ export default defineComponent({
       
     ]
 
+    const  callColumns = [
+      {
+        title: "Care Coordinator",
+        dataIndex: "staff",
+        key: "staff",
+        slots: {
+          customRender: "staff",
+        },
+      },
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+        slots: {
+          customRender: "date",
+        },
+      },
+      {
+        title: "Start Time",
+        dataIndex: "startTime",
+        key: "startTime",
+      },
+      {
+        title: "End Time ",
+        dataIndex: "endTime",
+        key: "endTime",
+      },
+      {
+        title: "Durations(HH:mm:ss) ",
+        dataIndex: "minutes",
+        key: "",
+      },
+    ];
+
     const vitals = computed(() => {
       return store.state.reports;
     })
@@ -114,9 +180,6 @@ export default defineComponent({
       modalTitle.value = null
     }
 
-    
- 
-
     return {
       closeModal,
       vitals,
@@ -127,10 +190,16 @@ export default defineComponent({
       devicesColumns,
       devicesList,
       modalTitle,
+      activeKey,
+      callColumns
     };
   },
 });
 </script>
 
 <style>
+.totalHrs{
+  text-align: right;
+  padding-top: 10px;
+}
 </style>

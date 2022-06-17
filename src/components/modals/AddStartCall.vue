@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Start Call" centered :footer="false" :maskClosable="false" @cancel="onCloseModal()">
+<a-modal width="1000px" height="250px" title="Start Call" centered :footer="false" :maskClosable="false" @cancel="onCloseModal()">
 <a-tabs v-model:activeKey="activeKey">
   <a-tab-pane :key="1" tab="Scheduled Call">
     <PopulateWaitingRoomTable  :colomnsRecord="columns" :dataRecord="newRequestsData" :pagination="false" />
@@ -10,7 +10,7 @@
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Patient List" name="patientId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation') }]">
-                        <PatientDropDown v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
+                        <PatientDropDown :listHeight="100" v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
                       </a-form-item>
                 </div>
             </a-col>

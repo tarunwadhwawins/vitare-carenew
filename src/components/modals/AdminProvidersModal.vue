@@ -25,7 +25,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="countryId" :rules="[{ required: true, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-if="globalCode.country" v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
@@ -201,12 +201,13 @@
             </div>
         </a-col>
     </a-row>
+    <Loader/>
 </a-modal>
 </template>
 <script>
 import { ref, computed, reactive, watchEffect } from "vue";
 import { useStore } from "vuex";
-import Loader from "./../loader/Loader";
+import Loader from "@/components/loader/Loader";
 import {
   warningSwal,
   successSwal,

@@ -8,9 +8,12 @@ export default {
     bloodPressure:null,
     bloodGlucose:null,
     bloodOxygen:null,
+    bloodPressureData:null,
+    bloodGlucoseData:null,
+    bloodOxygenData:null,
     takeDateTime:[],
     takeLength:[],
     dateWiseSortVitals:[],
     cptCodeFilterDates:null,
-    cptTimeline:null
+    cptTimeline:null,
 }

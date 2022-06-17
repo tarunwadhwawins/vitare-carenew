@@ -360,6 +360,7 @@ export default {
 
 
     onUnmounted(() => {
+      store.state.patients.tabvalue = []
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
       window.removeEventListener('beforeunload', clearEvent); 
