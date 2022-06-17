@@ -139,6 +139,26 @@ export default {
 
     watchEffect(() => {
       store.dispatch('patientDetails', route.params.udid).then(() => {
+        store.dispatch("program", patientUdid);
+        store.commit("loadingTableStatus",true)
+        loader.value = true
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99})
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
+        store.dispatch('devices', route.params.udid)
+        store.dispatch('activeCptCodes')
+        store.dispatch('allPatientsList')
+        store.dispatch('allStaffList')
+        store.dispatch('patientFlags')
+        store.dispatch('patientFlagsList', route.params.udid);
+        store.dispatch('patientCriticalNotes', route.params.udid);
+        store.dispatch('responsiblePerson', route.params.udid);
+        store.dispatch('physiciansList', route.params.udid);
+        store.dispatch('patientConditions', route.params.udid);
+        store.dispatch('emergencyContactsList', route.params.udid).then(()=>{
+          store.commit("loadingTableStatus",false)
+          loader.value = false
+        })
         if(!startOn.value && route.params.globalSearch) {
           elapsedTime.value = 0;
           store.commit('startOn', true);
@@ -483,6 +503,6 @@ export default {
 }
 .blueBtn {
   position: relative;
-  top: 3px;
+  top: 0;
 }
 </style>
