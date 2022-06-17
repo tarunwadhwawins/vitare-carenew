@@ -220,6 +220,7 @@ img.reportFlag {
 	.ant-modal-body {
 		overflow:auto;
 		max-height: 80vh;
+		min-height:300px!important;
 	}
 }
 
@@ -486,7 +487,7 @@ span.address-text {
 				.ant-select-dropdown{
 					top: 40px !important;
 					max-height: 160px;
-					overflow: auto;
+					// overflow: auto;
 				}
 			}
 		}
@@ -519,4 +520,8 @@ span.address-text {
 			}
 		}
 	}
+}
+
+.ant-select-dropdown{
+    top:35px !important;
 }
