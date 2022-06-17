@@ -14,4 +14,6 @@ export default {
   conversationList:[],
   conversationSend:null,
   communicationsView:null,
+  latestmessage:[],
+  messagesMeta:null
 }

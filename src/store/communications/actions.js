@@ -180,7 +180,7 @@ export const searchCommunications = async ({ commit }, params) => {
 
 export const conversation = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['conversation']+"?conversationId="+id, null, null).then((response) => {
-		commit('conversation', response.data.data);
+		commit('conversation', response.data);
 	})
 	.catch((error) => {
 		if (error.response) {
@@ -198,6 +198,23 @@ export const conversationSend = async ({ commit },data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['conversationSend'], null, data).then((response) => {
 		commit('conversationSend', response.data.data);
 		commit('toScroll', true)
+	})
+	.catch((error) => {
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+export const latestmessage = async ({ commit },id) => {
+	await ServiceMethodService.common("get", 'latest-message?conversationId='+id, null, null).then((response) => {
+		commit('latestmessage', response.data.data);
+		
 	})
 	.catch((error) => {
 		if (error.response) {
