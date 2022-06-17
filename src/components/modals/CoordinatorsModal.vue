@@ -151,7 +151,7 @@ import {
 } from "@/commonMethods/commonMethod";
 import {
     messages
-} from "../../config/messages";
+} from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 // import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
@@ -180,7 +180,7 @@ export default {
                     if (Object.values(personalInfoData).filter(item => item != '').length >= 8) {
                         personalInfo();
                     } else {
-                        errorSwal('All fields are required!')
+                        errorSwal(messages.fieldsRequired)
                         store.state.careCoordinator.counter = 0;
                     }
                 }

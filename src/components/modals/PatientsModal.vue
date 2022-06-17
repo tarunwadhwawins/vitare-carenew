@@ -1094,7 +1094,7 @@ export default defineComponent({
               demographic(value);
             }
           } else {
-            errorSwal("All(*) fields are required!");
+            errorSwal(messages.fieldsRequired);
             store.state.patients.counter = 0;
           }
         }

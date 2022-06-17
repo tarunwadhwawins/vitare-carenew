@@ -2,7 +2,7 @@
 <a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
-            <a-steps :current="current">
+            <a-steps v-model:current="current">
                 <a-step v-for="item in steps" :key="item.title" :title="item.title" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Providers'">
@@ -211,6 +211,7 @@ import {
   warningSwal,
   successSwal,
   arrayToObjact,
+  errorSwal
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { DeleteOutlined,EditOutlined } from "@ant-design/icons-vue";
@@ -235,7 +236,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const current = ref(0);
+    // const current = ref(0);
     const visible = ref(true);
     const store = useStore();
     const clearLocationForm =ref()
@@ -268,12 +269,46 @@ export default {
       isActive: 1,
     });
 
-    const setPhoneNumberProviderForm = (value) => {
-      providerForm.phoneNumber = value;
-    };
-    const setPhoneNumberProviderLocationForm = (value) => {
-      providerLocationForm.phoneNumber = value;
-    };
+    // const setPhoneNumberProviderForm = (value) => {
+    //   providerForm.phoneNumber = value;
+    // };
+    // const setPhoneNumberProviderLocationForm = (value) => {
+    //   providerLocationForm.phoneNumber = value;
+    // };
+
+    // const current = computed({
+    //         get: () =>store.state.provider.counter,
+    //         set: (value) => {
+    //             if (providersData.value.provider && !value==1) {
+    //                 store.state.provider.counter = value;
+    //             } else {
+    //                 if (Object.values(providerForm).filter(item => item != '').length >= 9) {
+    //                     submitProviderForm();
+    //                 } else {
+    //                     errorSwal(messages.fieldsRequired)
+    //                     store.state.provider.counter = 0;
+    //                 }
+    //             }
+
+    //         },
+    //     })
+
+    const current = computed({
+      get: () => store.state.provider.counter,
+      set: (value) => {
+        if ((providersData.value.provider||providersData.value.updateSingleProvider) && !value ==1) {
+          store.state.provider.counter = value;
+          console.log('value',store.state.provider.counter)
+        } else {
+          if (Object.values(providerForm).filter((item) => item != "").length >= 9 ) {
+            submitProviderForm();
+          } else {
+            errorSwal(messages.fieldsRequired);
+            store.state.provider.counter = 0;
+          }
+        }
+      },
+    });
 
     const providersData = computed(() => {
       return store.state.provider;
@@ -304,9 +339,7 @@ export default {
         })
       }
       
-      
 
-      current.value++;
     };
 
     const providerLocationlistData = computed(() => {
@@ -339,6 +372,9 @@ export default {
           if(response == true)
           clearLocationForm.value.resetFields()
           store.commit('editProviderLocation', null)
+          store.state.provider.providersListAll = "";
+          store.dispatch("providersListAll");
+          store.dispatch("providerLocationList", proId);
         });
         
       }else{
@@ -348,21 +384,20 @@ export default {
         }).then((response)=>{
           if(response == true)
           clearLocationForm.value.resetFields()
+          store.state.provider.providersListAll = "";
+          store.dispatch("providersListAll");
+          store.dispatch("providerLocationList", proId);
         });
       }
-      store.state.provider.providersListAll = "";
-      store.dispatch("providersListAll");
-      setTimeout(() => {
-        store.dispatch("providerLocationList", proId);
-      }, 2000);
+      
     };
 
     const next = () => {
-      current.value++;
-    };
-    const prev = () => {
-      current.value--;
-    };
+            store.commit("providerCounterPlus");
+        };
+        const prev = () => {
+            store.commit("providerCounterMinus");
+        };
 
     const globalCode = computed(() => {
       return store.state.common;
@@ -385,9 +420,12 @@ export default {
     function saveModal() {
       successSwal(messages.formSuccess);
       Object.assign(providerLocationForm, form);
+      Object.assign(providerForm, form);
       //store.dispatch("provider");
-      store.commit("resetCounter");
+      store.commit("providerResetCounter");
       emit("closeModal", false);
+      store.commit('editProviderLocation', null)
+      store.commit("checkChangeInput", false);
       providersData.value.provider=null
     }
 
@@ -407,7 +445,7 @@ export default {
             emit("closeModal", false);
             Object.assign(providerForm, form);
             Object.assign(providerLocationForm, form);
-            store.commit("resetCounter");
+            store.commit("providerResetCounter");
             store.commit("checkChangeInput", false);
             store.state.provider.provider = null;
             store.commit('editProviderLocation', null)
@@ -495,8 +533,8 @@ export default {
       editProviderLocation,
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
-      setPhoneNumberProviderForm,
-      setPhoneNumberProviderLocationForm,
+      // setPhoneNumberProviderForm,
+      // setPhoneNumberProviderLocationForm,
       checkChangeInput,
       checkFieldsData,
       UpdateStatus,

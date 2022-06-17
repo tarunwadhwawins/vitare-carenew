@@ -427,7 +427,7 @@ export default {
           if (Object.values(escalation).filter((item) => item != "").length >= 7 || addEscalation.value) {
             submitEscalationForm();
           } else {
-            errorSwal("All fields(*) are required!");
+            errorSwal(messages.fieldsRequired);
             store.state.escalations.escalationCounter = 0;
           }
         }
