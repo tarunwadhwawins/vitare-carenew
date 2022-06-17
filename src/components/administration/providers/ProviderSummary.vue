@@ -24,7 +24,7 @@
                                         Name : {{ getProviderSummary?getProviderSummary.name:''}}
                                     </p>
                                     <p>
-                                        <a href="tel:1234567890">
+                                        <a :href="`tel:${getProviderSummary?getProviderSummary.phoneNumber:''}`">
                                             Phone :
                                             <PhoneOutlined :rotate="90" /> {{ getProviderSummary?getProviderSummary.phoneNumber:''}}
                                         </a>

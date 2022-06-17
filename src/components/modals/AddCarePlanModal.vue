@@ -8,6 +8,7 @@
             <a-form-item label="Device Type" name="deviceType" :rules="[{ required: true, message: 'Device Type '+$t('global.validation')  }]">
               <a-select
                 ref="select"
+                :getPopupContainer="triggerNode => triggerNode.parentNode"
                 v-model:value="addCarePlanForm.deviceType"
                 style="width: 100%"
                 size="large"
@@ -23,7 +24,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Start Date" name="startDate" :rules="[{ required: true, message: 'Start Date '+$t('global.validation')  }]">
-              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
+              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD"/>
             </a-form-item>
           </div>
         </a-col>
@@ -31,7 +32,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="End Date" name="endDate" :rules="[{ required: true, message: 'End Date '+$t('global.validation')  }]">
-              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
+              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD"/>
             </a-form-item>
           </div>
         </a-col>
@@ -49,6 +50,7 @@
             <a-form-item label="Frequency" name="frequencyType" :rules="[{ required: true, message: 'This Field '+$t('global.validation')  }]">
               <a-select
                 ref="select"
+                :getPopupContainer="triggerNode => triggerNode.parentNode"
                 v-model:value="addCarePlanForm.frequencyType"
                 style="width: 100%"
                 size="large"
@@ -259,6 +261,7 @@ import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import {
   timeStamp,
+  globalDateFormat,
 } from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
@@ -499,6 +502,7 @@ export default defineComponent({
     }
 
     return {
+      globalDateFormat,
       closeModal,
       formRef,
       frequencyTypes,

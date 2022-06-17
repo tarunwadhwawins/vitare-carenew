@@ -44,9 +44,10 @@
                                     <p>Email : {{getstaffSummary?getstaffSummary.email:''}}</p> -->
                                     <p :title="getstaffSummary?getstaffSummary.email:''"><a href="mailto:{{getstaffSummary?getstaffSummary.email:''}}">
                                             <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>25?getstaffSummary.email.substring(0,25)+'...':getstaffSummary.email:'' }}</a></p>
-                                    <p><a href="tel:{{getstaffSummary?getstaffSummary.phoneNumber:''}}">
+                                    <p><a :href="`tel:${getstaffSummary?getstaffSummary.phoneNumber:''}`">
                                             <PhoneOutlined :rotate="90" /> {{ getstaffSummary?getstaffSummary.phoneNumber:'' }}</a></p>
                                 </div>
+                                
                             </div>
                             <div class="pat-profile">
                                 <div class="pat-profile-inner">

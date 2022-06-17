@@ -27,6 +27,7 @@
               <a-form-item label="Vital Type" name="type" :rules="[{ required: false, message: 'Type '+$t('global.validation')  }]">
                 <a-select
                   ref="select"
+                  :getPopupContainer="triggerNode => triggerNode.parentNode"
                   v-model="value1"
                   style="width: 100%"
                   size="large"

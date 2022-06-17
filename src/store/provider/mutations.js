@@ -10,6 +10,7 @@ export const providerLocation = (state, data) => {
 
 export const provider = (state, data) => {
 	state.providersListAll = data.data.map((element) => {
+		element.phoneNumber = element.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 		element.isActive = element.isActive == 1 ? true : false;
 		return element;
 	});
@@ -48,10 +49,12 @@ export const editSingleProvider = async (state, result) => {
 	state.editSingleProvider = result;
 	result.tagId = JSON.parse(result.tagId);
 	result.moduleId = JSON.parse(result.moduleId);
+	state.editSingleProvider['phoneNumber'] = result.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 };
 export const providerLocationList = (state, data) => {
 	state.providerLocationList = '';
 	state.providerLocationList = data.map((element) => {
+		element.phoneNumber = element.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 		return element;
 	});
 	state.columns = [
@@ -78,14 +81,16 @@ export const providerLocationList = (state, data) => {
 				customRender: 'action'
 			}
 		}
-	];
+	]; 
 };
 
 export const updateSingleProvider = (state, data) => {
 	state.updateSingleProvider = data;
+	state.updateSingleProvider['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 };
 
 
 export const editProviderLocation = (state, data) => {
 	state.editProviderLocation = data;
+	state.editProviderLocation['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 };

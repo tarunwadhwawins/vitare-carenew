@@ -957,7 +957,7 @@
             max-height: calc(100vh - 540px);
         }
     }
-   > .ant-checkbox-group {
+    > .ant-checkbox-group {
         width: 100%;
         background-color: #fff;
         padding: 15px 10px;
@@ -1034,7 +1034,7 @@
                     color: #287cfb;
                 }
                 &.messageIcon {
-                    color: #3646AC;
+                    color: #3646ac;
                 }
                 &.tealIcon {
                     color: #3c9b8e;
@@ -1684,26 +1684,29 @@
     width: 80px;
 }
 .noData .ant-timeline-item-tail {
-  display: none;
+    display: none;
 }
 .noData .ant-timeline-item-head.ant-timeline-item-head-blue {
-  display: none;
+    display: none;
 }
 
 .patientBox {
-    .ant-col{
-        margin: auto!important;
+    .ant-col {
+        margin: auto !important;
     }
 }
 
 .patientIcons .editIcon span svg {
     font-size: 20px;
-  }
+}
 
 .apexcharts-xaxis-texts-g {
     transform: scale(0.97) translate(20px, 10px);
 }
 .customBtn {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
     padding: 10px 0 0;
 }

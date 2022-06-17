@@ -1,6 +1,7 @@
 <template>
   <a-select
   ref="select"
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
   :value="value"
   @input="updateValue"
   style="width: 100%"

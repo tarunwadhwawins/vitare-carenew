@@ -7,6 +7,7 @@
 
           <a-select
             v-model:value="value"
+            :getPopupContainer="triggerNode => triggerNode.parentNode"
             show-search
             placeholder="Select Patient"
             style="width: 100%"

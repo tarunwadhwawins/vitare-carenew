@@ -76,14 +76,14 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -106,7 +106,7 @@
 import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { timeStamp, warningSwal, endTimeAdd,} from "@/commonMethods/commonMethod";
+import { timeStamp, warningSwal, endTimeAdd, globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
@@ -367,6 +367,7 @@ export default defineComponent({
 
         }
         return {
+            globalDateFormat,
             changeDate,
             taskFormFailed,
             loadingStatus: store.getters.loadingStatus,
