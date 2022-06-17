@@ -446,6 +446,7 @@ export default defineComponent({
                     name: "PatientSummary",
                     params: {
                         udid: checkData[0],
+                        globalSearch: true,
                     },
                 });
             } else {
@@ -454,6 +455,7 @@ export default defineComponent({
                     name: "CoordinatorSummary",
                     params: {
                         udid: checkData[0],
+                        globalSearch: true,
                     },
                 });
             }
