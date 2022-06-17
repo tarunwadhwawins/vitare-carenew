@@ -22,7 +22,7 @@
         
     </div>
                   <a-checkbox 
-                  v-if="tabvalue.tab.find(item =>item==7)!=undefined"
+                  v-if="tab.find((item) =>item==7)!=undefined"
       v-model:checked="checkAll"
       
       @change="onCheckAllChange"
