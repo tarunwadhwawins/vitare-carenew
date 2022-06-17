@@ -230,7 +230,7 @@ export default defineComponent({
     function cancelButton() {
       emit('closeModal', {
         link: true,
-        modal: "addTimeLog",
+        modal: "cancelButton",
         value: false
       });
     }
