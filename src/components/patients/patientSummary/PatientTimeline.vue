@@ -285,7 +285,20 @@ export default {
      
     };
     function onChangeCheckBox(){
-state.value1.length>0 ? '' : state.checkAll=false
+        
+        var count = 0
+         patientTimeline.value.map((item)=>{
+                if(item.type==7 && item.entity.data){
+                    count++
+                }
+               }) 
+            
+              if(count==state.value1.length){
+                state.checkAll=true
+              }else{
+                state.checkAll=false
+              }
+
     }
         return {
             onChangeCheckBox,
