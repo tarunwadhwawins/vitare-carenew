@@ -40,10 +40,15 @@
     </template>
 
   </a-table>
+  <Loader />
 </template>
 
 <script>
+import Loader from "@/components/loader/Loader";
 export default {
+  components: {
+    Loader,
+  },
   props: {
     columns: {
       type: Array

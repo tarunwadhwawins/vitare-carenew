@@ -1,7 +1,7 @@
 <template>
   <a-col :sm="24" :xs="24" class="mb-24">
     <a-card :title="title">
-      <DateFilter :Buttons="filterButtons" @clickButtons="showButton(deviceId)" :custom="false" commit="patientVitalsTimeline" v-if="widgetsPermissions.length > 0"/>
+      <DateFilter :Buttons="filterButtons" @clickButtons="showButton(deviceId)" :custom="false" :commit="commit" />
 
       <a-tabs v-model:activeKey="activeKey1">
         <a-tab-pane key="1" tab="Table" force-render>
@@ -66,6 +66,12 @@ export default {
     chartSeries: {
       type: Array
     },
+    filterButtons: {
+      type: Object
+    },
+    commit: {
+      type: String
+    },
   },
   setup(props, {emit}) {
     const store = useStore()
@@ -74,18 +80,44 @@ export default {
     const showModal = () => {
       emit('showModal')
     }
-    const patientVitalsTimeline = store.getters.patientVitalsTimeline
+    
+    const bloodOxygenTimeline = store.getters.bloodOxygenTimeline
+    const bloodGlucoseTimeline = store.getters.bloodGlucoseTimeline
+    const bloodPressureTimeline = store.getters.bloodPressureTimeline
 
     onMounted(() => {
-      if (patientVitalsTimeline.value == null) {
+      if (bloodOxygenTimeline.value == null) {
         store.dispatch("timeLine", {
           id: 122,
-          commit: 'patientVitalsTimeline'
+          commit: "bloodOxygenTimeline"
         }).then(() => {
-          apiCall(patientVitalsTimeline.value)
+          apiCall(bloodOxygenTimeline.value, 100)
         })
       } else {
-        apiCall(patientVitalsTimeline.value)
+        console.log('timeLine', bloodOxygenTimeline.value)
+        apiCall(bloodOxygenTimeline.value, 100)
+      }
+
+      if (bloodGlucoseTimeline.value == null) {
+        store.dispatch("timeLine", {
+          id: 122,
+          commit: "bloodGlucoseTimeline"
+        }).then(() => {
+          apiCall(bloodGlucoseTimeline.value, 101)
+        })
+      } else {
+        apiCall(bloodGlucoseTimeline.value, 101)
+      }
+
+      if (bloodPressureTimeline.value == null) {
+        store.dispatch("timeLine", {
+          id: 122,
+          commit: "bloodPressureTimeline"
+        }).then(() => {
+          apiCall(bloodPressureTimeline.value, 99)
+        })
+      } else {
+        apiCall(bloodPressureTimeline.value, 99)
       }
     })
 
@@ -120,13 +152,19 @@ export default {
     }
 
     function showButton(deviceId) {
-      apiCall(patientVitalsTimeline.value, deviceId)
+      if(deviceId == 99) {
+        apiCall(bloodPressureTimeline.value, deviceId)
+      }
+      if(deviceId == 100) {
+        apiCall(bloodOxygenTimeline.value, deviceId)
+      }
+      if(deviceId == 101) {
+        apiCall(bloodGlucoseTimeline.value, deviceId)
+      }
     }
 
     return {
       showModal,
-      filterButtons: store.getters.patientVitalsTimeline,
-      widgetsPermissions: store.getters.widgetsPermissions,
       showButton,
     }
   }

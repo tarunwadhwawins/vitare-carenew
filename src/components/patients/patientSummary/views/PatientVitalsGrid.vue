@@ -13,6 +13,8 @@
         v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"
         :deviceId="device.deviceTypeId"
+        :filterButtons="bloodPressureTimeline"
+        commit="bloodPressureTimeline"
         :tableColumns="bloodPressureColumns"
         :tableData="bloodPressure"
         :chartOptions="bloodPressureOptions"
@@ -24,6 +26,8 @@
         v-if="device.deviceType == 'Glucose'"
         title="Blood Glucose"
         :deviceId="device.deviceTypeId"
+        :filterButtons="bloodGlucoseTimeline"
+        commit="bloodGlucoseTimeline"
         :tableColumns="bloodGlucoseColumns"
         :tableData="bloodGlucose"
         :chartOptions="bloodGlucoseOptions"
@@ -35,6 +39,8 @@
         v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
         :deviceId="device.deviceTypeId"
+        :filterButtons="bloodOxygenTimeline"
+        commit="bloodOxygenTimeline"
         :tableColumns="bloodOxygenColumns"
         :tableData="bloodOxygen"
         :chartOptions="bloodOxygenOptions"
@@ -259,6 +265,9 @@ export default {
       patientDevices,
       showVitals,
       vitalGrid:'vitalGrid',
+      bloodOxygenTimeline: store.getters.bloodOxygenTimeline,
+      bloodGlucoseTimeline: store.getters.bloodGlucoseTimeline,
+      bloodPressureTimeline: store.getters.bloodPressureTimeline,
     }
   }
 }

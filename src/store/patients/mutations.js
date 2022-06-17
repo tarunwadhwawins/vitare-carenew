@@ -536,6 +536,18 @@ export const patientVitalsTimeline = (state, timeline) => {
   state.patientVitalsTimeline = timeline
 }
 
+export const bloodOxygenTimeline = (state, timeline) => {
+  state.bloodOxygenTimeline = timeline
+}
+
+export const bloodGlucoseTimeline = (state, timeline) => {
+  state.bloodGlucoseTimeline = timeline
+}
+
+export const bloodPressureTimeline = (state, timeline) => {
+  state.bloodPressureTimeline = timeline
+}
+
 export const addCondition = (state, data) => {
   state.addCondition = data
 }
