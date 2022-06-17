@@ -14,7 +14,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-              <a-select @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
+              <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Logged By</a-select-option>
                 <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
@@ -25,7 +25,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-              <a-select @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
+              <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Performed By</a-select-option>
                 <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
@@ -36,7 +36,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-              <a-date-picker @change="changedValue" :disabled="isDisabled" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
+              <a-date-picker @change="changedValue" :disabled="isDisabled" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD" />
             </a-form-item>
           </div>
         </a-col>
@@ -100,6 +100,7 @@ import { useStore } from "vuex";
 import {
   timeStamp,
   getSeconds,
+  globalDateFormat
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -302,6 +303,7 @@ export default defineComponent({
     }
 
     return {
+      globalDateFormat,
       size: ref("large"),
       handleClear,
       formRef,

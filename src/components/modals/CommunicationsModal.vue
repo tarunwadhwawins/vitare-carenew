@@ -56,7 +56,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.messageType')" name="messageTypeId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageType')+' '+$t('global.validation')  }]">
-                        <a-select  v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
+                        <a-select :getPopupContainer="triggerNode => triggerNode.parentNode"  v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
                             <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
                             <template v-for="type in messageType">
                                 <a-select-option v-if="type.name == 'App Message' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>

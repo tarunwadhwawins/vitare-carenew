@@ -18,7 +18,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item name="designation" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
-                    <a-select v-model:value="formState.designation" placeholder="Please select designation">
+                    <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="formState.designation" placeholder="Please select designation">
                         <a-select-option value="Administrative">Administrative</a-select-option>
                         <a-select-option value="Manager">Manager</a-select-option>
                         <a-select-option value="Executive">Executive</a-select-option>
@@ -30,7 +30,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item name="gender" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
-                    <a-select v-model:value="formState.gender" placeholder="Please select gender">
+                    <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="formState.gender" placeholder="Please select gender">
                         <a-select-option value="lucy">Male</a-select-option>
                         <a-select-option value="Yiminghe">Female</a-select-option>
                         <a-select-option value="Yiminghe">Others</a-select-option>
