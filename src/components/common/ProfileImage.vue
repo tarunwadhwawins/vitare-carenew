@@ -77,7 +77,7 @@
             <a
               @click="actionTrack(paramsId, 322, 'patient')"
               v-if="arrayToObjact(screensPermissions, 322)"
-              href="tel:{{patientDetails.phoneNumber}}"
+              :href="`tel:${patientDetails.phoneNumber}`"
               ><PhoneOutlined :rotate="90" />
               {{ patientDetails.phoneNumber }}</a
             >

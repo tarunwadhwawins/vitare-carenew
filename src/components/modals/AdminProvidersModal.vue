@@ -56,7 +56,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                     <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/> -->
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
@@ -144,9 +144,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number v-model:value="providerLocationForm.phoneNumber" size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/>
-                                    <!-- <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" /> -->
-                                    <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/> -->
+                                    <!-- <a-input-number size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/> -->
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerLocationForm.phoneNumber"  placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -280,6 +279,7 @@ export default {
       providerForm.isActive = event;
     }
     const submitProviderForm = () => {
+      providerForm.phoneNumber = providerForm.phoneNumber.replace(/-/g,'')
       if (!providerId) {
         store.dispatch("provider", providerForm);
       } else {
