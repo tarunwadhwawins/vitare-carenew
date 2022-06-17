@@ -3,7 +3,7 @@
     :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
     class=""
-    listHeight="150"
+    :listHeight="listHeight?listHeight:150"
     :mode="mode"
     :value="value"
     @input="updateValue"
@@ -36,7 +36,8 @@ export default defineComponent({
     mode: String,
     close: Boolean,
     editDataCondition:Array,
-    placeholder:String
+    placeholder:String,
+    listHeight:Number
   },
 
   setup(props, context) {

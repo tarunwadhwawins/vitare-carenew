@@ -1,7 +1,7 @@
 <template>
   <a-select
   class=""
-  listHeight="150"
+  :listHeight="listHeight?listHeight:150"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
     :mode="mode"
@@ -35,7 +35,8 @@ export default defineComponent({
     value: String,
     mode: String,
     close: Boolean,
-    editDataReferral:Array
+    editDataReferral:Array,
+    listHeight: Number,
   },
 
   setup(props, context) {

@@ -3,7 +3,7 @@
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
     class=""
-    :listHeight="listHeight?listHeight:100"
+    :listHeight="listHeight?listHeight:150"
     :mode="mode"
     :value="value"
     @input="updateValue"
