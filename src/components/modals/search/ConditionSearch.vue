@@ -2,7 +2,8 @@
   <a-select
     :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
-    class="globalDropList"
+    class=""
+    listHeight="150"
     :mode="mode"
     :value="value"
     @input="updateValue"

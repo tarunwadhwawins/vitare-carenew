@@ -67,14 +67,21 @@ export const task = async (state, tasks) => {
 
 export const taskStatusSuccess = async (state, status) => {
 	//console.log("status",status)
-	state.taskStatus = status;
-	state.incompleteAllTask = status.map((item) => item.total);
+	let data = []
+	status.forEach(element => {
+		
+		if(element.text!="Total Tasks"){
+			data.push(element)
+		}
+	});
+	state.taskStatus = data;
+	state.incompleteAllTask = data.map((item) => item.total);
 	state.completedAllTask = {
 		chart: {
 			type: 'pie'
 		},
-		labels: status.map((item) => item.text),
-		colors: status.map((item) => item.color),
+		labels: data.map((item) => item.text),
+		colors: data.map((item) => item.color),
 		responsive: [
 			{
 				breakpoint: 480,
@@ -313,6 +320,7 @@ export const taskTeamMember = async (state, TeamMember) => {
 };
 
 export const taskCategory = async (state, TeamMember) => {
+	
 	state.taskCategory.business = TeamMember.map((item) => item.total);
 	state.taskCategory.premium = {
 		chart: {

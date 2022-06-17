@@ -8,7 +8,7 @@ export const referralColumns = async (state) => {
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
-      sorter:true
+      
     },
     {
       title: "Email",

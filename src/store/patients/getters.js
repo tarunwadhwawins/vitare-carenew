@@ -47,6 +47,11 @@ export const patientsRecord = (state)=>{
     })
   }
 
+  export const patientTimelineMeta = (state) => {
+    return computed(() => {
+      return state.patientTimelineMeta
+    })
+  }
   
  
 

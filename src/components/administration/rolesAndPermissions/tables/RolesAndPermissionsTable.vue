@@ -2,7 +2,7 @@
 <template>
 <a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList"   :scroll="{ x: 900,y:'calc(100vh - 470px)'}" :pagination=false @change="handleTableChange">
     <template #actions="{record}" >
-        <a-tooltip placement="bottom" v-if="record.id ===1" disabled >
+        <a-tooltip placement="bottom" v-if="record.id ===1 || arrayToObjact(role.user.staff.role,record.udid)!=undefined" disabled >
             <template #title disabled v-if="arrayToObjact(screensPermissions,2)">
                 <span>Edit</span>
             </template>
@@ -14,16 +14,17 @@
                 <span>Edit</span>
             </template>
             <a class="icons" @click="editRole(record.udid)" v-if="arrayToObjact(screensPermissions,2)">
+              
                 <EditOutlined /></a>
         </a-tooltip>
         <a-tooltip placement="bottom" >
-            <template #title v-if="record.id ===1 && arrayToObjact(screensPermissions,3)" disabled>
+            <template #title v-if="(record.id ===1 || arrayToObjact(role.user.staff.role,record.udid)!=undefined) && arrayToObjact(screensPermissions,3)" disabled>
                 <span>Delete</span>
             </template>
             <template #title v-else-if="record.id !=1 && arrayToObjact(screensPermissions,3)" >
                 <span>Delete</span>
             </template>
-            <a class="icons" v-if="record.id ===1 && arrayToObjact(screensPermissions,3)" disabled>
+            <a class="icons" v-if="(record.id ===1 || arrayToObjact(role.user.staff.role,record.udid)!=undefined) && arrayToObjact(screensPermissions,3)" disabled>
                 <DeleteOutlined /></a>
             <a class="icons" v-else-if="record.id !=1 && arrayToObjact(screensPermissions,3)" @click="deleteRole(record.udid)">
                 <DeleteOutlined /></a>
@@ -39,7 +40,7 @@
         </a-tooltip>
     </template>
     <template #isActive="{record}" >
-        <a-switch v-if="record.id ===1" v-model:checked="record.status"  disabled/>
+        <a-switch v-if="record.id ===1 || arrayToObjact(role.user.staff.role,record.udid)!=undefined" v-model:checked="record.status"  disabled/>
         <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,2)"/>
     </template>
 </a-table>
@@ -52,7 +53,7 @@ import {
   CopyOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import { watchEffect, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import {
   warningSwal,
   arrayToObjact,
@@ -70,8 +71,8 @@ export default {
 
   setup(props, { emit }) {
     const store = useStore();
-
-    watchEffect(() => {
+const role = JSON.parse(localStorage.getItem("auth"))
+    onMounted(() => {
       store.dispatch("rolesList");
       store.dispatch("searchTable", "&search=");
       store.dispatch("orderTable", {
@@ -242,7 +243,7 @@ export default {
       copyRole,
       UpdateRoleStatus,
       meta,
-      
+      role,
       handleTableChange,
     };
   },

@@ -7,7 +7,7 @@
     </template>
     <template #document="{record}">
       <a :href="record.document" download>
-        <FileOutlined />
+        <DownloadOutlined />
       </a>
     </template>
     <template #action="text">
@@ -33,7 +33,7 @@
 
 <script>
 import { computed } from "vue";
-import { EditOutlined, DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
+import { EditOutlined, DeleteOutlined, DownloadOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -42,7 +42,7 @@ export default {
   components: {
     EditOutlined,
     DeleteOutlined,
-    FileOutlined,
+    DownloadOutlined,
   },
   props: {
     Id: String,
