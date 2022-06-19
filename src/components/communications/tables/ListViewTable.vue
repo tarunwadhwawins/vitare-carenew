@@ -143,14 +143,14 @@
 
   </a-table>
   <CommunicationGmailView v-model:visible="visibleGmail" />
-  <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
   <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
-import Chat from "@/components/modals/Chat";
+//import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 import {  arrayToObjact, } from "@/commonMethods/commonMethod";
 
@@ -173,7 +173,7 @@ export default {
     MailOutlined,
     AlertOutlined,
     CommunicationGmailView,
-    Chat,
+    //Chat,
     ChatWithPatientInformation,
   },
   props: {},
@@ -283,7 +283,7 @@ export default {
         });
       }
       if(route.params.from == 'push' && communicationId.value != null) {
-        console.log('communicationId.value.is_receiver_patient', communicationId.value.is_receiver_patient)
+        
         if(communicationId.value.is_receiver_patient || communicationId.value.is_sender_patient) {
           chatWithPatientInfoVisible.value = true;
           visible.value = false;

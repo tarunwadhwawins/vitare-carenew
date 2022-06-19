@@ -9,7 +9,7 @@ export const messages={
     restoreWarning:'Do you want to Restore ?',
     modalWarning:'Are you sure you want to discard your changes?',
     formSuccess:'Data successfully added!',
-    fieldsRequired:'Please fill all required fields.',
+    fieldsRequired:'Please fill all required(*) fields.',
     startTimeAndEndTime:'End time should be greater than start time.',
     modalWarningDeleteTitle:"Are you sure you want to discard your changes?",
     modalWarningCancelTitle:"Do you want to Delete ?"
