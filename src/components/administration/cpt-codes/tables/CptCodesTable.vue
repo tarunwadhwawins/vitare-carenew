@@ -1,6 +1,6 @@
 
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="cptCodesColumns" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
     <!-- <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
@@ -35,6 +35,7 @@ import {
  // tableYScroller,
  
 } from "@/commonMethods/commonMethod";
+
 export default {
   components: {
     //DeleteOutlined,
@@ -158,7 +159,25 @@ export default {
         );
       }
     };
-
+const cptCodesColumns = [
+  {
+    title: "Active Code",
+    dataIndex: "name",
+    sorter:true,
+  },
+    {
+      title: "Cpt Code",
+      dataIndex: "cptCode",
+      sorter:true
+    },
+    
+    {
+      title: "Billing Amount",
+      dataIndex: "billingAmout",
+      sorter:true,
+      align: 'right'
+    },
+]
     return {
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
@@ -167,6 +186,7 @@ export default {
       editCpt,
       UpdateCptStatus,
       meta,
+      cptCodesColumns,
       //tableYScroller,
       handleTableChange,
     };

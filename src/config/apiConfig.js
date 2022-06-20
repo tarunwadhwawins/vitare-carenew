@@ -84,6 +84,8 @@ export const API_ENDPOINTS = {
     // timeLogs
     timeLog: 'patient/timeLog',
     deleteTimeLog: 'deleteTimeLog',
+    
+    activeCptCodes :'cptCodeActivities',
 
     //Thresholds
     getVital:'field',
