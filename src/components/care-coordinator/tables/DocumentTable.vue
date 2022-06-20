@@ -102,11 +102,13 @@ export default defineComponent({
     })
 
     const staffDocCloseModal = () => {
+
       visibleStaffDoc.value = true;
-      store.state.careCoordinator.documentStaffDetails=null
+     
       if(checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
+           store.state.careCoordinator.documentStaffDetails=null
           visibleStaffDoc.value = false
           store.commit('checkChangeInput', false)
         }

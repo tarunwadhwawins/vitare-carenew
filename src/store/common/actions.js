@@ -89,7 +89,7 @@ export const allStaffList = async ({ commit }) => {
 
 export const activeCptCodes = async ({ commit }) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['cptCodes'], null, null).then((response) => {
+  await serviceMethod.common("get", API_ENDPOINTS['activeCptCodes'], null, null).then((response) => {
     commit('activeCptCodes', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {

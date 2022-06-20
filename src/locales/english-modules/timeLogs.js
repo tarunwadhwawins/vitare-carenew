@@ -6,6 +6,7 @@ const timeLogs = {
   timeAmount: "Time Amount",
   cptCode: "CPT Code",
   note: "Note",
+  activeCode:"Activity"
 }
 
 export default timeLogs;

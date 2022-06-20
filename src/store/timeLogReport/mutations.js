@@ -42,7 +42,7 @@ export const timeLog = async (state, data) => {
     },
 
     {
-      title: "CPT Codes ",
+      title: "Activity ",
       dataIndex: "cptCode",
     },
     {

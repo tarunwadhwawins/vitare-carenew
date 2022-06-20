@@ -47,6 +47,7 @@ export const patient = (state, data) => {
         customRender: "flagTmeStamp",
       },
       width: '17%',
+      sorter: true,
       
     },
     {
@@ -71,21 +72,24 @@ export const patient = (state, data) => {
           dataIndex: "bp",
           key: "bp",
           width: '12%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Spo2(%)",
           dataIndex: "spo2",
           key: "spo2",
           width: '10%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Glucose(mg / dL)",
           dataIndex: "glucose",
           key: "glucose",
           width: '18%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Weight(LBS)",

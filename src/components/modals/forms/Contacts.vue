@@ -1,5 +1,5 @@
 <template>
-<a-form :model="contact" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
+<a-form :model="contact" ref="formRest" scrollToFirstError=true name="basic"  autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
@@ -25,6 +25,7 @@
                 </a-form-item>
             </div>
         </a-col>
+        
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
@@ -33,6 +34,7 @@
                 </a-form-item>
             </div>
         </a-col>
+        
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24" v-if="paramId">
@@ -81,6 +83,7 @@ export default defineComponent({
       lastName: "",
       email: "",
       phoneNumber: "",
+      
     });
     const formButton = ref(false);
    

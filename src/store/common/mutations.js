@@ -69,7 +69,7 @@ export const globalCodes = (state, data) => {
             state.network = element.globalCode;
         }
         if (element.name === 'Specialization') {
-            state.specialization = element.globalCode;
+            state.specialization.splice(0,2, element.globalCode[1],element.globalCode[0])
         }
         if (element.name === 'Task Category') {
             // state.taskCategory = element.globalCode;

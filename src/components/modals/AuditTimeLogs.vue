@@ -12,7 +12,7 @@
             </a-col>
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('timeLogs.activeCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :globalCode="cptCodesList" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
