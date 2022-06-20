@@ -88,6 +88,7 @@ import {
   enCodeString,
   arrayToObjact
 } from '@/commonMethods/commonMethod';
+import moment from 'moment';
 const value = ref(dayjs("12:08", "HH:mm"));
 const cancelButton = ref('')
 function clearEvent(event){
@@ -138,18 +139,16 @@ export default {
     };
 
     watchEffect(() => {
-      setInterval(() => {
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99})
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
-      }, 5000)
       store.dispatch('patientDetails', route.params.udid).then(() => {
+        const fromDate = moment().format('X')
+        const toDate = moment().format('X')
+        let dateFilter = fromDate && toDate ? "&fromDate=" + fromDate + "&toDate=" + toDate : ''
         store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
         loader.value = true
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99})
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
+        store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 99, filter: dateFilter })
+        store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 100, filter: dateFilter });
+        store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 101, filter: dateFilter });
         store.dispatch('devices', route.params.udid)
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
@@ -240,9 +239,6 @@ export default {
         store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
         loader.value = true
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99})
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
         store.dispatch('devices', patientUdid)
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')

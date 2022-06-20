@@ -4,8 +4,8 @@
       <DateFilter :Buttons="filterButtons" @clickButtons="showButton(deviceId)" :custom="false" :commit="commit" />
 
       <a-tabs v-model:activeKey="activeKey1">
-        <a-tab-pane key="1" tab="Table" force-render>
-          <VitalsTable :columns="tableColumns" :data="tableData" :className="className" />
+        <a-tab-pane key="1" tab="Table">
+          <VitalsTable :columns="tableColumns" :data="tableData" />
         </a-tab-pane>
         <a-tab-pane key="4" tab="Graph">
           <ApexChart type="area" height="350" :options="chartOptions" :series="chartSeries" />
@@ -29,7 +29,7 @@ import {
 import VitalsTable from "@/components/patients/patientSummary/common/VitalsTable";
 import ApexChart from "@/components/common/charts/ApexChart";
 import DateFilter from "@/components/common/DateFilter"
-import { onMounted } from 'vue-demi';
+import { onMounted, watchEffect } from 'vue-demi';
 import { useStore } from 'vuex';
 import { dayWeekMonthdate } from '../../../../commonMethods/commonMethod';
 import { useRoute } from 'vue-router';
@@ -49,9 +49,6 @@ export default {
       type: Number
     },
     activeKey: {
-      type: String
-    },
-    className: {
       type: String
     },
     tableColumns: {
@@ -84,8 +81,8 @@ export default {
     const bloodOxygenTimeline = store.getters.bloodOxygenTimeline
     const bloodGlucoseTimeline = store.getters.bloodGlucoseTimeline
     const bloodPressureTimeline = store.getters.bloodPressureTimeline
-
-    onMounted(() => {
+    
+    function getVitals() {
       if (bloodOxygenTimeline.value == null) {
         store.dispatch("timeLine", {
           id: 122,
@@ -119,12 +116,25 @@ export default {
       } else {
         apiCall(bloodPressureTimeline.value, 99)
       }
+    }
+
+    watchEffect(() => {
+      setInterval(() => {
+        if(route.name == 'PatientSummary') {
+          getVitals()
+        }
+      }, 30000)
+    })
+
+    onMounted(() => {
+      if(route.name == 'PatientSummary') {
+        getVitals()
+      }
     })
 
     function apiCall(data, deviceId) {
       let dateFormat = dayWeekMonthdate(data)
       let dateFilter = dateFormat ? "&fromDate=" + dateFormat.fromDate + "&toDate=" + dateFormat.toDate : ''
-      console.log('dateFormat', dateFilter)
       if(deviceId) {
         store.dispatch("patientVitals", {
           patientId: route.params.udid,

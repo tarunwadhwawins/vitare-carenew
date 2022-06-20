@@ -1,4 +1,5 @@
 <template>
+
   <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
       <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_systolic_color }">{{ record.blood_pressure_systolic }}</span>
@@ -40,24 +41,16 @@
     </template>
 
   </a-table>
-  <Loader />
 </template>
 
 <script>
-import Loader from "@/components/loader/Loader";
 export default {
-  components: {
-    Loader,
-  },
   props: {
     columns: {
       type: Array
     },
     data: {
       type: Array
-    },
-    className: {
-      type: String
     },
   }
 }

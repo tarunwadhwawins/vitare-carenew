@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue-demi';
+import { computed, ref, watchEffect } from 'vue-demi';
 import AddVitalsModal from "@/components/modals/AddVitalsModal";
 import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
@@ -156,21 +156,24 @@ export default {
       visibleAddVitalsModal.value = true;
       title.value = 'Blood Glucose';
     };
-    
-    if(bloodPressureGraph.value != null) {
-      bloodPressureSeries.value = bloodPressureGraph.value.records
-      bloodPressureTimesArray.value = bloodPressureGraph.value.timesArray
-    }
 
-    if(bloodGlucoseGraph.value != null) {
-      bloodGlucoseSeries.value = bloodGlucoseGraph.value.records
-      bloodGlucoseTimesArray.value = bloodGlucoseGraph.value.timesArray
-    }
+    watchEffect(() => {
+      if(bloodPressureGraph.value != null) {
+        bloodPressureSeries.value = bloodPressureGraph.value.records
+        bloodPressureTimesArray.value = bloodPressureGraph.value.timesArray
+      }
 
-    if(bloodOxygenGraph.value != null) {
-      bloodOxygenSeries.value = bloodOxygenGraph.value.records
-      bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
-    }
+      if(bloodGlucoseGraph.value != null) {
+        bloodGlucoseSeries.value = bloodGlucoseGraph.value.records
+        bloodGlucoseTimesArray.value = bloodGlucoseGraph.value.timesArray
+      }
+
+      if(bloodOxygenGraph.value != null) {
+        bloodOxygenSeries.value = bloodOxygenGraph.value.records
+        bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
+      }
+      console.log('bloodOxygenGraph', bloodOxygenSeries.value)
+    })
     
     const bloodPressureOptions = {
       chart: {
