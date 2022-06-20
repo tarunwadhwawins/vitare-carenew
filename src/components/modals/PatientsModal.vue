@@ -1441,7 +1441,8 @@ export default defineComponent({
     }
 
     function closeModal() {
-    // alert(isValueChanged.value)
+      store.commit("resetCounter");
+      // alert(isValueChanged.value)
       if (isValueChanged.value || bitrixFormCheck.value) {
         // emit("saveModal", true)
         emit("closeModal", {
