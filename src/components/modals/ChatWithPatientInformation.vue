@@ -170,14 +170,15 @@ export default {
                 var tableContent1 = document.querySelector(".chatBoxInner");
 
                 tableContent1.addEventListener("scroll", (event) => {
-                    let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                    let currentScroll = event.target.scrollTop + 2;
+                   
+                    let currentScroll = event.target.scrollTop ;
 
                     if (currentScroll < 3) {
                         let current_page = meta.value.current_page + 1;
 
                         if (current_page <= meta.value.total_pages) {
-                            scroller = maxScroll
+                            
+                            scroller = event.target.scrollHeight
                             store.state.communications.messagesMeta = ''
                             record = conversationList.value
 
@@ -201,14 +202,12 @@ export default {
             });
 
             conversationList.value = record;
-
-            // conversationList.value= store.state.communications.conversationList
-
-            var tableContent2 = document.querySelector(".chatBoxInner");
-
             setTimeout(() => {
-                tableContent2.scrollTo(0, scroller);
-            }, 50);
+                   
+                    tableContent.value[0].scrollTop = scroller -10
+                
+             
+            }, 10);
         }
 
         function getScroll() {

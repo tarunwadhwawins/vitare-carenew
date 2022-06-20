@@ -44,7 +44,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker @change="changedValue" :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%" />
+                        <a-time-picker @change="changedValue"  v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%" />
                     </a-form-item>
                 </div>
             </a-col>
