@@ -40,9 +40,34 @@ export const patientsRecord = (state)=>{
       return state.grids
     })
   }
+
+  export const patientVitalsTimeline = (state) => {
+    return computed(() => {
+      return state.patientVitalsTimeline
+    })
+  }
+
   export const patientTimelineMeta = (state) => {
     return computed(() => {
       return state.patientTimelineMeta
+    })
+  }
+
+  export const bloodOxygenTimeline = (state) => {
+    return computed(() => {
+      return state.bloodOxygenTimeline
+    })
+  }
+
+  export const bloodGlucoseTimeline = (state) => {
+    return computed(() => {
+      return state.bloodGlucoseTimeline
+    })
+  }
+
+  export const bloodPressureTimeline = (state) => {
+    return computed(() => {
+      return state.bloodPressureTimeline
     })
   }
   
