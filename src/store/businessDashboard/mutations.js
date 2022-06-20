@@ -3,7 +3,7 @@ import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods
 export const cptCodeSuccess = (state, data) => {
 	let cptResult = [];
 	data.data.forEach((element) => {
-		if (element.name != 'General') {
+		if (element.name == 99453 || element.name == 99454 || element.name == 99457 || element.name == 99458) {
 			let object = data.cpt.find((e) => e.text == element.name);
 
 			if (object == undefined) {

@@ -46,6 +46,10 @@ export const timeLog = async (state, data) => {
       dataIndex: "cptCode",
     },
     {
+      title: "Cpt Code ",
+      dataIndex: "cptCodeDetail",
+    },
+    {
       title: "Amount ",
       dataIndex: "billingAmount",
       align: 'right'
