@@ -26,7 +26,7 @@
             </div>
         </a-col>
         
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                       <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"/>
@@ -34,14 +34,7 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="4" :xs="24">
-          <div class="form-group">
-              <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
-                  <a-input  @change="checkChangeInput()"  v-model:value="contact.extension" placeholder="Please enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
-                  <ErrorMessage v-if="errorMsg && !contact.extension" :name="errorMsg.extension?errorMsg.extension[0]:''" />
-              </a-form-item>
-          </div>
-        </a-col>
+        
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24" v-if="paramId">
@@ -90,7 +83,6 @@ export default defineComponent({
       lastName: "",
       email: "",
       phoneNumber: "",
-      extension:''
       
     });
     const formButton = ref(false);
@@ -106,7 +98,6 @@ export default defineComponent({
           lastName: contact.lastName,
           email: contact.email,
           phoneNumber: phone.replace(/-/g,''),
-          extension:contact.extension
         },
       });
       setTimeout(() => {

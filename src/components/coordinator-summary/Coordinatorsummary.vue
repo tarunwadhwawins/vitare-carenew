@@ -45,7 +45,7 @@
                                     <p :title="getstaffSummary?getstaffSummary.email:''"><a href="mailto:{{getstaffSummary?getstaffSummary.email:''}}">
                                             <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>25?getstaffSummary.email.substring(0,25)+'...':getstaffSummary.email:'' }}</a></p>
                                     <p><a :href="`tel:${getstaffSummary?getstaffSummary.phoneNumber:''}`">
-                                            <PhoneOutlined :rotate="90" /> {{ getstaffSummary?getstaffSummary.phoneNumber:'' }}</a></p>
+                                            <PhoneOutlined :rotate="90" /> {{ getstaffSummary?getstaffSummary.phoneNumber:'' }} {{getstaffSummary?.extension?'('+getstaffSummary.extension+')':''}}</a></p>
                                 </div>
                                 
                             </div>
