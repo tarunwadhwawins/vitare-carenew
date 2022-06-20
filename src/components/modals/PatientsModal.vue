@@ -107,10 +107,17 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
+                        <a-col :md="4" :sm="12" :xs="24" >
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.height')+'(CM)'" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
-                                    <a-input-number @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
+                                <a-form-item  :label="$t('patient.demographics.height')+ '(Feet/Inches)'" name="height" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
+                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Height in feet/inches " size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="4" :sm="12" :xs="24">
+                          <div class="form-group" >
+                                <a-form-item :label="$t('patient.demographics.height')+ '(CM)'" name="height" :rules="[{ required: false, message:  $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
+                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.heightInCentimeter" placeholder="Height in centemeter " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -694,7 +701,7 @@
                     <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion" />
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.save')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -779,7 +786,7 @@
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.save')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                             {{$t('global.save')}}
                         </a-button>
@@ -874,6 +881,7 @@ export default defineComponent({
     const emergencyContactShow = ref(true);
     const referalFormShow = ref(true);
     const ShowReferral = ref(false);
+    const selectHeight = ref('1')
     const globalCode = computed(() => {
       return store.state.common;
     });
@@ -997,6 +1005,7 @@ export default defineComponent({
       appartment: "",
       address: "",
       placeOfService: "",
+      heightInCentimeter:""
     });
 
     const responsiblePersonForm = reactive({
@@ -1412,6 +1421,7 @@ export default defineComponent({
         store.state.patients.emergencyContact = null;
         store.state.patients.patientReferralSource = null;
         store.state.patients.responsiblePerson = null;
+        store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
       }
@@ -1431,7 +1441,8 @@ export default defineComponent({
     }
 
     function closeModal() {
-    // alert(isValueChanged.value)
+      store.commit("resetCounter");
+      // alert(isValueChanged.value)
       if (isValueChanged.value || bitrixFormCheck.value) {
         // emit("saveModal", true)
         emit("closeModal", {
@@ -1577,6 +1588,7 @@ export default defineComponent({
     });
 
     return {
+      selectHeight,
       editDataReferral,
       handleReferralChange,
       disableResponsiblePerson,

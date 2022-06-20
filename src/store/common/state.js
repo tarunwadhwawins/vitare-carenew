@@ -14,7 +14,7 @@ export default {
     timeline:null,
     taskPriority:[],
     network:null,
-    specialization:null,
+    specialization:[],
     taskCategory:[],
     successMsg:null, 
     insuranceName:null,

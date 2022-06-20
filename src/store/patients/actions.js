@@ -1285,21 +1285,16 @@ export const fetchFromBitrix = async ({
     })
 }
 
-export const patientVitals = async ({
-  commit
-}, {
-  patientId,
-  deviceType
-}) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient'] + '/' + patientId + '/vital?deviceType=' + deviceType, null, null).then((response) => {
+export const patientVitals = async ({ commit }, { patientId, deviceType, filter }) => {
+  // commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientId}/vital?deviceType=${deviceType+filter}`, null, null).then((response) => {
       // if(response.data.data.length > 0) {
       commit('patientVitals', response.data.data)
       // }
       // else {
       //   commit('patientVitals', null)
       // }
-      commit('loadingStatus', false)
+      // commit('loadingStatus', false)
     })
     .catch((error) => {
       if (error.response) {
@@ -1308,7 +1303,7 @@ export const patientVitals = async ({
         errorLogWithDeviceInfo(error);
       }
       commit('failure', error);
-      commit('loadingStatus', false)
+      // commit('loadingStatus', false)
     })
 }
 

@@ -47,6 +47,7 @@ export const patient = (state, data) => {
         customRender: "flagTmeStamp",
       },
       width: '17%',
+      sorter: true,
       
     },
     {
@@ -71,21 +72,24 @@ export const patient = (state, data) => {
           dataIndex: "bp",
           key: "bp",
           width: '12%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Spo2(%)",
           dataIndex: "spo2",
           key: "spo2",
           width: '10%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Glucose(mg / dL)",
           dataIndex: "glucose",
           key: "glucose",
           width: '18%',
-          align: 'right'
+          align: 'right',
+          sorter: true,
         },
         {
           title: "Weight(LBS)",
@@ -534,6 +538,22 @@ export const patientTimelineSuccess = (state, timeline) => {
   state.patientTimelineMeta = timeline.meta.pagination
 }
 
+export const patientVitalsTimeline = (state, timeline) => {
+  state.patientVitalsTimeline = timeline
+}
+
+export const bloodOxygenTimeline = (state, timeline) => {
+  state.bloodOxygenTimeline = timeline
+}
+
+export const bloodGlucoseTimeline = (state, timeline) => {
+  state.bloodGlucoseTimeline = timeline
+}
+
+export const bloodPressureTimeline = (state, timeline) => {
+  state.bloodPressureTimeline = timeline
+}
+
 export const addCondition = (state, data) => {
   state.addCondition = data
 }
@@ -884,6 +904,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+    console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {

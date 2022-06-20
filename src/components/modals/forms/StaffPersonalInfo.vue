@@ -1,12 +1,12 @@
 <template>
 <a-modal max-width="1140px" scrollToFirstError=true width="100%" :title="$t('careCoordinator.coordinatorsModal.updateCoordinator')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
-<a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+<a-form :model="personalInfoData" class="basic" name="basic"  scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
     <!-- <PersonalInformation /> -->
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" @change="checkChangeInput()" />
                     <ErrorMessage v-if="errorMsg && !personalInfoData.firstName" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                 </a-form-item>
             </div>
@@ -14,7 +14,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="personalInfoData.lastName" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.lastName" @change="checkChangeInput()" size="large"/>
                     <ErrorMessage v-if="errorMsg && !personalInfoData.lastName" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                 </a-form-item>
             </div>
@@ -39,18 +39,26 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
-                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()" size="large"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="8" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                       <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   />
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
+        </a-col>
+        <a-col :sm="4" :xs="24">
+          <div class="form-group">
+              <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
+                  <a-input  @change="checkChangeInput()"  v-model:value="personalInfoData.extension" placeholder="Please enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
+                  <ErrorMessage v-if="errorMsg && !personalInfoData.extension" :name="errorMsg.extension?errorMsg.extension[0]:''" />
+              </a-form-item>
+          </div>
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -110,6 +118,7 @@ export default {
       specializationId: "",
       networkId: "",
       roleId: '',
+      extension:''
       
     });
 
@@ -144,6 +153,7 @@ export default {
         specializationId: personalInfoData.specializationId,
         networkId: personalInfoData.networkId,
         roleId: personalInfoData.roleId,
+        extension: personalInfoData.extension
       }
       });
       setTimeout(()=>{

@@ -1,4 +1,5 @@
 <template>
+
   <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
       <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_systolic_color }">{{ record.blood_pressure_systolic }}</span>
@@ -50,9 +51,6 @@ export default {
     },
     data: {
       type: Array
-    },
-    className: {
-      type: String
     },
   }
 }

@@ -37,30 +37,34 @@
                                 <!-- <img v-if="getstaffSummary.profilePhoto" :src="getstaffSummary.profilePhoto" alt="image"/> -->
                                 <img src="@/assets/images/userAvatar.png" alt="image" />
                                 <!-- <img src="../../assets/images/profile-4.jpg" alt="image" /> -->
-                                <div class="info">
-                                    <p>Name: {{getstaffSummary?getstaffSummary.fullName:''}}</p>
-                                    <p>Designation : {{getstaffSummary?getstaffSummary.designation:''}}</p>
-                                    <!-- <p>Phone : {{getstaffSummary?getstaffSummary.phoneNumber:''}}</p>
-                                    <p>Email : {{getstaffSummary?getstaffSummary.email:''}}</p> -->
-                                    <p :title="getstaffSummary?getstaffSummary.email:''"><a href="mailto:{{getstaffSummary?getstaffSummary.email:''}}">
+                                <div class="info" v-if="getstaffSummary">
+                                    <p>Name: {{getstaffSummary.fullName}}</p>
+                                    <p>Designation : {{getstaffSummary.designation}}</p>
+                                    <p :title="getstaffSummary.email"><a href="mailto:{{getstaffSummary.email}}">
                                             <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>25?getstaffSummary.email.substring(0,25)+'...':getstaffSummary.email:'' }}</a></p>
-                                    <p><a :href="`tel:${getstaffSummary?getstaffSummary.phoneNumber:''}`">
-                                            <PhoneOutlined :rotate="90" /> {{ getstaffSummary?getstaffSummary.phoneNumber:'' }}</a></p>
+                                    <p>
+                                        <a v-if="getstaffSummary.extension" :href="`tel:${getstaffSummary.phoneNumber+getstaffSummary.extension}`">
+                                            <PhoneOutlined :rotate="90" /> {{ getstaffSummary.phoneNumber }} {{getstaffSummary?.extension?'('+getstaffSummary.extension+')':''}}
+                                        </a>
+                                        <a v-else :href="`tel:${getstaffSummary.phoneNumber}`">
+                                            <PhoneOutlined :rotate="90" /> {{ getstaffSummary.phoneNumber }}
+                                        </a>
+                                    </p>
                                 </div>
                                 
                             </div>
-                            <div class="pat-profile">
+                            <div class="pat-profile" v-if="getstaffSummary">
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Gender</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.gender:''}}</div>
+                                    <div class="thumb-desc">{{getstaffSummary.gender}}</div>
                                 </div>
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Specialization</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
+                                    <div class="thumb-desc">{{getstaffSummary.specialization}}</div>
                                 </div>
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Network</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.network:''}}</div>
+                                    <div class="thumb-desc">{{getstaffSummary.network}}</div>
                                 </div>
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Status</div>
