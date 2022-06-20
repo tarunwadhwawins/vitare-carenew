@@ -12,7 +12,7 @@
             </a-col>
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('timeLogs.activeCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :globalCode="cptCodesList" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
@@ -25,10 +25,10 @@
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :sm="24" :md="12" :xs="24">
+            <a-col :sm="24" :md="12" :xs="24" >
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" @change="checkChangeInput()" />
+                        <a-time-picker v-model:value="auditTimeLog.timeAmount" :disabled="arrayToObjact(screensPermissions,410) ? false : true" format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -57,7 +57,7 @@ import {
 } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { getSeconds, warningSwal } from "@/commonMethods/commonMethod";
+import { getSeconds, warningSwal ,arrayToObjact } from "@/commonMethods/commonMethod";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { messages } from "../../config/messages";
 export default defineComponent({
@@ -201,6 +201,8 @@ export default defineComponent({
       timeLogCategories: store.getters.timeLogCategories,
       flagsList,
       checkChangeInput,
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact
     };
   },
 });
