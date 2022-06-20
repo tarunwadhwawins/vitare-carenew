@@ -694,7 +694,7 @@
                     <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion" />
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.save')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -779,7 +779,7 @@
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.save')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                             {{$t('global.save')}}
                         </a-button>
