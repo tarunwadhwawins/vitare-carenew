@@ -3,7 +3,7 @@
     <a-card :title="title">
       <DateFilter :Buttons="filterButtons" @clickButtons="showButton(deviceId)" :custom="false" :commit="commit" />
 
-      <a-tabs v-model:activeKey="activeKey1">
+      <a-tabs>
         <a-tab-pane key="1" tab="Table">
           <VitalsTable :columns="tableColumns" :data="tableData" />
         </a-tab-pane>
