@@ -537,6 +537,22 @@ export const patientTimelineSuccess = (state, timeline) => {
   state.patientTimelineMeta = timeline.meta.pagination
 }
 
+export const patientVitalsTimeline = (state, timeline) => {
+  state.patientVitalsTimeline = timeline
+}
+
+export const bloodOxygenTimeline = (state, timeline) => {
+  state.bloodOxygenTimeline = timeline
+}
+
+export const bloodGlucoseTimeline = (state, timeline) => {
+  state.bloodGlucoseTimeline = timeline
+}
+
+export const bloodPressureTimeline = (state, timeline) => {
+  state.bloodPressureTimeline = timeline
+}
+
 export const addCondition = (state, data) => {
   state.addCondition = data
 }
@@ -887,6 +903,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+    console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {

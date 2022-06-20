@@ -113,7 +113,7 @@
   </div>
   <PatientFlagsModal
     v-model:visible="flagsModalVisible"
-    :patientId="profileId ? profileId : patientDetails.id"
+    :patientId="pId"
     @closeModal="handleOk"
     :flags="flagsRecord"
   />
@@ -179,11 +179,14 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const pId = ref(props.profileId);
-    const flagsModalVisible = ref(false);
+
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails;
     });
+
+    const pId = props.profileId ? ref(props.profileId) : route.params.udid
+
+    const flagsModalVisible = ref(false);
     const tabvalue = reactive({
       tab: [],
     });

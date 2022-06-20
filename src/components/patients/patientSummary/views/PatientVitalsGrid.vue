@@ -12,7 +12,9 @@
       <VitalsGrid
         v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"
-        :activeKey="activeKey1"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodPressureTimeline"
+        commit="bloodPressureTimeline"
         :tableColumns="bloodPressureColumns"
         :tableData="bloodPressure"
         :chartOptions="bloodPressureOptions"
@@ -23,7 +25,9 @@
       <VitalsGrid
         v-if="device.deviceType == 'Glucose'"
         title="Blood Glucose"
-        :activeKey="activeKey2"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodGlucoseTimeline"
+        commit="bloodGlucoseTimeline"
         :tableColumns="bloodGlucoseColumns"
         :tableData="bloodGlucose"
         :chartOptions="bloodGlucoseOptions"
@@ -34,7 +38,9 @@
       <VitalsGrid
         v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
-        :activeKey="activeKey3"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodOxygenTimeline"
+        commit="bloodOxygenTimeline"
         :tableColumns="bloodOxygenColumns"
         :tableData="bloodOxygen"
         :chartOptions="bloodOxygenOptions"
@@ -48,7 +54,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue-demi';
+import { computed, ref, watchEffect } from 'vue-demi';
 import AddVitalsModal from "@/components/modals/AddVitalsModal";
 import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
@@ -123,9 +129,16 @@ export default {
     if((bloodPressure.value != null && bloodPressure.value.length > 0) || (bloodGlucose.value != null && bloodGlucose.value.length > 0) || (bloodOxygen.value != null && bloodOxygen.value.length > 0)) {
       showVitals.value = true;
     }
-    const bloodPressureGraph = patients.value.bloodPressureGraph
-    const bloodOxygenGraph = patients.value.bloodOxygenGraph
-    const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
+    const bloodPressureGraph = computed(() => {
+      return store.state.patients.bloodPressureGraph
+    })
+    const bloodOxygenGraph = computed(() => {
+      return store.state.patients.bloodOxygenGraph
+    })
+    const bloodGlucoseGraph = computed(() => {
+      return store.state.patients.bloodGlucoseGraph
+    })
+
     const patientDevices = patients.value.devices
 
     const showAddBPModal = () => {
@@ -143,21 +156,24 @@ export default {
       visibleAddVitalsModal.value = true;
       title.value = 'Blood Glucose';
     };
-    
-    if(bloodPressureGraph != null) {
-      bloodPressureSeries.value = bloodPressureGraph.records
-      bloodPressureTimesArray.value = bloodPressureGraph.timesArray
-    }
 
-    if(bloodGlucoseGraph != null) {
-      bloodGlucoseSeries.value = bloodGlucoseGraph.records
-      bloodGlucoseTimesArray.value = bloodGlucoseGraph.timesArray
-    }
+    watchEffect(() => {
+      if(bloodPressureGraph.value != null) {
+        bloodPressureSeries.value = bloodPressureGraph.value.records
+        bloodPressureTimesArray.value = bloodPressureGraph.value.timesArray
+      }
 
-    if(bloodOxygenGraph != null) {
-      bloodOxygenSeries.value = bloodOxygenGraph.records
-      bloodOxygenTimesArray.value = bloodOxygenGraph.timesArray
-    }
+      if(bloodGlucoseGraph.value != null) {
+        bloodGlucoseSeries.value = bloodGlucoseGraph.value.records
+        bloodGlucoseTimesArray.value = bloodGlucoseGraph.value.timesArray
+      }
+
+      if(bloodOxygenGraph.value != null) {
+        bloodOxygenSeries.value = bloodOxygenGraph.value.records
+        bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
+      }
+      console.log('bloodOxygenGraph', bloodOxygenSeries.value)
+    })
     
     const bloodPressureOptions = {
       chart: {
@@ -252,6 +268,9 @@ export default {
       patientDevices,
       showVitals,
       vitalGrid:'vitalGrid',
+      bloodOxygenTimeline: store.getters.bloodOxygenTimeline,
+      bloodGlucoseTimeline: store.getters.bloodGlucoseTimeline,
+      bloodPressureTimeline: store.getters.bloodPressureTimeline,
     }
   }
 }
