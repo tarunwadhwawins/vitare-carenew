@@ -161,7 +161,7 @@ export default {
     };
 const cptCodesColumns = [
   {
-    title: "Active Code",
+    title: "Activity",
     dataIndex: "name",
     sorter:true,
   },
