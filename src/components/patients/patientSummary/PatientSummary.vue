@@ -138,6 +138,11 @@ export default {
     };
 
     watchEffect(() => {
+      setInterval(() => {
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99})
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
+      }, 5000)
       store.dispatch('patientDetails', route.params.udid).then(() => {
         store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
