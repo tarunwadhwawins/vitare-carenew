@@ -107,10 +107,17 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
+                        <a-col :md="4" :sm="12" :xs="24" >
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.height')+'(CM)'" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
-                                    <a-input-number @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
+                                <a-form-item  :label="$t('patient.demographics.height')+ '(Feet/Inches)'" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Height in feet/inches " size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="4" :sm="12" :xs="24">
+                          <div class="form-group" >
+                                <a-form-item :label="$t('patient.demographics.height')+ '(CM)'" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.heightInCentimeter" placeholder="Height in centemeter " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -874,6 +881,7 @@ export default defineComponent({
     const emergencyContactShow = ref(true);
     const referalFormShow = ref(true);
     const ShowReferral = ref(false);
+    const selectHeight = ref('1')
     const globalCode = computed(() => {
       return store.state.common;
     });
@@ -997,6 +1005,7 @@ export default defineComponent({
       appartment: "",
       address: "",
       placeOfService: "",
+      heightInCentimeter:""
     });
 
     const responsiblePersonForm = reactive({
@@ -1577,6 +1586,7 @@ export default defineComponent({
     });
 
     return {
+      selectHeight,
       editDataReferral,
       handleReferralChange,
       disableResponsiblePerson,
