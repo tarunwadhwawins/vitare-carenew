@@ -108,6 +108,7 @@ export default {
             store.state.patients.emergencyContact = null
             store.state.patients.patientReferralSource = null
             store.state.patients.responsiblePerson = null
+            store.state.patients.patientConditions = null
             store.dispatch("patientFlags", dateFormat)
             store.getters.patientsRecord.patientList = ""
 

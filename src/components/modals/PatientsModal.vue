@@ -1421,6 +1421,7 @@ export default defineComponent({
         store.state.patients.emergencyContact = null;
         store.state.patients.patientReferralSource = null;
         store.state.patients.responsiblePerson = null;
+        store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
       }
@@ -1440,7 +1441,8 @@ export default defineComponent({
     }
 
     function closeModal() {
-    // alert(isValueChanged.value)
+      store.commit("resetCounter");
+      // alert(isValueChanged.value)
       if (isValueChanged.value || bitrixFormCheck.value) {
         // emit("saveModal", true)
         emit("closeModal", {
