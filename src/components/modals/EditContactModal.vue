@@ -26,12 +26,20 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="12" :sm="12" :xs="24">
+        <a-col :md="8" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
               <a-input @change="changeValue()" v-maska="'###-###-####'" v-model:value="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber ? errorMsg.phoneNumber[0] : ''" />
             </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="4" :xs="24">
+          <div class="form-group">
+              <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
+                  <a-input  @change="checkChangeInput()"  v-model:value="editContactForm.extension" placeholder="Please enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
+                  <ErrorMessage v-if="errorMsg && !editContactForm.extension" :name="errorMsg.extension?errorMsg.extension[0]:''" />
+              </a-form-item>
           </div>
         </a-col>
       <a-col :span="24">
@@ -87,6 +95,7 @@ export default {
       lastName: "",
       email: "",
       phoneNumber: "",
+      extension:""
     })
 
     const changeValue = () => {
@@ -112,6 +121,7 @@ export default {
           lastName: editContactForm.lastName,
           email: editContactForm.email,
           phoneNumber: phone.replace(/-/g,''),
+          extension:editContactForm.extension
         },
       }).then(() => {
         if(errorMsg.value == null) {
