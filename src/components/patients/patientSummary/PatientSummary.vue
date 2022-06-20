@@ -474,17 +474,17 @@ export default {
   beforeRouteLeave (to, from, next) {
   cancelButton.value = to.fullPath
 
-   if(to.path!='/logout'&&to.path!='/'){
+  //  if(to.path!='/logout'&&to.path!='/'){
       var button= document.getElementById("timer")
      if(button){
        button.click()
      }else{
        next()
      }
-   }else{
-      window.removeEventListener('beforeunload', clearEvent);
-       next()
-     }
+  //  }else{
+  //     window.removeEventListener('beforeunload', clearEvent);
+  //      next()
+  //    }
     }
   
 };

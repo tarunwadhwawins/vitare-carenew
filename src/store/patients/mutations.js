@@ -41,12 +41,12 @@ export const patient = (state, data) => {
       
     },
     {
-      title: "Flag Assigned Date",
+      title: "Flag Date",
       dataIndex: "flagTmeStamp",
       slots: {
         customRender: "flagTmeStamp",
       },
-      width: '17%',
+      width: '15%',
       sorter: true,
       
     },
@@ -71,7 +71,7 @@ export const patient = (state, data) => {
           title: "BP(mmHg)",
           dataIndex: "bp",
           key: "bp",
-          width: '12%',
+          width: '15%',
           align: 'right',
           sorter: true,
         },
@@ -79,7 +79,7 @@ export const patient = (state, data) => {
           title: "Spo2(%)",
           dataIndex: "spo2",
           key: "spo2",
-          width: '10%',
+          width: '13%',
           align: 'right',
           sorter: true,
         },
@@ -87,7 +87,7 @@ export const patient = (state, data) => {
           title: "Glucose(mg / dL)",
           dataIndex: "glucose",
           key: "glucose",
-          width: '18%',
+          width: '20%',
           align: 'right',
           sorter: true,
         },
@@ -96,7 +96,7 @@ export const patient = (state, data) => {
           dataIndex: "weight",
           key: "weight",
           sorter:true,
-          width: '15%',
+          width: '17%',
           align: 'right'
         },
       ],

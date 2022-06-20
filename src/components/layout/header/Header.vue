@@ -229,8 +229,11 @@
                                         </router-link>
                                     </a-menu-item>
 
-                                    <a-menu-item key="3" @click="logoutUser">
-                                        <a href="javascript:void(0)">Logout</a>
+                                    <a-menu-item key="3" >
+                                        <!-- <a href="javascript:void(0)">Logout</a> -->
+                                        <router-link :to="{ name: 'Logout' }">
+                                           Logout
+                                        </router-link>
                                     </a-menu-item>
                                 </a-menu>
                             </template>

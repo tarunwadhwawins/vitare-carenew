@@ -121,6 +121,7 @@ const permission = async ({
 export const logoutUser = async ({
   commit
 }) => {
+  commit('loadingTableStatus', true)
   await ServiceMethodService.common('post', 'logout', null, [])
     .then(() => {
       console.log(commit)
@@ -144,6 +145,7 @@ export const logoutUser = async ({
       setTimeout(() => {
         router.go();
       }, 1000);
+      commit('loadingTableStatus', false)
       //}
     })
     .catch((error) => {
@@ -153,6 +155,7 @@ export const logoutUser = async ({
         errorLogWithDeviceInfo(error);
       }
       errorSwal(error.response.data.message);
+      commit('loadingTableStatus', false)
     });
 };
 
