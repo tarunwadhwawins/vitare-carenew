@@ -3,10 +3,12 @@ import { API_ENDPOINTS } from "@/config/apiConfig"
 import { successSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 export const cptCodesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
-	let link = page? API_ENDPOINTS['cptCodes']+"?active=1"+page: API_ENDPOINTS['cptCodes']+"?active=1"
+	let link = page? API_ENDPOINTS['activeCptCodes']+"?active=1"+page: API_ENDPOINTS['activeCptCodes']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
+		
 		commit('cptCode', response.data);
 		commit('loadingStatus', false)
+		
 	})
 	.catch((error) => {
 		if (error.response) {

@@ -74,7 +74,7 @@ export const taskStatusSuccess = async (state, status) => {
 			data.push(element)
 		}
 	});
-	state.taskStatus = data;
+	state.taskStatus = status;
 	state.incompleteAllTask = data.map((item) => item.total);
 	state.completedAllTask = {
 		chart: {
