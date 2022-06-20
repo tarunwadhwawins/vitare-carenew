@@ -1421,6 +1421,7 @@ export default defineComponent({
         store.state.patients.emergencyContact = null;
         store.state.patients.patientReferralSource = null;
         store.state.patients.responsiblePerson = null;
+        store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
       }
