@@ -10,3 +10,13 @@ export const communicationRecord = (state)=>{
         return state.communicationsView
     })
   }
+  export const latestmessage = (state)=>{
+    return computed(()=>{
+        return state.latestmessage
+    })
+  }
+  export const messagesMeta = (state)=>{
+    return computed(()=>{
+        return state.messagesMeta
+    })
+  }

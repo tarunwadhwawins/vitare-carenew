@@ -7,6 +7,7 @@ export const provider = async ({
 }, data) => {
   let status = false
   await serviceMethod.common("post", API_ENDPOINTS['provider'], null, data).then((response) => {
+    commit("providerCounterPlus");
     commit('providerData', response.data.data);
     status = true
   }).catch((error) => {
@@ -196,6 +197,7 @@ export const deleteProviderLocation = async ({ commit }, data) => {
 export const updateSingleProvider = async ({ commit }, data) => {
   let status =false
   await serviceMethod.common("put",`provider`,data.id,data.data).then((response)=>{
+    commit("providerCounterPlus");
     commit('updateSingleProvider', response.data.data);
     status =true
     if(data.data.showPopup){

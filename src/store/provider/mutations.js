@@ -1,3 +1,19 @@
+export const providerCounterPlus = (state, data) => {
+	if (data) {
+		state.counter = data;
+	} else {
+		state.counter++;
+	}
+};
+
+export const providerCounterMinus = (state) => {
+	state.counter--;
+};
+
+export const providerResetCounter = (state) => {
+	state.counter = 0;
+};
+
 export const errorMsg = (state, data) => {
 	state.errorMsg = data;
 };

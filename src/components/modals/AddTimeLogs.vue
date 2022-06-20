@@ -122,6 +122,7 @@ export default defineComponent({
     timerValue: {
       type: String,
     },
+    routerLink:String
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -223,7 +224,8 @@ export default defineComponent({
     };
 
     function cancelButton() {
-      warningSwal(messages.patientlogMessage).then((response) => {
+      if(props.routerLink){
+        warningSwal(messages.patientlogMessage).then((response) => {
         if (response == true) {
           emit("closeModal", {
             link: true,
@@ -237,6 +239,14 @@ export default defineComponent({
             });
         }
       });
+      }else{
+        emit("closeModal", {
+            link: true,
+            modal: "cancelButton",
+            value: true,
+          });
+      }
+      
     }
     const submitForm = () => {
       // if(props.isEditForm) {

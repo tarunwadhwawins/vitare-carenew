@@ -59,7 +59,7 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" :routerLink="cancelButton" @closeModal="handleClose" @cancel="handleClose"  />
     <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
   </div>
 </template>
@@ -138,6 +138,11 @@ export default {
     };
 
     watchEffect(() => {
+      setInterval(() => {
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99})
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
+        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
+      }, 5000)
       store.dispatch('patientDetails', route.params.udid).then(() => {
         store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
@@ -344,6 +349,8 @@ export default {
         startTimer()
         store.commit('startOn', false);
       }
+
+      cancelButton.value =null
 
       // console.log("dgfd",link,cancelButton.value)
       // if(link==true&& cancelButton.value){
