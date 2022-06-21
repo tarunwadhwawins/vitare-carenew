@@ -109,8 +109,8 @@
                         </a-col>
                         <a-col :md="4" :sm="12" :xs="24" >
                             <div class="form-group">
-                                <a-form-item  :label="$t('patient.demographics.height')+ '(Feet/Inches)'" name="height" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
-                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Height in feet/inches " size="large" />
+                                <a-form-item  :label="$t('patient.demographics.height')+ '(Feet/Inches)'" name="height" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.height }]">
+                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Format examp -  5'7&quot " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
