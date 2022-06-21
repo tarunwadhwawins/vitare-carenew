@@ -203,6 +203,7 @@ export const conversation = async (state, data) => {
   })
   
   state.conversationList = data.data
+  state.conversation = data.data
 
   state.messagesMeta=data.meta.pagination
 }
@@ -230,4 +231,8 @@ export const conversationSend = async (state, data) => {
 }
 export const communicationsView = async (state, data) => {
   state.communicationsView = data;
+}
+
+export const conversationWithPatient = async (state, data) => {
+  state.conversationWithPatient = data;
 }

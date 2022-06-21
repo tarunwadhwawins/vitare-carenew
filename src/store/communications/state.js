@@ -15,5 +15,7 @@ export default {
   conversationSend:null,
   communicationsView:null,
   latestmessage:[],
-  messagesMeta:null
+  messagesMeta:null,
+  conversationWithPatient:null,
+  conversation:null,
 }

@@ -195,6 +195,7 @@ export default {
       checkAll: false,
     });
     watchEffect(() => {
+      store.state.patients.tabvalue = []
       if (store.state.patients.tabvalue.length > 0) {
         state.value1 = [];
         state.checkAll = false;

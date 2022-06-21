@@ -1,6 +1,7 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 import { successSwal, startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+
 export const callPlanned = async ({ commit },from) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		
@@ -37,6 +38,7 @@ export const addCommunication = async ({ commit }, data) => {
 		// errorSwal(error.response.data.message)
 	})
 }
+
 export const communicationsView = async ({ commit },id) => {
 	commit('loadingTableStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsView'], id, null).then((response) => {
@@ -57,6 +59,7 @@ export const communicationsView = async ({ commit },id) => {
 		commit('failure', error.response.data);
 	})
 }
+
 export const communicationTypes = async ({ commit },from) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		//console.log("check",response.data.data)
@@ -179,7 +182,7 @@ export const searchCommunications = async ({ commit }, params) => {
 }
 
 export const conversation = async ({ commit }, id) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['conversation']+"?conversationId="+id, null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['getConversation']+"?conversationId="+id, null, null).then((response) => {
 		commit('conversation', response.data);
 	})
 	.catch((error) => {
@@ -194,6 +197,7 @@ export const conversation = async ({ commit }, id) => {
 		commit('failure', error.response.data);
 	})
 }
+
 export const conversationSend = async ({ commit },data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['conversationSend'], null, data).then((response) => {
 		commit('conversationSend', response.data.data);
@@ -211,6 +215,7 @@ export const conversationSend = async ({ commit },data) => {
 		commit('failure', error.response.data);
 	})
 }
+
 export const latestmessage = async ({ commit },id) => {
 	await ServiceMethodService.common("get", 'latest-message?conversationId='+id, null, null).then((response) => {
 		commit('latestmessage', response.data.data);
@@ -228,6 +233,7 @@ export const latestmessage = async ({ commit },id) => {
 		commit('failure', error.response.data);
 	})
 }
+
 export const status = async ({ commit },from) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] +"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
         commit('callStatusSuccess', response.data.data)
@@ -243,4 +249,20 @@ export const status = async ({ commit },from) => {
         }
         commit('failure', error.response.data);
     })
+}
+
+export const conversationWithPatient = async ({ commit }, receiverId) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['conversation']+`?receiverId=${receiverId}`, null, null).then((response) => {
+		commit('conversationWithPatient', response.data.data)
+	}).catch((error) => {
+		if(error.response) {
+			errorLogWithDeviceInfo(error.response);
+		} else {
+			errorLogWithDeviceInfo(error);
+		}
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
 }

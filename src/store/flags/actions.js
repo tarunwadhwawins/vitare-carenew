@@ -21,7 +21,7 @@ export const flagsList = async ({ commit }) => {
 		});
 };
 
-export const patientFlags = async ({ commit }) => {
+export const flagsForPatient = async ({ commit }) => {
 	commit('loadingStatus', true);
 	await serviceMethod
 		.common('get', API_ENDPOINTS['flag'] + `?type=patient`, null, null)

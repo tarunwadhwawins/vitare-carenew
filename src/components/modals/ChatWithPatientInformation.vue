@@ -4,9 +4,16 @@
         <div class="videoWrapper chatBox2">
             <div class="leftWrapper" id="videoDiv">
                 <div class="chatBox" ref="scroll" id="chatBox">
-                    <ChatScreenBody :conversationList="reverseRecord(conversationList)" :communication="communication" screen="withPatient" :patientId="patientId" />
+                    <ChatScreenBody :conversationList="reverseRecord(conversationList)" :communication="communication" screen="withPatient" :patientId="patientId" :communicationId="communicationId" />
                     <a-form ref="formRef" class="messageBox" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
-                        <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
+                        <div class="sendMessage">
+                            <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" isDisabled>
+                                <template #addonAfter isDisabled>
+                                    <SendOutlined @click="sendMsg" />
+                                </template>
+                            </a-input>
+                        </div>
+                        <!-- <div class="sendMessage" v-if="auth.user.id == receiverId || auth.user.id == senderId">
                             <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
                                 <template #addonAfter>
                                     <SendOutlined @click="sendMsg" />
@@ -19,7 +26,7 @@
                                     <SendOutlined @click="sendMsg" />
                                 </template>
                             </a-input>
-                        </div>
+                        </div> -->
                     </a-form>
                 </div>
             </div>
@@ -67,7 +74,13 @@ export default {
     props: {
         communication: {
             type: Object
-        }
+        },
+        conversationId: {
+            type: Number
+        },
+        idPatient: {
+            type: Number
+        },
     },
     setup(props) {
         const store = useStore()
@@ -81,8 +94,9 @@ export default {
         const timelineDetailVisible = ref(true)
         const addPinModalVisible = ref(false)
         const patientUdid = ref(null)
-        const patientId = ref(null)
+        const patientId = props.idPatient ? reactive(props.idPatient) : ref(null)
         const communications = reactive(props.communication)
+        const communicationId = props.conversationId ? reactive(props.conversationId) : props.communication.id
         const isCommunicationWithPatient = ref(false)
         const conversationList = ref([])
         const tabvalue = reactive({
@@ -138,15 +152,15 @@ export default {
         const scroll = ref()
         const auth = JSON.parse(localStorage.getItem("auth"))
         let interval = setInterval(() => {
-            store.dispatch("latestmessage", props.communication.id).then(() => {
-
+            store.dispatch("latestmessage", communicationId).then(() => {
+                console.log('latestmessage', store.getters.latestmessage.value)
                 store.getters.latestmessage.value.map((item) => {
                     conversationList.value.push(item)
                 })
                 store.getters.latestmessage.value.length > 0 ? getScroll() : ''
             })
             // getScroll()
-        }, 4000);
+        }, 2000);
 
         const tableContent = ref(null)
         const list = computed(() => {
@@ -156,9 +170,9 @@ export default {
         var record = []
         var scroller = ''
         watchEffect(() => {
-
+            console.log('communication', communicationId)
             // store.state.communications.conversationList = []
-            // store.dispatch("conversation", props.communication.id).then(()=>{
+            // store.dispatch("conversation", communicationId).then(()=>{
 
             //  // list.conversationList.reverse()
             //   conversationList.value = list.conversationList.reverse()
@@ -166,30 +180,31 @@ export default {
             tableContent.value = document.getElementsByClassName('chatBoxInner')
             //getScroll()
             if (list.value.length > 0) {
+                setTimeout(() => {
+                    var tableContent1 = document.querySelector(".chatBoxInner");
+                    console.log('tableContent1', tableContent1)
+                    tableContent1.addEventListener("scroll", (event) => {
+                    
+                        let currentScroll = event.target.scrollTop ;
 
-                var tableContent1 = document.querySelector(".chatBoxInner");
+                        if (currentScroll < 3) {
+                            let current_page = meta.value.current_page + 1;
 
-                tableContent1.addEventListener("scroll", (event) => {
-                   
-                    let currentScroll = event.target.scrollTop ;
+                            if (current_page <= meta.value.total_pages) {
+                                
+                                scroller = event.target.scrollHeight
+                                store.state.communications.messagesMeta = ''
+                                record = conversationList.value
 
-                    if (currentScroll < 3) {
-                        let current_page = meta.value.current_page + 1;
-
-                        if (current_page <= meta.value.total_pages) {
-                            
-                            scroller = event.target.scrollHeight
-                            store.state.communications.messagesMeta = ''
-                            record = conversationList.value
-
-                            store.state.communications.conversationList = []
-                            store.dispatch("conversation", props.communication.id + '&page=' + current_page).then(() => {
-                                loadMoredata();
-                            })
+                                store.state.communications.conversationList = []
+                                store.dispatch("conversation", communicationId + '&page=' + current_page).then(() => {
+                                    loadMoredata();
+                                })
+                            }
                         }
-                    }
 
-                })
+                    })
+                }, 4000);
             }
         })
 
@@ -221,7 +236,7 @@ export default {
         function sendMsg() {
             if (formValue.msgSend) {
                 conversationList.value.push({
-                    conversationId: props.communication.id,
+                    conversationId: communicationId,
                     senderId: auth.user.id,
                     message: formValue.msgSend,
                     type: "text",
@@ -229,7 +244,7 @@ export default {
                     createdAt: 'Today, ' + moment().format("HH:mm A")
                 })
                 store.dispatch("conversationSend", {
-                    conversationId: props.communication.id,
+                    conversationId: communicationId,
                     message: formValue.msgSend,
                     type: "text",
                 })
@@ -252,7 +267,7 @@ export default {
             setTimeout(() => {
                 store.commit('loadingStatus', false)
             }, 3000);
-            store.dispatch("conversation", props.communication.id + '&page=').then(() => {
+            store.dispatch("conversation", communicationId + '&page=').then(() => {
 
                 // list.conversationList.reverse()
                 conversationList.value = list.value
@@ -305,6 +320,9 @@ export default {
                 return a.id - b.id;
             })
         }
+
+        const isDisabled = auth.user.id == communications.receiverId || auth.user.id == communications.senderId ? true : false 
+
         return {
             enCodeString,
             list,
@@ -332,6 +350,8 @@ export default {
             patientAppointmentsVisible,
             conversationList,
             reverseRecord,
+            communicationId,
+            isDisabled,
         };
     },
 };
@@ -342,8 +362,8 @@ export default {
   height: 680px !important;
 } */
 .chatBox {
-    height: 560px !important;
-    overflow-y: scroll !important;
+    height: calc(100vh - 194px)!important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
 }
 
@@ -352,8 +372,8 @@ export default {
 }
 
 .chatBox .chatBoxInner {
-    min-height: 520px !important;
-    overflow: scroll !important;
+    min-height:calc(100vh - 281px)!important;
+    overflow: auto !important;
 }
 
 .callButton {
