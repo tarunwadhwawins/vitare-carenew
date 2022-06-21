@@ -13,12 +13,12 @@
 <script>
 	import { useRouter } from 'vue-router'
 	import { useStore } from 'vuex'
-//	import moment from "moment"
-// import {
-//   startimeAdd,
-//   endTimeAdd,
-//   timeStamp,
-// } from '@/commonMethods/commonMethod'
+	import moment from "moment"
+ import {
+  startimeAdd,
+  endTimeAdd,
+   timeStamp,
+ } from '@/commonMethods/commonMethod'
   export default {
     props: {
       count: {
@@ -44,9 +44,12 @@
       },
       textColor: {
 				type:String
+      },
+      patientsFiltter:{
+        type:Boolean
       }
     },
-    setup() {
+    setup(props) {
 			const router = useRouter()
 			const store = useStore()
 			// let from = moment()
@@ -68,7 +71,8 @@
 					})
 				}
 				else {
-					router.push({
+          if(props.patientsFiltter==false){
+router.push({
 						name: event,
 						query:{
 							fromDate: store.getters.dateFilter.value.fromDate,
@@ -77,6 +81,18 @@
               timelineId:store.getters.dashboardTimeLineButton.value.globalCodeId
 						}
 					})
+          }else{
+            router.push({
+						name: event,
+						query:{
+							fromDate: timeStamp(startimeAdd(moment())),
+							toDate: timeStamp(endTimeAdd(moment())),
+							filter: text,
+              timelineId:store.getters.dashboardTimeLineButton.value.globalCodeId
+						}
+					})
+          }
+					
 				}
 			}
 
