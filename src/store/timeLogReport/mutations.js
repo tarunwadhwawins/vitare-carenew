@@ -99,10 +99,19 @@ export const timeLogView = async (state, data) => {
     dataIndex: "timeAmount",
     
   },
+  
   {
     title: "Notes ", 
     dataIndex: "note",
-  },]
+  },
+  {
+    title: "Flag",
+    dataIndex: "flag",
+    slots: {
+      customRender: "flag",
+    },
+  },
+  ]
   state.timeLogView = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
     return item
