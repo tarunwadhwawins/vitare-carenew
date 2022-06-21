@@ -81,6 +81,7 @@ import PinIcon from "@/components/common/PinIcon"
 import StartCall from "@/components/common/StartCall"
 import { message } from "ant-design-vue";
 import { CopyFilled } from "@ant-design/icons-vue";
+import { useRoute } from 'vue-router'
 
 export default {
   components: {
@@ -117,6 +118,7 @@ export default {
   },
   setup(props) {
     const store = useStore()
+    const route = useRoute()
     const formValue = reactive({
       msgSend: ''
     })
@@ -205,7 +207,12 @@ export default {
       if(isCommunicationWithPatient.value) {
         store.dispatch("timeLineType")
       }
-      store.dispatch("program", patientUdid)
+      if(route.name == "PatientSummary") {
+        store.dispatch("program", route.params.udid)
+      }
+      else {
+        store.dispatch("program", patientUdid)
+      }
     })
 
     const list = store.getters.communicationRecord.value
