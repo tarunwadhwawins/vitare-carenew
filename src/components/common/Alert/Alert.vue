@@ -39,10 +39,12 @@ export default {
 <style>
 	.ant-alert { width: 100%; }
 	.pinClass {
-		background-color: #64BF7A !important;
-		border: 1px solid #64BF7A !important;
+		background-color: #fff!important;
+		border: 2px solid #64BF7A !important;
 	}
 	.pinClass .ant-alert-message, .pinClass .anticon.anticon-close {
-		color: #fff !important;
+		color: #000 !important;
+		font-size: 15px;
 	}
+	
 </style>
