@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue-demi'
+import { reactive, ref, watchEffect } from 'vue-demi'
 import { useStore } from 'vuex'
 export default {
   props: {
@@ -68,15 +68,19 @@ export default {
     patientId: {
       type: Number
     },
+    communicationId: {
+      type: Number
+    },
   },
   setup(props) {
     const auth = JSON.parse(localStorage.getItem("auth"))
     const store = useStore()
     const tableContent = ref(null)
+    const conversationId = props.communicationId ? reactive(props.communicationId) : props.communication.id
 
     watchEffect(() => {
       store.state.communications.conversationList = ""
-      store.dispatch("conversation", props.communication.id)
+      store.dispatch("conversation", conversationId)
       tableContent.value = document.getElementsByClassName('chatBoxInner')
       getScroll()
     })
