@@ -18,6 +18,7 @@
     @search="handleStaffSearch"
     @change="handleStaffChange"
     size="large"
+    :disabled="isDisabled"
   >
     <template v-if="loadingStatus" #notFoundContent>
       <a-spin size="small" />
@@ -45,6 +46,7 @@ export default defineComponent({
     close: Boolean,
     editDataStaff:Array,
     listHeight: Number,
+    isDisabled: Boolean,
   },
 
   setup(props, context) {
