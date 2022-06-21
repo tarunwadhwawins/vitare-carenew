@@ -298,8 +298,8 @@ export default {
   top: -2px !important;
 }
 .callRightWrapper .body {
-  overflow-y: scroll;
-  height: 345px;
+  overflow-y: auto;
+  max-height: calc(100vh - 450px);
   overflow-x: hidden;
 }
 .callRightWrapper .header .patientInfo .patientImg .info {

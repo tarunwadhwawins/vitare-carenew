@@ -342,8 +342,8 @@ export default {
   height: 680px !important;
 } */
 .chatBox {
-    height: 560px !important;
-    overflow-y: scroll !important;
+    height: calc(100vh - 194px)!important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
 }
 
@@ -352,8 +352,8 @@ export default {
 }
 
 .chatBox .chatBoxInner {
-    min-height: 520px !important;
-    overflow: scroll !important;
+    min-height:calc(100vh - 281px)!important;
+    overflow: auto !important;
 }
 
 .callButton {
