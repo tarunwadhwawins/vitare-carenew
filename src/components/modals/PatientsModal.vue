@@ -1703,7 +1703,9 @@ export default defineComponent({
 .steps-action {
   text-align: right;
 }
-
+.steps-action  .ant-row {
+  margin-bottom: 0!important;
+}
 .validation {
   color: red;
 }
