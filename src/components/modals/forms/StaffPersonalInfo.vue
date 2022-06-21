@@ -270,5 +270,6 @@ export default {
 
 .steps-action {
   text-align: right;
+
 }
 </style>

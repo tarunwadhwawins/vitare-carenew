@@ -5,6 +5,13 @@
             <template #createdBy="{record}">
                 <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.createdById}}" >{{record.createdBy}}</router-link>
             </template>
+            <template #flag="{ record }">
+            <a-tooltip placement="bottom">
+               
+                <a class="icons">
+                    <Flags :flag="record.color" :data="record" /></a>
+            </a-tooltip>
+        </template>
         </a-table>
         <TableLoader />
     </a-modal>
@@ -18,11 +25,13 @@ import {
 } from "vuex";
 
 import TableLoader from "@/components/loader/TableLoader";
+import Flags from "@/components/common/flags/Flags";
 export default {
     components: {
  
        
         TableLoader,
+        Flags
     
     },
     props:{

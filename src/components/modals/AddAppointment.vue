@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()" :footer="false">
+<a-modal width="1000px"  :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="appointmentForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
@@ -78,9 +78,7 @@
                 </div>
             </a-col>
             <a-col :span="24">
-                <div class="steps-action">
                     <ModalButtons @is_click="handleCancel" />
-                </div>
             </a-col>
         </a-row>
     </a-form>

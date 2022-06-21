@@ -478,6 +478,7 @@ export default {
 
 .steps-action {
     text-align: right;
+    
 }
 </style><style scoped>
 .actions {
