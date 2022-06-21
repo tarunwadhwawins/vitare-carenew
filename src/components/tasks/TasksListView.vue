@@ -214,9 +214,7 @@ export default {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
 
-                    store.dispatch("tasksList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-
-                    setTimeout(() => {
+                    
                         router.replace({
                             query: {
                                 view: 'list',
@@ -224,15 +222,21 @@ export default {
                                 fromDate: route.query.fromDate,
 
                             }
+                        }).then(()=>{
+store.dispatch("tasksList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
                         })
-                    }, 2000)
+                   
+
+                    
                 } else {
                     router.replace({
                         query: {
                             view: 'list',
                         }
+                    }).then(()=>{
+store.dispatch("tasksList")
                     })
-                    store.dispatch("tasksList")
+                    
                 }
 
             } else {
