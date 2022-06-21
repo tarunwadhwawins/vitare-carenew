@@ -130,6 +130,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'CPTCode Status') {
             state.CPTCodeStatus = element.globalCode;
         }
+        if (element.name === 'Removal Reason') {
+            state.removalReason = element.globalCode;
+        }
         
     });
 
