@@ -6,6 +6,9 @@ const common = {
   view: 'Vista',
   edit: 'Editar',
   delete: 'Borrar',
+  clearFlag:"Borrar Indicador Activado",
+  
+  for:"Por",
 }
 
 

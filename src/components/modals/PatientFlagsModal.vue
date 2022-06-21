@@ -9,14 +9,30 @@
             <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
           </a-form-item>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="24" v-else>
+          <a-form-item :label="$t('common.removalReason')" name="removalReasonId" :rules="[{ required: true, message: $t('common.removalReason')+' '+$t('global.validation') }]">
+            <GlobalCodeDropDown v-model:value="addFlagForm.removalReasonId" :globalCode="removalReason" @change="checkChangeInput()"/>
+            <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.removalReasonId[0] : ''" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="24" v-if="flags.length==0">
           <a-form-item :label="$t('common.reason')" name="reason" :rules="[{ required: true, message: $t('common.reason')+' '+$t('global.validation') }]">
             <a-textarea v-model:value="addFlagForm.reason" allow-clear @change="checkChangeInput()"/>
             <ErrorMessage v-if="errorMsg" :name="errorMsg.reason ? errorMsg.reason[0] : ''" />
           </a-form-item>
         </a-col>
+         <a-col :span="24" v-else>
+          <a-form-item :label="$t('common.comment')" name="reason" :rules="[{ required: true, message: $t('common.comment')+' '+$t('global.validation') }]">
+            <a-textarea v-model:value="addFlagForm.reason" allow-clear @change="checkChangeInput()"/>
+            <ErrorMessage v-if="errorMsg" :name="errorMsg.reason ? errorMsg.reason[0] : ''" />
+          </a-form-item>
+        </a-col>
         <a-col :span="24">
-          <a-button class="add-button" size="large" html-type="submit">{{ $t('global.save') }}</a-button>
+          <div class="steps-action">
+                    <a-button @click="closeModal" class="modal-button">Cancel</a-button>
+                    <a-button class="modal-button" type="primary" html-type="submit" >{{$t('global.save')}}</a-button>
+                </div>
+         
         </a-col>
       </a-row>
     </a-form>
@@ -57,7 +73,8 @@ export default {
 
       const addFlagForm = reactive({
         flag: "",
-        reason: ""
+        reason: "",
+        removalReasonId:''
       })
       const form = reactive({ ...addFlagForm })
 
@@ -65,7 +82,7 @@ export default {
         if(props.flags.length>0){
         store.dispatch('updatePatientFlag', {
          
-          flag:props.flags,reason:addFlagForm.reason
+          flag:props.flags,reason:addFlagForm.reason,deleteReason:addFlagForm.removalReasonId
         }).then(() => {
           store.dispatch('patientTimeline', {id:route.params.udid, type:store.state.patients.tabvalue.join(",")});
           store.dispatch('patientFlagsList', patientUdid).then(() => {
@@ -107,7 +124,7 @@ export default {
         })
 
         function closeModal() {
-          
+         
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -128,6 +145,10 @@ export default {
                     }
                 });
             } 
+            emit("closeModal", {
+            modal: 'addFlag',
+            value: false
+          });
             formRef.value.resetFields();
         }
       return {
@@ -137,7 +158,8 @@ export default {
 				submitForm,
 				title,
         checkChangeInput,
-        closeModal
+        closeModal,
+        removalReason:store.getters.removalReason
 			}
 		}
 }

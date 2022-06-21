@@ -69,3 +69,8 @@ export const loadingStatus = (state)=>{
         return state.escalationType
     })
   }
+  export const removalReason = (state)=>{
+    return computed(()=>{
+        return state.removalReason
+    })
+  }
