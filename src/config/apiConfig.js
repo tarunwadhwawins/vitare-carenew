@@ -47,7 +47,8 @@ export const API_ENDPOINTS = {
     CallPlanned:"call/staff",
 
     //conversation
-    conversation:'get-conversation',
+    conversation:'conversation',
+    getConversation:'get-conversation',
     conversationSend:'send-message',
 
     // Tasks

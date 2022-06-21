@@ -9,14 +9,16 @@
         <TableLoader v-if="loader"/>
         <a-layout-content v-else >
           <a-row>
-            <a-col :xl="4" :lg="12">
-                  <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
+            <a-col :xl="4" :lg="6">
+              <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-             <a-col :xl="3" :lg="12">
-                  <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
-                  <!-- <router-link class="blueBtn" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link> -->
-                </a-col>
-            <a-col :xl="9" :lg="12">
+            <a-col :xl="2" :lg="2">
+              <a-button class="blueBtn" @click="sendMessage" v-if="conversationWithPatient != null">Send Message</a-button>
+            </a-col>
+            <a-col :xl="2" :lg="2">
+              <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
+            </a-col>
+            <a-col :xl="8" :lg="14">
               <div class="pageTittle">
                 <div class="filter">
                   <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
@@ -27,7 +29,8 @@
                 </div>
               </div>
             </a-col>
-            <a-col :xl="8" :lg="24">
+
+            <a-col :xl="8" :lg="6">
               <!-- <div class="timer" @click="actionTrack(paramsId,288,'patient')" v-if="arrayToObjact(screensPermissions, 288)"> -->
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
@@ -57,10 +60,13 @@
             </a-col>
           </a-row>
         </a-layout-content>
+        <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && conversation" :communication="conversation" :conversationId="conversationId" :idPatient="receiverId" />
       </a-layout>
     </a-layout>
+
     <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" :routerLink="cancelButton" @closeModal="handleClose" @cancel="handleClose"  />
     <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
+    
   </div>
 </template>
 
@@ -75,6 +81,7 @@ import CriticalNotes from "@/components/patients/patientSummary/common/CriticalN
 import Escalation from "@/components/escalations/Escalation"
 import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
+import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
@@ -109,6 +116,7 @@ export default {
     Escalation,
     AddTimeLogModal,
     CriticalNotes,
+    ChatWithPatientInformation,
     // StartCallModal,
   },
   setup() {
@@ -126,6 +134,7 @@ export default {
     const timelogsvisible = ref(false);
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
+    const chatWithPatientInfoVisible = ref(false);
     
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
@@ -138,9 +147,16 @@ export default {
       console.log(e, "I was closed.");
     };
 
+    const patientDetails = computed(()=>{
+      return store.state.patients.patientDetails
+    })
+
+    const receiverId = ref(null)
+
     watchEffect(() => {
       if(route.name == "PatientSummary") {
         store.dispatch('patientDetails', route.params.udid).then(() => {
+          receiverId.value = patientDetails.value.user.data.id
           const fromDate = moment().format('X')
           const toDate = moment().format('X')
           let dateFilter = fromDate && toDate ? "&fromDate=" + fromDate + "&toDate=" + toDate : ''
@@ -154,7 +170,7 @@ export default {
           store.dispatch('activeCptCodes')
           store.dispatch('allPatientsList')
           store.dispatch('allStaffList')
-          store.dispatch('patientFlags')
+          store.dispatch('flagsForPatient')
           store.dispatch('patientFlagsList', route.params.udid);
           store.dispatch('patientCriticalNotes', route.params.udid);
           store.dispatch('responsiblePerson', route.params.udid);
@@ -171,6 +187,7 @@ export default {
             clearInterval(timer.value);
             startTimer()
           }
+          store.dispatch("conversationWithPatient", receiverId.value)
         })
       }
     })
@@ -197,10 +214,6 @@ export default {
     const prev = () => {
       current.value--;
     };
-
-    const patientDetails = computed(()=>{
-      return store.state.patients.patientDetails
-    })
 
     const handleChange = (value) => {
       console.log(`selected ${value}`);
@@ -245,7 +258,7 @@ export default {
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
-        store.dispatch('patientFlags')
+        store.dispatch('flagsForPatient')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
         store.dispatch('responsiblePerson', patientUdid);
@@ -418,6 +431,23 @@ export default {
      
     }
 
+    const conversationWithPatient = computed(() => {
+      return store.state.communications.conversationWithPatient
+    })
+
+    const conversation = computed(() => {
+      return store.state.communications.conversation
+    })
+    const conversationId = ref(null)
+    
+    const sendMessage = () => {
+      conversationId.value = conversationWithPatient.value.id
+      store.dispatch("conversation", conversationId.value).then(() => {
+        console.log("conversation", conversation.value)
+        chatWithPatientInfoVisible.value = true
+      })
+    }
+
     return {
       patientDetails,
       form,
@@ -429,6 +459,7 @@ export default {
       conferenceId,
       videoCall,
       startCall,
+      sendMessage,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,
@@ -450,6 +481,11 @@ export default {
       bloodglucosevisible,
       stoptimervisible,
       patientCriticalNotes,
+      chatWithPatientInfoVisible,
+      conversation,
+      conversationId,
+      conversationWithPatient,
+      receiverId,
 
       handleClose,
       cancelButton,

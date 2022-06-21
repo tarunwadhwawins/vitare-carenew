@@ -1,18 +1,17 @@
 <template>
-<a-modal title="Add New Care Coordinator"  width="50%" :maskClosable="maskebale" @cancel="closeModal()">
+<a-modal title="Add New Care Coordinator" width="50%" :maskClosable="maskebale" @cancel="closeModal()">
     <a-form ref="formRef" :model="physicianForm" layout="vertical" @finish="addPhysician" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.careCoordinator')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.careCoordinator')+' '+$t('global.validation')  }]">
-
                         <StaffDropDown v-if="staffList.allStaffList" v-model:value="physicianForm.staffId" @handleStaffChange="handleStaffChange($event); checkChangeInput()" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="24" :xs="24">
                 <div class="steps-action">
-                    <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+                    <a-form-item>
                         <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.add')}}</a-button>
                     </a-form-item>
                 </div>
