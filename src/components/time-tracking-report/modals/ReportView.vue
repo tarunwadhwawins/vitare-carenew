@@ -17,8 +17,8 @@
             
             <TableLoader />
         </a-col>
-        <a-col :sm="20" :xs="24" class="totalHrs">
-        <h3>Total Duration: {{devicesList.totalMinutes}}</h3>
+        <a-col :sm="22" :xs="24" class="totalHrs">
+        <h3>Total Billed Time: {{devicesList.totalMinutes}}</h3>
         </a-col>
     </a-row>
     <a-row :gutter="24" v-else>
@@ -162,6 +162,11 @@ export default defineComponent({
       {
         title: "Durations(HH:mm:ss) ",
         dataIndex: "minutes",
+        key: "",
+      },
+      {
+        title: "Billed Time ",
+        dataIndex: "chargeTime",
         key: "",
       },
     ];

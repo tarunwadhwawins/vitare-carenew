@@ -29,12 +29,15 @@ export const reportDetailList = (state, data) => {
   totalMinutes = null
   if (state.reportDetailList.call.length > 0) {
     state.reportDetailList.call.map(item=>{
-      const seconds = item.endTime-item.startTime;
-      totalMinutes+=seconds
-      item.minutes = secondsToTime(seconds)
+      // const seconds = item.endTime-item.startTime;
+      // totalMinutes+=seconds
+      // item.minutes = secondsToTime(seconds)
       item.date = dateOnlyFormat(item.date, globalDateFormat)
       item.startTime = timerFromTimestamp(item.startTime,'HH:mm:ss A')
       item.endTime = timerFromTimestamp(item.endTime,'HH:mm:ss A')
+      item.chargeTime = secondsToTime(item.spendTime)
+      totalMinutes+=item.spendTime
+      item.minutes = secondsToTime(totalMinutes)
       return item
     })
 
