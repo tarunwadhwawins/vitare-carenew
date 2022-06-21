@@ -45,6 +45,7 @@ export default {
     orderTable:null,
     getNotificationsList:null,
     filter:null,
+    removalReason:[],
     // phone msaking objects
     bindProps:{
         mode:"national",
