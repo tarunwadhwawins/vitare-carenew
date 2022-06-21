@@ -14,10 +14,11 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-                        <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy');changedValue" :isDisabled="isDisabled" />
+                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
                             <a-select-option value="" hidden>Select Logged By</a-select-option>
                             <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
-                        </a-select>
+                        </a-select> -->
                     </a-form-item>
                 </div>
             </a-col>
@@ -25,10 +26,11 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-                        <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy');changedValue" :isDisabled="isDisabled" />
+                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
                             <a-select-option value="" hidden>Select Performed By</a-select-option>
                             <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
-                        </a-select>
+                        </a-select> -->
                     </a-form-item>
                 </div>
             </a-col>
@@ -102,12 +104,14 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 
 export default defineComponent({
   components: {
     //ModalButtons,
     GlobalCodeDropDown,
     Loader,
+    StaffDropDown,
   },
   props: {
     isEditForm: {
@@ -191,10 +195,12 @@ export default defineComponent({
     }
 
     const loggedInUserId = ref(null);
+    const loggedInUserName = ref(null);
     if (staffList.value && staffList.value != null) {
       staffList.value.forEach((staff) => {
         if (staff.uuid == loggedInUserDetails.user.staffUdid) {
           loggedInUserId.value = staff.uuid;
+          loggedInUserName.value = staff.fullName;
         }
       });
     }
@@ -202,8 +208,8 @@ export default defineComponent({
     watchEffect(() => {
       if (props.isEditTimeLog == true) {
         Object.assign(addTimeLogForm, {
-          loggedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
-          performedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
+          loggedBy: loggedInUserName.value != null ? loggedInUserName.value : "",
+          performedBy: loggedInUserName.value != null ? loggedInUserName.value : "",
           date: moment(),
           timeAmount: timerVal.value ? timerVal.value : "",
         });
@@ -260,8 +266,8 @@ export default defineComponent({
       if (timeLogId && timeLogId != null && props.isAutomatic == true) {
         const data = {
           category: addTimeLogForm.category,
-          loggedBy: addTimeLogForm.loggedBy,
-          performedBy: addTimeLogForm.performedBy,
+          loggedBy: loggedInUserId.value ? loggedInUserId.value : addTimeLogForm.loggedBy,
+          performedBy: loggedInUserId.value ? loggedInUserId.value : addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
           timeAmount: timeAmount,
           cptCode: addTimeLogForm.cptCode,
@@ -269,8 +275,7 @@ export default defineComponent({
           note: addTimeLogForm.note,
           isAutomatic: false,
         };
-        store
-          .dispatch("updatePatientTimeLog", {
+        store.dispatch("updatePatientTimeLog", {
             timeLogId: timeLogId,
             patientUdid: route.params.udid,
             data: data,
@@ -291,8 +296,8 @@ export default defineComponent({
       } else {
         const data = {
           category: addTimeLogForm.category,
-          loggedBy: addTimeLogForm.loggedBy,
-          performedBy: addTimeLogForm.performedBy,
+          loggedBy: loggedInUserId.value ? loggedInUserId.value : addTimeLogForm.loggedBy,
+          performedBy: loggedInUserId.value ? loggedInUserId.value : addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
           timeAmount: timeAmount,
           cptCode: addTimeLogForm.cptCode,
@@ -301,8 +306,7 @@ export default defineComponent({
           isAutomatic: false,
         };
         const patientId = route.params.udid;
-        store
-          .dispatch("addTimeLog", {
+        store.dispatch("addTimeLog", {
             id: patientId,
             data: data,
           })
@@ -323,6 +327,15 @@ export default defineComponent({
       // }
     };
 
+    const handleStaffChange = (val, user) => {
+      if(user == 'loggedBy') {
+        addTimeLogForm.loggedBy = val;
+      }
+      else {
+        addTimeLogForm.performedBy = val;
+      }
+    };
+
     return {
       globalDateFormat,
       size: ref("large"),
@@ -340,6 +353,7 @@ export default defineComponent({
       flagsList,
       dateSelect,
       cancelButton,
+      handleStaffChange,
     };
   },
 });
