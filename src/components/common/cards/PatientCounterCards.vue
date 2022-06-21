@@ -1,6 +1,6 @@
 <template>
 
-  <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="PatientsWithFilter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor"></Card>
+  <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="PatientsWithFilter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor" :patientsFiltter="isPatient"></Card>
 </template>
 
 <script>
