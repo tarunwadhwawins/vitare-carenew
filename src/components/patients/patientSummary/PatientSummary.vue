@@ -9,10 +9,11 @@
         <TableLoader v-if="loader"/>
         <a-layout-content v-else >
           <a-row>
+
             <a-col :xl="4" :lg="6">
               <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-            <a-col :xl="2" :lg="2">
+            <a-col :xl="3" :lg="2">
               <a-button class="blueBtn" @click="sendMessage" v-if="conversationWithPatient != null">Send Message</a-button>
             </a-col>
             <a-col :xl="2" :lg="2">
@@ -29,8 +30,7 @@
                 </div>
               </div>
             </a-col>
-
-            <a-col :xl="8" :lg="6">
+            <a-col :xl="7" :lg="6">
               <!-- <div class="timer" @click="actionTrack(paramsId,288,'patient')" v-if="arrayToObjact(screensPermissions, 288)"> -->
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
@@ -38,6 +38,7 @@
                 <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
+
             <a-col :sm="24">
               <CriticalNotes v-if="patientCriticalNotes && patientCriticalNotes.length > 0" />
             </a-col>
