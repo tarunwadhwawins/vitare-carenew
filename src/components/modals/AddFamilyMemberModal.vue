@@ -14,7 +14,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: true, message: $t('global.middleName')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
 							<a-input @change="changedValue" v-model:value="familyMemberForm.middleName" @keyup="keyup" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
 						</a-form-item>
