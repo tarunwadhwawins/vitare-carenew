@@ -71,7 +71,7 @@
           Emergency Contacts <PlusOutlined @click="showAddEmergencyContactModal();actionTrack(paramsId,292,'patient')"/><br />
         </div>
         <div v-if="emergencyContactsList && emergencyContactsList.length > 0 && arrayToObjact(screensPermissions, 308)" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal();actionTrack(paramsId,308,'patient')" >{{ emergencyContactsList[0].firstName || emergencyContactsList[0].middleName || emergencyContactsList[0].lastName ?   emergencyContactsList[0].firstName+' '+emergencyContactsList[0].middleName+' '+emergencyContactsList[0].lastName  : emergencyContactsList[0].email}}</a>
+          <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal();actionTrack(paramsId,308,'patient')" >{{  emergencyContactsList[0].fullName }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
