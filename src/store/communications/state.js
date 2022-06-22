@@ -17,5 +17,5 @@ export default {
   latestmessage:[],
   messagesMeta:null,
   conversationWithPatient:null,
-  conversation:null,
+  conversationsList:null,
 }
