@@ -437,7 +437,7 @@ export default {
     })
 
     const conversation = computed(() => {
-      return store.state.communications.conversation
+      return store.state.communications.conversationsList
     })
     const conversationId = ref(null)
     
