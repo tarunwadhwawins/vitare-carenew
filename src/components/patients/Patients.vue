@@ -4,25 +4,25 @@
         <!-- <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" v-if="arrayToObjact(screensPermissions,62)" :isEdit="false" />-->
         <h2 class="pageTittle titleWrapper">
             {{$t('patient.patients')}}
-         <div class="commonBtn"> 
-              
-            <a-button class="btn primaryBtn" @click="showModal(true)" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
-            <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" /> -->
-        </div>
+            <div class="commonBtn">
+
+                <a-button class="btn primaryBtn" @click="showModal(true)" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
+                <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" /> -->
+            </div>
         </h2>
     </a-col>
 </a-row>
 <a-row>
     <a-col :span="24">
         <h2 class="pageTittle">
-            
+
         </h2>
     </a-col>
 </a-row>
 <a-row>
     <a-col :span="24">
         <a-row class="patientBox" :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
-            <PatientCounterCards :isPatient="true" />
+            <PatientCounterCards :isPatient="true" @patientRedirect="changePatientsList" />
         </a-row>
     </a-col>
 </a-row>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import {  ref,  onUnmounted, watchEffect } from "vue";
+import {  ref,  onUnmounted, onMounted } from "vue";
 import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import PatientCounterCards from "@/components/common/cards/PatientCounterCards"
@@ -78,7 +78,7 @@ export default {
         TableLoader,
         SearchField,
         ExportToExcel,
-       // DateFilter
+        // DateFilter
     },
 
     setup() {
@@ -92,7 +92,6 @@ export default {
             PatientsModal.value = value;
         };
         const handleOk = (status) => {
-          
             PatientsModal.value = status.value;
         };
         const handleChange = () => {};
@@ -102,7 +101,7 @@ export default {
             toDate: ''
         }
 
-        watchEffect(() => {
+        onMounted(() => {
             store.state.patients.addDemographic = null
             store.state.patients.patientDetails = null
             store.state.patients.emergencyContact = null
@@ -113,28 +112,28 @@ export default {
             store.getters.patientsRecord.patientList = ""
 
             store.dispatch("programList");
-            //if (route.query.timelineId) {
-                // store.dispatch("timeLine", {
-                //     id: route.query.timelineId,
-                //     commit: 'timelineSuccess'
-                // }).then(() => {
-                //     apiCall(timeLineButton.value)
-                // })
-            ///} else {
-                if (timeLineButton.value == null) {
+            // if (route.query.timelineId) {
+            //     store.dispatch("timeLine", {
+            //         id: route.query.timelineId,
+            //         commit: 'timelineSuccess'
+            //     }).then(() => {
+            //         apiCall(timeLineButton.value)
+            //     })
+            // }else{
 
-                    store.dispatch("timeLine", {
-                        id: 122,
-                        commit: 'timelineSuccess'
-                    }).then(() => {
-                        apiCall(timeLineButton.value)
-                    })
-                    
-                } 
-                else {
+            if (timeLineButton.value == null) {
+
+                store.dispatch("timeLine", {
+                    id: 122,
+                    commit: 'timelineSuccess'
+                }).then(() => {
                     apiCall(timeLineButton.value)
-                }
-           // }
+                })
+
+            } else {
+                apiCall(timeLineButton.value)
+            }
+            //}
 
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -177,13 +176,15 @@ export default {
                             query: {
                                 fromDate: route.query.fromDate,
                                 toDate: route.query.toDate,
-                                timelineId:route.query.timelineId
+                                timelineId: route.query.timelineId
 
                             }
                         })
                     }, 1000)
                 } else {
-                    router.replace({query: {}})
+                    router.replace({
+                        query: {}
+                    })
                     store.dispatch("patients")
                 }
 
@@ -228,6 +229,14 @@ export default {
             store.dispatch("patients", "?filter=" + filter + date)
 
         }
+        const changePatientsList = () => {
+            setTimeout(() => {
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                store.dispatch("patients", "?filter=" + filter + date)
+            }, 50)
+
+        }
         return {
             exportExcel,
             screensPermissions: store.getters.screensPermissions,
@@ -244,7 +253,8 @@ export default {
             timeStampFormate,
             globalDateFormat,
             Buttons: store.getters.dashboardTimeLineButton,
-            showButton
+            showButton,
+            changePatientsList
 
         };
     },
