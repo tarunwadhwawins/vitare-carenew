@@ -49,7 +49,15 @@ export default {
         const iconLoading = ref(false)
         const loginUser = () => {
             iconLoading.value = true
-            store.dispatch('login', loginForm)
+            store.dispatch('login', loginForm).then(() => {
+                store.dispatch("globalCodes");
+                store.dispatch("permissions");
+                store.dispatch("escalationStaus")
+                store.dispatch("appointmentConference");
+                store.dispatch("notificationList");
+                store.dispatch("allPatientsList")
+                store.dispatch("allStaffList")
+            });
         }
         const error = computed(() => {
             return store.state.dashBoard.errorMsg

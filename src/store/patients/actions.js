@@ -16,6 +16,7 @@ export const addDemographic = async ({
 }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("post", "patient", null, data.demographics).then((response) => {
+    
     commit('addDemographic', response.data.data);
     commit('status', true)
 
@@ -71,7 +72,7 @@ export const addDemographic = async ({
         errorMessage.push(false)
       }).catch((error) => {
         if (error.response.status === 422) {
-          console.log('errorMsg', error.response.status)
+        
           console.log('errorMsg', error.response.data)
           commit('errorMsg', error.response.data)
           commit('loadingStatus', false)
@@ -88,9 +89,12 @@ export const addDemographic = async ({
     commit('loadingStatus', false)
     commit('counterPlus')
   }).catch((error) => {
+   
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      
+      
     }
     if (error.response) {
       errorLogWithDeviceInfo(error.response);
@@ -100,6 +104,7 @@ export const addDemographic = async ({
     commit('loadingStatus', false)
     commit('counterMinus')
   })
+ 
 }
 
 

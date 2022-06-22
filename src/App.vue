@@ -47,6 +47,11 @@ export default {
 
     watchEffect(() => {
 
+      
+    });
+
+    onMounted(() => {
+       document.body.classList.add("test");
       if (refreshToken.value != null) {
         if (refreshToken.value > date.getTime()) {
           store.dispatch("globalCodes");
@@ -80,10 +85,6 @@ export default {
           }, 1000);
         }
       }
-    });
-
-    onMounted(() => {
-      document.body.classList.add("test");
     });
 
     return {

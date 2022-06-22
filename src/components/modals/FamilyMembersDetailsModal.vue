@@ -7,13 +7,11 @@
           :columns="familyMembersColumns"
           :data-source="familyMembersList"
           :scroll="{ x: 1100 }"
-          :pagination="false"
-        >
+          :pagination="false" >
           <template #contactTime="{ record }">
             <template
               v-for="contactTime in record.contactTime"
-              :key="contactTime.id"
-            >
+              :key="contactTime.id" >
               <p v-if="contactTime == '16'">Morning</p>
               <p v-if="contactTime == '17'">Afternoon</p>
               <p v-if="contactTime == '18'">Evening</p>
@@ -23,8 +21,7 @@
           <template #contactType="{ record }">
             <template
               v-for="contactType in record.contactType"
-              :key="contactType.id"
-            >
+              :key="contactType.id" >
               <p v-if="contactType == '13'">Email</p>
               <p v-if="contactType == '14'">Phone</p>
               <p v-if="contactType == '15'">Text</p>
@@ -32,12 +29,8 @@
           </template>
 
           <template #action="{ record }">
-            <a class="icons" v-if="arrayToObjact(screensPermissions,303)"
-              ><EditOutlined @click="editFamilyMember(record.id);actionTrack(paramsId,303,'patient')"
-            /></a>
-            <a class="icons" v-if="arrayToObjact(screensPermissions,304)"
-              ><DeleteOutlined @click="deleteFamilyMember(record.id);actionTrack(paramsId,304,'patient')"
-            /></a>
+            <a class="icons" v-if="arrayToObjact(screensPermissions,303)"><EditOutlined @click="editFamilyMember(record.id);actionTrack(paramsId,303,'patient')" /></a>
+            <a class="icons" v-if="arrayToObjact(screensPermissions,304)" ><DeleteOutlined @click="deleteFamilyMember(record.id);actionTrack(paramsId,304,'patient')" /></a>
           </template>
         </a-table>
         <Loader />
@@ -127,9 +120,6 @@ export default {
         dataIndex: "isPrimary",
         key: "isPrimary",
         width: "7%",
-        /* slots: {
-					customRender: "isPrimary"
-				}, */
       },
       {
         title: "Action",

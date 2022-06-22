@@ -1,12 +1,12 @@
 <template>
-  <a-modal width="90%" title="Emergency Contacts" centered>
+  <a-modal width="98%" title="Emergency Contacts" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table
           rowKey="id"
           :columns="emergencyContactsColumns"
           :data-source="emergencyContactsList"
-          :scroll="{ x: 2100 }"
+          :scroll="{ x: 1100 }"
           :pagination="false"
         >
           <template #contactTime="{ record }">
@@ -76,21 +76,25 @@ export default {
         title: "Name",
         dataIndex: "fullName",
         key: "fullName",
+        width: "9%",
       },
       {
         title: "Email Address",
         dataIndex: "email",
         key: "email",
+        width: "10%",
       },
       {
         title: "Phone Number",
         dataIndex: "phoneNumber",
         key: "phoneNumber",
+        width: "7%",
       },
       {
         title: "Preferred Method of Contact",
         dataIndex: "contactType",
         key: "contactType",
+        width: "12%",
         slots: {
           customRender: "contactType",
         },
@@ -99,6 +103,7 @@ export default {
         title: "Preferred time of day for contact",
         dataIndex: "contactTime",
         key: "contactTime",
+        width: "12%",
         slots: {
           customRender: "contactTime",
         },
@@ -107,6 +112,7 @@ export default {
         title: "Gender",
         dataIndex: "gender",
         key: "gender",
+        width: "6%",
       },
       // {
       //   title: "Is Primary",
@@ -123,6 +129,7 @@ export default {
         slots: {
           customRender: "action",
         },
+        width: "5%",
       },
     ];
 

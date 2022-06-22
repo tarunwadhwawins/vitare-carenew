@@ -13,8 +13,9 @@
 
             <div class="steps-content" v-if="steps[current].title === 'Demographics'">
                 <!-- <Demographics /> -->
+                
                 <a-form :model="demographics" name="basic" ref="formRef"  scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic()" @finishFailed="demographicsFailed">
-                    <Loader />
+                  
 
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -60,8 +61,8 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input @keyup="changedValue" v-model:value="demographics.email" placeholder="test@test.com" size="large" @input="emailChange()" />
-                                    {{errorMsg}}                                    
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail ? errorMsg.emergencyEmail[0] : ''" />
+                                                                        
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email ? errorMsg.email[0] : ''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -904,45 +905,7 @@ export default defineComponent({
       return store.state.patients.emergencyErrorMsg;
     });
 
-    const steps = [
-      {
-        title: "Demographics",
-        key: "demographics",
-        content: "First-content",
-      },
-      {
-        title: "Devices",
-        key: "devices",
-        content: "Second-content",
-      },
-      {
-        title: "Programs",
-        key: "programs",
-        content: "Third-content",
-      },
-      {
-        title: "Insurance",
-        key: "insurance",
-        content: "Fourth-content",
-      },
-      {
-        title: "Documents",
-        key: "documents",
-        content: "Fifth-content",
-      },
-      {
-        title: "Conditions",
-        key: "conditions",
-        content: "Sixth-content",
-      },
-
-      {
-        title: "Clinical Data",
-        key: "clinicalData",
-        content: "Last-content",
-      },
-    ];
-
+   
     const changedValue = () => {
       store.commit("isEditPatient", false);
       isValueChanged.value = true;
@@ -1630,7 +1593,44 @@ export default defineComponent({
       current,
       globalCode,
       demographic,
-      steps,
+      steps:[
+      {
+        title: "Demographics",
+        key: "demographics",
+        content: "First-content",
+      },
+      {
+        title: "Devices",
+        key: "devices",
+        content: "Second-content",
+      },
+      {
+        title: "Programs",
+        key: "programs",
+        content: "Third-content",
+      },
+      {
+        title: "Insurance",
+        key: "insurance",
+        content: "Fourth-content",
+      },
+      {
+        title: "Documents",
+        key: "documents",
+        content: "Fifth-content",
+      },
+      {
+        title: "Conditions",
+        key: "conditions",
+        content: "Sixth-content",
+      },
+
+      {
+        title: "Clinical Data",
+        key: "clinicalData",
+        content: "Last-content",
+      },
+    ],
       next,
       prev,
       size: ref("large"),
