@@ -134,6 +134,7 @@ export default defineComponent({
     })
 
     const editProgram = (id) => {
+      isEnabledDischargeDate.value = true
       store.commit('errorMsg', null)
       isEdit.value = true
       programId.value = id

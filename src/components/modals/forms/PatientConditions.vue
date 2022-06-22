@@ -108,6 +108,7 @@ export default {
     }
 
     const editCondition = (value) => {
+      isEnabledEndDate.value = true
       Object.assign(conditions, value)
       conditionUdid.value = value.id
     }
