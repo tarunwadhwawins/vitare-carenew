@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
+import { computed, defineComponent, onBeforeUnmount, reactive, ref, watchEffect } from "vue";
 //import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
@@ -144,6 +144,7 @@ export default defineComponent({
                       moment(props.timerValue, "HH:mm:ss").format('HH:mm');
         const timerVal = ref(moment(timer.value, "HH:mm")); */
     const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
+    const cancelBtn = localStorage.getItem('cancelButton')
 
     const staffList = computed(() => {
       return store.state.common.allStaffList;
@@ -178,11 +179,13 @@ export default defineComponent({
             emit("closeModal", {
               modal: "closeTimeLogModal",
               value: true,
+              cancelBtn: null,
             });
           } else {
             emit("closeModal", {
               modal: "closeTimeLogModal",
               value: false,
+              cancelBtn: null,
             });
             Object.assign(addTimeLogForm, form);
             isValueChanged.value = false;
@@ -193,6 +196,10 @@ export default defineComponent({
         isValueChanged.value = false;
       }
     }
+
+    onBeforeUnmount(() => {
+      localStorage.removeItem('cancelButton')
+    })
 
     const loggedInUserId = ref(null);
     const loggedInUserName = ref(null);
@@ -230,26 +237,30 @@ export default defineComponent({
     };
 
     function cancelButton() {
-      if(props.routerLink){
+      const cancelBtn = localStorage.getItem('cancelButton')
+      if(props.routerLink) {
         warningSwal(messages.patientlogMessage).then((response) => {
-        if (response == true) {
-          emit("closeModal", {
-            link: true,
-            modal: "cancelButton",
-            value: false,
-          });
-        } else {
-          emit("closeTimeLogModal", {
-              modal: "closeTimeLogModal",
-              value: true,
+          if (response == true) {
+            emit("closeModal", {
+              link: true,
+              modal: "cancelButton",
+              value: false,
+              cancelBtn: props.routerLink,
             });
-        }
-      });
+          } else {
+            emit("closeTimeLogModal", {
+                modal: "closeTimeLogModal",
+                value: true,
+                cancelBtn: props.routerLink,
+              });
+          }
+        });
       }else{
         emit("closeModal", {
             link: true,
             modal: "cancelButton",
             value: true,
+            cancelBtn: cancelBtn ? cancelBtn : null,
           });
       }
       
@@ -289,6 +300,7 @@ export default defineComponent({
             emit("closeModal", {
               modal: "addTimeLog",
               value: false,
+              cancelBtn: cancelBtn,
             });
             formRef.value.resetFields();
             Object.assign(addTimeLogForm, form);
@@ -319,6 +331,7 @@ export default defineComponent({
             emit("closeModal", {
               modal: "addTimeLog",
               value: false,
+              cancelBtn: cancelBtn,
             });
             formRef.value.resetFields();
             Object.assign(addTimeLogForm, form);

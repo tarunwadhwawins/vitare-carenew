@@ -102,7 +102,7 @@
         store.dispatch("callPlanned",{
                 fromDate: fromDate.value,
                 toDate: toDate.value})
-        store.dispatch("status", {
+        store.dispatch("callStatus", {
                 fromDate: fromDate.value,
                 toDate: toDate.value})
         store.dispatch("communicationTypes",{
@@ -119,7 +119,7 @@
         return store.state.communications.callPlanned
       })
       const callStatus = computed(() => {
-        return store.state.dashBoard.callStatus
+        return store.state.businessDashboard.callStatus
       })
       const communicationTypes = computed(() => {
         return store.state.communications.communicationTypes
