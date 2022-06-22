@@ -61,7 +61,7 @@ export default {
         confirmPasswordError.value =
           "Confirm Password Doesn't Match with New Password";
       } else {
-        store.dispatch("passwordReset", {
+        store.dispatch("staffPasswordReset", {
             data:resetPasswordForm,
             endPoint:props.endPoint,
             id:props.id
