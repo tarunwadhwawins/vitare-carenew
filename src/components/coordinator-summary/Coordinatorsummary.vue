@@ -40,7 +40,7 @@
                                 <div class="info" v-if="getstaffSummary">
                                     <p>Name: {{getstaffSummary.fullName}}</p>
                                     <p>Designation : {{getstaffSummary.designation}}</p>
-                                    <p :title="getstaffSummary.email"><a href="mailto:{{getstaffSummary.email}}">
+                                    <p class="overflow-wrap" :title="getstaffSummary.email"><a href="mailto:{{getstaffSummary.email}}">
                                             <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>25?getstaffSummary.email.substring(0,25)+'...':getstaffSummary.email:'' }}</a></p>
                                     <p>
                                         <a v-if="getstaffSummary.extension" :href="`tel:${getstaffSummary.phoneNumber+getstaffSummary.extension}`">
