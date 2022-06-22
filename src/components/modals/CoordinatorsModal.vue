@@ -61,7 +61,7 @@
                         <a-col :sm="4" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
-                                    <a-input  @change="checkChangeInput()"  v-model:value="personalInfoData.extension" placeholder="Please enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
+                                    <a-input  @change="checkChangeInput()"  v-model:value="personalInfoData.extension" placeholder="Enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.extension" :name="errorMsg.extension?errorMsg.extension[0]:''" />
                                 </a-form-item>
                             </div>

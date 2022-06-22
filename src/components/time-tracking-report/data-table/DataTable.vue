@@ -210,11 +210,11 @@ export default defineComponent({
         : "&filter=";
       dateFilter =
         route.query.fromDate && route.query.toDate
-          ? "&fromDate=" +
+          ? "?fromDate=" +
             route.query.fromDate +
             "&toDate=" +
             route.query.toDate
-          : "&fromDate=&toDate=";
+          : store.getters.cptCodeFilterDates.value;
     }
     let scroller = "";
     onMounted(() => {
@@ -235,9 +235,10 @@ export default defineComponent({
             store
               .dispatch(
                 "cptCodes",
-                "?page=" +
+                dateFilter
+                +"&page=" +
                   current_page +
-                  dateFilter +
+                  
                   filter +
                   store.getters.searchTable.value +
                   store.getters.orderTable.value.data
@@ -263,9 +264,9 @@ export default defineComponent({
         });
         store.dispatch(
           "cptCodes",
-          "?page=" +
+          dateFilter +
             store.getters.searchTable.value +
-            dateFilter +
+            
             filter +
             orderParam
         );
@@ -275,10 +276,10 @@ export default defineComponent({
         });
         store.dispatch(
           "cptCodes",
-          "?page=" +
+          dateFilter +
             store.getters.searchTable.value +
             store.getters.orderTable.value.data +
-            dateFilter +
+            
             filter +
             store.getters.orderTable.value.data
         );
@@ -319,8 +320,18 @@ export default defineComponent({
           })
           .then((resp) => {
             if (resp == true) {
-              (status.value = null),
-                store.dispatch("cptCodes");
+              (status.value = null)
+              checkDate();
+                // store.dispatch("cptCodes");
+                store
+              .dispatch(
+                "cptCodes",
+
+                dateFilter+
+                  filter +
+                  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data
+              )
               setTimeout(() => {
                 state.selectedRowKeys = [];
               }, 1000);
