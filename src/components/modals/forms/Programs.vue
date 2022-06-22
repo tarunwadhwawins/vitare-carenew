@@ -20,7 +20,7 @@
           </a-col>
           <a-col :md="8" :sm="6" :xs="24">
               <div class="form-group">
-                  <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
+                  <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: false, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
                       <a-date-picker @change="changedValue()" v-model:value="program.dischargeDate" :format="globalDateFormat" :disabledDate="!isEnabledDischargeDate ? d => d : (d => !d || d.isSameOrBefore(program.onboardingScheduleDate))" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
                   </a-form-item>
@@ -152,7 +152,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           patientUdid: route.params.udid,
@@ -170,7 +170,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           id: patientId,
@@ -186,7 +186,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           id: patients.value.addDemographic.id,
