@@ -102,6 +102,9 @@
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
                                             <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                                 <template #addedBy="{ record }">
+                                                    <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link>
+                                                  </template>
                                                 <template #color="{ record }">
                                                     <a-tooltip placement="bottom">
                                                         <template #title>
@@ -246,6 +249,9 @@ const notesColumns = [
     title: "Added By",
     dataIndex: "addedBy",
     key: "addedBy",
+    slots: {
+      customRender: "addedBy",
+    },
   },
   {
     title: "Color",
