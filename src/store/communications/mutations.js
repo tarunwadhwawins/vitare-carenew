@@ -203,7 +203,7 @@ export const conversation = async (state, data) => {
   })
   
   state.conversationList = data.data
-  state.conversation = data.data
+  state.conversationsList = data.data
 
   state.messagesMeta=data.meta.pagination
 }

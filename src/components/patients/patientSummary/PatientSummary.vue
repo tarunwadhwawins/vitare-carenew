@@ -188,7 +188,7 @@ export default {
             clearInterval(timer.value);
             startTimer()
           }
-          // store.dispatch("conversationWithPatient", receiverId.value)
+          store.dispatch("conversationWithPatient", receiverId.value)
         })
       }
     })
@@ -432,13 +432,12 @@ export default {
      
     }
 
-    const conversationWithPatient = null;
-    // const conversationWithPatient = computed(() => {
-    //   return store.state.communications.conversationWithPatient
-    // })
+    const conversationWithPatient = computed(() => {
+      return store.state.communications.conversationWithPatient
+    })
 
     const conversation = computed(() => {
-      return store.state.communications.conversation
+      return store.state.communications.conversationsList
     })
     const conversationId = ref(null)
     

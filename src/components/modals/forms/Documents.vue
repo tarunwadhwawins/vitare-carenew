@@ -100,8 +100,8 @@
 
       const store = useStore();
       const route = useRoute();
-      const patientId = props.patientId ? reactive(props.patientId) : reactive(props.idPatient);
-      const patientUdid = route.params.udid;
+      const patientId = props.idPatient ? reactive(props.idPatient) : route.params.udid ? route.params.udid : '';
+      
       const docValidationError = ref(false)
       const formRef = ref()
       const image = ref()
@@ -178,14 +178,14 @@
       return store.state.careCoordinator;
     });
       watchEffect(() => {
-       
+       console.log("check",patientId)
         if(staffs.value.clearStaffFormValidation){
           formRef.value.resetFields();
           Object.assign(documents, form)
     }
-        if (patientUdid) {
+        if (patientId) {
           
-          store.dispatch("documents", patientUdid);
+          store.dispatch("documents", patientId);
         }
       })
       const patients = computed(() => {

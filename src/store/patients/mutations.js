@@ -220,8 +220,8 @@ export const programPatients = (state, data) => {
     }
     
     element.status = element.status == 1 ? 'Active' : 'Inactive'
-    element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
-      element.dischargeDate = dateOnlyFormat(element.dischargeDate)
+    element.onboardingScheduleDate = element.onboardingScheduleDate ? dateOnlyFormat(element.onboardingScheduleDate) : ""
+    element.dischargeDate = element.dischargeDate ? dateOnlyFormat(element.dischargeDate) : ""
     return element;
   })
   state.columns = [
@@ -1158,8 +1158,8 @@ export const timeLineType = (state, data) => {
 export const programDetails = (state, data) => {
   const format = 'YYYY-MM-DD';
   data.program = data.programId
-  data.onboardingScheduleDate = timestampToDate(data.onboardingScheduleDate, format)
-  data.dischargeDate = timestampToDate(data.dischargeDate, format)
+  data.onboardingScheduleDate = data.onboardingScheduleDate ? timestampToDate(data.onboardingScheduleDate, format) : ""
+  data.dischargeDate = data.dischargeDate ? timestampToDate(data.dischargeDate, format) : ""
   state.programDetails = data
 }
 

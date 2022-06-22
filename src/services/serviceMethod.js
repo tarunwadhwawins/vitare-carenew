@@ -4,7 +4,7 @@ import store from "../store/index"
 // import jsonp from "fetch-jsonp";
 import qs from "qs";
 import { errorSwal } from '@/commonMethods/commonMethod';
-
+import router from '@/router';
 
 const API_URL = process.env.VUE_APP_API_URL
 let timeout;
@@ -39,33 +39,65 @@ class ServiceMethodService {
             request = { cancel: axiosSource.cancel, msg: "Loading..." };
              if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             }
         }else{
 
             if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, { headers: authHeader() }).catch((error)=>{
+                    if(error.response.status === 401){
+                        this.removeStorage()
+                      }
+                })
             }
         }
 
@@ -131,8 +163,10 @@ class ServiceMethodService {
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
+                        this.removeStorage()
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
+
                     }
                 });
         }
@@ -195,6 +229,7 @@ class ServiceMethodService {
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
+                        this.removeStorage()
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     }
@@ -205,7 +240,24 @@ class ServiceMethodService {
 
     }
     
-
+removeStorage(){
+    localStorage.removeItem('user');
+    localStorage.removeItem('barmenu');
+    localStorage.removeItem('staff');
+    localStorage.removeItem('token');
+    localStorage.removeItem('auth');
+    localStorage.removeItem('roleAuth');
+    localStorage.removeItem('access');
+    localStorage.removeItem('accessPermission');
+    localStorage.removeItem('permission');
+    localStorage.removeItem('screensPermission');
+    localStorage.removeItem('widgetsPermission');
+    localStorage.removeItem('fireBaseToken');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('checkLogin');
+    router.go();
+}
 
 }
+
 export default new ServiceMethodService(); 

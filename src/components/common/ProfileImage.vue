@@ -65,7 +65,7 @@
           <p v-if="patientDetails.medicalRecordNumber">
             MRN : {{ patientDetails.medicalRecordNumber }}
           </p>
-          <p style="overflow-wrap: anywhere" v-if="patientDetails.email">
+          <p class="overflow-wrap" v-if="patientDetails.email">
             <a
               @click="actionTrack(paramsId, 321, 'patient')"
               v-if="arrayToObjact(screensPermissions, 321)"
