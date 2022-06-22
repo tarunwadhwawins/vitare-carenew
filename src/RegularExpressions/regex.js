@@ -1,6 +1,5 @@
 export const regex = {
   digitWithdecimal: new RegExp(/^\d+(\.\d{1,2})?$/),
-  centemeter: new RegExp(/^[0-9]*$/),
   phoneNumber: new RegExp(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/),
   usPhoneFormat: new RegExp(/^\(\d{3}\)\s?\d{3}-\d{4}$/),
   onlyNumber: new RegExp(/^[0-9]*$/),

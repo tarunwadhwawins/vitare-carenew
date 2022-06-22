@@ -628,7 +628,7 @@
                                 <div class="form-group">
                                     <a-form-item label="Select Referral User" name="referral" :rules="[{ required: false, message: 'User  '+$t('global.validation') }]">
                                         <!-- <GlobalCodeDropDown v-if="referralData" @change="changedValue" v-model:value="referal.referral" :globalCode="referralData" /> -->
-                                        <ReferralSearch :editDataReferral="editPatientReferral" v-model:value="referal.referral" @handleReferralChange="handleReferralChange($event)" @clearValidtion="clearValidtion" />
+                                        <ReferralSearch :editDataReferral="editDataReferral" v-model:value="referal.referral" @handleReferralChange="handleReferralChange($event)" @clearValidtion="clearValidtion" />
                                     </a-form-item>
                                 </div>
                             </a-col>
@@ -1582,7 +1582,6 @@ export default defineComponent({
       store.commit("isEditPatient", true);
       isValueChanged.value = true;
     }
-
     const editDataReferral = computed(() => {
       return store.state.patients.editPatientReferral;
     });
