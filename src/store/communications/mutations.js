@@ -9,7 +9,7 @@ import {
 } from '../../commonMethods/commonMethod'
 import moment from "moment"
 export const callPlannedSuccess = (state, count) => {
- 
+ console.log("test",count)
   state.callPlanned = {
     calloption: {
       annotations: annotations("In",0,"#775DD0",0,"#fff","#775DD0"),

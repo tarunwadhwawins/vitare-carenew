@@ -403,6 +403,19 @@ export default {
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
       window.removeEventListener('beforeunload', clearEvent); 
+      store.state.patients.patientDetails = ''
+      store.state.patients.patientDocuments = ''
+      store.state.patients.patientTimeline = ''
+      store.state.patients.patientConditions = ''
+      store.state.patients.patientReferralSource = ''
+      store.state.patients.referralList = ''
+      store.state.patients.familyMembersList = ''
+      store.state.patients.emergencyContactsList = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.latestVital = []
+      store.state.patients.latestCriticalNote = []
+
     })
 
     const conferenceId = computed(() => {
