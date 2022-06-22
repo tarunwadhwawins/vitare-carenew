@@ -116,7 +116,7 @@
                         </a-col>
                         <a-col :md="4" :sm="12" :xs="24">
                           <div class="form-group" >
-                                <a-form-item :label="$t('patient.demographics.height')+ '(CM)'" name="height" :rules="[{ required: false, message:  $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
+                                <a-form-item :label="$t('patient.demographics.height')+ '(CM)'" name="heightInCentimeter" :rules="[{ required: false, message:  $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
                                     <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.heightInCentimeter" placeholder="Height in centemeter " size="large" />
                                 </a-form-item>
                             </div>
@@ -718,7 +718,7 @@
             </div>
             <div class="steps-content" v-if="steps[current].title === 'Programs'">
 
-                <Programs :idPatient="idPatient" @onChange="changedValue" />
+                <Programs :idPatient="idPatient? idPatient : patients.addDemographic.id" @onChange="changedValue" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -727,7 +727,7 @@
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title === 'Conditions'">
-              <PatientConditions :idPatient="idPatient" @onChange="changedValue" />
+              <PatientConditions  v-if="idPatient" :idPatient="idPatient" @onChange="changedValue" />
 
               <div class="steps-action">
                 <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -737,7 +737,7 @@
             </div>
 
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
-                <ClinicalData :idPatient="idPatient" @onChange="changedValue" />
+                <ClinicalData :idPatient="idPatient? idPatient : patients.addDemographic.id" @onChange="changedValue" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -1121,9 +1121,10 @@ export default defineComponent({
     watchEffect(() => {
       idPatient.value = patients.value.addDemographic
         ? patients.value.addDemographic.id
-        : route.name == "PatientSummary"
+        : route.name == "PatientSummary" && props.isEdit
         ? route.params.udid
         : null;
+        console.log("idPatient.value",idPatient.value)
       // Bitrix data assign
 
       if (patients.value.fetchFromBitrix) {
@@ -1135,17 +1136,14 @@ export default defineComponent({
       //responsiblePerson.value && responsiblePerson.value.self ? disableResponsiblePerson.value = true : disableResponsiblePerson.value = false
       //emergencyContact.value && emergencyContact.value.sameAsPrimary ? disableEmergencyContact.value = true : disableEmergencyContact.value = false
 
-      if (emergencyContact.value && !props.isEdit) {
-        //emergencyContactShow.value= false
-        //Object.assign(emergencyContactForm, emergencyContact.value)
-      }
+     
       if (props.isEdit && responsiblePerson.value) {
         if(responsiblePerson.value.self) {
           disableResponsiblePerson.value = true
         }
         Object.assign(responsiblePersonForm, responsiblePerson.value);
       }
-      if (patients.value.addDemographic || patients.value.patientDetails) {
+      if (patients.value.addDemographic || (patients.value.patientDetails&&props.isEdit)) {
         Object.assign(
           demographics,
           patients.value.addDemographic
@@ -1188,10 +1186,12 @@ export default defineComponent({
         !emergencyContact.value
       ) {
         if (responsiblePersonForm.self) {
+      
           Object.assign(emergencyContactForm, demographics);
           emergencyContactForm.emergencyEmail = demographics.email;
           emergencyContactForm.sameAsPrimary = true;
         } else {
+          
           Object.assign(emergencyContactForm, responsiblePersonForm);
           emergencyContactForm.emergencyEmail = responsiblePersonForm.email;
           emergencyContactForm.sameAsPrimary = true;
@@ -1232,7 +1232,7 @@ export default defineComponent({
                   : null,
               patientUdid: patients.value.addDemographic
                 ? patients.value.addDemographic.id
-                : patients.value.patientDetails.id,
+                :props.isEdit ?  patients.value.patientDetails.id : null,
             })
             .then(() => {
               //   store.dispatch("referralList");
@@ -1246,8 +1246,7 @@ export default defineComponent({
             });
         } else if (
           !props.isEdit &&
-          (patients.value.addDemographic != null ||
-            patients.value.patientDetails != null)
+          (patients.value.addDemographic != null)
         ) {
           store
             .dispatch("updateDemographic", {
@@ -1267,7 +1266,7 @@ export default defineComponent({
                   : null,
               patientUdid: patients.value.addDemographic
                 ? patients.value.addDemographic.id
-                : patients.value.patientDetails.id,
+                : null,
             })
             .then(() => {
               isValueChanged.value = false
@@ -1415,16 +1414,17 @@ export default defineComponent({
 
     function common() {
       store.commit("bitrixFormCheck", false);
-      if (props.isEdit == false) {
-        store.state.patients.addDemographic = null;
-        store.state.patients.patientDetails = null;
+      store.state.patients.addDemographic = null;
+      
+        
+        //store.state.patients.patientDetails = null;
         store.state.patients.emergencyContact = null;
         store.state.patients.patientReferralSource = null;
         store.state.patients.responsiblePerson = null;
         store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
-      }
+      
       clearValidtion()
       Object.assign(demographics, form);
       isValueChanged.value = false;
