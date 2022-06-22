@@ -1,105 +1,94 @@
 <template>
-  <a-col :xl="xl" :sm="sm" :xs="12">
+<a-col :xl="xl" :sm="sm" :xs="12">
     <div @click="handler(link, text)">
-      <div class="topBox" :style="{'background-color': color}">
-        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-        <h5 :style="{'color': textColor}">{{ count }}</h5>
-        <p :style="{'color': textColor}">{{ $t(('dashboard')+'.'+text) }}</p>
-      </div>
+        <div class="topBox" :style="{'background-color': color}">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            <h5 :style="{'color': textColor}">{{ count }}</h5>
+            <p :style="{'color': textColor}">{{ $t(('dashboard')+'.'+text) }}</p>
+        </div>
     </div>
-  </a-col>
+</a-col>
 </template>
 
 <script>
 	import { useRouter } from 'vue-router'
 	import { useStore } from 'vuex'
 	import moment from "moment"
- import {
-  startimeAdd,
-  endTimeAdd,
-   timeStamp,
- } from '@/commonMethods/commonMethod'
-  export default {
+ import {startimeAdd,endTimeAdd,timeStamp,} from '@/commonMethods/commonMethod'
+export default {
     props: {
-      count: {
-        type: Number,
-        required: true
-      },
-      link: {
-        type: String,
-        required: true,
-      },
-      text: {
-        type: String,
-        required: true
-      },
-      xl: {
-        type:Number
-      },
-      sm: {
-        type:Number
-      },
-      color: {
-        type:String
-      },
-      textColor: {
-				type:String
-      },
-      patientsFiltter:{
-        type:Boolean
-      }
+        count: {
+            type: Number,
+            required: true
+        },
+        link: {
+            type: String,
+            required: true,
+        },
+        text: {
+            type: String,
+            required: true
+        },
+        xl: {
+            type: Number
+        },
+        sm: {
+            type: Number
+        },
+        color: {
+            type: String
+        },
+        textColor: {
+            type: String
+        },
+        patientsFiltter: {
+            type: Boolean
+        }
     },
-    setup(props) {
-			const router = useRouter()
-			const store = useStore()
-			// let from = moment()
-			// let to = moment()
-			// let dateFormat = {
-			// 	fromDate: from ? timeStamp(startimeAdd(from)) : '',
-			// 	toDate: to ? timeStamp(endTimeAdd(to)) : ''
-			// }
-			//const fromDate = store.getters.dateFilter.value ? store.getters.dateFilter.value.fromDate : dateFormat.fromDate
-			//const toDate = store.getters.dateFilter.value ? store.getters.dateFilter.value.toDate : dateFormat.toDate
+    setup(props, {
+        emit
+    }) {
+        const router = useRouter()
+        const store = useStore()
 
-			function handler(event, text) {
-				if(text == "activePatients" || text == "inactivePatients" || text == "totalPatients") {
-					router.push({
-						name: event,
-						query: {
-							filter: text
-						}
-					})
-				}
-				else {
-          if(props.patientsFiltter==false){
-router.push({
-						name: event,
-						query:{
-							fromDate: store.getters.dateFilter.value.fromDate,
-							toDate: store.getters.dateFilter.value.toDate,
-							filter: text,
-              timelineId:store.getters.dashboardTimeLineButton.value.globalCodeId
-						}
-					})
-          }else{
-            router.push({
-						name: event,
-						query:{
-							fromDate: timeStamp(startimeAdd(moment())),
-							toDate: timeStamp(endTimeAdd(moment())),
-							filter: text,
-              timelineId:store.getters.dashboardTimeLineButton.value.globalCodeId
-						}
-					})
-          }
-					
-				}
-			}
+        function handler(event, text) {
+            if (text == "activePatients" || text == "inactivePatients" || text == "totalPatients") {
+                router.push({
+                    name: event,
+                    query: {
+                        filter: text
+                    }
+                })
+            } else {
+                if (props.patientsFiltter == false) {
+                    router.push({
+                        name: event,
+                        query: {
+                            fromDate: store.getters.dateFilter.value.fromDate,
+                            toDate: store.getters.dateFilter.value.toDate,
+                            filter: text,
+                            timelineId: store.getters.dashboardTimeLineButton.value.globalCodeId
+                        }
+                    })
+                } else {
+                    router.push({
+                        name: event,
+                        query: {
+                            fromDate: timeStamp(startimeAdd(moment())),
+                            toDate: timeStamp(endTimeAdd(moment())),
+                            filter: text,
+                            timelineId: 122
+                        }
+                    })
+                    emit("patientRedirect")
+                }
 
-      return {
-				handler,
-      }
+            }
+        }
+
+        return {
+            handler,
+        }
     }
-  }
+}
 </script>
-
