@@ -13,15 +13,15 @@
           <a-col :md="8" :sm="6" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" style="width: 100%" size="large" />
+                      <a-date-picker @change="changedValue('onboardinScheduledDate')" :disabledDate="d => !d || d.isSameOrAfter(program.dischargeDate)" v-model:value="program.onboardingScheduleDate" :format="globalDateFormat" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
                   </a-form-item>
               </div>
           </a-col>
           <a-col :md="8" :sm="6" :xs="24">
               <div class="form-group">
-                  <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue();dateChange();" v-model:value="program.dischargeDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(program.onboardingScheduleDate)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                  <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: false, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
+                      <a-date-picker @change="changedValue()" v-model:value="program.dischargeDate" :format="globalDateFormat" :disabledDate="!isEnabledDischargeDate ? d => d : (d => !d || d.isSameOrBefore(program.onboardingScheduleDate))" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
                   </a-form-item>
               </div>
@@ -100,13 +100,17 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const patientId = reactive(props.idPatient);
+    const isEnabledDischargeDate = ref(false)
     const program = reactive({
       program: "",
       onboardingScheduleDate: "",
       dischargeDate: "",
       status: 1,
     });
-    const changedValue = () => {
+    const changedValue = (value) => {
+      if(value && value == 'onboardinScheduledDate') {
+        isEnabledDischargeDate.value = true
+      }
       emit('onChange')
       store.commit('errorMsg', null)
     }
@@ -130,6 +134,7 @@ export default defineComponent({
     })
 
     const editProgram = (id) => {
+      isEnabledDischargeDate.value = true
       store.commit('errorMsg', null)
       isEdit.value = true
       programId.value = id
@@ -148,7 +153,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           patientUdid: route.params.udid,
@@ -158,6 +163,7 @@ export default defineComponent({
           store.dispatch("program", patientId);
           emit('onChange', false)
           reset()
+          isEnabledDischargeDate.value = false
         });
       }
       else if(patientId != null) {
@@ -165,7 +171,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           id: patientId,
@@ -173,6 +179,7 @@ export default defineComponent({
           store.dispatch("program", patientId);
           emit('onChange', false)
           reset()
+          isEnabledDischargeDate.value = false
         });
       }
       else {
@@ -180,7 +187,7 @@ export default defineComponent({
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
-            dischargeDate:timeStamp(program.dischargeDate),
+            dischargeDate:program.dischargeDate ? timeStamp(program.dischargeDate) : "",
             status: program.status,
           },
           id: patients.value.addDemographic.id,
@@ -273,7 +280,8 @@ export default defineComponent({
       dateChange,
       dateSelect,
       moment,
-      globalDateFormat
+      globalDateFormat,
+      isEnabledDischargeDate,
     };
   },
 });

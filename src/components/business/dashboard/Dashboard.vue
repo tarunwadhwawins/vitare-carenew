@@ -109,16 +109,16 @@ export default {
 
         onMounted(() => {
           
-          if(timeLineButton.value==null){
+          //if(timeLineButton.value==null){
              
             store.dispatch("timeLine", {id:122,commit:'timelineSuccess'}).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
-          }else{
+         /// }else{
               
-            apiCall(timeLineButton.value)
-          }
+           // apiCall(timeLineButton.value)
+          //}
          
         })
 

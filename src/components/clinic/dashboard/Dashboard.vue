@@ -256,7 +256,7 @@ export default {
         onMounted(() => {
             store.state.escalations.escalation = ''
             store.state.tasks.task = ''
-            if (timeLineButton.value == null) {
+           // if (timeLineButton.value == null) {
 
                 store.dispatch("timeLine", {
                     id: 122,
@@ -265,9 +265,9 @@ export default {
                     apiCall(timeLineButton.value)
                 })
 
-            } else {
-                apiCall(timeLineButton.value)
-            }
+            ///} else {
+                //apiCall(timeLineButton.value)
+           //}
 
         })
 
