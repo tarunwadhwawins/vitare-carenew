@@ -39,65 +39,33 @@ class ServiceMethodService {
             request = { cancel: axiosSource.cancel, msg: "Loading..." };
              if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() })
             }
         }else{
 
             if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { headers: authHeader() }).catch((error)=>{
-                    if(error.response.status === 401){
-                        this.removeStorage()
-                      }
-                })
+                return axiosMethod(API_URL + endPoint, { headers: authHeader() })
             }
         }
 
