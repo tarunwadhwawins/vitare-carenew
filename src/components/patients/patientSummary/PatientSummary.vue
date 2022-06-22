@@ -98,7 +98,6 @@ import {
 } from '@/commonMethods/commonMethod';
 import moment from 'moment';
 const value = ref(dayjs("12:08", "HH:mm"));
-const cancelButton = ref('')
 function clearEvent(event){
         event.returnValue = '';
       
@@ -136,6 +135,7 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const chatWithPatientInfoVisible = ref(false);
+    const cancelButton = ref(localStorage.getItem('cancelButton'))
     
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
@@ -244,7 +244,6 @@ export default {
     const timerValue = ref(30000)
     
     onMounted(() => {
-      cancelButton.value = ''
       store.dispatch('patientDetails', route.params.udid).then(() => {
         if(!startOn.value) {
           startTimer()
@@ -329,15 +328,15 @@ export default {
       isEditTimeLog.value = true;
     };
   
-    const handleClose = ({link=null,modal, value}) => {
+    const handleClose = ({link=null,modal, value, cancelBtn}) => {
       if(modal == 'cancelButton') {
-        if(link==true&& cancelButton.value) {
+        if(link==true&& cancelBtn != null) {
           elapsedTime.value = 0;
           store.commit('startOn', true);
           stoptimervisible.value = false;
           clearInterval(timer.value);
           router.push({
-            path: cancelButton.value
+            path: cancelBtn
           });
         }
         else {
@@ -356,41 +355,16 @@ export default {
         store.commit('startOn', true);
         stoptimervisible.value = false;
         clearInterval(timer.value);
+        if(cancelBtn != null) {
+          router.push({
+            path: cancelBtn
+          });
+        }
       }
       if(value == undefined) {
         startTimer()
         store.commit('startOn', false);
       }
-
-      cancelButton.value =null
-
-      // console.log("dgfd",link,cancelButton.value)
-      // if(link==true&& cancelButton.value){
-      //  clearInterval(timer.value);
-      //  stoptimervisible.value = false;
-      //  router.push({
-      //                   path: cancelButton.value
-      //               });
-                    
-      // }
-      
-      // if(modal == 'addTimeLog') {
-      //   elapsedTime.value = 0;
-      //   store.commit('startOn', true);
-      //   stoptimervisible.value = false;
-      //   clearInterval(timer.value);
-      // }
-      // else if(value && modal == 'closeTimeLogModal') {
-      //   stoptimervisible.value = value;
-      //   clearInterval(timer.value);
-      // }
-      // else {
-      //   // startCallModalVisible.value = modal == "startCall" ? value : false;
-      // }
-      // if(value == undefined) {
-      //   startTimer()
-      //   store.commit('startOn', false);
-      // }
     };
     
     onBeforeMount(() => {
@@ -403,6 +377,19 @@ export default {
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
       window.removeEventListener('beforeunload', clearEvent); 
+      store.state.patients.patientDetails = ''
+      store.state.patients.patientDocuments = ''
+      store.state.patients.patientTimeline = ''
+      store.state.patients.patientConditions = ''
+      store.state.patients.patientReferralSource = ''
+      store.state.patients.referralList = ''
+      store.state.patients.familyMembersList = ''
+      store.state.patients.emergencyContactsList = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.latestVital = []
+      store.state.patients.latestCriticalNote = []
+
     })
 
     const conferenceId = computed(() => {
@@ -511,7 +498,8 @@ export default {
   },
 
   beforeRouteLeave (to, from, next) {
-  cancelButton.value = to.fullPath
+  localStorage.setItem('cancelButton', to.fullPath)
+  // cancelButton.value = to.fullPath
 
   //  if(to.path!='/logout'&&to.path!='/'){
       var button= document.getElementById("timer")

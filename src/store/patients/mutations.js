@@ -1133,7 +1133,6 @@ export const physicianDetails = (state, physician) => {
 
 export const emergencyContactsList = (state, emergencyContacts) => {
   state.emergencyContactsList = emergencyContacts.map(contact => {
-    contact.fullName = contact.firstName+' '+contact.middleName+' '+contact.lastName
     contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
     contact.email = contact.emergencyEmail
     contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
