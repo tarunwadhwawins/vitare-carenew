@@ -112,7 +112,7 @@
                                       $t("header.addAppointment")
                                     }}</a>
                                     </a-menu-item>
-                                    <a-menu-item key="1" v-if="arrayToObjact(screensPermissions, 62) && route.name != 'PatientSummary'">
+                                    <a-menu-item key="1" v-if="arrayToObjact(screensPermissions, 62)">
                                         <a href="javascript:void(0)" @click="addPatient">{{
                                       $t("header.addPatient")
                                     }}</a>
@@ -398,7 +398,7 @@ export default defineComponent({
         const addPatient = () => {
             if (route.name != 'PatientSummary') {
                 store.state.patients.addDemographic = null
-                store.state.patients.patientDetails = null
+               
                 store.state.patients.emergencyContact = null
                 store.state.patients.patientReferralSource = null
                 store.state.patients.responsiblePerson = null
@@ -408,6 +408,11 @@ export default defineComponent({
         };
         const closeAppointModal = (status) => {
             PatientsModal.value = status.value;
+            if (route.name == 'PatientSummary' && status.value==false) {
+                
+                store.dispatch('patientConditions', route.params.udid);
+                store.dispatch("documents", route.params.udid);
+            }
         };
 
         const CoordinatorsModal = ref(false);
