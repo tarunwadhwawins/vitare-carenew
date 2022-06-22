@@ -13,7 +13,7 @@
       <a-col :md="8" :sm="6" :xs="24" :xl="6">
         <div class="form-group">
           <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
-            <a-date-picker @change="changedValue" v-model:value="conditions.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" style="width: 100%" size="large" />
+            <a-date-picker @change="changedValue('startDate')" v-model:value="conditions.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(conditions.endDate)" style="width: 100%" size="large" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
           </a-form-item>
         </div>
@@ -21,7 +21,7 @@
       <a-col :md="8" :sm="6" :xs="24" :xl="6">
         <div class="form-group">
           <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: false, message: $t('global.endDate')+' '+$t('global.validation') }]">
-            <a-date-picker @change="changedValue();dateChange();" v-model:value="conditions.endDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(conditions.startDate) || d.isSameOrAfter(dateSelect)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+            <a-date-picker @change="changedValue()" v-model:value="conditions.endDate" :format="globalDateFormat" :disabledDate="!isEnabledEndDate ? d => d : (d => !d || d.isSameOrBefore(conditions.startDate) || d.isSameOrAfter(dateSelect))" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
           </a-form-item>
         </div>
@@ -38,7 +38,7 @@
 
 <script>
 import ConditionsTable from '@/components/patients/data-table/ConditionsTable';
-import { reactive, computed, ref, watchEffect } from 'vue-demi';
+import { reactive, computed, ref, watchEffect, onMounted } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 // import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
@@ -63,6 +63,7 @@ export default {
     const route = useRoute()
     const conditionUdid = ref(null)
     const formRef = ref()
+    const isEnabledEndDate = ref(false)
 
     const patientId = props.idPatient ? props.idPatient : route.params.udid
 
@@ -76,6 +77,10 @@ export default {
     
     watchEffect(() => {
       store.dispatch('healthConditions')
+    })
+
+    onMounted(() => {
+      store.dispatch('patientConditions', patientId);
     })
 
     const errorMsg = computed(() => {
@@ -95,7 +100,10 @@ export default {
     });
     console.log('healthConditions', healthConditions.value)
 
-    const changedValue = () => {
+    const changedValue = (value) => {
+      if(value && value == 'startDate') {
+        isEnabledEndDate.value = true
+      }
       emit('onChange')
     }
 
@@ -118,6 +126,7 @@ export default {
         .then(() => {
           store.dispatch("patientConditions", patientId);
           reset()
+          isEnabledEndDate.value = false
         });
       }
       else {
@@ -135,6 +144,7 @@ export default {
           store.commit('isConditionEdit', false)
           store.dispatch("patientConditions", patientId);
           reset()
+          isEnabledEndDate.value = false
         });
       }
     };
@@ -164,6 +174,7 @@ export default {
       editCondition,
       isConditionEdit,
       globalDateFormat,
+      isEnabledEndDate,
     }
   }
 }
