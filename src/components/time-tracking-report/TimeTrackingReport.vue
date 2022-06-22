@@ -126,7 +126,7 @@ export default {
         }
       }
 
-      store.dispatch("cptCodeFilterDates", "?fromDate=&toDate=");
+      
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
