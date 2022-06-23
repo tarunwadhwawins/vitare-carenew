@@ -49,7 +49,7 @@
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
     <template #condition="{ record }">
-        <a><span @click="showModal(record.condition)">{{record.condition[0]?.code?record.condition[0]?.code+', ...':'No Data!'}}</span></a>
+        <a><span @click="showModal(record.condition)">{{record.condition[0]?.code?record.condition[0]?.code+', ...':''}}</span></a>
     </template>
     <template #cptCode="{ record }">
         <span>{{record.cptCode.name}}</span>
