@@ -222,7 +222,7 @@ export default {
           to.format("YYYY-MM-DD") +
           "&toDate=" +
           from.format("YYYY-MM-DD") +
-          "&page="
+          "&page="+store.getters.searchTable.value
       );
     }
 

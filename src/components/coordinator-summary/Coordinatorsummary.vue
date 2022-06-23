@@ -41,7 +41,7 @@
                                     <p>Name: {{getstaffSummary.fullName}}</p>
                                     <p>Designation : {{getstaffSummary.designation}}</p>
                                     <p class="overflow-wrap" :title="getstaffSummary.email"><a href="mailto:{{getstaffSummary.email}}">
-                                            <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>25?getstaffSummary.email.substring(0,25)+'...':getstaffSummary.email:'' }}</a></p>
+                                            <MailOutlined /> {{ getstaffSummary?getstaffSummary.email.length>15?getstaffSummary.email.substring(0,14)+'...':getstaffSummary.email:'' }}</a></p>
                                     <p>
                                         <a v-if="getstaffSummary.extension" :href="`tel:${getstaffSummary.phoneNumber+getstaffSummary.extension}`">
                                             <PhoneOutlined :rotate="90" /> {{ getstaffSummary.phoneNumber }} {{getstaffSummary?.extension?'('+getstaffSummary.extension+')':''}}

@@ -22,7 +22,7 @@
     </a-col>
     <a-col :span="16">
         <div class="text-right mb-24">
-            <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
+            <ExportToExcel @click="exportExcel('cptBilling_report','?fromDate=&toDate='+search)" />
         </div>
     </a-col>
 </a-row>
@@ -37,6 +37,10 @@
     </a-col> -->
 </a-row>
 <a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
+    
+    <template #serviceId="{ record }">
+        <a><span @click="showReportData(record.id)">{{record.serviceId}}</span></a>
+    </template>
     <template #patient="{ record }">
         <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link>
     </template>
@@ -45,7 +49,7 @@
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
     <template #condition="{ record }">
-        <a><span @click="showModal(record.condition)">{{'View'}}</span></a>
+        <a><span @click="showModal(record.condition)">{{record.condition[0]?.code?record.condition[0]?.code+', ...':''}}</span></a>
     </template>
     <template #cptCode="{ record }">
         <span>{{record.cptCode.name}}</span>
@@ -63,7 +67,7 @@
     <template #TotalFee="{record}">
         <span>{{(record.cptCode.billingAmout * record.numberOfUnit).toFixed(2)}}</span>
     </template>
-    <template #action="{record}">
+    <!-- <template #action="{record}">
         <a-tooltip placement="bottom" @click="showReportData(record.id)">
             <template #title>
                 <span>{{ 'View' }}</span>
@@ -71,7 +75,7 @@
             <a class="icons">
                 <EyeOutlined /></a>
         </a-tooltip>
-    </template>
+    </template> -->
 </a-table>
 <RecordView v-model:visible="reportViewModal" />
 <ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
@@ -88,17 +92,21 @@ import {
   reactive,
 } from "vue";
 import { useStore } from "vuex";
-import { EyeOutlined } from "@ant-design/icons-vue";
+// import { EyeOutlined } from "@ant-design/icons-vue";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import {exportExcel} from "@/commonMethods/commonMethod";
 const column = [
   {
     title: "#",
     dataIndex: "serviceId",
     align: "center",
     width: "5%",
+    slots: {
+      customRender: "serviceId",
+    },
   },
   {
     title: "Patient Name",
@@ -107,26 +115,31 @@ const column = [
     slots: {
       customRender: "patient",
     },
+    width: "12%",
   },
   {
     title: "Place of Service",
     dataIndex: "placeOfService",
     slots: {
       customRender: "placeOfService",
-    }
+    },
+    width: "11%",
   },
   {
     title: "ICD 10 Code",
     dataIndex: "condition",
     slots: {
       customRender: "condition",
-    }
+    },
+    width: "9%",
   },
   {
     title: "Date of Service",
     dataIndex: "billingDate",
     sorter: true,
+    width: "12%",
   },
+  
   {
     title: "Type of Service",
     dataIndex: "typeOfService",
@@ -134,6 +147,7 @@ const column = [
       customRender: "typeOfService",
     },
     sorter: true,
+    width: "12%",
   },
   {
     title: "CPT Code",
@@ -143,11 +157,13 @@ const column = [
       customRender: "cptCode",
     },
     align: "right",
+    width: "9%",
   },
   {
     title: "#Units",
     dataIndex: "numberOfUnit",
     align: "right",
+    width: "8%",
   },
   {
     title: "Fee($)",
@@ -156,6 +172,7 @@ const column = [
       customRender: "billingAmout",
     },
     align: "right",
+    width: "8%",
   },
   {
     title: "Total Fee($)",
@@ -163,6 +180,7 @@ const column = [
       customRender: "TotalFee",
     },
     align: "right",
+    width: "10%",
   },
   {
     title: "Status",
@@ -170,18 +188,19 @@ const column = [
     slots: {
       customRender: "status",
     },
+    width: "8%",
   },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
+  // {
+  //   title: "Action",
+  //   dataIndex: "action",
+  //   slots: {
+  //     customRender: "action",
+  //   },
+  // },
 ];
 export default defineComponent({
   components: {
-    EyeOutlined,
+    // EyeOutlined,
     GlobalCodeDropDown,
     ExportToExcel,
     SearchField,
@@ -345,6 +364,7 @@ export default defineComponent({
        conditionsData.value = data
      }
     return {
+      exportExcel,
       conditionsData,
       conditionViewModal,
       showModal,
@@ -359,6 +379,7 @@ export default defineComponent({
       showReportData,
       column,
       dataList,
+      search: store.getters.searchTable,
     };
   },
 });

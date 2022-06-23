@@ -59,7 +59,7 @@ export const addDemographic = async ({
           errorLogWithDeviceInfo(error);
         }
         commit('loadingStatus', false)
-        commit('counterMinus')
+        //commit('counterMinus')
       })
     }
 
@@ -83,7 +83,7 @@ export const addDemographic = async ({
           errorLogWithDeviceInfo(error);
         }
         commit('loadingStatus', false)
-        commit('counterMinus')
+        //commit('counterMinus')
       })
     }
     commit('loadingStatus', false)
@@ -93,7 +93,7 @@ export const addDemographic = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
-      
+      commit("resetCounter")
       
     }
     if (error.response) {
@@ -102,7 +102,7 @@ export const addDemographic = async ({
       errorLogWithDeviceInfo(error);
     }
     commit('loadingStatus', false)
-    commit('counterMinus')
+   //commit('counterMinus')
   })
  
 }

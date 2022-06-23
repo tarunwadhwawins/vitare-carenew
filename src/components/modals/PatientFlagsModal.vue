@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="50%" height="500px" :title="title" @cancel="closeModal()" :maskClosable="false">
+	<a-modal width="50%" height="500px" :title="title=='add' ? 'Add Flag':'Update Flag'" @cancel="closeModal()" :maskClosable="false">
     <a-form ref="formRef" :model="addFlagForm" @finish="submitForm" layout="vertical">
       <a-row :gutter="24">
        
@@ -54,7 +54,8 @@ export default {
     GlobalCodeDropDown
 	},
   props:{
-    flags:Array
+    flags:Array,
+    title:String,
   },
     setup(props, {emit}) {
       const store = useStore();
@@ -62,10 +63,10 @@ export default {
       const patientUdid = route.params.udid;
       const formRef = ref();
     
-      const latestFlag = computed(() => {
-        return store.state.flags.latestFlag
-      })
-      const title = latestFlag.value && latestFlag.value != null ? ref('Update Flag') : ref('Add Flag')
+      // const latestFlag = computed(() => {
+      //   return store.state.flags.latestFlag
+      // })
+      
 
       const flagsForPatients = computed(() => {
         return store.state.flags.flagsForPatients
@@ -103,7 +104,7 @@ export default {
         }).then(() => {
           store.dispatch('patientTimeline', {id:route.params.udid, type:store.state.patients.tabvalue.join(",")});
           store.dispatch('patientFlagsList', patientUdid).then(() => {
-            title.value = latestFlag.value && latestFlag.value != null ? 'Update Flag' : 'Add Flag'
+           
           })
            store.commit('checkChangeInput', false)
           formRef.value.resetFields();
@@ -156,7 +157,7 @@ export default {
 				flagsForPatients,
 				addFlagForm,
 				submitForm,
-				title,
+			
         checkChangeInput,
         closeModal,
         removalReason:store.getters.removalReason

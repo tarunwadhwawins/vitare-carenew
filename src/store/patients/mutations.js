@@ -108,7 +108,8 @@ export const patient = (state, data) => {
       slots: {
         customRender: "compliance",
       },
-      width: '12%',
+      width: '15%',
+      sorter:true,
     },
     {
       title: "Last Message Sent",
@@ -304,14 +305,13 @@ export const devices = (state, data) => {
       dataIndex: "modelNumber",
     },
     {
-      title: "Serial No",
-      dataIndex: "serialNumber",
-    },
-    {
       title: "MAC Address",
       dataIndex: "macAddress",
     },
-
+    {
+      title: "Serial No",
+      dataIndex: "serialNumber",
+    },
     {
       title: "Active/Inactive",
       dataIndex: "active",
@@ -713,10 +713,12 @@ export const bitrixFormCheck = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
+  console.log('data',data)
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)
   state.fetchFromBitrixStatus = true
   state.fetchFromBitrix = {
+    id:'',
     firstName: '',
     lastName: '',
     dob: '',
@@ -756,6 +758,9 @@ export const fetchFromBitrix = (state, data) => {
     emergencyId: '',
   }
   state.getBitrixFieldsName.map(item => {
+    if (item.patientId == "bitrix") {
+      state.fetchFromBitrix.id = data[item.bitrixId]
+    }
     if (item.patientId == "firstName") {
       state.fetchFromBitrix.firstName = data[item.bitrixId]
     }
