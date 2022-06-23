@@ -108,7 +108,8 @@ export const patient = (state, data) => {
       slots: {
         customRender: "compliance",
       },
-      width: '12%',
+      width: '15%',
+      sorter:true,
     },
     {
       title: "Last Message Sent",
