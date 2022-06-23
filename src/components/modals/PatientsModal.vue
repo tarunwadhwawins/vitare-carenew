@@ -1387,7 +1387,7 @@ export default defineComponent({
         store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
-      
+      store.commit("resetCounter");
       clearValidtion()
       Object.assign(demographics, form);
       isValueChanged.value = false;
@@ -1398,7 +1398,6 @@ export default defineComponent({
       Object.assign(referal, referalForm);
       Object.assign(emergencyContactForm, emergencyForm);
       ShowReferral.value = false;
-      store.commit("resetCounter");
       disableResponsiblePerson.value = false;
       disableEmergencyContact.value = false;
     }
@@ -1415,7 +1414,7 @@ export default defineComponent({
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
             //store.commit("addDemographic", null);
-
+            store.commit("resetCounter")
             common();
              //emit("saveModal", false);
             emit("closeModal", {
@@ -1430,6 +1429,7 @@ export default defineComponent({
               modal: "editPatient",
               value: true,
             });
+            store.commit("resetCounter")
             store.state.patients.editPatientReferral = null;
           }
         });
