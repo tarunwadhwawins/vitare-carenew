@@ -70,7 +70,7 @@
               @click="actionTrack(paramsId, 321, 'patient')"
               v-if="arrayToObjact(screensPermissions, 321)"
               href="mailto:{{patientDetails.email}}"
-              ><MailOutlined /> {{ patientDetails.email }}</a
+              ><MailOutlined /> {{ patientDetails?patientDetails.email.length>15?patientDetails.email.substring(0,14)+'...':patientDetails.email:'' }}{{ patientDetails.email }}</a
             >
           </p>
           <p v-if="patientDetails.phoneNumber">
