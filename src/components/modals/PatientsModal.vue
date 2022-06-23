@@ -1540,6 +1540,7 @@ export default defineComponent({
       } else {
         Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
         responsiblePersonForm.self = false;
+        emergencyContactForm.sameAsPrimary = false
         disableResponsiblePerson.value = false;
       }
 
