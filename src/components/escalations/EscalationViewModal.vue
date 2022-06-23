@@ -70,6 +70,9 @@
             <a-collapse v-model:activeKey="activeKey" accordion>
                 <a-collapse-panel key="3" header="Notes" v-show="record?record.escalationNotes.data.length>0:false">
                     <a-table rowKey="id" :columns="notesColumns" :data-source="escalation.escalationNots" :pagination="false">
+                    <template #addedBy="{ record }">
+                      <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link>
+                    </template>
                         <template #color="{ record }">
                             <a-tooltip placement="bottom">
                                 <template #title>
@@ -188,6 +191,9 @@ const notesColumns = [
     title: "Added By",
     dataIndex: "addedBy",
     key: "addedBy",
+    slots: {
+      customRender: "addedBy",
+    }
   },
   {
     title: "Color",
