@@ -712,10 +712,12 @@ export const bitrixFormCheck = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
+  console.log('data',data)
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)
   state.fetchFromBitrixStatus = true
   state.fetchFromBitrix = {
+    id:'',
     firstName: '',
     lastName: '',
     dob: '',
@@ -755,6 +757,9 @@ export const fetchFromBitrix = (state, data) => {
     emergencyId: '',
   }
   state.getBitrixFieldsName.map(item => {
+    if (item.patientId == "bitrix") {
+      state.fetchFromBitrix.id = data[item.bitrixId]
+    }
     if (item.patientId == "firstName") {
       state.fetchFromBitrix.firstName = data[item.bitrixId]
     }
