@@ -162,13 +162,13 @@ export default {
         sorter: true,
       },
       {
-        title: "Serial Number",
-        dataIndex: "serialNumber",
+        title: "Mac Address",
+        dataIndex: "macAddress",
         sorter: true,
       },
       {
-        title: "Mac Address",
-        dataIndex: "macAddress",
+        title: "Serial Number",
+        dataIndex: "serialNumber",
         sorter: true,
       },
       {
