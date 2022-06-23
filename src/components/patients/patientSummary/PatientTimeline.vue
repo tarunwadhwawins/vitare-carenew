@@ -102,7 +102,7 @@
         <div v-else class="noData">No Data</div>
     </a-timeline>
 </div>
-<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="pId" @closeModal="handleOk" :flags="flagsRecord" />
+<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="pId" @closeModal="handleOk" :flags="flagsRecord" title="update"/>
 </template>
 
 <script>
@@ -180,18 +180,20 @@ export default {
             value1: [],
             checkAll: false,
         });
+        const patientTimeline = computed(() => {
+            return store.state.patients.patientTimeline;
+        });
         watchEffect(() => {
-             store.state.patients.tabvalue = []
+             
             if (store.state.patients.tabvalue.length > 0) {
                 state.value1 = [];
                 state.checkAll = false;
                 tabvalue.tab = store.state.patients.tabvalue;
                 showAllCheckBoxButton()
+                
             }
         });
-        const patientTimeline = computed(() => {
-            return store.state.patients.patientTimeline;
-        });
+        
 
         const meta = store.getters.patientTimelineMeta;
         let data = [];
@@ -261,13 +263,14 @@ export default {
 
         function showAllCheckBoxButton() {
             var count = 0
-            patientTimeline.value.map((item) => {
+            console.log("test",patientTimeline.value)
+            patientTimeline.value.length>0 ? patientTimeline.value.map((item) => {
                 if (item.entity.data) {
                     if(item.entity.data.isDelete==0){
                     count++;
                   }
                 }
-            });
+            }) :''
             if (count == 0) {
                 checkBoxShow.value = false;
             } else {

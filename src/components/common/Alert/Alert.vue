@@ -40,7 +40,7 @@ export default {
 	.ant-alert { width: 100%; }
 	.pinClass {
 		background-color: #fff!important;
-		border: 2px solid #64BF7A !important;
+		border: 4px solid #64BF7A !important;
 	}
 	.pinClass .ant-alert-message, .pinClass .anticon.anticon-close {
 		color: #000 !important;
