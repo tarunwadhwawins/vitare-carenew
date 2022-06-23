@@ -1233,7 +1233,7 @@ export default defineComponent({
             })
             .then(() => {
               isValueChanged.value = false
-              if (counteValue) {
+              if (counteValue && !errorMsg.value) {
                 store.state.patients.counter = counteValue;
               }
               //   store.dispatch("referralList");
@@ -1255,7 +1255,7 @@ export default defineComponent({
             .then(() => {
               //   store.dispatch("referralList");
               isValueChanged.value = false
-              if (counteValue) {
+              if (counteValue && !errorMsg.value) {
                 store.state.patients.counter = counteValue;
               }
 
@@ -1404,7 +1404,7 @@ export default defineComponent({
     }
 
     function closeModal() {
-      store.commit("resetCounter");
+      
       // alert(isValueChanged.value)
       if (isValueChanged.value || bitrixFormCheck.value) {
         // emit("saveModal", true)
@@ -1435,12 +1435,13 @@ export default defineComponent({
         });
       }
       else {
+       common()
         emit("closeModal", {
           modal: "editPatient",
           value: false,
         })
         // emit("saveModal", false)
-        common();
+        
       }
     }
 
