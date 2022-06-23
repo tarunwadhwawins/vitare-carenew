@@ -425,7 +425,6 @@ p.timeline-float.timeline-title {
     float: right;
     top: -4px;
     left: -20px;
-    font-size: 25px;
 }
 
 .noData.ant-timeline-item-last {
