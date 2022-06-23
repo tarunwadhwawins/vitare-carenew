@@ -113,13 +113,13 @@ export default defineComponent({
         sorter: true,
       },
       {
+        title: "MAC Address",
+        dataIndex: "macAddress",
+      },
+      {
         title: "Serial No",
         dataIndex: "serialNumber",
         sorter: true,
-      },
-      {
-        title: "MAC Address",
-        dataIndex: "macAddress",
       },
       {
         title: "Issue Date",
