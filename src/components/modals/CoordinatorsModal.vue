@@ -6,7 +6,7 @@
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-                <a-form :model="personalInfoData" :scrollToFirstError="true" ref="info" class="basic" name="basic"  autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+                <a-form :model="personalInfoData" :scrollToFirstError="true" ref="formRef" class="basic" name="basic"  autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
                     <!-- <PersonalInformation /> -->
                     <a-row :gutter="24">
                         <a-col :sm="12" :xs="24" :xl="8">
@@ -185,7 +185,7 @@ export default {
     }) {
         const store = useStore();
         const phone = ref()
-        const info = ref();
+        const formRef = ref();
         const current = computed({
             get: () =>
                 store.state.careCoordinator.counter,
@@ -313,16 +313,19 @@ export default {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         emit("saveModal", false)
+                        store.state.careCoordinator.errorMsg = ''
                         Object.assign(personalInfoData, form);
-                        info.value.resetFields()
+                        
                         store.dispatch("staffs")
                         store.dispatch('specializationStaff')
                         store.dispatch('networkStaff')
                         store.commit("resetCounter")
                         store.commit('checkChangeInput', false)
                         store.state.careCoordinator.addStaff = null
+                         formRef.value.resetFields()
 
                     } else {
+                       
                         emit("saveModal", true);
                     }
                 });
@@ -330,8 +333,9 @@ export default {
                 store.state.careCoordinator.addStaff = null
                 Object.assign(personalInfoData, form);
                 store.commit("resetCounter")
-                info.value.resetFields()
+                store.state.careCoordinator.errorMsg = ''
                 emit("saveModal", false)
+                formRef.value.resetFields()
             }
         }
         onMounted(()=>{
@@ -354,7 +358,7 @@ export default {
         return {
             setPhoneNumber,
             phone,
-            info,
+            formRef,
             checkFieldsData,
             checkChangeInput,
             paramId,
