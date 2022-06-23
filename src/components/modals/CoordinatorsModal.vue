@@ -9,7 +9,7 @@
                 <a-form :model="personalInfoData" :scrollToFirstError="true" ref="info" class="basic" name="basic"  autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
                     <!-- <PersonalInformation /> -->
                     <a-row :gutter="24">
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value.trim="personalInfoData.firstName" class="firstName" @change="checkChangeInput()" size="large"/>
@@ -17,7 +17,15 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.middleName')" name="middleName">
+                                    <a-input v-model:value.trim="personalInfoData.middleName" class="middleName" @change="checkChangeInput()" size="large"/>
+                                    <ErrorMessage v-if="errorMsg && !personalInfoData.middleName" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="12" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value.trim="personalInfoData.lastName" @change="checkChangeInput()" size="large"/>
@@ -25,7 +33,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.designationId" :globalCode="careCordinator.designations" />
@@ -34,7 +42,7 @@
                             </div>
 
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.genderId" :globalCode="careCordinator.gender" />
@@ -42,7 +50,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
                                     <a-input v-model:value.trim="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()" size="large" />
@@ -50,7 +58,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                         <a-col :sm="8" :xs="24">
+                         <a-col :sm="8" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                                     <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
@@ -58,7 +66,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="4" :xs="24">
+                        <a-col :sm="4" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
                                     <a-input  @change="checkChangeInput()"  v-model:value="personalInfoData.extension" placeholder="Enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
@@ -66,7 +74,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
 
@@ -75,7 +83,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24">
+                        <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.networkId" :globalCode="careCordinator.network" />
@@ -198,6 +206,7 @@ export default {
 
         const personalInfoData = reactive({
             firstName: "",
+            middleName: "",
             lastName: "",
             designationId: "",
             genderId: "",
