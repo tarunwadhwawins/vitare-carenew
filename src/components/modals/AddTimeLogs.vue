@@ -126,7 +126,6 @@ export default defineComponent({
     timerValue: {
       type: String,
     },
-    routerLink:String
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -238,20 +237,20 @@ export default defineComponent({
 
     function cancelButton() {
       const cancelBtn = localStorage.getItem('cancelButton')
-      if(props.routerLink) {
+      if(cancelBtn) {
         warningSwal(messages.patientlogMessage).then((response) => {
           if (response == true) {
             emit("closeModal", {
               link: true,
               modal: "cancelButton",
               value: false,
-              cancelBtn: props.routerLink,
+              cancelBtn: cancelBtn,
             });
           } else {
             emit("closeTimeLogModal", {
                 modal: "closeTimeLogModal",
                 value: true,
-                cancelBtn: props.routerLink,
+                cancelBtn: cancelBtn,
               });
           }
         });
