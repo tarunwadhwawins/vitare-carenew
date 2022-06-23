@@ -30,21 +30,21 @@
         </a-col>
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
-                    <div >
-                        <a-input size="large" @change="onChange()" v-model:value="device.serialNumber"  disabled />
-                    </div>
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
-                </a-form-item>
-            </div>
-        </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
-            <div class="form-group">
                 <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
                     <div >
                         <a-input size="large" @change="onChange()" v-model:value="device.macAddress"  disabled />
                     </div>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
+                    <div >
+                        <a-input size="large" @change="onChange()" v-model:value="device.serialNumber"  disabled />
+                    </div>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
                 </a-form-item>
             </div>
         </a-col>

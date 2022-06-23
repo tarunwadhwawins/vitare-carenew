@@ -76,12 +76,12 @@ export default defineComponent({
         dataIndex: "modelNumber",
       },
       {
-        title: "Serial No",
-        dataIndex: "serialNumber",
-      },
-      {
         title: "MAC Address",
         dataIndex: "macAddress",
+      },
+      {
+        title: "Serial No",
+        dataIndex: "serialNumber",
       },
       {
         title: "Action",
