@@ -65,7 +65,7 @@
       </a-layout>
     </a-layout>
 
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" :routerLink="cancelButton" @closeModal="handleClose" @cancel="handleClose"  />
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
     <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
     
   </div>
