@@ -22,7 +22,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: true, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: fals, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
               <a-input v-model:value="inventoryForm.serialNumber" size="large" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
