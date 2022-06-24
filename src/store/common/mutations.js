@@ -239,4 +239,14 @@ export const checkChangeInput = (state, data) => {
     state.otherFilters = date
   }
   
+  export const apiCounter = (state, status) =>{
+    if(status=="add"){
+        state.apiCounter++
+    }else if(status=="sub"){
+        state.apiCounter--
+    }else{
+        state.apiCounter = 0
+    }
+    
+  }
   

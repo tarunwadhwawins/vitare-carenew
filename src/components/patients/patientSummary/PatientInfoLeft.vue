@@ -199,11 +199,11 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {
   ref,
-  // reactive,
-  watchEffect,
+ 
   computed,
   defineComponent,
-  defineAsyncComponent
+  defineAsyncComponent,
+  onMounted
 } from 'vue-demi';
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -287,10 +287,10 @@ export default defineComponent({
       referralView.value=true
     }
     
-    watchEffect(() => {
+    onMounted(() => {
       if(route.name == 'PatientSummary') {
-          store.dispatch("patientConditions", route.params.udid)
-        store.dispatch('responsiblePerson', route.params.udid)
+         // store.dispatch("patientConditions", route.params.udid)
+        //store.dispatch('responsiblePerson', route.params.udid)
         store.dispatch('emergencyContact', route.params.udid)
         store.dispatch('familyMembersList', route.params.udid)
         store.dispatch('latestAppointment', route.params.udid)
