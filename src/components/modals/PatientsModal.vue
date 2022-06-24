@@ -111,14 +111,14 @@
                         <a-col :md="4" :sm="12" :xs="24" >
                             <div class="form-group">
                                 <a-form-item  :label="$t('patient.demographics.height')+ '(Feet/Inches)'" name="height" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.height }]">
-                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Format example -  5'7&quot " size="large" />
+                                    <a-input @keyup="changedValue" @input="convertToCm(demographics.height)" style="width: 100%" v-model:value="demographics.height" placeholder="Format example -  5'7&quot " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="4" :sm="12" :xs="24">
                           <div class="form-group" >
                                 <a-form-item :label="$t('patient.demographics.height')+ '(CM)'" name="heightInCentimeter" :rules="[{ required: false, message:  $t('global.validValidation')+' '+$t('patient.demographics.height'), pattern: regex.digitWithdecimal }]">
-                                    <a-input @keyup="changedValue" style="width: 100%" v-model:value="demographics.heightInCentimeter" placeholder="Height in centemeter " size="large" />
+                                    <a-input  @keyup="changedValue" @input="convertToFeet(demographics.heightInCentimeter)" style="width: 100%" v-model:value="demographics.heightInCentimeter" placeholder="Height in centemeter " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -1550,8 +1550,37 @@ export default defineComponent({
     const editDataReferral = computed(() => {
       return store.state.patients.editPatientReferral;
     });
+    
+
+    //height convert to centemeter
+    function convertToCm(inchInput) {
+      var rex = /^(\d+)'(\d+)(?:''|")$/;
+      var match = rex.exec(inchInput);
+      var feet, inch;
+      if (match) {
+        feet = parseInt(match[1], 10);
+        inch = parseInt(match[2], 10);
+        demographics.heightInCentimeter = ((feet * 12) + inch)*2.54;
+      } else {
+        demographics.heightInCentimeter=''
+      }
+    }
+
+    //height convert to feet/inches
+    function convertToFeet(n) {
+      if(n){
+        var realFeet = ((n*0.393700) / 12);
+        var feet = Math.floor(realFeet);
+        var inches = Math.round((realFeet - feet) * 12);
+         demographics.height = feet +"'" + inches+'"' ;
+      }else{
+        demographics.height =''
+      }
+    }
 
     return {
+      convertToFeet,
+      convertToCm,
       selectHeight,
       editDataReferral,
       handleReferralChange,
