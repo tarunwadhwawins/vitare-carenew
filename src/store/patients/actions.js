@@ -561,6 +561,7 @@ export const addDevice = async ({
     commit('addDevice', response.data.data);
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('errorMsg', null)
   }).catch((error) => {
     if (error.response) {
       errorLogWithDeviceInfo(error.response);
@@ -575,8 +576,19 @@ export const addDevice = async ({
       // commit('errorMsg', error.response.data.message)
       // errorSwal(error.response.data.message)
     } else if (error.response.status === 409) {
-      // commit('errorMsg', error.response.data.message)
-      // errorSwal(error.response.data.message)
+      let deviceType = ""
+      if(data.data.deviceType == 99) {
+        deviceType = 'Blood Pressure '
+      }
+      else if(data.data.deviceType == 100) {
+        deviceType = 'Oximeter '
+      }
+      else if(data.data.deviceType == 101) {
+        deviceType = 'Glucose '
+      }
+      commit('errorMsg', {
+        message: deviceType+error.response.data.message
+      })
     }
     commit('loadingStatus', false)
   })

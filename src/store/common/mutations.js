@@ -169,6 +169,10 @@ export const dropdownLoadingStatus = (state, data) => {
     state.dropdownLoadingStatus = data
 }
 
+export const dropdownListing = (state, data) => {
+    state.dropdownListing = data
+}
+
 export const vitalFieldsList = (state, fields) => {
     state.vitalFieldsList = fields
 }

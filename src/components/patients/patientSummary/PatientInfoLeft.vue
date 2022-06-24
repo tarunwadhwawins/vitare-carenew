@@ -566,6 +566,7 @@ export default defineComponent({
     }
 
     const addDeviceModal = () => {
+      store.commit('dropdownListing', null)
       addDeviceVisible.value = true;
     }
 
