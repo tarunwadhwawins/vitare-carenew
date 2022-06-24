@@ -15,6 +15,7 @@ import { useStore } from 'vuex';
 import {
   ScheduleOutlined,
 } from "@ant-design/icons-vue";
+import { useRoute } from 'vue-router';
 export default {
   components: {
     ScheduleOutlined,
@@ -29,7 +30,8 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore()
-    const patientUdid = reactive(props.patientId)
+    const route = useRoute()
+    const patientUdid = route.name == 'PatientSummary' ? route.params.udid : reactive(props.patientId)
     const showData = () => {
       store.dispatch('patientAppointmentsList', patientUdid)
       emit('onClick')
