@@ -373,21 +373,7 @@ export function chartTimeCount(timeLine, count) {
 		
 		let getTotal = findOcc(array, 'time')
 		
-		const time = [
-			'08:00 AM',
-			'09:00 AM',
-			'10:00 AM',
-			'11:00 AM',
-			'12:00 PM',
-			'01:00 PM',
-			'02:00 PM',
-			'03:00 PM',
-			'04:00 PM',
-			'05:00 PM',
-			'06:00 PM',
-			'07:00 PM',
-			'08:00 PM'
-		];
+		const time = timeArrayGlobal
 		time.forEach((item, i) => {
 
 			let obj = getTotal.find((o) => moment(dateFormat(o.duration)).format('hh:00 A') === item);
@@ -647,37 +633,30 @@ export function secondsToTime(secs) {
 }
 export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
-export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]
-
-// export function tableScrollerData (tableContent,filters,meta,endPoint,gettres){
-	
-// 	var data = []
-// 	tableContent.addEventListener("scroll", (event) => {
-// 	let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-// 	let currentScroll = event.target.scrollTop + 2;
-// 	if (currentScroll >= maxScroll) {
-// 		let current_page = meta.current_page + 1;
-        
-// 		if (current_page <= meta.total_pages) {
-//          data= gettres
-// 			store
-// 				.dispatch(
-// 					endPoint,
-// 					"?page=" +
-// 					current_page +
-// 					filters
-// 				)
-// 				.then((resp) => {
-					
-// 					if(resp==true){
-// 						return {data:data,scroll:maxScroll}	
-// 					}
-// 				});
-				
-// 		}
-
-		
-// 	}
-// 	return {data:data,scroll:maxScroll}	
-// })
-// }
+export const disableHours = []
+export const timeArrayGlobal = [
+'12:00 AM',
+'01:00 AM',
+'02:00 AM',
+'03:00 AM',
+'04:00 AM',
+'05:00 AM',
+'06:00 AM',
+'07:00 AM',
+'08:00 AM',
+'09:00 AM',
+'10:00 AM',
+'11:00 AM',
+'12:00 PM',
+'01:00 PM',
+'02:00 PM',
+'03:00 PM',
+'04:00 PM',
+'05:00 PM',
+'06:00 PM',
+'07:00 PM',
+'08:00 PM',
+'09:00 PM',
+'10:00 PM',
+'11:00 PM',
+]

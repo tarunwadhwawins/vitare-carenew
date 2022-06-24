@@ -40,12 +40,14 @@ export default {
     searchTable:null,
     notificationList:null,
     dropdownLoadingStatus:false,
+    dropdownListing:null,
     loadingTableStatus:null,
     actionTrack:null,
     orderTable:null,
     getNotificationsList:null,
     filter:null,
     removalReason:[],
+    apiCounter:0,
     // phone msaking objects
     bindProps:{
         mode:"national",

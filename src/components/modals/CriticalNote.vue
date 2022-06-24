@@ -11,10 +11,10 @@
         </a-col>
       </a-row>
       <a-row :gutter="24" class="mb-24">
-        <a-col :span="24" >
-          <a-button  style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
-          <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-        </a-col>
+       
+       <a-col :span="24">
+                <ModalButtons :Id="criticalNoteId" @is_click="handleCancel" @is_cancel="closeModal" />
+            </a-col>
       </a-row>
     </a-form>
 		<Loader />
@@ -28,9 +28,11 @@ import {warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
 import Loader from "@/components/loader/Loader";
+import ModalButtons from "@/components/common/button/ModalButtons";
 export default defineComponent({
 	components: {
 		Loader,
+    ModalButtons
 	},
 	props: {
 		patientUdid: {
@@ -39,6 +41,7 @@ export default defineComponent({
 		criticalNoteId: {
       type: Number
     },
+    
 	},
   setup(props, { emit }) {
     const store = useStore();
@@ -128,6 +131,7 @@ export default defineComponent({
     })
 
     function closeModal() {
+
       emit("saveModal", true)
       if(checkFieldsData.value){
         warningSwal(messages.modalWarning).then((response) => {

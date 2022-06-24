@@ -186,9 +186,9 @@ export default {
         watchEffect(() => {
              
             if (store.state.patients.tabvalue.length > 0) {
-                state.value1 = [];
-                state.checkAll = false;
                 tabvalue.tab = store.state.patients.tabvalue;
+                state.checkAll = false;
+                visibleRemoveAll.value = true
                 showAllCheckBoxButton()
                 
             }
@@ -200,6 +200,7 @@ export default {
         let scroller = "";
         onMounted(() => {
             if (route.name == "PatientSummary") {
+
                 store.dispatch("timeLineType").then(() => {
                     if (route.query.filter) {
                         store.state.patients.tabvalue = [4, 7];
@@ -216,12 +217,14 @@ export default {
                                 showAllCheckBoxButton
                             });
                     } else {
+                        if (store.state.patients.tabvalue.length == 0) {
                         store.dispatch("patientTimeline", {
                             id: route.params.udid,
                             type: "",
                         }).then(()=>{
                           showAllCheckBoxButton()
                         })
+                        }
                     }
                 });
             } else if (route.name == "videoCall") {

@@ -68,7 +68,7 @@ export const showMoreRecords =({commit},data) =>{
 
 
 export const latestAppointment = async ({ commit }, id) => {
-	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'/'+id, null, null).then((response) => {
+	await serviceMethod.common("get", 'appointments/'+id, null, null).then((response) => {
     if(response.data.data.length > 0) {
       commit('latestAppointmentSuccess', response.data.data);
     }

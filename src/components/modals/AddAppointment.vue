@@ -31,7 +31,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput(); getTime()" />
+                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                     </a-form-item>
                 </div>
@@ -101,7 +101,7 @@ import ErrorMessage from "../common/messages/ErrorMessage"
 import {
     timeStamp,
     disableHours,
-    timeStampFormate,
+  
 } from "../../commonMethods/commonMethod"
 import moment from 'moment';
 import ModalButtons from "@/components/common/button/ModalButtons";
@@ -158,7 +158,7 @@ export default {
         const store = useStore()
         const staffData = ref([]);
         const patientData = ref([]);
-        const patientUdid = route.params.udid;
+        const patientUdid = route.name == 'PatientSummary' ? route.params.udid : props.patientId;
         const disabled = ref(false)
         const isPatientSummary = ref(false)
         const closeValue = ref(false)
@@ -242,7 +242,7 @@ export default {
             
             const timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
             store.dispatch('addAppointment', {
-                patientId: props.patientId ? props.patientId : appointmentForm.patientId,
+                patientId: patientUdid,
                 staffId: appointmentForm.staffId,
                 startDate: timeStamp(date + " " + timeFormat),
                 startTime: timeFormat,
@@ -275,7 +275,7 @@ export default {
                     handleCancel()
                 }
                 if (props.isChat) {
-                    store.dispatch('patientAppointmentsList', props.patientId)
+                    store.dispatch('patientAppointmentsList', patientUdid)
                 }
                 emit("closeModal", {
                     modal: 'addAppointment',
@@ -347,12 +347,12 @@ export default {
             }
         }
 
-        function getTime() {
-            let timeSelect = timeStamp(appointmentForm.startTime)
-            if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
-                appointmentForm.startTime = ''
-            }
-        }
+       // function getTime() {
+            // let timeSelect = timeStamp(appointmentForm.startTime)
+            // if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
+            //     appointmentForm.startTime = ''
+            // }
+        //}
 
         return {
             handleTimeZoneChange,
@@ -383,7 +383,7 @@ export default {
             filterOption,
             closeValue,
             disableHours,
-            getTime,
+            
             flagsList,
 
         };

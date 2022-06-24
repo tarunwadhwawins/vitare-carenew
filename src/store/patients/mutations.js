@@ -757,6 +757,11 @@ export const fetchFromBitrix = (state, data) => {
     responsiblePersonId: '',
     emergencyId: '',
   }
+
+  state.fetchFromBitrixInsurance = {
+    insuranceNumber:[],
+    insuranceName:[]
+  }
   state.getBitrixFieldsName.map(item => {
     if (item.patientId == "bitrix") {
       state.fetchFromBitrix.id = data[item.bitrixId]
@@ -872,6 +877,20 @@ export const fetchFromBitrix = (state, data) => {
     }
     if (item.patientId == "emergencyId") {
       state.fetchFromBitrix.emergencyId = data[item.bitrixId]
+    }
+
+
+    if (item.patientId == "insuranceNumber") {
+      state.fetchFromBitrixInsurance.insuranceNumber.push(data[item.bitrixId])
+    }
+    if (item.patientId == "insuranceName") {
+      state.fetchFromBitrixInsurance.insuranceName.push(data[item.bitrixId])
+    }
+    if (item.patientId == "secondaryInsuranceNumber") {
+      state.fetchFromBitrixInsurance.insuranceNumber.push(data[item.bitrixId])
+    }
+    if (item.patientId == "secondaryInsuranceName") {
+      state.fetchFromBitrixInsurance.insuranceName.push(data[item.bitrixId])
     }
   })
 }

@@ -169,6 +169,10 @@ export const dropdownLoadingStatus = (state, data) => {
     state.dropdownLoadingStatus = data
 }
 
+export const dropdownListing = (state, data) => {
+    state.dropdownListing = data
+}
+
 export const vitalFieldsList = (state, fields) => {
     state.vitalFieldsList = fields
 }
@@ -235,4 +239,14 @@ export const checkChangeInput = (state, data) => {
     state.otherFilters = date
   }
   
+  export const apiCounter = (state, status) =>{
+    if(status=="add"){
+        state.apiCounter++
+    }else if(status=="sub"){
+        state.apiCounter--
+    }else{
+        state.apiCounter = 0
+    }
+    
+  }
   
