@@ -22,7 +22,7 @@ import {
   EditOutlined,
   DeleteOutlined
 } from "@ant-design/icons-vue";
-import { computed, watchEffect } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal } from '../../../commonMethods/commonMethod';
@@ -36,10 +36,10 @@ export default {
     const store = useStore();
     const route = useRoute();
 
-    watchEffect(() => {
-      if(route.name == "PatientSummary") {
-        store.dispatch('patientConditions', route.params.udid);
-      }
+    onMounted(() => {
+      // if(route.name == "PatientSummary") {
+      //   store.dispatch('patientConditions', route.params.udid);
+      // }
     })
 
     const conditionsColumns = [

@@ -86,7 +86,7 @@ import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInfor
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, watchEffect} from "vue";
+import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -154,7 +154,7 @@ export default {
 
     const receiverId = ref(null)
 
-    watchEffect(() => {
+    onMounted(() => {
       if(route.name == "PatientSummary") {
         store.dispatch('patientDetails', route.params.udid).then(() => {
           receiverId.value = patientDetails.value.user.data.id
@@ -380,7 +380,7 @@ export default {
       store.state.patients.patientDetails = ''
       store.state.patients.patientDocuments = ''
       store.state.patients.patientTimeline = ''
-      store.state.patients.patientConditions = ''
+      store.state.patients.patientConditions = []
       store.state.patients.patientReferralSource = ''
       store.state.patients.referralList = ''
       store.state.patients.familyMembersList = ''
