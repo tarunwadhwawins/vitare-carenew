@@ -123,7 +123,7 @@ export default {
 
     const submitForm = () => {
       if(props.isAdd) {
-				Object.assign(inventoryForm, form)
+				//Object.assign(inventoryForm, form)
         store.dispatch('updateInventory', {id: inventoryForm.id, data: inventoryForm}).then(() => {
           store.dispatch('inventoriesList')
 

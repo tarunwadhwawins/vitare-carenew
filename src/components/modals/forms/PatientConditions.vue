@@ -1,7 +1,7 @@
 <template>
   <a-form ref="formRef" :model="conditions" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="submitForm">
     <a-row :gutter="24" class="mb-24">
-      {{conditionDetails}}
+   
       <a-col :md="24" :sm="24" :xs="24" :xl="12">
         <div class="form-group">
           <a-form-item :label="$t('patient.patientConditions')" name="condition" :rules="[{ required: true, message: $t('patient.patientConditions')+' '+$t('global.validation') }]">
@@ -80,6 +80,7 @@ export default {
     })
 
     onMounted(() => {
+
       store.dispatch('patientConditions', patientId);
     })
 
