@@ -4,6 +4,7 @@ import {
   plotOptions,
   annotations,
   dateFormat,
+  dateOnlyFormat,
   meridiemFormatFromTimestamp,
   timeStampToTime
 } from '../../commonMethods/commonMethod'
@@ -150,6 +151,16 @@ export const communication = async (state, communications) => {
   })
   state.communicationMeta=communications.meta.pagination
 }
+
+export const callDetails = async (state, data) => {
+  state.callDetails = data.map(item => {
+    item.date = item.date ? dateOnlyFormat(item.date) : ""
+    item.startTime = item.startTime ? meridiemFormatFromTimestamp(item.startTime) : ""
+    item.endTime = item.endTime ? meridiemFormatFromTimestamp(item.endTime) : ""
+    return item
+  })
+}
+
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;
 }
