@@ -10,7 +10,9 @@
                 <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
                         <div class="leftWrapper">Added By</div>
-                        <div class="rightWrapper">{{detailsNotes.addedBy}}</div>
+                        <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: detailsNotes.addedById}}">
+                          <div class="rightWrapper">{{ detailsNotes.addedBy }}</div>
+                        </router-link>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Date Time</div>
@@ -48,6 +50,7 @@
             </div>
         </div>
     </div>
+    <Loader v-if="!showRecord" />
 </div>
 
 <a-row :gutter="24">
@@ -60,7 +63,7 @@
             <template #action="{record}">
               <a-tooltip placement="right">
                 <template #title>View</template>
-                <a class="icons"><EyeTwoTone @click="edit(record.id)" /></a>
+                <a class="icons"><EyeTwoTone @click="view(record.id)" /></a>
               </a-tooltip>
             </template>
         </a-table>
@@ -122,9 +125,13 @@ export default defineComponent({
     const notesList = computed(() => {
       return store.state.notes.notesList;
     });
-    const edit = (id) => {
+    const view = (id) => {
+      store.commit('loadingStatus', true)
       detailsNotes.value = notesList.value.find((item) => item.id == id);
-      showRecord.value = true;
+      setTimeout(() => {
+        showRecord.value = true;
+        store.commit('loadingStatus', false)
+      }, 1000);
     };
     const notesColumns = [
       {
@@ -183,7 +190,7 @@ export default defineComponent({
       actionTrack,
       notesList,
       notesColumns,
-      edit,
+      view,
       showRecord,
       detailsNotes,
       closeModal,

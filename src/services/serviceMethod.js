@@ -139,7 +139,7 @@ class ServiceMethodService {
     }
 
     //search method for dropdown
-    singleDropdownSearch(value, callback, endpoint) {
+    singleDropdownSearch(value, callback, endpoint, deviceType, isAvailable, orderField, orderBy) {
         if (timeout && value!='') {
             clearTimeout(timeout);
             timeout = null;
@@ -149,10 +149,18 @@ class ServiceMethodService {
             const str = qs.stringify({
                 code: "utf-8",
                 search: value,
+                deviceType: deviceType ? deviceType : "",
+                isAvailable: isAvailable ? isAvailable : "",
+                orderField: orderField ? orderField : "",
+                orderBy: orderBy ? orderBy : "",
             });
-            axios.get(API_URL + `${endpoint}` + '?' + `${str.trim()}`, { headers: authHeader() })
+            
+            const searchUrl = `${endpoint}` + '?' + `${str.trim()}`
+            console.log('searchUrl', searchUrl)
+            axios.get(API_URL + searchUrl, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
+                    store.commit('dropdownListing', d.data.data)
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         // console.log('=>',d.data.data)
@@ -163,15 +171,43 @@ class ServiceMethodService {
                             if(item.code && item.description){
                                 item.fullName = item.code+' - '+item.description
                             }
+                            else if(item.macAddress) {
+                                item.MACAddress = item.macAddress
+                            }
                             return item
                         });
                         // console.log("rewwa", result);
                         const data = [];
+                        let label = ""
                         result.forEach((item) => {
-                            data.push({
-                                value: item.udid?item.udid:item.id,
-                                label: item.fullName?item.fullName:item.name,
-                            });
+                            if(item.fullName) {
+                                label = item.fullName
+                            }
+                            else if(item.name) {
+                                label = item.name
+                            }
+                            else if(item.macAddress) {
+                                label = `${item.modelNumber} (${item.macAddress})`
+                            }
+                            else if(item.macAddress && item.fullName) {
+                                label = `${item.modelNumber} (${item.macAddress})`
+                            }
+                            console.log('label', label)
+                            if(endpoint == 'inventory') {
+                                data.push({
+                                    value: item.udid?item.udid:item.id,
+                                    label: label,
+                                    modelNumber: item.modelNumber,
+                                    macAddress: item.macAddress,
+                                    serialNumber: item.serialNumber,
+                                });
+                            }
+                            else {
+                                data.push({
+                                    value: item.udid?item.udid:item.id,
+                                    label: label,
+                                });
+                            }
                         });
                         // console.log('object', data);
                        
