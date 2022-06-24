@@ -31,7 +31,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput(); getTime()" />
+                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                     </a-form-item>
                 </div>
@@ -101,7 +101,7 @@ import ErrorMessage from "../common/messages/ErrorMessage"
 import {
     timeStamp,
     disableHours,
-    timeStampFormate,
+  
 } from "../../commonMethods/commonMethod"
 import moment from 'moment';
 import ModalButtons from "@/components/common/button/ModalButtons";
@@ -347,12 +347,12 @@ export default {
             }
         }
 
-        function getTime() {
-            let timeSelect = timeStamp(appointmentForm.startTime)
-            if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
-                appointmentForm.startTime = ''
-            }
-        }
+       // function getTime() {
+            // let timeSelect = timeStamp(appointmentForm.startTime)
+            // if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
+            //     appointmentForm.startTime = ''
+            // }
+        //}
 
         return {
             handleTimeZoneChange,
@@ -383,7 +383,7 @@ export default {
             filterOption,
             closeValue,
             disableHours,
-            getTime,
+            
             flagsList,
 
         };

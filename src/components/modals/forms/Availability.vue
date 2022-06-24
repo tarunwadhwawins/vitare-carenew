@@ -27,8 +27,7 @@
               },
             ]">
                     <a-time-picker v-model:value="availability.endTime" :disabledHours="() => disableHours" use12-hours format="hh:mm A" value-format="HH:mm" @change="
-                checkChangeInput();
-                getTime('endTime');
+                checkChangeInput()
               " @openChange="endTimechange" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime ? errorMsg.endTime[0] : ''" />
                 </a-form-item>
@@ -71,7 +70,7 @@ import {
   timeStamp,
   errorSwal,
   disableHours,
-  timeStampFormate,
+  
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default defineComponent({
@@ -215,30 +214,30 @@ export default defineComponent({
       return store.state.careCoordinator.errorMsg;
     });
 
-    function getTime(event) {
-      if (event == "startTime") {
-        let timeSelect = timeStamp(
-          moment().format("MM/DD/YYYY") + " " + availability.startTime + ":00"
-        );
+    //function getTime() {
+      // if (event == "startTime") {
+      //   let timeSelect = timeStamp(
+      //     moment().format("MM/DD/YYYY") + " " + availability.startTime + ":00"
+      //   );
 
-        if (
-          timeStampFormate(timeSelect, "HH:00") < "08:00" ||
-          timeStampFormate(timeSelect, "HH:00") > "20:00"
-        ) {
-          availability.startTime = "";
-        }
-      } else {
-        let timeSelect = timeStamp(
-          moment().format("MM/DD/YYYY") + " " + availability.endTime + ":00"
-        );
-        if (
-          timeStampFormate(timeSelect, "HH:00") < "08:00" ||
-          timeStampFormate(timeSelect, "HH:00") > "20:00"
-        ) {
-          availability.endTime = "";
-        }
-      }
-    }
+      //   if (
+      //     timeStampFormate(timeSelect, "HH:00") < "08:00" ||
+      //     timeStampFormate(timeSelect, "HH:00") > "20:00"
+      //   ) {
+      //     availability.startTime = "";
+      //   }
+      // } else {
+      //   let timeSelect = timeStamp(
+      //     moment().format("MM/DD/YYYY") + " " + availability.endTime + ":00"
+      //   );
+      //   if (
+      //     timeStampFormate(timeSelect, "HH:00") < "08:00" ||
+      //     timeStampFormate(timeSelect, "HH:00") > "20:00"
+      //   ) {
+      //     availability.endTime = "";
+      //   }
+      // }
+    //}
     return {
       formRest,
       checkChangeInput,
@@ -251,7 +250,7 @@ export default defineComponent({
       errorMsg,
       button,
       disableHours,
-      getTime,
+     
       startTimechange,
       endTimechange,
     };
