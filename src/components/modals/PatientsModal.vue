@@ -1092,6 +1092,7 @@ export default defineComponent({
 
       if (patients.value.fetchFromBitrix) {
         Object.assign(demographics, patients.value.fetchFromBitrix);
+        Object.assign(insuranceData, patients.value.fetchFromBitrixInsurance);
       } else if (!patients.value.fetchFromBitrix) {
         Object.assign(demographics, form);
       }
