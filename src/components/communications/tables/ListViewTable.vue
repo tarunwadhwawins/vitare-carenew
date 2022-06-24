@@ -135,7 +135,7 @@
         <template #title>
           <span>{{ $t("common.view") }}</span>
         </template>
-        <a class="icons" @click="showGmail(record)">
+        <a class="icons" @click="viewData(record)">
           <EyeOutlined />
         </a>
       </a-tooltip>
@@ -143,6 +143,7 @@
 
   </a-table>
   <CommunicationGmailView v-model:visible="visibleGmail" />
+  <CommunicationView v-model:visible="visibleCommunication" v-if="visibleCommunication" />
   <!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
   <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
@@ -153,8 +154,8 @@ import { useStore } from "vuex";
 //import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 import {  arrayToObjact, } from "@/commonMethods/commonMethod";
-
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
+import CommunicationView from '@/components/modals/CommunicationView'
 import {
   EyeOutlined,
   MessageOutlined,
@@ -173,6 +174,7 @@ export default {
     MailOutlined,
     AlertOutlined,
     CommunicationGmailView,
+    CommunicationView,
     //Chat,
     ChatWithPatientInformation,
   },
@@ -248,6 +250,7 @@ export default {
     const store = useStore();
     const route = useRoute()
     const visibleGmail = ref(false)
+    const visibleCommunication = ref(false)
     const communicationId = ref(null);
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
@@ -377,9 +380,17 @@ export default {
       }, 3000)
     }
 
-    const showGmail = (e) => {
-      store.dispatch('communicationsView',e.id)
-      visibleGmail.value = true;
+    const viewData = (e) => {
+      if(e.type == 'Call') {
+        store.dispatch('callDetails', e.id).then(() => {
+          visibleCommunication.value = true;
+        })
+      }
+      else {
+        store.dispatch('communicationsView', e.id).then(() => {
+          visibleGmail.value = true;
+        })
+      }
     };
 
     const handleOk = () => {
@@ -398,8 +409,9 @@ export default {
       auth,
      
       handleTableChange,
-      showGmail,
+      viewData,
       visibleGmail,
+      visibleCommunication,
       chatWithPatientInfoVisible,
       /* clickExpandable,
       isExpand,

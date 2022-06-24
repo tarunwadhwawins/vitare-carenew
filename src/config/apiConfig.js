@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
     network:"staff/network",
 
     // Communications
+    communication:"communication",
     communicationsList:"communication",
     communicationTypes:"communication/type",
     addCommunication:"communication",
