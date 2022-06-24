@@ -42,9 +42,9 @@
           <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
         </div>
         <div v-if="latestAppointment != null" class="thumb-desc">
-          <router-link target="_blank" :to="'/appointment-calendar/'+patientDetails.id">
+         <a href="javascript:void(0)" @click="appointmentShow();actionTrack(paramsId,302,'patient')" >
           {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="pat-profile-inner" >
@@ -185,7 +185,7 @@
     <ConditionsModal v-if="conditionsVisible" v-model:visible="conditionsVisible" @closeModal="handleOk" />
     <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
     <DeviceDetailModal v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-
+<AppointmentListing v-model:visible="appointmentVisible" :appointments="latestAppointment" v-if="latestAppointment"/>
   </div>
 </template>
 
@@ -197,6 +197,7 @@ import {
 
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+
 import {
   ref,
  
@@ -244,11 +245,13 @@ export default defineComponent({
     CoordinatorsListingModal: defineAsyncComponent(()=>import("@/components/modals/CoordinatorsListingModal")),
     ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
     ReferralViewModal,
+    AppointmentListing:defineAsyncComponent(()=>import("@/components/appoinment-calendar/modals/AppointmentListing"))
   },
   setup() {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
+    const appointmentVisible = ref(false)
     const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
     const isPhysicianEdit = ref(false);
@@ -616,6 +619,9 @@ const checkFieldsData = computed(()=>{
                 })
      
     }
+    function appointmentShow (){
+      appointmentVisible.value = true
+    }
     return {
       
       screensPermissions:store.getters.screensPermissions,
@@ -717,6 +723,8 @@ const checkFieldsData = computed(()=>{
       referral,
       referralDetail:store.getters.referralDetail,
       flagTimeLineButton,
+      appointmentVisible,
+      appointmentShow
       
     }
   }

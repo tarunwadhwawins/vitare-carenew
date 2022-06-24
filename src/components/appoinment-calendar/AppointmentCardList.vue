@@ -84,7 +84,7 @@
     <a-button class="loadMore" type="primary" @click="showModal(allRecord)">{{length-4}}+</a-button>
 </div>
 <div v-else></div>
-<a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
+<!-- <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
     <a-table rowKey="id" :columns="columns" :data-source="getMoreAppointment">
       <template #staff="{text,record}" >
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link>
@@ -102,17 +102,20 @@
                 <a class="icons">
                     <Flags :flag="record.flags"/></a>
             </a-tooltip>
-        <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
+       
       </template>
     </a-table>
-</a-modal>
+</a-modal> -->
+
+<AppointmentListing v-model:visible="visible" :appointments="getMoreAppointment" v-if="getMoreAppointment"/>
 </template>
 <script>
 import { ref, reactive, computed } from "vue";
 import { FileAddOutlined } from "@ant-design/icons-vue";
 import { dateAndTimeFormate,arrayToObjact } from "@/commonMethods/commonMethod";
-import Flags from "@/components/common/flags/Flags";
+
 import { useStore } from "vuex";
+import AppointmentListing from "@/components/appoinment-calendar/modals/AppointmentListing"
 const columns = [
   {
     title: "Appointment Type",
@@ -173,7 +176,8 @@ const columns = [
 export default {
   components: {
     FileAddOutlined,
-    Flags
+
+    AppointmentListing
   },
   props: {
     cardData: {
