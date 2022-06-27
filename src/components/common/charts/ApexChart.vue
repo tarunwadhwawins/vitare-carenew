@@ -54,7 +54,7 @@ export default {
                     if(props.data) {
                        // console.log("check",props.data[config.dataPointIndex].referralId)
                        filter = props.data[config.dataPointIndex].id
-					   //store.commit("filter", props.data[config.dataPointIndex].id)
+						//store.commit("filter", props.data[config.dataPointIndex].id)
                     }
 					else {
                         filter = config.globals.labels[config.dataPointIndex]
@@ -73,13 +73,13 @@ export default {
                     }
 					else {
 						router.push({
-                        	name: props.linkTo,
-                        	query: {
+							name: props.linkTo,
+							query: {
 								fromDate: store.getters.dateFilter.value.fromDate,
 								toDate: store.getters.dateFilter.value.toDate,
 								filter: filter
 							}
-                    	})
+						})
                     }
                 }
 				else if (props.type == "pie") {
