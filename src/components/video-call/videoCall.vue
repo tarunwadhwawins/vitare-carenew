@@ -113,6 +113,11 @@
         return store.state.videoCall;
       });
 
+      const acceptVideoCallDetails = computed(() => {
+        return store.state.videoCall.acceptVideoCallDetails;
+      });
+
+
       onMounted(() => {
         profile.value = true;
         localStorage.setItem("barmenu", JSON.stringify(true));
@@ -222,7 +227,15 @@
           store.dispatch(
             "acceptVideoCallDetails",
             upcomingCallDetails.user.substring(2)
-          );
+          ).then((resp)=>{
+            if(resp==true){
+              store.dispatch('startCall',acceptVideoCallDetails.value.udid)
+              store.dispatch("startCall", {
+                id: acceptVideoCallDetails.value.patient.id,
+                status: "start",
+              });
+            }
+          })
           session.value.answer();
         }
       });
@@ -238,10 +251,16 @@
             store.state.videoCall.guestUser = null;
           });
         } else {
+          
           session.value.hangup().then(() => {
+            store.dispatch("startCall", {
+              id: acceptVideoCallDetails.value.patient.id,
+              status: "end",
+            });
             router.push("/dashboard");
           });
         }
+       
       }
 
       const conferenceId = computed(() => {
@@ -256,10 +275,7 @@
         return store.state.videoCall.getVideoDetails.patientUdid;
       });
 
-      const acceptVideoCallDetails = computed(() => {
-        return store.state.videoCall.acceptVideoCallDetails;
-      });
-
+      
       const patientId = ref(null)
 
       // used for patient vital
@@ -341,15 +357,15 @@
         profile.value = false;
       });
 
-      const openDrawer = () => {
-        store.dispatch(
-          "patientDetails",
-          getVideoDetails.value.patientUdid
-            ? getVideoDetails.value.patientUdid
-            : acceptVideoCallDetails.value.patient.id
-        );
-        visibleDrawer.value = true;
-      };
+      // const openDrawer = () => {
+      //   store.dispatch(
+      //     "patientDetails",
+      //     getVideoDetails.value.patientUdid
+      //       ? getVideoDetails.value.patientUdid
+      //       : acceptVideoCallDetails.value.patient.id
+      //   );
+      //   visibleDrawer.value = true;
+      // };
       
 
       const patientTimeline = computed(() => {
@@ -377,7 +393,7 @@
         patientUdid,
         moment,
         patientTimeline,
-        openDrawer,
+        // openDrawer,
         visibleDrawer,
         guestUser,
         videoLoader,
