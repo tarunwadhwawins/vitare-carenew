@@ -34,8 +34,7 @@
           <!-- <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" /> -->
         <!-- </a-col> -->
       <!-- </a-row> -->
-      <a-row :gutter="24">
-        <a-col :span="24">
+     
         <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" />
         <PatientTimeline v-if="timelineDetailVisible == true" :isCommunication="true" :profileId="patientUdid" className="thumbDesc patientTimeline"/>
         <NotesDetail v-if="notesDetailVisible == true" :isCommunication="true" :patientId="patientUdid" />
@@ -43,8 +42,7 @@
         <PatientVitalsGrid v-if="patientVitalsVisible == true" :isCommunication="true" :patientId="patientUdid" />
         <AppointmentsTable v-if="patientAppointmentsVisible == true" :patientId="patientUdid" />
         <AddPin v-model:visible="addPinModalVisible" :patientUdid="patientUdid" @closeModal="closeModal"/>
-        </a-col>
-      </a-row>
+     
     </div>
 
   </div>

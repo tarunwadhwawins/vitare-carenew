@@ -44,6 +44,7 @@
   import { ref, watchEffect, computed } from 'vue'
   import { useStore } from "vuex"
   import moment from 'moment'
+  import {  startimeAdd,  endTimeAdd,  timeStamp,} from '@/commonMethods/commonMethod'
   export default {
     components: {
       LongCard,
@@ -103,8 +104,8 @@
                 fromDate: fromDate.value,
                 toDate: toDate.value})
         store.dispatch("callStatus", {
-                fromDate: fromDate.value,
-                toDate: toDate.value})
+                fromDate: timeStamp(startimeAdd(fromDate.value)),
+                toDate: timeStamp(endTimeAdd(toDate.value))})
         store.dispatch("communicationTypes",{
                 fromDate: fromDate.value,
                 toDate: toDate.value})

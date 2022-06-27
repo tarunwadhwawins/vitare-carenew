@@ -1159,6 +1159,7 @@ export const emergencyContactsList = (state, emergencyContacts) => {
   state.emergencyContactsList = emergencyContacts.map(contact => {
     contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
     contact.email = contact.emergencyEmail
+    contact.phoneNumber = contact.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
     contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
     contact.contactTime = contact.contactTimeId ? JSON.parse(contact.contactTimeId) : []
     return contact
@@ -1169,6 +1170,7 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.isPrimary = emergencyContact.isPrimary ? 'Yes' : 'No'
   emergencyContact.gender = emergencyContact.genderId
   emergencyContact.email = emergencyContact.emergencyEmail
+  emergencyContact.phoneNumber = emergencyContact.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact

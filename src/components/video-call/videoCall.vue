@@ -9,12 +9,17 @@
         <a-layout-content>
           <div class="common-bg">
             <a-row>
-              <a-col :span="24">
+              <a-col :span="24" :xl="12" :lg="24">
                 <div class="videoCallHeading">
                   <h2 class="pageTittle">Video Call</h2>
                   <span></span><img width="30" src="../../assets/images/flag-orange.svg" />
                 </div>
               </a-col>
+              <a-col :xl="12" :lg="24">
+                <div class="timer">
+                <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
+              </div>
+            </a-col>
             </a-row>
             <div class="videoWrapper">
               <!-- video call  -->'
@@ -95,6 +100,8 @@
         }
       }
       //end url
+      
+     
 
       const upcomingCallDetails = reactive({
         user: "",
@@ -112,6 +119,22 @@
       const guestUser = computed(() => {
         return store.state.videoCall;
       });
+
+      const acceptVideoCallDetails = computed(() => {
+        return store.state.videoCall.acceptVideoCallDetails;
+      });
+
+
+    // Countdown Timer
+    const elapsedTime = ref(0)
+    const timer = ref(undefined)
+    
+    const formattedElapsedTime = computed(() => {
+      const date = new Date(null);
+      date.setSeconds(elapsedTime.value / 1000);
+      const utc = date.toUTCString();
+      return utc.substr(utc.indexOf(":") - 2, 8);
+    })
 
       onMounted(() => {
         profile.value = true;
@@ -195,6 +218,7 @@
                 .then(() => {
                   simpleUser.register().then(() => {
                     //call start api/
+                    startTimer()
                     store.dispatch("callNotification", {
                       id: decodedUrl.value,
                       status: "start",
@@ -222,7 +246,16 @@
           store.dispatch(
             "acceptVideoCallDetails",
             upcomingCallDetails.user.substring(2)
-          );
+          ).then((resp)=>{
+            if(resp==true){
+              //start one to one callstatus api
+              startTimer()
+              store.dispatch("startCall", {
+                id: acceptVideoCallDetails.value.patient.id,
+                status: "start",
+              });
+            }
+          })
           session.value.answer();
         }
       });
@@ -239,9 +272,15 @@
           });
         } else {
           session.value.hangup().then(() => {
+            //end one to one call status api
+            store.dispatch("startCall", {
+              id: acceptVideoCallDetails.value.patient.id,
+              status: "end",
+            });
             router.push("/dashboard");
           });
         }
+       
       }
 
       const conferenceId = computed(() => {
@@ -256,10 +295,7 @@
         return store.state.videoCall.getVideoDetails.patientUdid;
       });
 
-      const acceptVideoCallDetails = computed(() => {
-        return store.state.videoCall.acceptVideoCallDetails;
-      });
-
+      
       const patientId = ref(null)
 
       // used for patient vital
@@ -341,15 +377,15 @@
         profile.value = false;
       });
 
-      const openDrawer = () => {
-        store.dispatch(
-          "patientDetails",
-          getVideoDetails.value.patientUdid
-            ? getVideoDetails.value.patientUdid
-            : acceptVideoCallDetails.value.patient.id
-        );
-        visibleDrawer.value = true;
-      };
+      // const openDrawer = () => {
+      //   store.dispatch(
+      //     "patientDetails",
+      //     getVideoDetails.value.patientUdid
+      //       ? getVideoDetails.value.patientUdid
+      //       : acceptVideoCallDetails.value.patient.id
+      //   );
+      //   visibleDrawer.value = true;
+      // };
       
 
       const patientTimeline = computed(() => {
@@ -369,6 +405,13 @@
       const patientDetails = computed(() => {
         return store.state.patients.patientDetails;
       });
+
+      function startTimer() {
+        timer.value = setInterval(() => {
+          elapsedTime.value += 1000;
+        }, 1000);
+      }
+      
       return {
         patientDetails,
         chnageTab,
@@ -377,7 +420,7 @@
         patientUdid,
         moment,
         patientTimeline,
-        openDrawer,
+        // openDrawer,
         visibleDrawer,
         guestUser,
         videoLoader,
@@ -394,11 +437,15 @@
         videoCall,
         size: ref("large"),
         patientId,
+        formattedElapsedTime,
       };
     },
   };
 </script>
 <style lang="scss" scope>
+  .timer{
+    float: right;
+  }
   .overFlow {
     height: 500px;
     overflow: auto;

@@ -242,7 +242,7 @@ export default {
             
             const timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
             store.dispatch('addAppointment', {
-                patientId: patientUdid,
+                patientId: patientUdid ? patientUdid : appointmentForm.patientId,
                 staffId: appointmentForm.staffId,
                 startDate: timeStamp(date + " " + timeFormat),
                 startTime: timeFormat,
@@ -255,6 +255,7 @@ export default {
 				closeValue.value = true
                 if (props.patientId != null && route.name == 'PatientSummary') {
                     store.dispatch('latestAppointment', patientUdid)
+                    store.dispatch('patientAppointmentsList', patientUdid)
                     store.dispatch('patientTimeline', {
                         id: patientUdid,
                         type: ''

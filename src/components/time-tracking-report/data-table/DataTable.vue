@@ -10,7 +10,7 @@
     <a-col :span="8" style="padding-bottom:15px" v-else>
     <a-row :span="24">
       <a-col :span="18">
-        <GlobalCodeDropDown v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+        <GlobalCodeDropDown  ref="formRef" v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
     </a-col>
     <a-col :span="2">
         <div class="button-left">
@@ -90,6 +90,7 @@ import {
   computed,
   toRefs,
   reactive,
+  watchEffect,
 } from "vue";
 import { useStore } from "vuex";
 // import { EyeOutlined } from "@ant-design/icons-vue";
@@ -213,6 +214,7 @@ export default defineComponent({
     const state = reactive({
       selectedRowKeys: [],
     });
+    const formRef = ref();
     const status = ref();
     const conditionViewModal = ref(false)
     const conditionsData = ref()
@@ -323,8 +325,11 @@ export default defineComponent({
       reportViewModal.value = true;
     }
     const onSelectChange = (selectedRowKeys) => {
-      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      if(!selectedRowKeys.length>0){
+        status.value = null
+      }
       state.selectedRowKeys = selectedRowKeys;
+      
     };
 
     const reportStatus = computed(() => {
@@ -363,7 +368,11 @@ export default defineComponent({
        conditionViewModal.value = true
        conditionsData.value = data
      }
+     watchEffect(()=>{
+      
+     })
     return {
+      formRef,
       exportExcel,
       conditionsData,
       conditionViewModal,
