@@ -14,7 +14,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-              <InventoryDropDownSearch :disabled="dropdownListing == null" v-model:value="inventoryForm.inventory" :deviceTypeId="deviceTypeId" :options="dropdownListing" @handleInventoryChange="handleChange($event)"/>
+              <InventoryDropDownSearch :disabled="dropdownListing == null || dropdownListing?.length<=0" v-model:value="inventoryForm.inventory" :deviceTypeId="deviceTypeId" :options="dropdownListing" @handleInventoryChange="handleChange($event)"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
           </div>
