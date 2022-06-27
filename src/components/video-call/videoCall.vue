@@ -229,7 +229,6 @@
             upcomingCallDetails.user.substring(2)
           ).then((resp)=>{
             if(resp==true){
-              store.dispatch('startCall',acceptVideoCallDetails.value.udid)
               store.dispatch("startCall", {
                 id: acceptVideoCallDetails.value.patient.id,
                 status: "start",
@@ -251,7 +250,6 @@
             store.state.videoCall.guestUser = null;
           });
         } else {
-          
           session.value.hangup().then(() => {
             store.dispatch("startCall", {
               id: acceptVideoCallDetails.value.patient.id,
