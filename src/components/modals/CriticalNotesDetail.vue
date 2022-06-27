@@ -117,6 +117,12 @@ export default defineComponent({
           }).then(() => {
             store.dispatch('criticalNotesList', route.params.udid);
             store.dispatch('patientCriticalNotes', route.params.udid)
+            if(route.params.udid) {
+            store.dispatch('patientTimeline', {
+              id:route.params.udid,
+              type:''
+            });
+          }
           });
         }
       });
