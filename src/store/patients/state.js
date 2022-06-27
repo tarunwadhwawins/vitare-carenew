@@ -32,7 +32,7 @@ export default {
     emergencyErrorMsg:null,
     errorMessage:null,
     patientDetails:null,
-    patientTimeline:null,
+    patientTimeline:[],
     patientDocuments:null,
     deleteDocument:null,
     latestDocument:null,
