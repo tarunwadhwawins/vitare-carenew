@@ -1,7 +1,8 @@
 
 <template>
 <a-modal width="1100px" centered  title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
-    <a-table rowKey="id" :columns="columns" :data-source="appointments">
+
+    <a-table rowKey="id" :columns="columns" :data-source="appointmentsRecords">
       <template #staff="{text,record}" >
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link>
     </template>
@@ -28,6 +29,7 @@
 import { dateAndTimeFormate , arrayToObjact} from "@/commonMethods/commonMethod";
 import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
+import { reactive } from 'vue-demi';
 const columns = [
   {
     title: "Appointment Type",
@@ -93,19 +95,21 @@ export default {
   props: {
     appointments:Array
   },
-  setup() {
+  setup(props) {
     
     const store = useStore();
 
     function closeModal() {
       store.state.appointment.showMoreRecords = "";
     }
+    const appointmentsRecords = reactive(props.appointments)
     return {
       screensPermissions: store.getters.screensPermissions,
     arrayToObjact,
       columns,
       closeModal,
       dateAndTimeFormate,
+      appointmentsRecords
     };
   },
 };
