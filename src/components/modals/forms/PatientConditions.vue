@@ -6,7 +6,8 @@
         <div class="form-group">
           <a-form-item :label="$t('patient.patientConditions')" name="condition" :rules="[{ required: true, message: $t('patient.patientConditions')+' '+$t('global.validation') }]">
             <ConditionCodeDropDown :editDataCondition="editDataCondition"  v-model:value="conditions.condition" @handleConditionChange="handleConditionChange($event)" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
-            <ErrorMessage v-if="errorMsg" :name="errorMsg.condition ? errorMsg.condition[0] : ''" />
+            <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.condition?errorMsg.condition[0]:''" />
+          
           </a-form-item>
         </div>
       </a-col>
@@ -47,11 +48,13 @@ import {
   timeStampLocal,
   globalDateFormat,
 } from '@/commonMethods/commonMethod';
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default {
   components: {
     ConditionsTable,
     // GlobalCodeDropDown,
-    ConditionCodeDropDown
+    ConditionCodeDropDown,
+    ErrorMessage
   },
   props: {
     idPatient: {
@@ -102,6 +105,7 @@ export default {
     console.log('healthConditions', healthConditions.value)
 
     const changedValue = (value) => {
+      store.commit("errorMsg", null);
       if(value && value == 'startDate') {
         isEnabledEndDate.value = true
       }
@@ -115,6 +119,7 @@ export default {
     }
 
     const submitForm = () => {
+      
       if(!isConditionEdit.value) {
         const patientConditions = {
           condition: conditions.condition,
@@ -126,9 +131,11 @@ export default {
           id: patientId,
         })
         .then(() => {
+          if(!errorMsg.value){
           store.dispatch("patientConditions", patientId);
           reset()
           isEnabledEndDate.value = false
+          }
         });
       }
       else {
@@ -157,6 +164,7 @@ export default {
     }
 
     const handleConditionChange = (val) => {
+      store.commit("errorMsg", null);
             conditions.condition = val;
         };
 
