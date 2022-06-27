@@ -145,15 +145,39 @@ export default {
     }
 
     const submitForm = () => {
+      const deviceInfo = {
+        'name': 'Web App'
+      }
+      let units = ""
       let vitalsData = []
       if(idDevice != 101) {
         vitalTypes.forEach(element => {
+          switch (element.name) {
+            case 'systolic':
+              units = 'mmHg'
+              break;
+            case 'diastolic':
+              units = 'mmHg'
+              break;
+            case 'bpm':
+              units = 'bpm'
+              break;
+            case 'spo2':
+              units = '%'
+              break;
+            default:
+              break;
+          }
+          console.log('element', element)
           vitalsData.push({
             type: element.type,
             value: Number(element.value),
             takeTime: timeStamp(addVitalForm.takeTime),
             comment: addVitalForm.comment,
             deviceType: idDevice,
+            units: units,
+            createdType: 'Staff',
+            deviceInfo: deviceInfo,
           })
         });
         vitalsData.splice(0, 1)
@@ -162,9 +186,12 @@ export default {
         vitalsData = [{
           type: addVitalForm.type,
           value: Number(addVitalForm.value),
+          takeTime: timeStamp(addVitalForm.takeTime),
           comment: addVitalForm.comment,
           deviceType: idDevice,
-          takeTime: timeStamp(addVitalForm.takeTime),
+          units: 'mg/dl',
+          createdType: 'Staff',
+          deviceInfo: deviceInfo,
         }]
       }
       const data = {

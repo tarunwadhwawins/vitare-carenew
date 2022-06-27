@@ -74,3 +74,8 @@ export const loadingStatus = (state)=>{
         return state.removalReason
     })
   }
+  export const apiCounter = (state)=>{
+    return computed(()=>{
+        return state.apiCounter
+    })
+  }
