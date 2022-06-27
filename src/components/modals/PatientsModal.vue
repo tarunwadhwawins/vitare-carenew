@@ -1032,7 +1032,9 @@ export default defineComponent({
     const referalForm = reactive({
       ...referal,
     });
-
+const insuranceDataReset = reactive({
+  ...insuranceData
+    });
     function newReferral() {
       if (ShowReferral.value == false) {
         ShowReferral.value = true;
@@ -1122,7 +1124,7 @@ export default defineComponent({
         Object.assign(referal, referalForm);
         referal.referral = patients.value.patientReferralSource.id;
       }
-      if (patients.value.patientInsurance != null) {
+      if (patients.value.patientInsurance != null && props.isEdit) {
         Object.assign(insuranceData, patients.value.patientInsurance);
       }
 
@@ -1388,13 +1390,14 @@ export default defineComponent({
         store.state.patients.patientConditions = null
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
+        store.state.patients.patientInsurance = "";
       store.commit("resetCounter");
       clearValidtion()
       Object.assign(demographics, form);
       isValueChanged.value = false;
       emergencyContactForm.sameAsPrimary = false;
       responsiblePersonForm.self = false;
-      
+      Object.assign(insuranceData, insuranceDataReset)
       Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
       Object.assign(referal, referalForm);
       Object.assign(emergencyContactForm, emergencyForm);

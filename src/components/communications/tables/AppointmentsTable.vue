@@ -4,6 +4,9 @@
       <div class="documentsTab">
       <a-button @click="showAddAppointmentModal()" type="primary">{{ "Add Appointment" }}</a-button>
       <a-table rowKey="id" :columns="appointmentColumns" :data-source="patientAppointmentsList" :pagination="false">
+        <template #staff="{record}" >
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}">{{ record.staff.fullName }}</router-link>
+    </template>
         <template #flag="{ record }">
           <Flags :flag="record.flagColor" :data="record" />
         </template>
@@ -39,7 +42,6 @@ export default {
   setup() {
     const store = useStore()
     const addAppointmentVisible = ref(false)
-
     const patientAppointmentsList = computed(() => {
       return store.state.appointment.patientAppointmentsList
     })
@@ -59,6 +61,9 @@ export default {
         dataIndex: "staff",
         key: "staff",
         width: "20%",
+        slots: {
+      customRender: "staff",
+    },
       },
       // {
       //   title: "Patient",

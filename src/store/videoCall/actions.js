@@ -59,10 +59,12 @@ export const appointmentCalls = async ({commit},data) => {
 
 
 export const acceptVideoCallDetails = async ({commit},id) => {
+  let status =false
   commit('loadingStatus', true)
   await serviceMethod.common("get", `user/${id}`, null, null).then((response) => {
     commit('acceptVideoCallDetails', response.data.data);
     commit('loadingStatus', false)
+    status =true
   }).catch((error) => {
     if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -80,6 +82,7 @@ export const acceptVideoCallDetails = async ({commit},id) => {
       commit('loadingStatus', false)
     }
   })
+  return status
 }
 
 
@@ -127,3 +130,25 @@ export const guestUser = async ({commit},data) => {
     }
   })
 }
+
+export const startCall = async ({commit},data) => {
+  commit('loadingStatus', true)
+  try{
+    await serviceMethod.common("patch", `callRecordCommunication/${data.id}?status=${data.status}`, null, true)
+      commit('loadingStatus', false)
+    }
+  catch(error) {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  }
+}
+
