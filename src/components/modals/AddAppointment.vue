@@ -255,6 +255,7 @@ export default {
 				closeValue.value = true
                 if (props.patientId != null && route.name == 'PatientSummary') {
                     store.dispatch('latestAppointment', patientUdid)
+                    store.dispatch('patientAppointmentsList', patientUdid)
                     store.dispatch('patientTimeline', {
                         id: patientUdid,
                         type: ''

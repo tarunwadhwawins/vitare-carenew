@@ -42,7 +42,7 @@
           <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
         </div>
         <div v-if="latestAppointment != null" class="thumb-desc">
-         <a href="javascript:void(0)" @click="appointmentShow();actionTrack(paramsId,302,'patient')" >
+         <a href="javascript:void(0)" @click="appointmentShow()" >
           {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
           </a>
         </div>
@@ -185,8 +185,13 @@
     <ConditionsModal v-if="conditionsVisible" v-model:visible="conditionsVisible" @closeModal="handleOk" />
     <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
     <DeviceDetailModal v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-<AppointmentListing v-model:visible="appointmentVisible" :appointments="latestAppointment" v-if="latestAppointment"/>
+   
+    <a-modal width="70%" v-model:visible="appointmentShowVisible" title="Appointment" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
+<AppointmentsTable v-if="appointmentShowVisible == true" :patientId="patientDetails.id" />
+    </a-modal>
   </div>
+  
+  
 </template>
 
 <script>
@@ -214,6 +219,7 @@ import {
 } from '@/commonMethods/commonMethod';
 
 import ReferralViewModal from "@/components/patients/patientSummary/modals/ReferralViewModal"
+import AppointmentsTable from "@/components/communications/tables/AppointmentsTable"
 export default defineComponent({
   components: {
     WarningOutlined,
@@ -245,13 +251,13 @@ export default defineComponent({
     CoordinatorsListingModal: defineAsyncComponent(()=>import("@/components/modals/CoordinatorsListingModal")),
     ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
     ReferralViewModal,
-    AppointmentListing:defineAsyncComponent(()=>import("@/components/appoinment-calendar/modals/AppointmentListing"))
+    AppointmentsTable
   },
   setup() {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
-    const appointmentVisible = ref(false)
+    const appointmentShowVisible = ref(false)
     const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
     const isPhysicianEdit = ref(false);
@@ -285,7 +291,9 @@ export default defineComponent({
     const staffType = ref(0);
     const title = ref(null);
     const referralView = ref(false)
-
+const patientAppointmentsList = computed(() => {
+      return store.state.appointment.patientAppointmentsList
+    })
     function referral(){
       referralView.value=true
     }
@@ -295,6 +303,7 @@ export default defineComponent({
          // store.dispatch("patientConditions", route.params.udid)
         //store.dispatch('responsiblePerson', route.params.udid)
         store.dispatch('emergencyContact', route.params.udid)
+        store.dispatch('patientAppointmentsList', route.params.udid)
         store.dispatch('familyMembersList', route.params.udid)
         store.dispatch('latestAppointment', route.params.udid)
         store.dispatch('latestTask', route.params.udid)
@@ -620,10 +629,10 @@ const checkFieldsData = computed(()=>{
      
     }
     function appointmentShow (){
-      appointmentVisible.value = true
+      appointmentShowVisible.value = true
     }
     return {
-      
+      patientAppointmentsList,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       actionTrack,
@@ -723,8 +732,9 @@ const checkFieldsData = computed(()=>{
       referral,
       referralDetail:store.getters.referralDetail,
       flagTimeLineButton,
-      appointmentVisible,
-      appointmentShow
+      appointmentShowVisible,
+      appointmentShow,
+   
       
     }
   }
