@@ -90,7 +90,7 @@
     <template #type="{ record }">
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ 'App Message' }}</span>
+          <span>{{ record.type }}</span>
         </template>
         <a class="icons" v-if="record.type == 'App Message'">
           <CommentOutlined />
@@ -98,15 +98,15 @@
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t("communications.communicationsModal.call") }}</span>
+          <span>{{ record.type }}</span>
         </template>
-        <a class="icons" v-if="record.type == 'Call'">
+        <a class="icons" v-if="record.type == 'App Call'">
           <PhoneOutlined />
         </a>
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t("communications.communicationsModal.email") }}</span>
+          <span>{{ record.type }}</span>
         </template>
         <a class="icons" v-if="record.type == 'Email'">
           <MailOutlined />
@@ -114,7 +114,7 @@
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t("communications.communicationsModal.reminder") }}</span>
+          <span>{{ record.type }}</span>
         </template>
         <a class="icons" v-if="record.type == 'Reminder'">
           <AlertOutlined />

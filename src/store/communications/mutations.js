@@ -35,6 +35,7 @@ export const callPlannedSuccess = (state, count) => {
           rotate: -45,
         },
         categories: count.map((item) => { return item.text }),
+        ids: count.map((item) => { return item.staffId }),
       },
       yaxis: yaxis("Number of Calls"),
     },
