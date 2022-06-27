@@ -71,8 +71,11 @@ export default defineComponent({
         })
       }
     })
-
+ const patient = computed(() => {
+      return store.state.patients.closeModal;
+    });
     function addCriticalNote() {
+    
       if(props.criticalNoteId) {
         store.dispatch("updateCriticalNote", {
           patientId: patientId,
@@ -81,14 +84,15 @@ export default defineComponent({
         }).then(() => {
           store.dispatch('criticalNotesList', patientId);
           store.dispatch('patientCriticalNotes', patientId);
-          emit("saveModal", false)
-          emit("closeModal")
-          if(patient.value && patientId != null) {
+          
+          if(patientId) {
             store.dispatch('patientTimeline', {
               id:patientId,
               type:''
             });
           }
+          emit("saveModal", false)
+          emit("closeModal")
         })
       }
       else {
@@ -99,21 +103,20 @@ export default defineComponent({
         }).then(() => {
           store.dispatch('criticalNotesList', patientId);
           store.dispatch('patientCriticalNotes', patientId);
-          emit("saveModal", false)
-          emit("closeModal")
-          if(patient.value && patientId != null) {
+          
+          if(patientId) {
             store.dispatch('patientTimeline', {
               id:patientId,
               type:''
             });
           }
+          emit("saveModal", false)
+          emit("closeModal")
         })
       }
     }
 
-    const patient = computed(() => {
-      return store.state.patients.closeModal;
-    });
+   
 
     const form = reactive({
       ...notes,
