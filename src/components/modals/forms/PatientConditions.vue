@@ -85,7 +85,7 @@ export default {
     })
 
     const errorMsg = computed(() => {
-      return store.state.common.errorMsg;
+      return store.state.patients.errorMsg;
     });
 
     const isConditionEdit = computed(() => {
