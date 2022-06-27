@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { watchEffect ,onUnmounted, ref, computed} from 'vue';
+import { watchEffect ,onUnmounted, computed} from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
