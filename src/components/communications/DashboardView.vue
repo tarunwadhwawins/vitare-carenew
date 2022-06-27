@@ -10,11 +10,11 @@
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
-      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="283" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="283" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="Communications" listView="list" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">
-      <ApexChart :title="$t('global.callQueue')" type="bar" :height="283" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
+      <ApexChart :title="$t('global.callQueue')" type="bar" :height="283" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" listView="list" />
     </a-col>
     
     <a-col :sm="12" :xs="24">
@@ -27,7 +27,7 @@
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="communicationTypes">
-      <ApexChart :title="$t('communications.communicationType')" type="area" :height="283" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
+      <ApexChart :title="$t('communications.communicationType')" type="area" :height="283" :options="communicationTypes.calloption" :series="communicationTypes.callseries" linkTo="Communications" listView="list" />
     </a-col>
     
     <template #action>
@@ -44,7 +44,10 @@
   import { ref, watchEffect, computed } from 'vue'
   import { useStore } from "vuex"
   import moment from 'moment'
-  import {  startimeAdd,  endTimeAdd,  timeStamp,} from '@/commonMethods/commonMethod'
+  import { startimeAdd, endTimeAdd, timeStamp } from '@/commonMethods/commonMethod'
+import { useRoute } from 'vue-router';
+
+// import { useRouter } from 'vue-router';
   export default {
     components: {
       LongCard,
@@ -53,6 +56,7 @@
     },
     setup() {
       const store = useStore()
+      const route = useRoute()
       //const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
       
       const fromDate = ref(moment())
@@ -99,21 +103,29 @@
         },
       ];
       
+      const dateFormat = ref('')
+      let from = moment()
+      let to = moment()
       watchEffect(() => {
-        store.dispatch("callPlanned",{
-                fromDate: fromDate.value,
-                toDate: toDate.value})
-        store.dispatch("callStatus", {
-                fromDate: timeStamp(startimeAdd(fromDate.value)),
-                toDate: timeStamp(endTimeAdd(toDate.value))})
-        store.dispatch("communicationTypes",{
-                fromDate: fromDate.value,
-                toDate: toDate.value})
-        //store.dispatch("futureAppointments")
-        store.dispatch("newRequests")
-        store.dispatch("communicationsCount", {
-                fromDate: fromDate.value,
-                toDate: toDate.value})
+        if(route.name == "Communications") {
+          dateFormat.value = {
+            fromDate: from ? timeStamp(startimeAdd(from)) : '',
+            toDate: to ? timeStamp(endTimeAdd(to)) : ''
+          }
+          store.commit("dateFilter", dateFormat.value)
+          store.dispatch("callPlanned",{
+                  fromDate: fromDate.value,
+                  toDate: toDate.value})
+          store.dispatch("callStatus", dateFormat.value)
+          store.dispatch("communicationTypes",{
+                  fromDate: fromDate.value,
+                  toDate: toDate.value})
+          //store.dispatch("futureAppointments")
+          store.dispatch("newRequests")
+          store.dispatch("communicationsCount", {
+                  fromDate: fromDate.value,
+                  toDate: toDate.value})
+        }
       })
       
       const callPlanned = computed(() => {
@@ -134,7 +146,6 @@
       const communicationsCount = computed(() => {
         return store.state.communications.communicationsCount
       })
-      
       
       return {
         activeKey: ref(1),
