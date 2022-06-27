@@ -134,8 +134,7 @@ export const guestUser = async ({commit},data) => {
 export const startCall = async ({commit},data) => {
   commit('loadingStatus', true)
   try{
-      let response = await serviceMethod.common("patch", `callRecordCommunication/${data.id}?status=${data.status}`, null, true)
-      commit('startCall', response.data.data);
+    await serviceMethod.common("patch", `callRecordCommunication/${data.id}?status=${data.status}`, null, true)
       commit('loadingStatus', false)
     }
   catch(error) {
