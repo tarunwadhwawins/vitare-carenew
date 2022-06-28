@@ -69,7 +69,8 @@ export default {
     
     otherParam:String,
 
-    height:String
+    height:String,
+    islimit:Number
   },
   setup(props,{emit}) {
     const store = useStore();
@@ -82,7 +83,7 @@ export default {
     let filter= ''
   function checkDate(){
      filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-     dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+     dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : store.getters.dateFilter.value ? "&fromDate="+store.getters.dateFilter.value.fromDate+"&toDate="+store.getters.dateFilter.value.toDate : "&fromDate=&toDate="
     }
      let scroller = "";
         onMounted(() => {
@@ -144,6 +145,7 @@ export default {
     }
       const handleTableChange = (pag, filters, sorter) => {
         checkDate()
+        let islimit = props.islimit? "&islimit="+props.islimit:"&islimit="
         let otherParam = props.otherParam?props.otherParam:''
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
@@ -156,7 +158,7 @@ export default {
         });
         store.dispatch(
           "escalation",
-          "?page=" + store.getters.searchTable.value +dateFilter + filter + orderParam+otherParam
+          "?page=" + store.getters.searchTable.value +dateFilter + filter + orderParam+otherParam+islimit
         );
       } else {
         store.dispatch("orderTable", {
@@ -168,7 +170,7 @@ export default {
             store.getters.searchTable.value +
             store.getters.orderTable.value.data+otherParam+
             dateFilter + filter +
-            store.getters.orderTable.value.data
+            store.getters.orderTable.value.data+islimit
         );
       }
     };

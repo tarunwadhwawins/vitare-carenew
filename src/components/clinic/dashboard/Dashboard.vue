@@ -23,11 +23,11 @@
                     <template #extra v-if="escalationList.length > 0">
                         <router-link :to="{name:'Escalation'}">View All</router-link>
                     </template>
-                    <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" :height="286" />
+                    <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" :height="286" :islimit="5"/>
                 </a-card>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  clicalTask">
-                <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list"></ApexChart>
+                <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list" ></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
                 <a-card title="My Tasks List" class="common-card" style="height:436px">
@@ -36,7 +36,7 @@
                             view: 'list'
                         }}">View All</router-link>
                     </template>
-                    <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns" @dashboard="taskApiCall"></TaskTable>
+                    <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns" @dashboard="taskApiCall" :islimit="5"></TaskTable>
                 </a-card>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,1) && patientsFlag">
@@ -82,7 +82,7 @@ import TasksModal from "@/components/modals/TasksModal";
 const columnData = [{
         title: "Name",
         dataIndex: "patientName",
-        //sorter: true,
+        sorter: true,
         width: '17%',
         slots: {
             customRender: "patientName",
@@ -92,7 +92,7 @@ const columnData = [{
         title: "Type",
         dataIndex: "escalationType",
         width: '20%',
-        //sorter: true,
+    sorter: true,
 
         slots: {
             customRender: "escalationType",
@@ -103,11 +103,12 @@ const columnData = [{
         title: "Due Date",
         dataIndex: "dueBy",
         width: '17%',
-        //sorter: true,
+        sorter: true,
     },
     {
         title: "Assigned By",
         dataIndex: "assignedBy",
+        sorter: true,
         slots: {
             customRender: "escalationAssignedBy",
         }
@@ -134,7 +135,7 @@ const columnData = [{
 const tasksListColumns = [{
         title: 'Task Name',
         dataIndex: 'title',
-
+sorter: true,
         slots: {
             customRender: 'taskName'
         }
@@ -149,7 +150,7 @@ const tasksListColumns = [{
     {
         title: 'Category',
         dataIndex: 'category',
-        //sorter: true,
+        sorter: true,
         slots: {
             customRender: 'category'
         }
@@ -157,13 +158,13 @@ const tasksListColumns = [{
     {
         title: 'Start Date ',
         dataIndex: 'startDate',
-
+sorter: true
     },
 
     {
         title: 'Due Date ',
         dataIndex: 'dueDate',
-
+sorter: true
     },
 
 ];
@@ -243,7 +244,7 @@ export default {
             store.dispatch("callStatus", dateFormate)
             store.dispatch("patientsFlag", dateFormate)
 
-            store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate + '&status=notIn');
+            store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate + '&islimit=5');
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
             store.dispatch("escalation", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate + "&islimit=5")
@@ -254,6 +255,10 @@ export default {
         });
 
         onMounted(() => {
+             store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
             store.state.escalations.escalation = ''
             store.state.tasks.task = ''
            // if (timeLineButton.value == null) {
@@ -302,6 +307,10 @@ export default {
         onUnmounted(() => {
             store.state.escalations.escalation = ''
             store.state.tasks.task = ''
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
             
         })
         return {
