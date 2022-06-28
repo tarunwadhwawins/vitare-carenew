@@ -79,6 +79,7 @@ export default {
         height: Number,
         tasksListColumns: Array,
         fromAll: Boolean,
+        islimit:Number
     },
     setup(props, {
         emit
@@ -97,7 +98,7 @@ export default {
         let filter = ''
 
         function checkDate() {
-            dateFilter = store.getters.otherFilters.value ? route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" : "&fromDate=&toDate="
+            dateFilter = store.getters.otherFilters.value ? route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" : store.getters.dateFilter.value ? "&fromDate="+store.getters.dateFilter.value.fromDate+"&toDate="+store.getters.dateFilter.value.toDate : "&fromDate=&toDate="
             filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
         }
        
@@ -185,7 +186,9 @@ export default {
         }
         const handleTableChange = (pag, filters, sorter) => {
             checkDate()
+           let islimit = props.islimit? "&islimit="+props.islimit:"&islimit="
             if (sorter.order) {
+                
                 let order = sorter.order == "ascend" ? "ASC" : "DESC";
                 let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
                 store.dispatch("orderTable", {
@@ -198,7 +201,7 @@ export default {
                     "tasksList",
                     "?page=" +
                     dateFilter + filter +
-                    orderParam
+                    orderParam+islimit
 
                 );
             } else {
@@ -210,7 +213,7 @@ export default {
                     "?page=" +
                     store.getters.searchTable.value +
                     dateFilter + filter +
-                    store.getters.orderTable.value.data
+                    store.getters.orderTable.value.data+islimit
                 );
             }
         };
