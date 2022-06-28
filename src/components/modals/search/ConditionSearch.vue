@@ -48,7 +48,9 @@ export default defineComponent({
       context.emit("update:modelValue", event.target.value);
     };
     watchEffect(() => {
+      
       if (props.close) {
+       
         Services.singleDropdownSearch(
           "",
           (d) => (conditionData.value = d),

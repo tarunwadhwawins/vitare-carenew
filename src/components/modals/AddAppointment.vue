@@ -254,6 +254,7 @@ export default {
             }).then(() => {
 				closeValue.value = true
                 if (props.patientId != null && route.name == 'PatientSummary') {
+                    
                     store.dispatch('latestAppointment', patientUdid)
                     store.dispatch('patientAppointmentsList', patientUdid)
                     store.dispatch('patientTimeline', {
@@ -276,6 +277,7 @@ export default {
                     handleCancel()
                 }
                 if (props.isChat) {
+                    store.dispatch('latestAppointment', patientUdid)
                     store.dispatch('patientAppointmentsList', patientUdid)
                 }
                 emit("closeModal", {
@@ -308,6 +310,7 @@ export default {
         };
 
         function checkChangeInput() {
+            store.state.careCoordinator.errorMsg = ''
             store.commit('checkChangeInput', true)
         }
 
