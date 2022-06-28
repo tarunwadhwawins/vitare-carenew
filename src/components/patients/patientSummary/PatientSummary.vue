@@ -48,6 +48,7 @@
               </div>
               <div v-if="button == 2">
                 <TimelineView/>
+                <TableLoader />
               </div>
               <div v-if="button == 3">
                 <CarePlanView/>

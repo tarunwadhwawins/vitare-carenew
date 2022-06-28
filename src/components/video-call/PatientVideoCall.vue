@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="98%" title="Video Call" centered :footer="false" :maskClosable="false" @cancel="hangUp()">
+<a-modal max-width="1140px" width="98%" title="Video Call"  centered :footer="false" :maskClosable="false" @cancel="hangUp()">
     <a-layout-content>
         <div class="common-bg">
             <a-row>
