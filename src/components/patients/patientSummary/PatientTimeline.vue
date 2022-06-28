@@ -27,7 +27,7 @@
     </div>
 
     <a-timeline class="defaultTimeline" style="height: calc(100vh - 330px)">
-        <TableLoader />
+        <!-- <TableLoader /> -->
         <div v-if="
           patientTimeline &&
           patientTimeline != null &&
@@ -130,7 +130,7 @@ import {
 } from "vue-demi";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import TableLoader from "@/components/loader/TableLoader";
+// import TableLoader from "@/components/loader/TableLoader";
 import moment from "moment";
 export default {
     components: {
@@ -145,7 +145,7 @@ export default {
         // InfoCircleOutlined,
         FlagOutlined,
         CloseCircleOutlined,
-        TableLoader,
+        // TableLoader,
         //CheckCircleOutlined,
         PatientFlagsModal: defineAsyncComponent(() =>
             import("@/components/modals/PatientFlagsModal")

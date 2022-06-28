@@ -142,6 +142,7 @@ export default {
         });
 
         onMounted(() => {
+            store.commit("dateFilter",'')
             // store.dispatch("escalation")
             if (route.query.filter || route.query.fromDate) {
                 let filter = route.query.filter ? route.query.filter : ''
@@ -177,6 +178,7 @@ export default {
         onUnmounted(() => {
             store.commit("filter", "");
             store.commit("dataFilter", "");
+            store.commit("dateFilter",'')
         });
 
         watchEffect(() => {

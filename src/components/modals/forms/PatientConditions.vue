@@ -5,7 +5,7 @@
       <a-col :md="24" :sm="24" :xs="24" :xl="12">
         <div class="form-group">
           <a-form-item :label="$t('patient.patientConditions')" name="condition" :rules="[{ required: true, message: $t('patient.patientConditions')+' '+$t('global.validation') }]">
-            <ConditionCodeDropDown :editDataCondition="editDataCondition"  v-model:value="conditions.condition" @handleConditionChange="handleConditionChange($event)" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
+            <ConditionCodeDropDown :editDataCondition="editDataCondition"  v-model:value="conditions.condition" @handleConditionChange="handleConditionChange($event)" @change="changedValue" mode="multiple" :disabled="isConditionEdit" :close="close"/>
             <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.condition?errorMsg.condition[0]:''" />
           
           </a-form-item>
@@ -67,7 +67,7 @@ export default {
     const conditionUdid = ref(null)
     const formRef = ref()
     const isEnabledEndDate = ref(false)
-
+const close = ref(false)
     const patientId = props.idPatient ? props.idPatient : route.params.udid
 
     const conditions = reactive({
@@ -102,7 +102,7 @@ export default {
     const healthConditions = computed(() => {
       return store.state.patients.healthConditions;
     });
-    console.log('healthConditions', healthConditions.value)
+    
 
     const changedValue = (value) => {
       store.commit("errorMsg", null);
@@ -132,9 +132,14 @@ export default {
         })
         .then(() => {
           if(!errorMsg.value){
+            close.value = true
           store.dispatch("patientConditions", patientId);
           reset()
           isEnabledEndDate.value = false
+          setTimeout(()=>{
+close.value = false
+          },100)
+          
           }
         });
       }
@@ -150,12 +155,17 @@ export default {
           conditionUdid: conditionUdid.value ? conditionUdid.value : conditionDetails.value.id,
         })
         .then(() => {
+          close.value = true
           store.commit('isConditionEdit', false)
           store.dispatch("patientConditions", patientId);
           reset()
           isEnabledEndDate.value = false
+          setTimeout(()=>{
+close.value = false
+          },100)
         });
       }
+     
     };
 
     function reset() {
@@ -185,6 +195,7 @@ export default {
       isConditionEdit,
       globalDateFormat,
       isEnabledEndDate,
+      close,
     }
   }
 }

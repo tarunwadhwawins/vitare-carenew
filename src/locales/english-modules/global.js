@@ -55,7 +55,7 @@ const global = {
   status:'Status',
   filter:'Filter',
   taskCount:'Task Count',
-  reports:'Billing Report',
+  reports:'Billing',
   reportName:'Report Name',
   startDate:'Start Date',
   endDate:'End Date',

@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()" zIndex="1040">
+	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()" :maskClosable="true" zIndex="1040">
 		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
@@ -172,6 +172,7 @@ export default {
 				});
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
+						handleClear()
 						emit("closeModal", {
 							modal: 'addFamilyMember',
 							value: false
@@ -188,6 +189,7 @@ export default {
 				})
 			}
 			else {
+				handleClear()
 				emit("closeModal", {
 					modal: 'addFamilyMember',
 					value: false
