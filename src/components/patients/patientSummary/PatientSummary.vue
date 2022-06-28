@@ -48,6 +48,7 @@
               </div>
               <div v-if="button == 2">
                 <TimelineView/>
+                <TableLoader />
               </div>
               <div v-if="button == 3">
                 <CarePlanView/>
@@ -67,7 +68,7 @@
 
     <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
     <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
-    
+    <VideoCallVue  v-if="videoModal && conferenceId" v-model:visible="videoModal" :conferenceId ="conferenceId"/>
   </div>
 </template>
 
@@ -84,9 +85,9 @@ import TableLoader from "@/components/loader/TableLoader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 // import StartCallModal from "@/components/modals/StartCallModal";
-
+// import VideoCallVue from "../../video-call/videoCall.vue";
 import dayjs from "dayjs"; 
-import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
+import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, defineAsyncComponent} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -118,6 +119,7 @@ export default {
     CriticalNotes,
     ChatWithPatientInformation,
     // StartCallModal,
+    VideoCallVue:defineAsyncComponent(()=>import('@/components/video-call/PatientVideoCall.vue'))
   },
   setup() {
     localStorage.removeItem('timeLogId')
@@ -136,7 +138,7 @@ export default {
     const bloodglucosevisible = ref(false);
     const chatWithPatientInfoVisible = ref(false);
     const cancelButton = ref(localStorage.getItem('cancelButton'))
-    
+    const videoModal = ref(false)
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
@@ -406,16 +408,18 @@ export default {
     const startCall = () => {
       store.commit('startOn', true);
       iconLoading.value = true
+      videoModal.value = true
       store.commit('loadingStatus', true)
       store.dispatch("appointmentCalls", startCallForm).then((response)=>{
         iconLoading.value = false
         if(response==true && conferenceId.value){
-          store.commit('loadingStatus', false)
-          let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
-          // window.open(redirect.href, '_blank');
-          window.location.href = redirect.href;
+          // store.commit('loadingStatus', false)
+          // let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
+          // window.location.href = redirect.href;
         }
       })
+
+      
      
     }
 
@@ -437,6 +441,7 @@ export default {
     }
 
     return {
+      videoModal,
       patientDetails,
       form,
       startCallForm,
