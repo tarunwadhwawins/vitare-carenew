@@ -46,7 +46,7 @@ export default {
     watchEffect(() => {
       if(route.name == "Communications") {
         if(route.query.filter) {
-          if(route.query.filter != 'Completed' || route.query.filter != 'In Queue') {
+          if(route.query.filter != 'Completed' || route.query.filter != 'In Queue' || route.query.filter != 'App Message' || route.query.filter != 'App Call' || route.query.filter != 'Email') {
             store.dispatch("staffSummary", route.query.filter);
           }
           store.dispatch('communicationsList', "?filter="+route.query.filter+'&fromDate='+route.query.fromDate+'&toDate='+route.query.toDate)
@@ -126,7 +126,7 @@ export default {
         }
       }
       else {
-        if(route.query.filter && (route.query.filter != 'Completed' || route.query.filter != 'In Queue')) {
+        if(route.query.filter && (route.query.filter != 'Completed' || route.query.filter != 'In Queue' || route.query.filter != 'App Message' || route.query.filter != 'App Call' || route.query.filter != 'Email')) {
           store.dispatch("communicationsList", "?filter=" + route.query.filter)
           setTimeout(() => {
             router.replace({
