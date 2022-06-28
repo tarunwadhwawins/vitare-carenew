@@ -139,6 +139,11 @@ export const communicationTypesSuccess = (state, response) => {
       yaxis: yaxis('Number of Count'),
     },
     callseries: callSeries,
+    states: {
+      active: {
+        allowMultipleDataPointsSelection: false
+      }
+    }
   }
 }
 
