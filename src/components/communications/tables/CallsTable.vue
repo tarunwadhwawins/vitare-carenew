@@ -1,9 +1,10 @@
 <template>
-  <a-table rowKey="id" :columns="communicationColumns" :data-source="callDetails" :footer="false" :pagination="false">
+  <a-table v-if="callDetails && callDetails.length > 0" rowKey="id" :columns="communicationColumns" :data-source="callDetails" :footer="false" :pagination="false">
     <template #staff="{record}">
       <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: record.staffId }}">{{ record.staff }}</router-link>
     </template>
   </a-table>
+  <a-alert v-else class="mb-24" message="No one joined the Call" type="error" />
 </template>
 
 <script>

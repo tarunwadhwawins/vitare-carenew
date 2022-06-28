@@ -381,7 +381,7 @@ export default {
     }
 
     const viewData = (e) => {
-      if(e.type == 'Call') {
+      if(e.type == 'App Call') {
         store.dispatch('callDetails', e.id).then(() => {
           visibleCommunication.value = true;
         })
