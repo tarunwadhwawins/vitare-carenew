@@ -304,7 +304,7 @@ export default {
 }
 .callRightWrapper .body {
   overflow-y: auto;
-  max-height: calc(100vh - 450px);
+  max-height: calc(100vh - 620px);
   overflow-x: hidden;
 }
 .callRightWrapper .header .patientInfo .patientImg .info {
