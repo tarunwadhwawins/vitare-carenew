@@ -123,7 +123,7 @@ export default defineComponent({
         GlobalCodeDropDown,
     },
     props: {
-        taskId: Number,
+        taskId: Boolean,
         onlyView: Boolean,
         patientId: {
             type: Number,
