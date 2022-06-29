@@ -88,7 +88,7 @@ export default defineComponent({
           if(patientId) {
             store.dispatch('patientTimeline', {
               id:patientId,
-              type:''
+              type:store.state.patients.tabvalue.join(",")
             });
           }
           emit("saveModal", false)
@@ -107,7 +107,7 @@ export default defineComponent({
           if(patientId) {
             store.dispatch('patientTimeline', {
               id:patientId,
-              type:''
+              type:store.state.patients.tabvalue.join(",")
             });
           }
           emit("saveModal", false)

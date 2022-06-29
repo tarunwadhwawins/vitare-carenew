@@ -120,7 +120,7 @@ export default defineComponent({
             if(route.params.udid) {
             store.dispatch('patientTimeline', {
               id:route.params.udid,
-              type:''
+              type:store.state.patients.tabvalue.join(",")
             });
           }
           });
