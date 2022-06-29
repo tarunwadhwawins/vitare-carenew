@@ -1408,13 +1408,17 @@ const insuranceDataReset = reactive({
 
     function closeModal() {
       
-      // alert(isValueChanged.value)
+       
       if (isValueChanged.value || bitrixFormCheck.value) {
         // emit("saveModal", true)
+        // emit("closeModal", {
+        //   modal: "editPatient",
+        //   value: false,
+        // })
         emit("closeModal", {
-          modal: "editPatient",
-          value: false,
-        })
+              modal: "editPatient",
+              value: true,
+            });
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
             //store.commit("addDemographic", null);

@@ -182,11 +182,14 @@ export default defineComponent({
                     })
                     .then(() => {
                         closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                         if (props.onlyView) {
                             emit("clinicalDashboard")
                         } else {
 
-                            closeValue.value = false;
+                            
                             emit("closeModal", {
                                 modal: "addTask",
                                 value: false,
@@ -214,12 +217,15 @@ export default defineComponent({
                     })
                     .then(() => {
                         closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                         store.commit("checkChangeInput", false);
                         if (route.name == "PatientSummary") {
                             store.dispatch("latestTask", route.params.udid);
                         }
                         handleCancel()
-                        closeValue.value = false;
+                        
                         Object.assign(taskForm, form);
                         emit("closeModal", {
                             modal: "addTask",

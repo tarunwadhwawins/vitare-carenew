@@ -51,7 +51,7 @@
 </a-row>
 
 <!--modal-->
-<PatientsModal v-model:visible="PatientsModal" @closeModal="handleOk($event)" />
+<PatientsModal v-model:visible="PatientsModal" @closeModal="handleOk($event)"  v-if="PatientsModal"/>
 <!--end-->
 </template>
 
