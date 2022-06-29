@@ -17,14 +17,32 @@ body.test {
                     left: 0 !important;
                     transition: all 0.5s !important;
                     @media (min-width: 1200px) {
-                        left: -200px !important;
+                        // left: -200px !important;
+                        left: -155px !important;
                         transition: all 0.5s !important;
                     }
+                    .ant-layout-sider-children {
+                        .menuList {
+                            .ant-menu {
+                                a {
+                                    .ant-menu-item {
+                                        text-align: right;
+                                        transition: all 0.5s !important;
+                                        .menuItem {
+                                            display: none;
+                                            transition: all 0.5s !important;
+                                        }
+                                    }
+                                } 
+                            } 
+                        } 
+                    } 
                 }
             }
         }
         .ant-layout-has-sider {
-            padding-left: 0 !important;
+            padding-left: 45px !important;
+            transition: all 0.5s !important;
         }
     }
 }
