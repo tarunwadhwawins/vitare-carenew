@@ -92,6 +92,8 @@ export default {
 							path: props.linkTo,
 							query: {
 								view: props.listView,
+								fromDate: store.getters.dateFilter.value.fromDate,
+								toDate: store.getters.dateFilter.value.toDate,
 								filter: filter
 							}
 						})

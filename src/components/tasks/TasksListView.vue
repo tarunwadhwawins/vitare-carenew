@@ -99,14 +99,14 @@ const tasksListColumns = [{
     //     }
 
     // },
-    {
-        title: 'Type',
-        dataIndex: 'taskType',
-        sorter: true,
-        slots: {
-            customRender: 'taskType'
-        }
-    },
+    // {
+    //     title: 'Type',
+    //     dataIndex: 'taskType',
+    //     sorter: true,
+    //     slots: {
+    //         customRender: 'taskType'
+    //     }
+    // },
     {
         title: 'Assigned By',
         dataIndex: 'assignedBy',
