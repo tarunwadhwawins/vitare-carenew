@@ -29,7 +29,7 @@
             </template>
             <a class="icons">
                 <!-- <KeyOutlined @click="resetPasseord(record.id)" /> -->
-                <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
+                <KeyIcon height=16 width=16 alt="Reset Password" @click="resetPasseord(record.id)"/>
             </a>
         </a-tooltip>
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,39)">

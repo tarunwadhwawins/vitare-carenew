@@ -13,10 +13,7 @@ export default {
             type: Object,
             required: true
         },
-        timeline: {
-            type: Array,
-            required: true,
-        },
+        timeline:Array,
         buttonCommit:String,
         custom: Boolean,
         commit: String

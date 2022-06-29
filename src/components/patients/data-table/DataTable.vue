@@ -31,7 +31,7 @@
                     <span>{{'Reset Password'}}</span>
                 </template>
                 <a class="icons">
-                    <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
+                    <KeyIcon height=16 width=16 alt="Reset Password" @click="resetPasseord(record.id)"/>
                     <!-- <img src="@/assets/images/key.svg" > -->
                     <!-- <KeyOutlined @click="resetPasseord(record.id)" /> -->
                 </a>
