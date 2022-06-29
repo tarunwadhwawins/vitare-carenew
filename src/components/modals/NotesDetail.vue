@@ -6,8 +6,15 @@
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
-            <Flags :flag="record.color" />
+            <Flags :flag="record.color" :data="record" />
           </template>
+          <template #type="{ record }">
+            <span>{{record.type=="patientFlag" ? "Patient Flag" : record.type}}</span>
+          </template>
+          <template #addedBy="{record}">  
+          <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.addedById  }}" v-if="record.addedByType=='staff'">{{record.addedBy}}</router-link> 
+         <router-link :to="{ name: 'PatientSummary', params: { udid:record.addedById }}" v-else>{{record.addedBy}}</router-link> 
+        </template>
         </a-table>
       </a-col>
     </a-row>
@@ -63,6 +70,9 @@ export default defineComponent({
         dataIndex: "type",
         key: "type",
         className: "note-type",
+        slots: {
+          customRender: "type",
+        },
       },
       {
         title: "Note",
@@ -75,6 +85,9 @@ export default defineComponent({
         title: "Added By",
         dataIndex: "addedBy",
         key: "addedBy",
+        slots: {
+          customRender: "addedBy",
+        },
       },
       {
         title: "Flag",

@@ -2,12 +2,12 @@
   <a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
     <template #tags="text">
       <span v-for="tag,i in text.text.data" :key="tag.id">
-        <p>{{i==0?' ':','}}{{ tag.tag }}</p>
+        <p>{{i==0?' ':', '}}{{ tag.tag }}</p>
       </span>
     </template>
     <template #document="{record}">
-      <a :href="record.document" target="_blank">
-        <FileOutlined />
+      <a :href="record.document" download>
+        <DownloadOutlined />
       </a>
     </template>
     <template #action="text">
@@ -33,7 +33,7 @@
 
 <script>
 import { computed } from "vue";
-import { EditOutlined, DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
+import { EditOutlined, DeleteOutlined, DownloadOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -42,7 +42,7 @@ export default {
   components: {
     EditOutlined,
     DeleteOutlined,
-    FileOutlined,
+    DownloadOutlined,
   },
   props: {
     Id: String,

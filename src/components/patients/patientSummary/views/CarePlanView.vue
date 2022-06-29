@@ -4,7 +4,7 @@
       <PatientInfoTop :patientDetails="patientDetails"/>
     </a-col>
     <a-col :span="24">
-      <div class="text-right mb-24">
+      <div class="text-right mb-24 mt-28">
         <a-button class="primaryBtn" @click="AddCarePlan">Add Goal</a-button>
       </div>
       <CarePlanTable/>
@@ -21,6 +21,8 @@ import AddCarePlanModal from "@/components/modals/AddCarePlanModal";
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { watchEffect } from 'vue-demi';
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 export default {
   components: {
     PatientInfoTop,
@@ -43,8 +45,22 @@ export default {
       }
     })
 
-    const handleOk = () => {
-      visibleCarePlanmodal.value = false;
+    const handleOk = (value) => {
+      if(value) {
+        visibleCarePlanmodal.value = true
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            visibleCarePlanmodal.value = false
+            store.commit('checkChangeInput', false)
+          }
+          else {
+            visibleCarePlanmodal.value = true
+          }
+        });
+      }
+      else {
+        visibleCarePlanmodal.value = false
+      }
     };
 
     const AddCarePlan = () => {

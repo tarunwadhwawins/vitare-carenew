@@ -1,10 +1,10 @@
 <template>
-  <a-form ref="formRef" scrollToFirstError=true :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
+  <a-form ref="formRef" scrollToFirstError=true :model="device" name="basic" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-                    <GlobalCodeDropDown @change="handleInventory" v-model:value="device.deviceType" :globalCode="globalCode.deviceType"/>
+                    <GlobalCodeDropDown @change="handleInventory($event); onChange()" v-model:value="device.deviceType" :globalCode="globalCode.deviceType"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
             </div>
@@ -12,7 +12,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-                    <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || device.deviceType==''" v-model:value="device.inventory" :globalCode="patients.inventoryList" @change="handleChange(device.inventory)"/>
+                    <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || device.deviceType==''" v-model:value="device.inventory" :globalCode="patients.inventoryList" @change="handleChange(device.inventory); onChange()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
             </div>
@@ -21,7 +21,7 @@
             <div class="form-group">
                 <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
                     <div >
-                        <a-input size="large"   v-model:value="device.modelNumber"  disabled />
+                        <a-input size="large" @change="onChange()"  v-model:value="device.modelNumber"  disabled />
                     </div>
                     
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" />
@@ -30,21 +30,21 @@
         </a-col>
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
                     <div >
-                        <a-input size="large"    v-model:value="device.serialNumber"  disabled />
+                        <a-input size="large" @change="onChange()" v-model:value="device.macAddress"  disabled />
                     </div>
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
                     <div >
-                        <a-input size="large"   v-model:value="device.macAddress"  disabled />
+                        <a-input size="large" @change="onChange()" v-model:value="device.serialNumber"  disabled />
                     </div>
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
@@ -96,7 +96,7 @@ export default defineComponent({
       type: Number
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const patientId = reactive(props.idPatient);
     const status = ref([]);
@@ -199,16 +199,20 @@ export default defineComponent({
     //     errorSwal(messages.fieldsRequired)
     // };
 
-    function handleChange(id){
+    function handleChange(id) {
       let temp = arrayToObjact(patients.value.inventoryList,id)
-        device.modelNumber = temp.modelNumber,
-        device.serialNumber =temp.serialNumber,
-        device.macAddress = temp.macAddress
+      device.modelNumber = temp.modelNumber,
+      device.serialNumber =temp.serialNumber,
+      device.macAddress = temp.macAddress
     }
 
     onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
+
+    const onChange = () => {
+      emit('onChange')
+    }
 
     return {
       screensPermissions: store.getters.screensPermissions,
@@ -228,6 +232,7 @@ export default defineComponent({
       deviceColumns,
       errorMsg:patients.value.errorMsg,
       formRef,
+      onChange,
     };
   },
 });

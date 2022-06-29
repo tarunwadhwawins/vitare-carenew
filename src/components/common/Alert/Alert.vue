@@ -1,11 +1,10 @@
 <template>
-	<a-alert @close="onCloseAlert(itemId)" v-if="closable" :message="text" :type="type" closable/>
+	<a-alert @close="onCloseAlert(itemId)" v-if="closable" :message="text" :type="type" v-bind:class="isPin ? 'pinClass' : ''" closable/>
 	<a-alert @close="onCloseAlert(itemId)" v-else :message="text" :type="type"/>
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
-import { useStore } from 'vuex'
+
 export default {
 	props: {
 		text: {
@@ -17,27 +16,17 @@ export default {
 		closable: {
 			type: Boolean
 		},
+		isPin: {
+			type: Boolean
+		},
 		itemId: {
 			type: Number
 		},
 	},
 	setup() {
-		const store = useStore()
-		const route = useRoute()
 		
-		const onCloseAlert = (value) => {
-
-			const data = {
-				patientUdid: route.params.udid,
-				criticalNoteUdid: value,
-			}
-			
-			store.dispatch('readCriticalNote', data).then(() => {
-				document.querySelectorAll('.critical-notes ul li')[0].remove();
-				//;
-			});
-			store.state.patients.patientCriticalNotes=''
-			store.dispatch('patientCriticalNotes', route.params.udid)
+		const onCloseAlert = () => {
+			document.querySelectorAll('.critical-notes ul li')[0].remove();
 		}
 
 		return {
@@ -49,4 +38,13 @@ export default {
 
 <style>
 	.ant-alert { width: 100%; }
+	.pinClass {
+		background-color: #fff!important;
+		border: 4px solid #64BF7A !important;
+	}
+	.pinClass .ant-alert-message, .pinClass .anticon.anticon-close {
+		color: #000 !important;
+		font-size: 15px;
+	}
+	
 </style>

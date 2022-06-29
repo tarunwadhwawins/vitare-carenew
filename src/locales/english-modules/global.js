@@ -34,6 +34,7 @@ const global = {
   add:'Add',
   edit:'Edit',
   delete:'Delete',
+  restore:'Restore',
   startTime:'Start Time',
   time:'Time',
   duration:'Duration',
@@ -54,7 +55,7 @@ const global = {
   status:'Status',
   filter:'Filter',
   taskCount:'Task Count',
-  reports:'Reports',
+  reports:'Billing',
   reportName:'Report Name',
   startDate:'Start Date',
   endDate:'End Date',
@@ -73,7 +74,9 @@ const global = {
   resetPassword:'Reset Password',
   submit:'Submit',
   familyMembers:'Family Members',
+  responsiblePersons:'Responsible Persons',
   addFamilyMembers:'Add Family Member',
+  addResponsiblePersons:'Add Responsible Person',
   physicians:'Care Coordinators',
   addPhysician:'Add Care Coordinator',
   careTeam:'Health Team',
@@ -88,6 +91,7 @@ const global = {
   program:'Program',
   isActive:'Active / Inactive',
   level:'Level',
+  placeOfService: 'Place of Service'
 }
 
 

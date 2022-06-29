@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="radioInput" v-else>
 
-                                        <a-radio :value="role.udid">{{ role.name}}</a-radio>
+                                        <a-radio @change="checkChangeInput()" :value="role.udid">{{ role.name}}</a-radio>
                                     </div>
                                 </template>
                             </a-radio-group>
@@ -102,8 +102,11 @@
                         <a-col :span="24">
 
                             <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
-                                <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]"><strong>{{ widget.widgetName }}</strong></a-checkbox>
-
+                                 <a-card  :title="widget.name">
+                                <div class="screens" v-for="dashboard in widget.widget" :key="dashboard.id+widget.id">
+                                <a-checkbox v-model:checked="dashboardPermission.widget[dashboard.id]"><strong>{{ dashboard.widgetName }}</strong></a-checkbox>
+                                </div>
+                                 </a-card>
                             </div>
 
                             <a-divider class="transparent" />
@@ -382,6 +385,7 @@ export default {
         })
 
         function closeModal() {
+            emit("is-visible", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -394,6 +398,7 @@ export default {
                 });
             } else {
                 reset()
+                emit("is-visible", false)
             }
         }
 
@@ -473,6 +478,7 @@ export default {
 
 .steps-action {
     text-align: right;
+    
 }
 </style><style scoped>
 .actions {

@@ -26,10 +26,14 @@
                             {{appointmentDetails?.patient}}
                         </div>
                     </div>
-                    <div class="itemWrapper">
+                    <div class="itemWrapper" >
                         <div class="leftWrapper">Start Time</div>
-                        <div class="rightWrapper">{{ dateAndTimeFormate(appointmentDetails?.startTime,'hh:mm A') }}</div>
+                        <div class="rightWrapper">{{ dateAndTimeFormate(appointmentDetails?.startTime,'hh:mm A') }} {{appointmentDetails?.abbr}}</div>
                     </div>
+                    <!-- <div class="itemWrapper">
+                        <div class="leftWrapper">Time Zone</div>
+                        <div class="rightWrapper">{{ appointmentDetails.timezone?'('+appointmentDetails.timezone.data.abbr+')':'' }}</div>
+                    </div> -->
                     <div class="itemWrapper">
                         <div class="leftWrapper">Duration</div>
                         <div class="rightWrapper">{{ appointmentDetails?.duration }}</div>

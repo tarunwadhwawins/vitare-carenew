@@ -69,6 +69,8 @@
                 </a-menu-item>
             </router-link>
             <router-link to="/dashboard">
+            
+            <router-link to="/dashboard" >
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
             </router-link>

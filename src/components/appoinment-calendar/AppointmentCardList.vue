@@ -45,8 +45,12 @@
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Start Time</div>
-                        <div class="rightWrapper">{{ dateAndTimeFormate(cardRecords.date,'hh:mm A') }}</div>
+                        <div class="rightWrapper">{{ dateAndTimeFormate(cardRecords.date,'hh:mm A') }} {{cardRecords?.abbr}}</div>
                     </div>
+                    <!-- <div class="itemWrapper">
+                        <div class="leftWrapper">Time Zone</div>
+                        <div class="rightWrapper">{{ cardRecords.timezone?'('+cardRecords.timezone.data.abbr+')':''}}</div>
+                    </div> -->
                     <div class="itemWrapper">
                         <div class="leftWrapper">Duration</div>
                         <div class="rightWrapper">{{ cardRecords.duration }}</div>
@@ -80,14 +84,30 @@
     <a-button class="loadMore" type="primary" @click="showModal(allRecord)">{{length-4}}+</a-button>
 </div>
 <div v-else></div>
-<a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
+<!-- <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
     <a-table rowKey="id" :columns="columns" :data-source="getMoreAppointment">
-      <template #flags="text">
-        <span class="box" :style="{ 'background-color': text.text }"></span>
-        <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
+      <template #staff="{text,record}" >
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link>
+    </template>
+    <template #patient="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient_id } }">{{ text }}</router-link>
+
+        </template>
+      <template #flags="{ record }">
+        
+         <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                    <Flags :flag="record.flags"/></a>
+            </a-tooltip>
+       
       </template>
     </a-table>
-</a-modal>
+</a-modal> -->
+
+<AppointmentListing v-model:visible="visible" :appointments="getMoreAppointment" v-if="getMoreAppointment"/>
 </template>
 <script>
 import { ref, reactive, computed } from "vue";
@@ -95,6 +115,7 @@ import { FileAddOutlined } from "@ant-design/icons-vue";
 import { dateAndTimeFormate,arrayToObjact } from "@/commonMethods/commonMethod";
 
 import { useStore } from "vuex";
+import AppointmentListing from "@/components/appoinment-calendar/modals/AppointmentListing"
 const columns = [
   {
     title: "Appointment Type",
@@ -102,14 +123,20 @@ const columns = [
     key: "appointmentType",
   },
   {
-    title: "Care Coodinator",
+    title: "Care Coordinator",
     dataIndex: "staff",
     key: "staff",
+    slots: {
+      customRender: "staff",
+    },
   },
   {
     title: "Patient",
     dataIndex: "patient",
     key: "patient",
+    slots: {
+      customRender: "patient",
+    },
   },
   {
     title: "Date",
@@ -149,6 +176,8 @@ const columns = [
 export default {
   components: {
     FileAddOutlined,
+
+    AppointmentListing
   },
   props: {
     cardData: {

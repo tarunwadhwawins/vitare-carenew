@@ -27,6 +27,6 @@ export default{
     clearStaffFormValidation:false,
     availabilityDetails:false,
     contactDetails:false,
-    documentStaffDetails:null
-    
+    documentStaffDetails:null,
+   
 }

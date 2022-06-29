@@ -1,4 +1,10 @@
-import { responseConvert, dateFormat, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import {
+	responseConvert,
+	dateFormat,
+	dateOnlyFormat,
+	meridiemFormatFromTimestamp,
+	timeArrayGlobal
+} from '../../commonMethods/commonMethod';
 import moment from 'moment';
 
 export const addStaff = async (state, data) => {
@@ -23,21 +29,7 @@ export const searchAppointmentSuccess = async (state, data) => {
 			return { ...item };
 		});
 	} else {
-		let officeTime = [
-			'08:00 AM',
-			'09:00 AM',
-			'10:00 AM',
-			'11:00 AM',
-			'12:00 PM',
-			'01:00 PM',
-			'02:00 PM',
-			'03:00 PM',
-			'04:00 PM',
-			'05:00 PM',
-			'06:00 PM',
-			'07:00 PM',
-			'08:00 PM'
-		];
+		let officeTime = timeArrayGlobal
 		state.searchAppointmentRecords = responseConvert(officeTime, data.data, 'hh:00 A');
 	}
 };
@@ -89,4 +81,23 @@ export const getStaffs = async (state, data) => {
 
 export const appointmentDetails = (state, data) => {
 	state.appointmentDetails = data;
+}
+
+export const patientAppointmentsList = (state, appointments) => {
+	console.log('patientAppointmentsList Mutation', appointments)
+	state.patientAppointmentsList = appointments.map(data => {
+		
+		data.date = dateOnlyFormat(data.date)
+		data.time = meridiemFormatFromTimestamp(data.time)
+		data.dateTime = data.date+' '+data.time
+		return data
+	});
 };
+
+
+
+export const requestCall = (state, data) => {
+	state.requestCall = data;
+}
+
+

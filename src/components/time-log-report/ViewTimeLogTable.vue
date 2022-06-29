@@ -2,14 +2,22 @@
     <a-modal width="1100px" :maskClosable="false" centered v-model:visible="viewReport" title="Audit Time Log Change Report"  :footer="false" @cancel="closeModal()">
     
         <a-table   :columns="columns" :data-source="modalData" :pagination="false">
-            
+            <template #createdBy="{record}">
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.createdById}}" >{{record.createdBy}}</router-link>
+            </template>
+            <template #flag="{ record }">
+            <a-tooltip placement="bottom">
+               
+                <a class="icons">
+                    <Flags :flag="record.color" :data="record" /></a>
+            </a-tooltip>
+        </template>
         </a-table>
         <TableLoader />
     </a-modal>
 </template>
 <script>
 import {
-    
     onMounted,
 } from "vue";
 import {
@@ -17,11 +25,13 @@ import {
 } from "vuex";
 
 import TableLoader from "@/components/loader/TableLoader";
+import Flags from "@/components/common/flags/Flags";
 export default {
     components: {
  
        
         TableLoader,
+        Flags
     
     },
     props:{

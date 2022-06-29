@@ -1,7 +1,16 @@
-import { yaxis, dataLabels, plotOptions, annotations, dateFormat,  meridiemFormatFromTimestamp } from '../../commonMethods/commonMethod'
+import {
+  yaxis,
+  dataLabels,
+  plotOptions,
+  annotations,
+  dateFormat,
+  dateOnlyFormat,
+  meridiemFormatFromTimestamp,
+  timeStampToTime
+} from '../../commonMethods/commonMethod'
 import moment from "moment"
 export const callPlannedSuccess = (state, count) => {
- 
+ console.log("test",count)
   state.callPlanned = {
     calloption: {
       annotations: annotations("In",0,"#775DD0",0,"#fff","#775DD0"),
@@ -26,6 +35,7 @@ export const callPlannedSuccess = (state, count) => {
           rotate: -45,
         },
         categories: count.map((item) => { return item.text }),
+        ids: count.map((item) => { return item.staffId }),
       },
       yaxis: yaxis("Number of Calls"),
     },
@@ -129,6 +139,11 @@ export const communicationTypesSuccess = (state, response) => {
       yaxis: yaxis('Number of Count'),
     },
     callseries: callSeries,
+    states: {
+      active: {
+        allowMultipleDataPointsSelection: false
+      }
+    }
   }
 }
 
@@ -142,6 +157,16 @@ export const communication = async (state, communications) => {
   })
   state.communicationMeta=communications.meta.pagination
 }
+
+export const callDetails = async (state, data) => {
+  state.callDetails = data.map(item => {
+    item.date = item.date ? dateOnlyFormat(item.date) : ""
+    item.startTime = item.startTime ? meridiemFormatFromTimestamp(item.startTime) : ""
+    item.endTime = item.endTime ? meridiemFormatFromTimestamp(item.endTime) : ""
+    return item
+  })
+}
+
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;
 }
@@ -178,11 +203,53 @@ export const conferenceId = async (state, data) => {
   state.conferenceId = data;
 }
 export const conversation = async (state, data) => {
-  state.conversationList = data;
+  data.data.map(item => {
+    const todayDate = moment().format('MM/DD/YYYY');
+    // const yesterdayDate = moment().subtract(1, 'days').format('MM/DD/YYYY');
+    const createdAt = timeStampToTime(item.createdAt, 'MM/DD/YYYY');
+    if(todayDate == createdAt) {
+      item.createdAt = 'Today, '+meridiemFormatFromTimestamp(item.createdAt)
+    }
+    // else if(yesterdayDate == createdAt) {
+    //   item.createdAt = 'Yesterday, '+meridiemFormatFromTimestamp(item.createdAt)
+    // }
+    else {
+      item.createdAt = dateFormat(item.createdAt)
+    }
+    // item.createdAt = dateFormat(item.createdAt)
+  })
+  
+  state.conversationList = data.data
+  state.conversationsList = data.data
+
+  state.messagesMeta=data.meta.pagination
+}
+export const latestmessage = async (state, data) => {
+  console.log("gfdgdf",data)
+  data.map(item => {
+    const todayDate = moment().format('MM/DD/YYYY');
+    // const yesterdayDate = moment().subtract(1, 'days').format('MM/DD/YYYY');
+    const createdAt = timeStampToTime(item.createdAt, 'MM/DD/YYYY');
+    if(todayDate == createdAt) {
+      item.createdAt = 'Today, '+meridiemFormatFromTimestamp(item.createdAt)
+    }
+    // else if(yesterdayDate == createdAt) {
+    //   item.createdAt = 'Yesterday, '+meridiemFormatFromTimestamp(item.createdAt)
+    // }
+    else {
+      item.createdAt = dateFormat(item.createdAt)
+    }
+    // item.createdAt = dateFormat(item.createdAt)
+  })
+  state.latestmessage = data;
 }
 export const conversationSend = async (state, data) => {
   state.conversationSend = data;
 }
 export const communicationsView = async (state, data) => {
   state.communicationsView = data;
+}
+
+export const conversationWithPatient = async (state, data) => {
+  state.conversationWithPatient = data;
 }

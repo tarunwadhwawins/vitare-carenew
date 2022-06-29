@@ -1,11 +1,14 @@
 import { secondsToTime,dateAndTimeFormate } from '../../commonMethods/commonMethod';
 
+export const timelineReport = (state, data) => {
 
-export const timeLogReportList = async (state, data) => {
+  state.timelineReport = data
+}
+export const timeLog = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportColumns = [
     {
-      title: "Care Coodinator",
+      title: "Care Coordinator",
       dataIndex: "performedBy",
       sorter: true,
       slots: {
@@ -29,7 +32,8 @@ export const timeLogReportList = async (state, data) => {
     {
       title: "Time (MM:SS)",
       dataIndex: "timeAmount",
-      sorter:true
+      sorter:true,
+      align: 'right'
     },
     {
       title: "Category", 
@@ -38,8 +42,17 @@ export const timeLogReportList = async (state, data) => {
     },
 
     {
-      title: "CPT Codes ",
+      title: "Activity ",
       dataIndex: "cptCode",
+    },
+    {
+      title: "Cpt Code ",
+      dataIndex: "cptCodeDetail",
+    },
+    {
+      title: "Amount ",
+      dataIndex: "billingAmount",
+      align: 'right'
     },
     {
       title: "Flag",
@@ -62,8 +75,10 @@ export const timeLogReportList = async (state, data) => {
       },
     },
   ];
+  
   state.timeLogReportList = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
+    item.billingAmount = item.billingAmount ?'$ ' + item.billingAmount :''
     item.date = dateAndTimeFormate(item.date,'MMM DD, yyyy')
     return item
   })
@@ -75,16 +90,28 @@ export const timeLogView = async (state, data) => {
     {
       title: "Change By",
       dataIndex: "createdBy",
+      slots: {
+        customRender: "createdBy",
+      },
     },  
     {
     title: "Time (MM:SS)",
     dataIndex: "timeAmount",
     
   },
+  
   {
     title: "Notes ", 
     dataIndex: "note",
-  },]
+  },
+  {
+    title: "Flag",
+    dataIndex: "flag",
+    slots: {
+      customRender: "flag",
+    },
+  },
+  ]
   state.timeLogView = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
     return item
@@ -125,6 +152,8 @@ export const auditTimePermissions = (state, auth) => {
   }
 
 }
+
 export const auditTimeLogFilterDates = (state, date) => {
 state.auditTimeLogFilterDates = date
 }
+

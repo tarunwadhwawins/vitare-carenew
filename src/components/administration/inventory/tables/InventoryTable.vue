@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList" :scroll="{ y:'calc(100vh - 370px)'}" :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,338)">
             <template #title>
@@ -8,39 +8,45 @@
             <span class="icons">
                 <EditOutlined @click="editInventory(record.id, record.deviceTypeId)" /></span>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)" >
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)">
             <template #title v-if="record.isAvailable=='Assigned'" disabled>
-                
+
                 <span disabled>Assigned Inventory Can`t Delete</span>
             </template>
             <template #title v-else>
-              
-              <span >Delete</span>
-          </template>
+
+                <span>Delete</span>
+            </template>
             <span class="icons" v-if="record.isAvailable=='Assigned'" disabled>
                 <DeleteOutlined /></span>
-                <span class="icons" v-else>
-                  <DeleteOutlined @click="deleteInventory(record.id)" /></span>
+            <span class="icons" v-else>
+                <DeleteOutlined @click="deleteInventory(record.id)" /></span>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" >
-        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,338)"/>
+    <template #isActive="{record}">
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,338)" />
     </template>
     <template #isAvailable="{record}">
-        <span>{{ record.isAvailable }}</span>
+        <a-tooltip placement="bottom" v-if="record.isAvailable=='Assigned'">
+            <template #title>
+                <span>{{'Assigned to '+ record.fullName }}</span>
+            </template>
+            <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link>
+        </a-tooltip>
+        <a-tooltip v-else>
+           <span>{{ record.isAvailable }}</span>
+        </a-tooltip>
     </template>
+    
 </a-table>
 <Loader />
 </template>
+
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
-import {
-  warningSwal,
-  tableYScroller,
-  arrayToObjact,
-} from "@/commonMethods/commonMethod";
+import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 export default {
@@ -62,20 +68,23 @@ export default {
     const inventoriesList = store.getters.inventoriesList;
     const meta = store.getters.inventoryMeta;
     let data = [];
+
     let scroller = "";
     onMounted(() => {
+      
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
+        
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
-          let current_page = meta.current_page + 1;
+          let current_page = meta.value.current_page + 1;
 
-          if (current_page <= meta.total_pages) {
+          if (current_page <= meta.value.total_pages) {
             scroller = maxScroll;
             meta.value = "";
             data = inventoriesList.value;
-            store.state.inventory.inventoriesList = "";
+           // store.state.inventory.inventoriesList = "";
 
             store
               .dispatch(
@@ -99,7 +108,7 @@ export default {
       newData.forEach((element) => {
         data.push(element);
       });
-      inventoriesList.value = data;
+      store.state.inventory.inventoriesList = data;
       var tableContent = document.querySelector(".ant-table-body");
 
       setTimeout(() => {
@@ -153,13 +162,13 @@ export default {
         sorter: true,
       },
       {
-        title: "Serial Number",
-        dataIndex: "serialNumber",
+        title: "Mac Address",
+        dataIndex: "macAddress",
         sorter: true,
       },
       {
-        title: "Mac Address",
-        dataIndex: "macAddress",
+        title: "Serial Number",
+        dataIndex: "serialNumber",
         sorter: true,
       },
       {
@@ -218,7 +227,7 @@ export default {
       updateStatus,
       inventoryColumns,
       inventoriesList,
-      tableYScroller,
+
       handleTableChange,
     };
   },

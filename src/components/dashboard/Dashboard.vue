@@ -186,6 +186,7 @@ export default {
             widgetsPermissions:store.getters.widgetsPermissions,
 
             arrayToObjact,
+         
         };
     },
 };

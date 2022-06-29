@@ -1,7 +1,7 @@
 import { yaxis, dataLabels, plotOptions } from '../../commonMethods/commonMethod'
 export const counterCardSuccess = (state, count) => {
     state.grid = {
-        xlGrid: parseInt(24 / count.length),
+        xlGrid: parseInt(24 / count.length * 2),
         smGrid: parseInt(24 / parseInt(count.length / 2))
     }
     state.totalPatientcount = count
@@ -28,7 +28,7 @@ export const counterCardSuccess = (state, count) => {
           },
           plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
           dataLabels: dataLabels(false),
-          colors: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical"  ? item.color :'' }),
+          colors: count.map((item) => { return item.color }),
           stroke: {
             width: 1,
             colors: ["#fff"],
@@ -43,14 +43,14 @@ export const counterCardSuccess = (state, count) => {
             labels: {
               rotate: -45,
             },
-            categories: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.text :'' }),
+            categories: count.map((item) => { return item.text }),
           },
           yaxis: yaxis("Patients")
         },
         series1: [
           {
             name: "Patients",
-            data: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.total :'' }),
+            data: count.map((item) => { return item.total }),
           },
         ],
   

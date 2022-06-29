@@ -4,7 +4,7 @@ import store from "../store/index"
 // import jsonp from "fetch-jsonp";
 import qs from "qs";
 import { errorSwal } from '@/commonMethods/commonMethod';
-
+import router from '@/router';
 
 const API_URL = process.env.VUE_APP_API_URL
 let timeout;
@@ -39,33 +39,89 @@ class ServiceMethodService {
             request = { cancel: axiosSource.cancel, msg: "Loading..." };
              if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
             }
         }else{
 
             if (id && !data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
             } else if (id && data) {
 
-                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
 
             } else if (!id && data) {
-                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    } 
+                    throw  error
+                })
             }
             else {
 
-                return axiosMethod(API_URL + endPoint, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, { headers: authHeader() }).catch((error) => {
+                    if (error.response.status === 401) {
+                        this.removeStorage()
+                        store.commit('errorMsg', error.response.data)
+                       
+                    }
+                    throw  error
+                })
             }
         }
 
@@ -82,8 +138,10 @@ class ServiceMethodService {
         return axios.post(API_URL + "login", data, { headers: authHeader() })
     }
 
-    //search method for dropdown
-    singleDropdownSearch(value, callback, targetRecords = null, endpoint) {
+  
+   
+     //search method for dropdown
+     singleDropdownSearch(value, callback, endpoint, deviceType, isAvailable, orderField, orderBy) {
         if (timeout && value!='') {
             clearTimeout(timeout);
             timeout = null;
@@ -93,45 +151,68 @@ class ServiceMethodService {
             const str = qs.stringify({
                 code: "utf-8",
                 search: value,
+                deviceType: deviceType ? deviceType : "",
+                isAvailable: isAvailable ? isAvailable : "",
+                orderField: orderField ? orderField : "",
+                orderBy: orderBy ? orderBy : "",
             });
-            axios.get(API_URL + `${endpoint}` + '?' + `${str.trim()}`, { headers: authHeader() })
+            
+            const searchUrl = `${endpoint}` + '?' + `${str.trim()}`
+            console.log('searchUrl', searchUrl)
+            axios.get(API_URL + searchUrl, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
+                    store.commit('dropdownListing', d.data.data)
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
-                        const result = d.data.data;
+                        // console.log('=>',d.data.data)
+                        const result = d.data.data.map(item=>{
+                            if(item.abbr){
+                                item.fullName = item.abbr
+                            }
+                            if(item.code && item.description){
+                                item.fullName = item.code+' - '+item.description
+                            }
+                            else if(item.macAddress) {
+                                item.MACAddress = item.macAddress
+                            }
+                            return item
+                        });
                         // console.log("rewwa", result);
                         const data = [];
+                        let label = ""
                         result.forEach((item) => {
-                            if(targetRecords != null) {
-                                const isFound = targetRecords.some(element => {
-                                    if(item.id && (element.targetUdid === item.id)) {
-                                        return true
-                                    }
-                                    else if(item.udid && (element.targetUdid === item.udid)) {
-                                        return true
-                                    }
-                                    else {
-                                        return false
-                                    }
+                            if(item.fullName) {
+                                label = item.fullName
+                            }
+                            else if(item.name) {
+                                label = item.name
+                            }
+                            else if(item.macAddress) {
+                                label = `${item.modelNumber} (${item.macAddress})`
+                            }
+                            else if(item.macAddress && item.fullName) {
+                                label = `${item.modelNumber} (${item.macAddress})`
+                            }
+                            console.log('label', label)
+                            if(endpoint == 'inventory') {
+                                data.push({
+                                    value: item.udid?item.udid:item.id,
+                                    label: label,
+                                    modelNumber: item.modelNumber,
+                                    macAddress: item.macAddress,
+                                    serialNumber: item.serialNumber,
                                 });
-                                if(!isFound) {
-                                    data.push({
-                                        value: item.udid?item.udid:item.id,
-                                        label: item.fullName?item.fullName:item.name,
-                                    });
-                                }
                             }
                             else {
                                 data.push({
                                     value: item.udid?item.udid:item.id,
-                                    label: item.fullName?item.fullName:item.name,
+                                    label: label,
                                 });
                             }
                         });
                         // console.log('object', data);
-                        store.commit('dropdownList', data);
-
+                       
                         callback(data);
 
                     }
@@ -144,8 +225,10 @@ class ServiceMethodService {
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
+                        this.removeStorage()
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
+
                     }
                 });
         }
@@ -208,6 +291,7 @@ class ServiceMethodService {
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
+                        this.removeStorage()
                         errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     }
@@ -218,7 +302,24 @@ class ServiceMethodService {
 
     }
     
-
+removeStorage(){
+    localStorage.removeItem('user');
+    localStorage.removeItem('barmenu');
+    localStorage.removeItem('staff');
+    localStorage.removeItem('token');
+    localStorage.removeItem('auth');
+    localStorage.removeItem('roleAuth');
+    localStorage.removeItem('access');
+    localStorage.removeItem('accessPermission');
+    localStorage.removeItem('permission');
+    localStorage.removeItem('screensPermission');
+    localStorage.removeItem('widgetsPermission');
+    localStorage.removeItem('fireBaseToken');
+    localStorage.removeItem('expiresIn');
+    localStorage.removeItem('checkLogin');
+    router.go();
+}
 
 }
+
 export default new ServiceMethodService(); 

@@ -1,36 +1,40 @@
 <template>
-  <a-select
-    :value="value"
-    show-search
-    :mode="mode"
-    placeholder="Please Select"
-    style="width: 100%"
-    size="large"
-    :options="globalCode.map((item) => ({label: item.modelNumber+' ('+item.macAddress+')', value: item.id?item.id:item.udid }))"
-    :filter-option="filterOption"
-    @focus="handleFocus"
-    @blur="handleBlur"
-    @change="handleChange"
-  ></a-select>
+<a-select class="" 
+  :getPopupContainer="triggerNode => triggerNode.parentNode" 
+  :listHeight="listHeight?listHeight:150" 
+  :value="value" 
+  show-search 
+  :mode="mode" 
+  placeholder="Please Select" 
+  style="width: 100%" 
+  size="large" 
+  :options="globalCode.map((item) => ({label: item.modelNumber+' ('+item.macAddress+')', value: item.id?item.id:item.udid }))" 
+  :filter-option="filterOption" 
+  @focus="handleFocus" 
+  @blur="handleBlur" 
+  @change="handleChange">
+</a-select>
 </template>
+
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from "vue";
 export default defineComponent({
-  props:{
-    globalCode:Array,
-    mode:String
+  props: {
+    globalCode: Array,
+    mode: String,
+    listHeight: Number,
   },
   setup() {
-    const handleChange = value => {
+    const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
 
     const handleBlur = () => {
-      console.log('blur');
+      console.log("blur");
     };
 
     const handleFocus = () => {
-      console.log('focus');
+      console.log("focus");
     };
 
     const filterOption = (input, globalCode) => {
@@ -45,6 +49,5 @@ export default defineComponent({
       handleChange,
     };
   },
-
 });
 </script>

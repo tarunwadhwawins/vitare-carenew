@@ -1,5 +1,8 @@
 <template>
 <a-select
+class=""
+:listHeight="listHeight?listHeight:150"
+:getPopupContainer="triggerNode => triggerNode.parentNode"
   ref="select"
   :mode="mode"
   :value="value"
@@ -30,7 +33,8 @@ export default defineComponent({
   },
   props:{
       value:String,
-      mode:String
+      mode:String,
+      listHeight: Number,
   },
   
   setup(props,context) {

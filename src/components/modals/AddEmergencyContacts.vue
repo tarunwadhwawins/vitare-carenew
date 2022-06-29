@@ -1,14 +1,32 @@
 
 <template>
-	<a-modal width="60%" title="Add Emergency Contact" centered @cancel="closeModal()">
-		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" @finish="submitForm">
+	<a-modal width="60%" :title="isEmergencyContactEdit ? 'Edit Emergency Contact' :'Add Emergency Contact'" centered @cancel="closeModal()">
+		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" autocomplete="off" @finish="submitForm">
 			<a-row :gutter="24">
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-							<a-input @change="changedValue" v-model:value="emergencyContactForm.fullName" size="large" />
-							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
+						<a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.firstName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.middleName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.lastName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -24,10 +42,8 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
-							<a-input-number @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-							<!-- <vue-tel-input  @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" v-bind="bindProps" /> -->
-							<!-- <PhoneNumber @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
+						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation'),pattern:regex.phoneNumber }]">
+							<a-input v-maska="'###-###-####'" @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
 						</a-form-item>
 					</div>
@@ -75,7 +91,7 @@
 				</a-col> -->
 
 				<a-col :sm="24" :span="24">
-					<ModalButtons :Id="id" @is_click="handleClear"/>
+					<ModalButtons :Id="isEmergencyContactEdit" @is_click="handleClear"/>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -92,6 +108,7 @@ import ErrorMessage from "../common/messages/ErrorMessage";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import { regex } from "@/RegularExpressions/regex";
 // import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
@@ -125,19 +142,21 @@ export default {
     });
 
     const emergencyContactForm = reactive({
-      fullName: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
       emergencyEmail: "",
       phoneNumber: "",
       contactType: [],
       contactTime: [],
       gender: "",
+      sameAsPrimary: "",
       // isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
     });
 
-    const setPhoneNumber = (value) => {
-      emergencyContactForm.phoneNumber = value;
-    };
+  
     const id = ref(null);
+    
     if (props.isEmergencyContactEdit) {
       id.value = patients.value.emergencyContactDetails;
     }
@@ -166,6 +185,10 @@ export default {
     };
 
     function closeModal() {
+      emit("closeModal", {
+        modal: "addEmergencyContact",
+        value: true,
+      });
       if (isValueChanged.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -182,16 +205,35 @@ export default {
             });
           }
         });
+      }else{
+         isValueChanged.value = false;
+handleClear()
+        emit("closeModal", {
+          modal: "addEmergencyContact",
+          value: false,
+        });
       }
     }
 
+    //.replace(/-/g,'')
     const submitForm = () => {
+      let formatedPhone = emergencyContactForm.phoneNumber
       if (props.isEmergencyContactEdit) {
         store
           .dispatch("updateEmergencyContact", {
             patientUdid: patientUdid,
             contactUdid: patients.value.emergencyContactDetails.id,
-            data: emergencyContactForm,
+            data: {
+              firstName: emergencyContactForm.firstName,
+              middleName: emergencyContactForm.middleName,
+              lastName: emergencyContactForm.lastName,
+              emergencyEmail: emergencyContactForm.emergencyEmail,
+              phoneNumber: formatedPhone.replace(/-/g,''),
+              contactType: emergencyContactForm.contactType,
+              contactTime: emergencyContactForm.contactTime,
+              gender: emergencyContactForm.gender,
+              sameAsPrimary: emergencyContactForm.sameAsPrimary,
+            },
           })
           .then(() => {
             if (route.name == "PatientSummary") {
@@ -202,15 +244,27 @@ export default {
                 modal: "addEmergencyContact",
                 value: false,
               });
+               
               formRef.value.resetFields();
               Object.assign(emergencyContactForm, form);
             }
+            isValueChanged.value = false;
           });
       } else {
         store
           .dispatch("addEmergencyContact", {
             patientUdid: patientUdid,
-            data: emergencyContactForm,
+            data: {
+              firstName: emergencyContactForm.firstName,
+              middleName: emergencyContactForm.middleName,
+              lastName: emergencyContactForm.lastName,
+              emergencyEmail: emergencyContactForm.emergencyEmail,
+              phoneNumber: formatedPhone.replace(/-/g,''),
+              contactType: emergencyContactForm.contactType,
+              contactTime: emergencyContactForm.contactTime,
+              gender: emergencyContactForm.gender,
+              sameAsPrimary: emergencyContactForm.sameAsPrimary
+            },
           })
           .then(() => {
             if (route.name == "PatientSummary") {
@@ -221,9 +275,11 @@ export default {
                 modal: "addEmergencyContact",
                 value: false,
               });
+               
               formRef.value.resetFields();
               Object.assign(emergencyContactForm, form);
             }
+            isValueChanged.value = false;
           });
       }
     };
@@ -238,7 +294,7 @@ export default {
     });
 
     return {
-      setPhoneNumber,
+      regex,
       formRef,
       globalCode,
       emergencyContactForm,

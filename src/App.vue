@@ -26,6 +26,7 @@
 import { watchEffect, ref, onMounted, computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
+import router from '@/router';
 // import 'moment/dist/locale/es';
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
@@ -45,25 +46,45 @@ export default {
     });
 
     watchEffect(() => {
+
+      
+    });
+
+    onMounted(() => {
+       document.body.classList.add("test");
       if (refreshToken.value != null) {
-        store.dispatch("globalCodes");
-        store.dispatch("timeLine", 122);
-        store.dispatch("permissions");
-        store.dispatch("appointmentConference");
-        store.dispatch("notificationList");
         if (refreshToken.value > date.getTime()) {
+          store.dispatch("globalCodes");
+          store.dispatch("permissions");
+          store.dispatch("escalationStaus")
+          store.dispatch("appointmentConference");
+          store.dispatch("notificationList");
+          store.dispatch("allPatientsList")
+          store.dispatch("allStaffList")
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {
             store.dispatch("refreshToken");
           }, differenceDate);
         } else {
-          store.dispatch("logoutUser");
+          localStorage.removeItem('user');
+          localStorage.removeItem('barmenu');
+          localStorage.removeItem('staff');
+          localStorage.removeItem('token');
+          localStorage.removeItem('auth');
+          localStorage.removeItem('roleAuth');
+          localStorage.removeItem('access');
+          localStorage.removeItem('accessPermission');
+          localStorage.removeItem('permission');
+          localStorage.removeItem('screensPermission');
+          localStorage.removeItem('widgetsPermission');
+          localStorage.removeItem('fireBaseToken');
+          localStorage.removeItem('expiresIn');
+          localStorage.removeItem('checkLogin');
+          setTimeout(() => {
+            router.go();
+          }, 1000);
         }
       }
-    });
-
-    onMounted(() => {
-      document.body.classList.add("test");
     });
 
     return {

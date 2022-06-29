@@ -10,7 +10,11 @@ export const rolesList = async ({ commit },page) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -24,7 +28,11 @@ export const rolePermissions = async ({ commit }) => {
 		commit('rolePermissionsSuccess', response.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -35,7 +43,11 @@ export const addRole = async ({ commit }, data) => {
 		commit('addRoleSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -46,7 +58,11 @@ export const addPermissions = async ({ commit }, data) => {
 		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -59,7 +75,11 @@ export const editPermissions = async ({ commit }, id) => {
 		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -76,7 +96,11 @@ export const UpdateRole = async ({ commit }, data) => {
 
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -87,7 +111,11 @@ export const updatePermission = async ({ commit }, data) => {
 		//successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		
 		commit('failure', error.response.data);
 	})
@@ -97,7 +125,11 @@ export const roleDetails = async ({ commit }, id) => {
 		commit('roleDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		
 		commit('failure', error.response.data);
 	})
@@ -108,7 +140,11 @@ export const deleteRole = async ({ commit }, id) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		
 		commit('failure', error.response.data);
 	})
@@ -120,7 +156,11 @@ export const dashboardWidget = async ({ commit }) => {
 		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -131,7 +171,11 @@ export const addDashboardWidget = async ({ commit },data) => {
 		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -142,7 +186,11 @@ export const editdWidget = async ({ commit },id) => {
 		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})

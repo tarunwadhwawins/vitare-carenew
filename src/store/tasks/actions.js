@@ -1,23 +1,28 @@
 import ServiceMethodService from '@/services/serviceMethod';
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
+import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from '@/config/apiConfig';
 
 export const tasksList = async ({ commit }, page) => {
-	let link = page ? API_ENDPOINTS['tasksList'] + page : API_ENDPOINTS['tasksList'];
+	let link = page ? API_ENDPOINTS['task'] + page : API_ENDPOINTS['task'];
 	commit('loadingTableStatus', true)
 	await ServiceMethodService.common('get', link, null, null)
 		.then((response) => {
 			// console.log('tasksListSuccess', response.data.data)
 			commit('task', response.data);
+			// commit('tasksList', response.data.data);
 		commit('loadingTableStatus', false)
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -27,28 +32,36 @@ export const tasksList = async ({ commit }, page) => {
 };
 
 export const addTask = async ({ commit }, data) => {
-	await ServiceMethodService.common('post', API_ENDPOINTS['addTask'], null, data)
+	commit('loadingStatus', true)
+	await ServiceMethodService.common('post', API_ENDPOINTS['task'], null, data)
 		.then((response) => {
 			// console.log('addTaskSuccess', response.data.data);
 			successSwal(response.data.message);
 			commit('addTask', response.data.data);
+			commit('loadingStatus', false)
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
 				commit('loadingStatus', false);
 			}
+			commit('loadingStatus', false)
 		});
 };
 
 export const editTask = async ({ commit }, id) => {
+
 	commit('loadingStatus', true);
 
 	await ServiceMethodService.common('get', `task/` + id.id, null, null)
@@ -57,12 +70,16 @@ export const editTask = async ({ commit }, id) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -80,12 +97,16 @@ export const tasksDelete = async ({ commit }, id) => {
 			commit('loadingTableStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -97,19 +118,23 @@ export const tasksDelete = async ({ commit }, id) => {
 export const updateTask = async ({ commit }, data) => {
 	commit('loadingTableStatus', true);
 
-	await ServiceMethodService.common('put', `task/${data.id.id}`, null, data.data)
+	await ServiceMethodService.common('put', `task/${data.id}`, null, data.data)
 		.then((response) => {
 			commit('updateTask', response.data.data);
 			successSwal(response.data.message);
 			commit('loadingTableStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -127,12 +152,16 @@ export const taskStatus = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -148,12 +177,16 @@ export const allTaskStatus = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -170,11 +203,15 @@ export const completeTaskRate = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
 			}
@@ -189,12 +226,16 @@ export const taskPriority = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -211,12 +252,16 @@ export const taskTeamMember = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -233,12 +278,16 @@ export const taskCategory = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -248,17 +297,22 @@ export const taskCategory = async ({ commit }) => {
 };
 
 export const searchTasks = async ({ commit }, params) => {
-	await ServiceMethodService.common('get', API_ENDPOINTS['searchTasks'] + '?search=' + params, null, null)
+	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?active=1${params}`, null, null)
 		.then((response) => {
-			commit('searchTasksSuccess', response.data.data);
+			commit('searchTasks', response.data.data);
+			commit('tasksList', response.data.data);
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -277,7 +331,11 @@ export const latestTask = async ({ commit }, id) => {
 			}
 		})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}

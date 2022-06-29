@@ -21,7 +21,7 @@
             <a-col :sm="6" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.activeStatus')" name="status">
-                        <a-switch v-model:checked="globalCodeForm.isActive" @change="UpdateStatus($event)" />
+                        <a-switch v-model:checked="globalCodeForm.isActive" @change="UpdateStatus($event);checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -33,7 +33,7 @@
                 </div>
             </a-col>
             <a-col :sm="24" :span="24">
-                <ModalButtons :Id="isAdd" :disabled="formButton" @is_click="handleClear" />
+                <ModalButtons :Id="isAdd" :disabled="formButton" @is_cancel="closeModal" @is_click="handleClear" />
             </a-col>
         </a-row>
     </a-form>
@@ -97,7 +97,7 @@ export default {
             if (props.isAdd != null) {
                 // console.log("sdffds")
                 Object.assign(globalCodeForm, codeDetails.value)
-                globalCodeForm.isActive = codeDetails.value.isActive ? true : false
+                globalCodeForm.isActive = codeDetails.value ? codeDetails.value.isActive ? true : false : false
             }
         })
 
@@ -146,6 +146,7 @@ export default {
         }
 
         function closeModal() {
+            emit("close-modal", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -159,6 +160,7 @@ export default {
                 })
             } else {
                 handleClear()
+                emit("close-modal", false)
             }
         }
 

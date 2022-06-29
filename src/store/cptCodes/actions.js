@@ -1,15 +1,21 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+import { successSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 export const cptCodesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
-	let link = page? API_ENDPOINTS['cptCodes']+"?active=1"+page: API_ENDPOINTS['cptCodes']+"?active=1"
+	let link = page? API_ENDPOINTS['activeCptCodes']+"?active=1"+page: API_ENDPOINTS['activeCptCodes']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
+		
 		commit('cptCode', response.data);
 		commit('loadingStatus', false)
+		
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('loadingStatus', false)
 		commit('errorMsg', error.response.data)
 
@@ -24,8 +30,12 @@ export const addCptCode = async ({ commit }, data) => {
 
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
-		errorSwal(error.response.data.message)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+		// errorSwal(error.response.data.message)
 		commit('errorMsg', error.response.data)
 	})
 }
@@ -36,7 +46,11 @@ export const deleteCptCode = async ({ commit }, id) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('errorMsg', error.response.data)
 	})
 }
@@ -46,7 +60,11 @@ export const cptCodeDetails = async ({ commit }, id) => {
 		commit('cptCodeDetails', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('errorMsg', error.response.data)
 	})
 }
@@ -60,7 +78,11 @@ export const updateCptCode = async ({ commit }, data) => {
 
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('errorMsg', error.response.data)
 	})
 }
@@ -70,7 +92,11 @@ export const serviceList = async ({ commit } ) => {
 		commit('service', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('errorMsg', error.response.data)
 	})
 }

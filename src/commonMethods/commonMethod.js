@@ -13,6 +13,7 @@ export function dateAndTimeFormate(timeStamp, format) {
 }
 export const globalDateFormat = "MMM DD,YYYY"
 export const globalDateTimeFormat = 'MMM DD, YYYY hh:mm A'
+
 export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
@@ -40,7 +41,46 @@ export function deCodeString(value) {
 	let decode = window.atob(value);
 	return decode.replace('=', '');
 }
+//Common convert day week month date
+export const dayWeekMonthdate= (data)=>{
+	let from = moment()
+	let to = moment()
+	if (data.globalCodeId == 122) {
 
+		from = moment()
+		to = moment().subtract(data.number, data.intervalType);
+	} else if (data.globalCodeId == 123) {
+		from = moment();
+
+		to = moment().subtract(data.number, data.intervalType);
+	} else if (data.globalCodeId == 124) {
+		from = moment();
+		to = moment().subtract(data.number, data.intervalType);
+	} else {
+		from = moment();
+		to = moment().subtract(data.number, data.intervalType);
+	}
+	let dateFormate = {
+		fromDate: '',
+		toDate: ''
+	}
+
+	if (data.globalCodeId == 122) {
+		dateFormate = {
+			fromDate: from ? timeStamp(startimeAdd(from)) : '',
+			toDate: to ? timeStamp(endTimeAdd(to)) : ''
+		}
+
+	} else {
+		dateFormate = {
+			fromDate: timeStamp(startimeAdd(to)),
+			toDate: timeStamp(endTimeAdd(from))
+		}
+
+	}
+	return {fromDate:dateFormate.fromDate,toDate:dateFormate.toDate}
+
+}
 // encode a string
 export function enCodeString(value) {
 	return window.btoa(value);
@@ -71,7 +111,7 @@ export async function errorSwal(message) {
 	const result = await Swal.fire({
 		icon: 'error',
 		title: 'Oops...',
-		text: message.split(' ').map(capitalize).join(' ')
+		text: message//.split(' ').map(capitalize).join(' ')
 	});
 	if (result.isConfirmed) {
 		return true;
@@ -79,17 +119,35 @@ export async function errorSwal(message) {
 		return false;
 	}
 }
-
-// swal for warning message
-export async function warningSwal(message) {
+// swal for  message
+export async function messageSwal(message) {
 	const result = await Swal.fire({
-		title: 'Are you sure?',
+		title: 'Warning',
+		text: message,
+		icon: 'warning',
+		
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ok'
+	});
+	if (result.isConfirmed) {
+		return true;
+	} else {
+		return false;
+	}
+}
+// swal for warning message
+export async function warningSwal(message,title=null) {
+	const result = await Swal.fire({
+		title: title,
 		text: message,
 		icon: 'warning',
 		showCancelButton: true,
+		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Yes',
+		cancelButtonText: `No`,
 	});
 	if (result.isConfirmed) {
 		return true;
@@ -102,6 +160,26 @@ export async function warningSwal(message) {
 export function dateOnlyFormatSImple(timeStamp) {
 	var day = moment.unix(new Date(timeStamp));
 	return day.format('yyyy-MM-DD');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function fullDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH:mm:ss');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hoursDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hourOnlyFormat(date) {
+	var day = moment.unix(date);
+	return day.format('HH');
 }
 
 export function timeFormatSimple(timeStamp) {
@@ -208,8 +286,11 @@ export function annotations(xname, seriesIndex, borderColor, offsetY, color, bac
 // Used for timeStamp for dateTime
 export function timeStamp(date) {
 	return moment(date).format('X');
+	// return moment.utc(date).local().format('X');
 }
-
+export function timeStampLocal(date) {
+	return moment.utc(date).local().format('X');
+}
 export function timeStampToTime(time, format) {
 	return moment.unix(time).format(format);
 }
@@ -298,21 +379,7 @@ export function chartTimeCount(timeLine, count) {
 		
 		let getTotal = findOcc(array, 'time')
 		
-		const time = [
-			'08:00 AM',
-			'09:00 AM',
-			'10:00 AM',
-			'11:00 AM',
-			'12:00 PM',
-			'01:00 PM',
-			'02:00 PM',
-			'03:00 PM',
-			'04:00 PM',
-			'05:00 PM',
-			'06:00 PM',
-			'07:00 PM',
-			'08:00 PM'
-		];
+		const time = timeArrayGlobal
 		time.forEach((item, i) => {
 
 			let obj = getTotal.find((o) => moment(dateFormat(o.duration)).format('hh:00 A') === item);
@@ -442,11 +509,15 @@ export function convertData(patientVitals) {
 		let itemObject = {};
 		element.data.forEach((item) => {
 			var field = (item.deviceType + '_' + item.vitalField).replace(/ /g, '_').toLowerCase();
+			var color = (item.deviceType + '_' + item.vitalField + '_color').replace(/ /g, '_').toLowerCase();
 			element.data = [];
 			itemObject['id'] = item.id;
 			itemObject['takeTime'] = dateFormat(item.takeTime);
+			itemObject['takeDate'] = dateOnlyFormat(item.takeTime,globalDateFormat);
+			itemObject['takeOnlyTime'] = meridiemFormatFromTimestamp(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
+			itemObject[color] = item.color;
 			itemObject[field] = item.value;
 		});
 		records.push(itemObject);
@@ -473,14 +544,33 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
 			let valuesObject = {
 				name: vitalField,
 				data: recordList.map((item) => {
-					return item.value;
+					// return item.value;
+					// const value = item.value+' At '+apexFormat(item.takeTime)
+					const value = {
+						x: dateFormat(item.takeTime),
+						y: item.value
+					}
+					return value
 				})
 			};
 			records.push(valuesObject);
 		}
 	});
+	
+	const recordsList = records.sort((a, b) => {
+		let fa = a.name.toLowerCase(),
+		fb = b.name.toLowerCase();
+		if (fa > fb) {
+			return -1;
+		}
+		if (fa < fb) {
+			return 1;
+		}
+		return 0;
+	})
+	
 	return {
-		records,
+		records: recordsList,
 		timesArray
 	};
 }
@@ -549,4 +639,30 @@ export function secondsToTime(secs) {
 }
 export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
-export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]
+export const disableHours = []
+export const timeArrayGlobal = [
+'12:00 AM',
+'01:00 AM',
+'02:00 AM',
+'03:00 AM',
+'04:00 AM',
+'05:00 AM',
+'06:00 AM',
+'07:00 AM',
+'08:00 AM',
+'09:00 AM',
+'10:00 AM',
+'11:00 AM',
+'12:00 PM',
+'01:00 PM',
+'02:00 PM',
+'03:00 PM',
+'04:00 PM',
+'05:00 PM',
+'06:00 PM',
+'07:00 PM',
+'08:00 PM',
+'09:00 PM',
+'10:00 PM',
+'11:00 PM',
+]

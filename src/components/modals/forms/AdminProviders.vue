@@ -47,6 +47,7 @@
         <label>Tags</label>
         <a-select
           v-model:value="selectedItemsForTag"
+          :getPopupContainer="triggerNode => triggerNode.parentNode"
           mode="multiple"
           size="large"
           placeholder="Please Select Roles"
@@ -60,6 +61,7 @@
         <label>Modules </label>
         <a-select
           v-model:value="selectedItemsForModules "
+          :getPopupContainer="triggerNode => triggerNode.parentNode"
           mode="multiple"
           size="large"
           placeholder="Please Select Modules"
@@ -72,6 +74,7 @@
       <div class="form-group">
         <label>Default Location</label>
         <a-select
+        :getPopupContainer="triggerNode => triggerNode.parentNode"
           ref="select"
           v-model="value1"
           style="width: 100%"

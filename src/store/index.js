@@ -32,6 +32,11 @@ import { questionnaireTemplate } from "./questionnaireTemplate/index"
 import { questionnaire } from "./questionnaire/index"
 import { workflow} from "./workflow"
 
+import { businessDashboard } from "./businessDashboard/index"
+import { clinicalDashboard } from "./clinicalDashboard/index"
+import { referral } from "./referral/index"
+import {escalations} from "./escalations/index"
+import {reports} from "./reports/index"
 export default createStore({
   modules: {
     dashBoard,
@@ -64,7 +69,12 @@ export default createStore({
     errorLogWithDeviceInfo,
     questionnaireTemplate,
     questionnaire,
-    workflow
+    workflow,
+    businessDashboard,
+    clinicalDashboard,
+    referral,
+    escalations,
+    reports
   },
   plugins: [ createPersistedState({
     reducer(state) {

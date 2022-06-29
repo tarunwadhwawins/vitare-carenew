@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Add Goal" centered>
+  <a-modal width="1000px" title="Add Goal" centered @cancel="closeModal()">
     <a-form ref="formRef" :model="addCarePlanForm" layout="vertical" @finish="submitForm" :footer="false">
       <a-row :gutter="24">
         
@@ -8,9 +8,11 @@
             <a-form-item label="Device Type" name="deviceType" :rules="[{ required: true, message: 'Device Type '+$t('global.validation')  }]">
               <a-select
                 ref="select"
+                :getPopupContainer="triggerNode => triggerNode.parentNode"
                 v-model:value="addCarePlanForm.deviceType"
                 style="width: 100%"
                 size="large"
+                @change="checkChangeInput()"
                  @select="selectDevice">
                 <a-select-option value="" hidden>Choose Device Type</a-select-option>
                 <a-select-option v-for="deviceType in deviceTypes" :key="deviceType.id" :value="deviceType.id">{{ deviceType.name }}</a-select-option>
@@ -22,7 +24,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Start Date" name="startDate" :rules="[{ required: true, message: 'Start Date '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
+              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD"/>
             </a-form-item>
           </div>
         </a-col>
@@ -30,28 +32,30 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="End Date" name="endDate" :rules="[{ required: true, message: 'End Date '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
+              <a-date-picker @change="checkChangeInput()" v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD"/>
             </a-form-item>
           </div>
         </a-col>
 
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item label="Frequency" name="frequency" :rules="[{ required: true, message: 'Frequency '+$t('global.validation')  }]">
-              <a-input size="large" :min="1" :max="100000" v-model:value="addCarePlanForm.frequency" style="width: 100%" />
+            <a-form-item label="No. of Times" name="frequency" :rules="[{ required: true, message: 'Frequency '+$t('global.validation')  }]">
+              <a-input @change="checkChangeInput()" size="large" :min="1" :max="100000" v-model:value="addCarePlanForm.frequency" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
 
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item label=" " name="frequencyType" :rules="[{ required: true, message: 'This Field '+$t('global.validation')  }]">
+            <a-form-item label="Frequency" name="frequencyType" :rules="[{ required: true, message: 'This Field '+$t('global.validation')  }]">
               <a-select
                 ref="select"
+                :getPopupContainer="triggerNode => triggerNode.parentNode"
                 v-model:value="addCarePlanForm.frequencyType"
                 style="width: 100%"
-                size="large">
-                <a-select-option value="" hidden>Choose Frequency Type </a-select-option>
+                size="large"
+                @change="checkChangeInput()">
+                <!-- <a-select-option value="" hidden> </a-select-option> -->
                 <a-select-option v-for="frequencyType in frequencyTypes" :key="frequencyType.id" :value="frequencyType.id">{{ frequencyType.name }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -62,7 +66,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="systolic">
-                <a-input v-model:value="addCarePlanForm.systolic" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.systolic" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -70,7 +74,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="systolicHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.systolicHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.systolicHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -78,7 +82,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="systolicLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.systolicLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.systolicLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -86,7 +90,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="diastolic">
-                <a-input v-model:value="addCarePlanForm.diastolic" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.diastolic" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -94,7 +98,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="diastolicHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.diastolicHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.diastolicHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -102,7 +106,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="diastolicLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.diastolicLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.diastolicLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -110,7 +114,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="bpm">
-                <a-input v-model:value="addCarePlanForm.bpm" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.bpm" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -118,7 +122,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="bpmHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.bpmHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.bpmHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -126,7 +130,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="bpmLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.bpmLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.bpmLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -136,7 +140,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="spo2">
-                <a-input v-model:value="addCarePlanForm.spo2" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.spo2" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -144,7 +148,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="spo2HighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.spo2HighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.spo2HighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -152,7 +156,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="spo2LowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.spo2LowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.spo2LowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -160,7 +164,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="oxygenBpm">
-                <a-input v-model:value="addCarePlanForm.oxygenBpm" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.oxygenBpm" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -168,7 +172,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="oxygenBpmHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.oxygenBpmHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.oxygenBpmHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -176,7 +180,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="oxygenBpmLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.oxygenBpmLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.oxygenBpmLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -186,7 +190,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="fastingBloodSugar">
-                <a-input v-model:value="addCarePlanForm.fastingBloodSugar" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.fastingBloodSugar" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -194,7 +198,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="fastingBloodSugarHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.fastingBloodSugarHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.fastingBloodSugarHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -202,7 +206,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="fastingBloodSugarLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.fastingBloodSugarLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.fastingBloodSugarLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -210,7 +214,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="randomBloodSugar">
-                <a-input v-model:value="addCarePlanForm.randomBloodSugar" style="width: 100%" size="large" disabled />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.randomBloodSugar" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -218,7 +222,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="randomBloodSugarHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.randomBloodSugarHighValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.randomBloodSugarHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -226,7 +230,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Low Value" name="randomBloodSugarLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.randomBloodSugarLowValue" style="width: 100%" size="large" />
+                <a-input @change="checkChangeInput()" v-model:value="addCarePlanForm.randomBloodSugarLowValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -235,7 +239,7 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <a-form-item label="Note" name="note" :rules="[{ required: true, message: 'Note '+$t('global.validation')  }]">
-              <a-textarea v-model:value="addCarePlanForm.note" placeholder="Notes" :auto-size="{ minRows: 7 }" />
+              <a-textarea @change="checkChangeInput()" v-model:value="addCarePlanForm.note" placeholder="Notes" :auto-size="{ minRows: 7 }" />
             </a-form-item>
           </div>
         </a-col>
@@ -257,6 +261,7 @@ import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import {
   timeStamp,
+  globalDateFormat,
 } from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
@@ -271,6 +276,14 @@ export default defineComponent({
     const bloodOxygenFields = ref(false)
     const deviceTypes = computed(() => {
       return store.state.common.deviceType;
+    })
+
+    function checkChangeInput() {
+      store.commit("checkChangeInput", true);
+    }
+
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
     })
 
     const frequencyTypes = computed(() => {
@@ -464,6 +477,10 @@ export default defineComponent({
       return store.state.common
     })
 
+    const closeModal = () => {
+      emit('closeModal', checkChangedInput.value)
+    }
+
     // const vitalFieldsList = ref(null)
     const selectDevice = (value) => {
       store.dispatch('vitalFieldsByDeviceId', value)
@@ -485,6 +502,8 @@ export default defineComponent({
     }
 
     return {
+      globalDateFormat,
+      closeModal,
       formRef,
       frequencyTypes,
       deviceTypes,
@@ -515,6 +534,8 @@ export default defineComponent({
       bloodPressureFields,
       glucoseFields,
       bloodOxygenFields,
+      checkChangeInput,
+      checkChangedInput,
     };
   },
 });

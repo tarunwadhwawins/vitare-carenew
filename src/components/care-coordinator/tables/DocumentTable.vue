@@ -2,11 +2,11 @@
 <div>
 <a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" >
     <template #tags="text">
-        <span v-for="tag,i in text.text.data" :key="tag.id">{{i==0?' ':','}}{{ tag.tag}}</span>
+        <span v-for="tag,i in text.text.data" :key="tag.id">{{i==0?' ':', '}}{{ tag.tag}}</span>
     </template>
     <template #document="text">
-          <a :href="text.text" target="_blank" >
-            <FileOutlined />
+          <a :href="text.text" download>
+            <DownloadOutlined />
           </a>
     </template>
     <template #action="text">
@@ -27,15 +27,15 @@
         </a-tooltip>
     </template>
 </a-table>
-<a-modal width="50%" v-model:visible="visibleStaffDoc" title="Edit Documents" :maskClosable="false" centered  @cancel="staffDocCancelModal()" :footer="false">
-    <StaffDocumentForm  entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)" />
+<a-modal width="50%" v-model:visible="visibleStaffDoc" title="Edit Documents" :maskClosable="false" centered  @cancel="staffDocCloseModal()" :footer="false">
+    <StaffDocumentForm  entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal()" />
 </a-modal>
 </div>
 </template>
 
 <script>
 import { computed,defineAsyncComponent,defineComponent,ref } from "vue";
-import { DeleteOutlined, FileOutlined,EditOutlined } from "@ant-design/icons-vue";
+import { DeleteOutlined, DownloadOutlined,EditOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -44,7 +44,7 @@ import { messages } from "@/config/messages";
 export default defineComponent({
   components: {
     DeleteOutlined,
-    FileOutlined,
+    DownloadOutlined,
     EditOutlined,
     StaffDocumentForm:defineAsyncComponent(()=> import("@/components/modals/forms/StaffDocuments"))
 
@@ -97,19 +97,32 @@ export default defineComponent({
       })
     }
 
-    const staffDocCloseModal = (value) => {
-      visibleStaffDoc.value = value;
-      store.state.careCoordinator.documentStaffDetails=null
-    };
+    const checkFieldsData = computed(() => {
+      return store.state.common.checkChangeInput;
+    })
 
-    
-    const staffDocCancelModal = () => {
-      visibleStaffDoc.value = false;
-      store.state.careCoordinator.documentStaffDetails=null
+    const staffDocCloseModal = () => {
+
+      visibleStaffDoc.value = true;
+     
+      if(checkFieldsData.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+           store.state.careCoordinator.documentStaffDetails=null
+          visibleStaffDoc.value = false
+          store.commit('checkChangeInput', false)
+        }
+        else {
+          visibleStaffDoc.value = true
+        }
+        });
+      }
+      else {
+        visibleStaffDoc.value = false;
+      }
     };
     
     return {
-      staffDocCancelModal,
       staffDocCloseModal,
       addStaffs,
       paramId,

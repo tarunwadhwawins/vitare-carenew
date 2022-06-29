@@ -3,6 +3,7 @@
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
+             
                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
                     <a-input v-model:value="documents.name" size="large" @change="checkChangeInput()" />
                     <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" /> -->
@@ -181,6 +182,8 @@ export default defineComponent({
           },
               satffUdid: route.params.udid? route.params.udid: addStaffs.value.addStaff.id ,
               documentUdid: documentDetails.value.id,
+            }).then(()=>{
+              store.commit('checkChangeInput', false)
             })
             setTimeout(() => {
           if (addStaffs.value.closeModal == true) {
@@ -193,7 +196,7 @@ export default defineComponent({
             reset();
             store.state.careCoordinator.documentStaffDetails=null
             image.value.stateValue = ''
-            emit("saveModal", false);
+            emit("saveModal");
           }
         }, 2000);
       }else {
@@ -206,7 +209,9 @@ export default defineComponent({
             entity: "staff",
           },
           id: props.paramId ? props.paramId : addStaffs.value.addStaff.id,
-        });
+        }).then(()=>{
+              store.commit('checkChangeInput', false)
+            })
         setTimeout(() => {
           if (addStaffs.value.closeModal == true) {
             image.value.stateValue = "";
@@ -217,7 +222,7 @@ export default defineComponent({
             );
             reset();
             image.value.stateValue = ''
-            emit("saveModal", false);
+            emit("saveModal");
           }
         }, 2000);
       }
@@ -265,7 +270,7 @@ export default defineComponent({
       image.value.stateValue = ''
       store.state.patients.uploadFile = null
       Object.assign(documents, form);
-      console.log('documents',documents);
+     
     }
 
     watchEffect(() => {

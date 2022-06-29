@@ -50,8 +50,8 @@ export const staff = async (state, data) => {
 		{
 			title: 'Role',
 			dataIndex: 'role',
-			customRender: ({ record }) => {
-				return record.role.name;
+			slots: {
+				customRender: 'role'
 			},
 			sorter: true
 		},
@@ -100,7 +100,10 @@ export const addContacts = (state, data) => {
 };
 
 export const staffContactList = (state, data) => {
-	state.staffContactList = data;
+	state.staffContactList = data.map(item => {
+		item.phoneNumber = item.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+		return item
+	});
 	state.staffContactColms = [
 		{
 			title: 'First Name',
@@ -264,6 +267,7 @@ export const availabilityDetails = (state, data) => {
 
 export const contactDetails = (state, data) => {
 	state.contactDetails = data;
+	state.contactDetails['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 };
 
 
@@ -282,3 +286,5 @@ export const documentStaffDetails = (state, data) => {
   data.type = data.typeId
   state.documentStaffDetails = data
 };
+
+

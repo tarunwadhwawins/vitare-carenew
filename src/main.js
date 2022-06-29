@@ -2,12 +2,13 @@ import { createApp,h } from 'vue'
 import Antd from 'ant-design-vue'
 import App from './App'
 import 'ant-design-vue/dist/antd.css'
-import router from './router'
+import router from './router/index'
 import i18n from './locales/i18n'
 import store from './store'
 import './assets/scss/common.scss'
 import VueApexCharts from "vue3-apexcharts";
 import { notification, Button } from "ant-design-vue";
+import Maska from 'maska'
 
 // import VueTelInput from 'vue3-tel-input'
 // import 'vue3-tel-input/dist/vue3-tel-input.css'
@@ -57,37 +58,49 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
-  notification.open({
-    message: <div><h2>{`${payload.notification.title}`}</h2></div>,
-    description: <div> {`${payload.notification.body}`} </div>,
-    btn: [
-        h(Button, {
-            onClick: () => {   notification.close(key) },
-        },
-            "Cancel "
-        ),
-        h(Button, {
-            type: "primary",
-            onClick: () => { if(payload.data.type=="Appointment"){
-                router.push('/appointment-calendar'),
-                notification.close(key)
-            }else{
-                router.push('/communications'),
-                notification.close(key)
-            }
-              
-            }
-        },
-            "ok"
-        ),
-
-    ],
-    key,
-    onClose: () => {   notification.close(key) },
-    duration: null,
-    placement: 'bottomRight'
-
-})
+ if(router.currentRoute.value.name!='Communications'){
+    notification.open({
+        message: <div><h2>{`${payload.notification.title}`}</h2></div>,
+        description: <div> {`${payload.notification.body}`} </div>,
+        btn: [
+            h(Button, {
+                onClick: () => {   notification.close(key) },
+            },
+                "Cancel "
+            ),
+            h(Button, {
+                type: "primary",
+                onClick: () => { if(payload.data.type=="Appointment"){
+                    router.push('/appointment-calendar'),
+                    notification.close(key)
+                }else{
+                    // router.push('/communications?view=list'),
+                    router.push({
+                        name: 'Communications',
+                        query: {
+                            view: 'list'
+                        },
+                        params: {
+                            from: 'push',
+                            typeId: payload.data.typeId,
+                        }
+                    }),
+                    notification.close(key)
+                }
+                  
+                }
+            },
+                "View"
+            ),
+    
+        ],
+        key,
+        onClose: () => {   notification.close(key) },
+        duration: null,
+        placement: 'bottomRight'
+    
+    })
+ }
   // ...
 });
 
@@ -101,6 +114,7 @@ if (store.state.authentication.loggedInUser) {
 
 
 
-app.use(Antd).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
+
+app.use(Antd).use(Maska).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
 
 

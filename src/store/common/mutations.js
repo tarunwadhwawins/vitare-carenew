@@ -6,7 +6,26 @@ export const globalCodes = (state, data) => {
             state.gender = element.globalCode;
         }
         if (element.name === 'Task Priority') {
-            state.taskPriority = element.globalCode;
+            element.globalCode.map(item => {
+                switch (item.name) {
+                    case 'Medium':
+                    item.color = '#ffa800'
+                    item.style = 'background: #ffa800'
+                    break;
+                    case 'Normal':
+                    item.color = '#008000'
+                    item.style = 'background: #008000'
+                    break;
+                    case 'Urgent':
+                    item.color = '#ff6061'
+                    item.style = 'background: #ff6061'
+                    break;
+                    default:
+                    break;
+                }
+                return item
+            })
+            state.taskPriority.splice(0,3, element.globalCode[1],element.globalCode[0],element.globalCode[2]);
         }
         if (element.name === 'Message Category') {
             state.messageCategories = element.globalCode;
@@ -50,13 +69,14 @@ export const globalCodes = (state, data) => {
             state.network = element.globalCode;
         }
         if (element.name === 'Specialization') {
-            state.specialization = element.globalCode;
+            state.specialization.splice(0,2, element.globalCode[1],element.globalCode[0])
         }
         if (element.name === 'Task Category') {
-            state.taskCategory = element.globalCode;
+            // state.taskCategory = element.globalCode;
+            state.taskCategory.splice(0,3, element.globalCode[2],element.globalCode[1],element.globalCode[3],element.globalCode[0],element.globalCode[5])
         }
         if (element.name === 'Task Status') {
-            state.taskStatus = element.globalCode;
+            state.taskStatus.splice(0,3, element.globalCode[1],element.globalCode[2],element.globalCode[0])
         }
 
         if (element.name === 'Insurance Name') {
@@ -113,6 +133,22 @@ export const globalCodes = (state, data) => {
             state.workFlowAction = element.globalCode;
         }
 
+        if (element.name === 'Escalation Type') {
+            state.escalationType = element.globalCode;
+        }
+        if (element.name === 'Task Type') {
+            state.taskType = element.globalCode;
+        }
+        if (element.name === 'Place of Service') {
+            state.placeOfService = element.globalCode;
+        }
+
+        if (element.name === 'CPTCode Status') {
+            state.CPTCodeStatus = element.globalCode;
+        }
+        if (element.name === 'Removal Reason') {
+            state.removalReason = element.globalCode;
+        }
         
     });
 
@@ -149,12 +185,19 @@ export const dropdownLoadingStatus = (state, data) => {
     state.dropdownLoadingStatus = data
 }
 
+export const dropdownListing = (state, data) => {
+    state.dropdownListing = data
+}
+
 export const vitalFieldsList = (state, fields) => {
     state.vitalFieldsList = fields
 }
 
 export const vitalFieldsByDeviceId = (state, fields) => {
-    state.vitalFieldsByDeviceId = fields
+    state.vitalFieldsByDeviceId = fields.map(field => {
+        field.fieldName = (field.field).toLowerCase()
+        return field
+    })
 }
 
 export const allPatientsList = (state, fields) => {
@@ -194,5 +237,33 @@ export const checkChangeInput = (state, data) => {
   }
   export const orderTable = (state, data) => {
     state.orderTable = data
+  }
+  export const filter = (state, data) => {
+    state.filter = data
+  }
+  export const dateFilter = (state, data) => {
+    console.log("check",data)
+      if(data){
+    state.dateFilter = data
+      }else{
+        state.dateFilter = {fromDate:'',toDate:''}
+      }
+  }
+  export const toScroll = (state, data) => {
+    state.toScroll = data
+  }
+  export const otherFilters = (state, date) => {
+    state.otherFilters = date
+  }
+  
+  export const apiCounter = (state, status) =>{
+    if(status=="add"){
+        state.apiCounter++
+    }else if(status=="sub"){
+        state.apiCounter--
+    }else{
+        state.apiCounter = 0
+    }
+    
   }
   

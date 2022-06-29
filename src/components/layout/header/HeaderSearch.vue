@@ -1,6 +1,7 @@
 <template>
   <a-select
   ref="select"
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
   :value="value"
   @input="updateValue"
   style="width: 100%"
@@ -10,7 +11,7 @@
   :filter-option="false"
   :not-found-content="loadingStatus ? undefined : null"
   
-  :options="data ? data.map((item) => ({label: item.type,options:[{label:item.firstName+' '+item.lastName,value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }]})) : ''"
+  :options="data ? data.map((item) => ({label: item.type,options:[{label:item.fullName,value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }]})) : ''"
   @search="handleSearch"
   @change="handleChange"
   size="large">

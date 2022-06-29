@@ -2,7 +2,7 @@ import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 import {
 	successSwal,
-	errorSwal,
+	// errorSwal,
 	errorLogWithDeviceInfo
 } from '@/commonMethods/commonMethod'
 
@@ -14,12 +14,16 @@ export const addNote = async ({ commit }, { id, data }) => {
     successSwal(response.data.message)
     commit('errorMsg', null)
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
 		else if(error.response.status == 500) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
 		}
 		else if (error.response.status == 401) {
 			//AuthService.logout()
@@ -29,15 +33,22 @@ export const addNote = async ({ commit }, { id, data }) => {
 }
 
 export const notesList = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient'] + '/' + id + '/notes', null, null).then((response) => {
 		commit('notesListSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}
 			commit('failure', error.response.data);
+			commit('loadingStatus', false)
 		})
 }
 
@@ -51,7 +62,11 @@ export const latestNotes = async ({ commit }, id) => {
 		}
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}

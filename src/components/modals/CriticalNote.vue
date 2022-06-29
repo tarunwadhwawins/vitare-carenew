@@ -11,48 +11,112 @@
         </a-col>
       </a-row>
       <a-row :gutter="24" class="mb-24">
-        <a-col :span="24" >
-          <a-button  style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
-          <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-        </a-col>
+       
+       <a-col :span="24">
+                <ModalButtons :Id="criticalNoteId" @is_click="handleCancel" @is_cancel="closeModal" />
+            </a-col>
       </a-row>
     </a-form>
+		<Loader />
   </a-modal>
 </template>
 
 <script>
-import { defineComponent, reactive, computed,ref } from "vue";
+import { defineComponent, reactive, computed,ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import {warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
+import Loader from "@/components/loader/Loader";
+import ModalButtons from "@/components/common/button/ModalButtons";
 export default defineComponent({
-
+	components: {
+		Loader,
+    ModalButtons
+	},
+	props: {
+		patientUdid: {
+      type: Number
+    },
+		criticalNoteId: {
+      type: Number
+    },
+    
+	},
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
+    const patientId = props.patientUdid ? reactive(props.patientUdid) : route.params.udid
     const notes = reactive({
-      criticalNote:"",
+      criticalNote: "",
     });
 
-    function addCriticalNote() {
-      store.state.patients.patientCriticalNotes= ''
-      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
-        store.dispatch('patientCriticalNotes', route.params.udid);
-      })
-      setTimeout(() => {
-        if(patient.value){
-        reset();
-        store.dispatch('criticalNotesList', route.params.udid);
-        emit("saveModal", false);
-      }
-      }, 2000);
-      
-    }
+    const criticalNoteDetails = computed(() => {
+      return store.state.patients.criticalNoteDetails
+    })
 
-    const patient = computed(() => {
+    const latestCriticalNote = computed(() => {
+      return store.state.patients.latestCriticalNote
+    })
+
+    watchEffect(() => {
+      if(props.criticalNoteId) {
+        Object.assign(notes, {
+          criticalNote: criticalNoteDetails.value ? criticalNoteDetails.value.criticalNote : ''
+        })
+      }
+      else if(!props.criticalNoteId) {
+        Object.assign(notes, {
+          criticalNote: latestCriticalNote.value ? latestCriticalNote.value.criticalNote : ''
+        })
+      }
+    })
+ const patient = computed(() => {
       return store.state.patients.closeModal;
     });
+    function addCriticalNote() {
+    
+      if(props.criticalNoteId) {
+        store.dispatch("updateCriticalNote", {
+          patientId: patientId,
+          criticalNoteId: props.criticalNoteId,
+          criticalNote: notes,
+        }).then(() => {
+          store.dispatch('criticalNotesList', patientId);
+          store.dispatch('patientCriticalNotes', patientId);
+          
+          if(patientId) {
+            store.dispatch('patientTimeline', {
+              id:patientId,
+              type:''
+            });
+          }
+          emit("saveModal", false)
+          emit("closeModal")
+        })
+      }
+      else {
+        store.state.patients.patientCriticalNotes= ''
+        store.dispatch("addCriticalNote", {
+          udid:patientId,
+          criticalNote:notes
+        }).then(() => {
+          store.dispatch('criticalNotesList', patientId);
+          store.dispatch('patientCriticalNotes', patientId);
+          
+          if(patientId) {
+            store.dispatch('patientTimeline', {
+              id:patientId,
+              type:''
+            });
+          }
+          emit("saveModal", false)
+          emit("closeModal")
+        })
+      }
+    }
+
+   
 
     const form = reactive({
       ...notes,
@@ -68,7 +132,10 @@ export default defineComponent({
     const checkFieldsData = computed(()=>{
       return store.state.common.checkChangeInput;
     })
+
     function closeModal() {
+
+      emit("saveModal", true)
       if(checkFieldsData.value){
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -77,8 +144,12 @@ export default defineComponent({
             store.commit('checkChangeInput',false)
           } else {
             emit("saveModal", true);
+            emit("closeModal");
           }
         });
+      }
+      else {
+        emit("saveModal", false)
       }
     }
     return {

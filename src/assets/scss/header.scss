@@ -173,6 +173,7 @@
     }
     .listing {
       border-bottom: 1px solid #e3e3e3;
+      white-space: initial!important;
       &.read {
         a {
           p {
@@ -205,6 +206,9 @@
             font-size: 12px;
             color: #aaa;
           }
+        }
+        &.bluecolor {
+          color: #267dff;
         }
       }
     }

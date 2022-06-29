@@ -7,6 +7,12 @@ const common = {
   edit: 'Edit',
   delete: 'Delete',
   flag: 'Flag',
+  reason: 'Reason',
+  removalReason:"Removal Reason",
+  comment:"Comment",
+  clearFlag:"Clear Flag On ",
+  
+  for:"For"
 }
 
 
