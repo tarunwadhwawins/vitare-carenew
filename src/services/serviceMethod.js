@@ -146,14 +146,23 @@ class ServiceMethodService {
         }
         currentValue = value;
         function fake() {
-            const str = qs.stringify({
-                code: "utf-8",
-                search: value,
-                deviceType: deviceType ? deviceType : "",
-                isAvailable: isAvailable ? isAvailable : "",
-                orderField: orderField ? orderField : "",
-                orderBy: orderBy ? orderBy : "",
-            });
+            var str = {}
+            if(endpoint != 'patient' && endpoint != 'staff') {
+                str = qs.stringify({
+                    code: "utf-8",
+                    search: value,
+                    deviceType: deviceType ? deviceType : "",
+                    isAvailable: isAvailable ? isAvailable : "",
+                    orderField: orderField ? orderField : "",
+                    orderBy: orderBy ? orderBy : "",
+                });
+            }
+            else {
+                str = qs.stringify({
+                    code: "utf-8",
+                    search: value,
+                });
+            }
             
             const searchUrl = `${endpoint}` + '?' + `${str.trim()}`
             console.log('searchUrl', searchUrl)
