@@ -59,8 +59,7 @@ export default {
           store.dispatch("escalationStaus")
           store.dispatch("appointmentConference");
           store.dispatch("notificationList");
-          store.dispatch("allPatientsList")
-          store.dispatch("allStaffList")
+         
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {
             store.dispatch("refreshToken");

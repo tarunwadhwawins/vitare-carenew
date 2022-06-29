@@ -183,6 +183,10 @@ export default {
         })
 
         onMounted(() => {
+            // closeValue.value = true;
+            //             setTimeout(()=>{
+            //                 closeValue.value = false;
+            //             },100)
             store.state.flags.flagsList ? '' : store.dispatch('flagsList')
            // store.dispatch("allPatientsList")
            // store.dispatch("allStaffList")
@@ -252,7 +256,10 @@ export default {
                 flag: appointmentForm.flag,
                 timezoneId:appointmentForm.timezoneId
             }).then(() => {
-				closeValue.value = true
+				closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                 if (props.patientId != null && route.name == 'PatientSummary') {
                     
                     store.dispatch('latestAppointment', patientUdid)
@@ -263,7 +270,7 @@ export default {
                     });
                 }
                 if (store.state.appointment.successMsg) {
-                    closeValue.value = false
+                    
                     store.dispatch("calendarDateSelect", moment(date))
                     store.state.appointment.successMsg = null
                     emit('is-visible', {
@@ -284,7 +291,7 @@ export default {
                     modal: 'addAppointment',
                     value: false
                 });
-				closeValue.value = false
+				
             });
 			
             store.commit('checkChangeInput', false)
