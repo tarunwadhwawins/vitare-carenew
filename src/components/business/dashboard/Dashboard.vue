@@ -16,7 +16,7 @@
     
        
       <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
-            <ApexChart title="Call Stats" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" />
+            <ApexChart title="Call Stats" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" listView="list"/>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,8) &&  cptCodeValue">
             <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="TimeLogReport"></ApexChart>
