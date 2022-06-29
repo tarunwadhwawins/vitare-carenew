@@ -147,7 +147,7 @@ class ServiceMethodService {
         currentValue = value;
         function fake() {
             var str = {}
-            if(endpoint != 'patient' && endpoint != 'staff') {
+            if(endpoint == 'inventory') {
                 str = qs.stringify({
                     code: "utf-8",
                     search: value,
