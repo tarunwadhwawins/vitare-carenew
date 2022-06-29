@@ -11,11 +11,8 @@
     size="large"
     :options="globalCode.map((item) => ({label: item.name, value: item.id?item.id:item.udid }))"
     :filter-option="filterOption"
-<<<<<<< HEAD
     :max-tag-text-length="maxTagTextLength"
-=======
     @change="handleChange"
->>>>>>> development
   ></a-select>
 
   <a-select v-else-if="globalCode && isColor" class="" 

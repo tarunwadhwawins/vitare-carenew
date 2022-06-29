@@ -68,7 +68,7 @@
                     <span class="menuItem">{{'WorkFlow Setup'}}</span>
                 </a-menu-item>
             </router-link>
-            <router-link to="/dashboard">
+            
             
             <router-link to="/dashboard" >
                 <a-menu-item>

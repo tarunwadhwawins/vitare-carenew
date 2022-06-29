@@ -10,11 +10,7 @@
     @input="updateValue"
     style="width: 100%"
     :show-search="true"
-<<<<<<< HEAD
     :placeholder="placeholder ? placeholder : 'Input Search Text'"
-=======
-    :placeholder="placeholder ? placeholder : 'input search text'"
->>>>>>> development
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
@@ -49,7 +45,6 @@ export default defineComponent({
     mode: String,
     placeholder: String,
     close: Boolean,
-    placeholder: String,
     targetRecords: Array,
     dropdownList: Array,
     editDataStaff:Array,
