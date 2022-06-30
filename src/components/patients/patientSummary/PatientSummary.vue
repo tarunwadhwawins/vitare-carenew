@@ -228,7 +228,7 @@ export default {
     const button = ref(1);
 
     function showButton(value) {
-      console.log("value",value)
+      // console.log("value",value)
       button.value = value;
     }
     
@@ -435,7 +435,7 @@ export default {
     const sendMessage = () => {
       conversationId.value = conversationWithPatient.value.id
       store.dispatch("conversation", conversationId.value).then(() => {
-        console.log("conversation", conversation.value)
+        // console.log("conversation", conversation.value)
         chatWithPatientInfoVisible.value = true
       })
     }

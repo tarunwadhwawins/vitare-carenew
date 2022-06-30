@@ -48,8 +48,8 @@ export const addDemographic = async ({
         commit('emergencyContact', response.data.data);
       }).catch((error) => {
         if (error.response.status === 422) {
-          console.log('emergencyErrorMsg', error.response.status)
-          console.log('emergencyErrorMsg', error.response.data)
+          // console.log('emergencyErrorMsg', error.response.status)
+          // console.log('emergencyErrorMsg', error.response.data)
           commit('emergencyErrorMsg', error.response.data)
           commit('loadingStatus', false)
         }
@@ -73,7 +73,7 @@ export const addDemographic = async ({
       }).catch((error) => {
         if (error.response.status === 422) {
         
-          console.log('errorMsg', error.response.data)
+          // console.log('errorMsg', error.response.data)
           commit('errorMsg', error.response.data)
           commit('loadingStatus', false)
         }
@@ -119,7 +119,7 @@ export const updateDemographic = async ({
   const data = request.data
   const patientUdid = request.patientUdid
   const responsiblePersonId = request.responsiblePersonId
-  console.log("chechh", responsiblePersonId)
+  // console.log("chechh", responsiblePersonId)
   const emergencyContactId = request.emergencyContactId
   const referalId = request.referalId
   commit('loadingStatus', true)
@@ -1074,7 +1074,7 @@ export const patientDetails = async ({
   commit
 }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
-    console.log("check", response.data)
+    // console.log("check", response.data)
     commit('patientDetails', response.data.data);
     //commit('addDemographic', null);
     commit('startOn', false)
@@ -1890,7 +1890,7 @@ export const updateProfileImage = async ({
 }, data) => {
   commit('isPicuteLoading', true)
   await serviceMethod.common("post", `file`, null, data.formData).then((response) => {
-    console.log('imagePath', response.data.data.path)
+    // console.log('imagePath', response.data.data.path)
     const imagepath = {
       profilePhoto: response.data.data.path
     }

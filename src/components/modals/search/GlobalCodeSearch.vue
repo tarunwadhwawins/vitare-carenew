@@ -82,7 +82,7 @@ export default defineComponent({
   setup(props, { emit }) {
  
     const filterOption = (input, globalCode) => {
-      console.log('globalCode', globalCode,input)
+      // console.log('globalCode', globalCode,input)
       return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
 

@@ -30,11 +30,11 @@ export default defineComponent({
     };
 
     const handleBlur = () => {
-      console.log("blur");
+      // console.log("blur");
     };
 
     const handleFocus = () => {
-      console.log("focus");
+      // console.log("focus");
     };
 
     const filterOption = (input, globalCode) => {

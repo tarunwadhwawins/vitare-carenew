@@ -91,7 +91,7 @@ export default {
           apiCall(bloodOxygenTimeline.value, 100)
         })
       } else {
-        console.log('timeLine', bloodOxygenTimeline.value)
+        // console.log('timeLine', bloodOxygenTimeline.value)
         apiCall(bloodOxygenTimeline.value, 100)
       }
 

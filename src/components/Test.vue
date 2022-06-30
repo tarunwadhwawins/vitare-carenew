@@ -26,7 +26,7 @@ export default defineComponent({
   },
 setup() {
     const onDragging = (ev) => {
-        console.log(ev);
+        // console.log(ev);
         ev.dataTransfer.setData("text", ev.target.id);
     };
     const allowDrop = (ev) => {
@@ -38,7 +38,7 @@ setup() {
     const drop = (ev) => {
         ev.preventDefault();
         let data = ev.dataTransfer.getData("text");
-        console.log(data);
+        // console.log(data);
         ev.target.appendChild(document.getElementById(data));
     }
     return {

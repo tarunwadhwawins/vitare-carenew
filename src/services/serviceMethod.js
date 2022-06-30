@@ -165,7 +165,7 @@ class ServiceMethodService {
             }
             
             const searchUrl = `${endpoint}` + '?' + `${str.trim()}`
-            console.log('searchUrl', searchUrl)
+            // console.log('searchUrl', searchUrl)
             axios.get(API_URL + searchUrl, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
@@ -201,7 +201,7 @@ class ServiceMethodService {
                             else if(item.macAddress && item.fullName) {
                                 label = `${item.modelNumber} (${item.macAddress})`
                             }
-                            console.log('label', label)
+                            // console.log('label', label)
                             if(endpoint == 'inventory') {
                                 data.push({
                                     value: item.udid?item.udid:item.id,

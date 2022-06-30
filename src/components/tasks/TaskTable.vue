@@ -115,7 +115,7 @@ export default {
                        scroller = maxScroll;
                         data = meta.tasksList;
                         store.state.tasks.taskMeta = ''
-                        console.log('filters', store.getters.orderTable.value.data)
+                        // console.log('filters', store.getters.orderTable.value.data)
                         if(!searchAll.value) {
                             store
                                 .dispatch(

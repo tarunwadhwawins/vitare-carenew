@@ -178,7 +178,7 @@
       return store.state.careCoordinator;
     });
       watchEffect(() => {
-       console.log("check",patientId)
+      //  console.log("check",patientId)
         if(staffs.value.clearStaffFormValidation){
           formRef.value.resetFields();
           Object.assign(documents, form)

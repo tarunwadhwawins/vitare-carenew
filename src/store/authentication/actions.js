@@ -124,7 +124,7 @@ export const logoutUser = async ({
   commit('loadingTableStatus', true)
   await ServiceMethodService.common('post', 'logout', null, [])
     .then(() => {
-      console.log(commit)
+      // console.log(commit)
       //if(response){
       successSwal('Logout Successfully ');
       localStorage.removeItem('user');

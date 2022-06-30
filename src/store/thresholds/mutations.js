@@ -55,7 +55,7 @@ export const vitalEdit = async (state, vitaledit) => {
   record['udid'] = udid
   record['deviceTypeId'] = vitaledit.deviceTypeId
   record.push(record)
-  console.log(record)
+  // console.log(record)
   state.vitalEdit = {...record}
 
 }

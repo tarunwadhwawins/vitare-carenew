@@ -447,7 +447,7 @@ export default {
     };
     const handleStaffChange = (val) => {
       escalation.staffIds = val;
-      console.log(val);
+      // console.log(val);
     };
 
     const notesList = computed(() => {
@@ -644,9 +644,9 @@ export default {
       }
     };
 
-    function escalationType(e) {
-      console.log("value", e);
-    }
+    // function escalationType(e) {
+    //   console.log("value", e);
+    // }
     const carePlanList = computed(() => {
       return store.state.escalations.esacalationCarePlansList;
     });
@@ -657,7 +657,7 @@ export default {
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
     function showButton(id) {
-      console.log("gdfg", id);
+      // console.log("gdfg", id);
       button.value = id;
       if (id != 126) {
         apiCall(timeLineButton.value);
@@ -675,7 +675,7 @@ export default {
             dateSelect.value = moment(escalationDetails.summaryEnd).add(1, 'day')
         }
 function changeDate (){
-  console.log("check",escalationDetails.summaryStart)
+  // console.log("check",escalationDetails.summaryStart)
   if(escalationDetails.summaryStart && escalationDetails.summaryEnd){
 let dateFormate = {
           fromDate: timeStamp(startimeAdd(moment(escalationDetails.summaryStart))),
@@ -843,7 +843,7 @@ let dateFormate = {
       carePlanColumns,
       carePlanList,
       activeKey,
-      escalationType,
+      // escalationType,
       submitDetailsForm,
       submitEscalationForm,
       vitalColumns,
@@ -876,8 +876,8 @@ let dateFormate = {
         },
       ],
     };
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">

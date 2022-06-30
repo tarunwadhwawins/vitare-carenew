@@ -1089,7 +1089,7 @@ const insuranceDataReset = reactive({
         : route.name == "PatientSummary" && props.isEdit
         ? route.params.udid
         : null;
-        console.log("idPatient.value",idPatient.value)
+        // console.log("idPatient.value",idPatient.value)
       // Bitrix data assign
 
       if (patients.value.fetchFromBitrix) {

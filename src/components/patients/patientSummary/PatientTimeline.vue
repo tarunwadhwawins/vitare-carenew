@@ -266,7 +266,7 @@ export default {
 
         function showAllCheckBoxButton() {
             var count = 0
-            console.log("test",patientTimeline.value)
+            // console.log("test",patientTimeline.value)
             patientTimeline.value.length>0 ? patientTimeline.value.map((item) => {
                 if (item.entity.data) {
                     if(item.entity.data.isDelete==0){
