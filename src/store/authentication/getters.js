@@ -20,6 +20,7 @@ export function videoCall() {
         delegate: {
             onCallReceived: async () => {
                 callNotification=1
+                console.log('call',simpleUser.session.incomingInviteRequest)
                 notification.open({
                     message: <h3>Call from...</h3>,
                     description: <h1>{`${simpleUser.session.incomingInviteRequest.message.from._displayName}`} </h1>,
