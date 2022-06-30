@@ -53,7 +53,7 @@
                     <a-row>
                         <a-col :span="24">
                             <DataTable />
-                            <TableLoader />
+                            <!-- <TableLoader /> -->
                         </a-col>
                     </a-row>
                 </div>
@@ -68,7 +68,7 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import { onMounted, ref, onUnmounted, reactive } from "vue";
 import moment from "moment";
-import TableLoader from "@/components/loader/TableLoader";
+// import TableLoader from "@/components/loader/TableLoader";
 import { timeStampFormate } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable";
 import DateFilter from "@/components/common/DateFilter.vue";
@@ -79,7 +79,7 @@ export default {
     Header,
     Sidebar,
     DataTable,
-    TableLoader,
+    // TableLoader,
     DateFilter,
   },
 
@@ -212,6 +212,13 @@ export default {
       store.dispatch(
         "cptCodeFilterDates",
         "?fromDate=" +
+          to.format("YYYY-MM-DD") +
+          "&toDate=" +
+          from.format("YYYY-MM-DD")
+      );
+       store.commit(
+        "otherFilters",
+        "&fromDate=" +
           to.format("YYYY-MM-DD") +
           "&toDate=" +
           from.format("YYYY-MM-DD")

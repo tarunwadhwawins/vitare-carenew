@@ -5,8 +5,8 @@
         <div class="text-right mb-24">
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
-          <template #flags="{ record }">
-            <Flags :flag="record.color" :data="record" />
+          <template #priority="{ record }">
+            <span>{{record.flag}}</span>
           </template>
           <template #type="{ record }">
             <span>{{record.type=="patientFlag" ? "Patient Flag" : record.type}}</span>
@@ -23,14 +23,14 @@
 <script>
 import { computed, defineComponent, watchEffect } from "vue";
 import { useStore } from "vuex";
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import {
   actionTrack
 } from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
-    Flags,
+    // Flags,
   },
   props:{
     Id:String
@@ -90,11 +90,11 @@ export default defineComponent({
         },
       },
       {
-        title: "Flag",
+        title: "Priority",
         dataIndex: "color",
         key: "color",
         slots: {
-          customRender: "flags",
+          customRender: "priority",
         },
         className: "note-flag",
       },

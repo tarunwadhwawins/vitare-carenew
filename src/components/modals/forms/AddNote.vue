@@ -43,10 +43,10 @@
 
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('common.flag')" name="flag" :rules="[
+                <a-form-item label="Priority" name="flag" :rules="[
                   {
                     required: true,
-                    message: $t('common.flag') + ' ' + $t('global.validation'),
+                    message: 'Priority' + ' ' + $t('global.validation'),
                   },
                 ]">
                     <GlobalCodeDropDown v-model:value="addNoteForm.flag" :globalCode="flagsList" />

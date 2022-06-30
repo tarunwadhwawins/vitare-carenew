@@ -163,9 +163,9 @@ export const searchTableData = async ({ commit }, search) => {
   commit('loadingStatus', true)
   commit('loadingTableStatus', true)
   await serviceMethod.common("get", search.endPoint + '?active=1&search=' + search.data+search.field+search.filter, null, null,true).then((response) => {
-    commit(search.endPoint, response.data);
     commit('loadingStatus', false)
     commit('loadingTableStatus', false)
+    commit(search.endPoint, response.data);
   }).catch((error) => {
     if(!error.__CANCEL__){
 
@@ -175,8 +175,8 @@ export const searchTableData = async ({ commit }, search) => {
 				errorLogWithDeviceInfo(error);
 			}
       commit('errorMsg', error);
-      commit('loadingStatus', false)
-      commit('loadingTableStatus', false)
+      // commit('loadingStatus', false)
+      // commit('loadingTableStatus', false)
     }
     
   })

@@ -224,7 +224,7 @@ export default {
 					familyUdid: familyMemberDetails.value.id,
 					data: familyMemberForm
 				}).then(() => {
-					if(!errorMsg){
+					if(!errorMsg.value){
 					if(route.name == 'PatientSummary') {
 						store.dispatch('patientDetails', patientUdid)
 						store.dispatch('familyMembersList', patientUdid);
