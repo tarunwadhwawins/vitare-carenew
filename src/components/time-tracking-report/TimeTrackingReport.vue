@@ -231,7 +231,6 @@ export default {
           from.format("YYYY-MM-DD") +
           "&page="+store.getters.searchTable.value
       );
-      //alert(store.getters.otherFilters.value)
     }
 
     function updateFilter() {
