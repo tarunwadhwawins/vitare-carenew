@@ -5,4 +5,5 @@ export default{
     staffSummaryPatient:null,
     staffSummaryPatientCols:null,
     staffSummaryMeta:null,
+    visibleModal:false
 }

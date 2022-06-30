@@ -20,10 +20,11 @@
       </div> -->
     </a-config-provider>
   </div>
+  <CareCoordinatorDetailsModal v-if="visibleModal" v-model:visible="visibleModal" @closeModal="handleOk"/>
 </template>
 
 <script>
-import { watchEffect, ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, defineAsyncComponent } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
 import router from '@/router';
@@ -34,9 +35,10 @@ import { useStore } from "vuex";
 
 
 export default {
-  //   components: {
-  //     SelectLanguage,
-  //   },
+    components: {
+      // SelectLanguage,
+      CareCoordinatorDetailsModal:defineAsyncComponent(()=>import('@/components/coordinator-summary/CareCoordinatorDetailsModal'))
+    },
   setup() {
     const store = useStore();
     const locale = ref(enUS.locale);
@@ -45,10 +47,10 @@ export default {
       return store.state.authentication.expiresIn;
     });
 
-    watchEffect(() => {
-
-      
-    });
+    const visibleModal = computed(()=>{
+      return store.state.careCoordinatorSummary.visibleModal
+    })
+ 
 
     onMounted(() => {
        document.body.classList.add("test");
@@ -87,6 +89,7 @@ export default {
     });
 
     return {
+      visibleModal,
       enUS,
       esES,
       locale,

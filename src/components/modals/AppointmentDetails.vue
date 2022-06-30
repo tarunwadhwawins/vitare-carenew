@@ -17,13 +17,15 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Care Coordinator</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.staff}}
+                            <!-- {{appointmentDetails?.staff}} -->
+                            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: appointmentDetails?.staffUdid } }">{{ appointmentDetails?.staff }}</router-link>
                         </div>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Patient</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.patient}}
+                            <!-- {{appointmentDetails?.patient}} -->
+                            <router-link :to="{ name: 'PatientSummary', params: { udid: appointmentDetails?.patientUdid } }">{{ appointmentDetails?.patient }}</router-link>
                         </div>
                     </div>
                     <div class="itemWrapper" >
