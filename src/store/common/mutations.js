@@ -226,7 +226,7 @@ export const checkChangeInput = (state, data) => {
     state.filter = data
   }
   export const dateFilter = (state, data) => {
-    console.log("check",data)
+    // console.log("check",data)
       if(data){
     state.dateFilter = data
       }else{

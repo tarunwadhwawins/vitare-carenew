@@ -77,6 +77,7 @@
         </a-tooltip>
     </template> -->
 </a-table>
+<TableLoader />
 <RecordView v-model:visible="reportViewModal" />
 <ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
 </template>
@@ -99,6 +100,7 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {exportExcel} from "@/commonMethods/commonMethod";
+import TableLoader from "@/components/loader/TableLoader";
 const column = [
   {
     title: "#",
@@ -201,6 +203,7 @@ const column = [
 ];
 export default defineComponent({
   components: {
+    TableLoader,
     // EyeOutlined,
     GlobalCodeDropDown,
     ExportToExcel,
@@ -353,7 +356,7 @@ export default defineComponent({
 
                 dateFilter+
                   filter +
-                  store.getters.searchTable.value +
+                  // store.getters.searchTable.value +
                   store.getters.orderTable.value.data
               )
               setTimeout(() => {
