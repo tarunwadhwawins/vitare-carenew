@@ -184,7 +184,7 @@ export default {
 				})
 			}
 			else {
-				console.log('addPhysicianForm', addPhysicianForm)
+				// console.log('addPhysicianForm', addPhysicianForm)
 				store.dispatch('addPhysician', {
 					patientUdid: patientUdid,
 					data: addPhysicianForm,

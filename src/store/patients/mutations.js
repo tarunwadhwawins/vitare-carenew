@@ -444,7 +444,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data
-  console.log("check",data)
+  // console.log("check",data)
   state.documentColumns = [
     {
       title: "Name",
@@ -713,7 +713,7 @@ export const bitrixFormCheck = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
-  console.log('data',data)
+  // console.log('data',data)
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)
   state.fetchFromBitrixStatus = true
@@ -928,7 +928,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
-    console.log('vitals.length', patientGraphData)
+    // console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {

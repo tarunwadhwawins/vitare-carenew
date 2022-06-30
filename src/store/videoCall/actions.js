@@ -32,7 +32,7 @@ export const appointmentCalls = async ({commit},data) => {
   try{
     await serviceMethod.common("post", `appointment/calls`, null, data).then((response) => {
       commit('conferenceId', response.data.data.conferenceId);
-      console.log(response);
+      // console.log(response);
       commit('loadingStatus', false)
       check=true
     })

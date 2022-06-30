@@ -55,10 +55,17 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
     // ...
 });
 
+let notificationCouter =null
+let multiUserCounter = null
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
  if(router.currentRoute.value.name!='Communications'){
+    // console.log('notifications',notificationCouter++)
+    notificationCouter++
+    let counter = notificationCouter
+   if(counter==1){
+    localStorage.setItem('notificationsId',payload.data.typeId)
     notification.open({
         message: <div><h2>{`${payload.notification.title}`}</h2></div>,
         description: <div> {`${payload.notification.body}`} </div>,
@@ -87,8 +94,9 @@ onMessage(messaging, (payload) => {
                     }),
                     notification.close(key)
                 }
-                  
+                notificationCouter = 0
                 }
+                
             },
                 "View"
             ),
@@ -98,8 +106,103 @@ onMessage(messaging, (payload) => {
         onClose: () => {   notification.close(key) },
         duration: null,
         placement: 'bottomRight'
-    
+        
     })
+   }else{
+    
+    notification.destroy(key)
+    //checking if multiple user send the msg
+    if(localStorage.getItem('notificationsId') != payload.data.typeId || multiUserCounter){
+        multiUserCounter++ // flag counter for multiple user checking
+        notification.open({
+            message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
+            description: <div> {'You have received new message from patients'} </div>,
+            btn: [
+                h(Button, {
+                    onClick: () => {   notification.close(key) },
+                },
+                    "Cancel "
+                ),
+                h(Button, {
+                    type: "primary",
+                    onClick: () => { if(payload.data.type=="Appointment"){
+                        router.push('/appointment-calendar'),
+                        notification.close(key)
+                    }else{
+                        router.push('/communications?view=list'),
+                        // router.push({
+                        //     name: 'Communications',
+                        //     query: {
+                        //         view: 'list'
+                        //     },
+                        //     params: {
+                        //         from: 'push',
+                        //         typeId: payload.data.typeId,
+                        //     }
+                        // }),
+                        notification.close(key)
+                    }
+                    notificationCouter = 0
+                    multiUserCounter = 0
+                    // localStorage.removeItem('notificationsData')
+                    }
+                    
+                },
+                    "View"
+                ),
+        
+            ],
+            key,
+            onClose: () => {   notification.close(key) },
+            duration: null,
+            placement: 'bottomRight'
+        })
+        //checking if single user send the mutiple time msg
+    }else if(!multiUserCounter){
+        notification.open({
+            message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
+            description: <div> {`${payload.notification.body}`} </div>,
+            btn: [
+                h(Button, {
+                    onClick: () => {   notification.close(key) },
+                },
+                    "Cancel "
+                ),
+                h(Button, {
+                    type: "primary",
+                    onClick: () => { if(payload.data.type=="Appointment"){
+                        router.push('/appointment-calendar'),
+                        notification.close(key)
+                    }else{
+                        // router.push('/communications?view=list'),
+                        router.push({
+                            name: 'Communications',
+                            query: {
+                                view: 'list'
+                            },
+                            params: {
+                                from: 'push',
+                                typeId: payload.data.typeId,
+                            }
+                        }),
+                        notification.close(key)
+                    }
+                    notificationCouter = 0
+                    // localStorage.removeItem('notificationsData')
+                    }
+                    
+                },
+                    "View"
+                ),
+        
+            ],
+            key,
+            onClose: () => {   notification.close(key) },
+            duration: null,
+            placement: 'bottomRight'
+        })
+    }
+   }
  }
   // ...
 });

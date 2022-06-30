@@ -83,7 +83,7 @@ export default {
         const taskID = ref(false);
 
         const showModal = (task) => {
-            console.log('=>', task)
+            // console.log('=>', task)
             if (task.id) {
                 store.dispatch('editTask', task.id)
                 taskID.value = task.id.id

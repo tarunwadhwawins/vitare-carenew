@@ -384,7 +384,7 @@ export const roles = async ({commit}) => {
 export const addStaffRole = async ({
   commit
 }, data) => {
-  console.log('addRole',data.data)
+  // console.log('addRole',data.data)
   await serviceMethod.common("post", `staff/${data.id}/role`, null, data.data).then((response) => {
     commit('addStaffRole', response.data.data);
     successSwal(response.data.message)

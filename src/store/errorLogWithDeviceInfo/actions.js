@@ -3,7 +3,7 @@ import serviceMethod from '@/services/serviceMethod';
 
 export const errorLogWithDeviceInfo = async ({commit}, data) => {
   commit('loadingStatus', true)
-  console.log('commit',commit);
+  // console.log('commit',commit);
   await serviceMethod.common("post", `errorLog/with/deviceInfo`, null, data).then((response) => {
     console.log('exportReportRequest', response);
     commit('loadingStatus', false)

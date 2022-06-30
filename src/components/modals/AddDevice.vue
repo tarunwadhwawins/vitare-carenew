@@ -209,10 +209,10 @@ export default defineComponent({
 
     function handleChange(id){
       inventoryForm.inventory = id;
-      console.log('element id', id)
+      // console.log('element id', id)
       isValueChanged.value = true;
       dropdownListing.value.forEach(element => {
-        console.log('element element', element)
+        // console.log('element element', element)
         if(element.value == id) {
           inventoryForm.modelNumber = element.modelNumber,
           inventoryForm.serialNumber = element.serialNumber,

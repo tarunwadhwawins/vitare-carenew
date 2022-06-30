@@ -215,7 +215,7 @@ export const exportReportRequest = async ({ commit }, data) => {
   let udid = response.data.data.udid;
   let reportType = response.data.data.reportType;
   let type = reportType.replace('_','/');
-  console.log("check",API_URL+`${type}/export/${udid}`+data.field)
+  // console.log("check",API_URL+`${type}/export/${udid}`+data.field)
   await  window.open(API_URL+`${type}/export/${udid}`+data.field, '_blank')
 }
 

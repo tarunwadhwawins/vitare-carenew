@@ -1,6 +1,6 @@
 <template>
   <div class="steps-action">
-    <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+    <a-form-item >
       <a-button v-if="!Id && !isReset && !isTimeLog" class="modal-button" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
       <a-button v-if="!Id && isReset && !isTimeLog" class="modal-button" @click="handleClear()">{{$t('global.clear')}}</a-button>
       <a-button v-if="Id" class="modal-button" @click="cancel" >Cancel</a-button>
@@ -43,5 +43,11 @@
     padding: 7px 15px 5px 15px;
     height: auto;
     width: 80px;
+  }
+  .steps-action {
+    text-align: right;
+  }
+  .steps-action .ant-row {
+    margin: 0;
   }
 </style>

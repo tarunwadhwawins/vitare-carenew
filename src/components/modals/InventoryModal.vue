@@ -131,7 +131,7 @@ export default {
         })
       }
       else {
-        console.log('data', inventoryForm)
+        // console.log('data', inventoryForm)
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);

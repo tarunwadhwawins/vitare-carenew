@@ -168,7 +168,7 @@ export default {
             default:
               break;
           }
-          console.log('element', element)
+          // console.log('element', element)
           vitalsData.push({
             type: element.type,
             value: Number(element.value),

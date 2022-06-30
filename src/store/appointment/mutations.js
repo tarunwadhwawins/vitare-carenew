@@ -84,7 +84,7 @@ export const appointmentDetails = (state, data) => {
 }
 
 export const patientAppointmentsList = (state, appointments) => {
-	console.log('patientAppointmentsList Mutation', appointments)
+	// console.log('patientAppointmentsList Mutation', appointments)
 	state.patientAppointmentsList = appointments.map(data => {
 		
 		data.date = dateOnlyFormat(data.date)
