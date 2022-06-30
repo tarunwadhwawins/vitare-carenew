@@ -244,15 +244,15 @@
         </div>
     </div>
     <!---->
-    <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" :patientId="patientId" :patientName="patientName" />
-    <TasksModal v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)" />
-    <PatientsModal v-model:visible="PatientsModal" @closeModal="closeAppointModal($event)" />
+    <AddAppointment v-if="appointmentModal" v-model:visible="appointmentModal" @is-visible="showModal($event)" :patientId="patientId" :patientName="patientName" />
+    <TasksModal v-if="tasksModal" v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)" />
+    <PatientsModal v-if="PatientsModal" v-model:visible="PatientsModal" @closeModal="closeAppointModal($event)" />
     <!-- <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" /> -->
-    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visible="showStartCallModal($event)" />
-    <SendMessage v-model:visible="SendMessage" @ok="startOk" />
+    <AddStartCall v-if="AddStartCall" v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visible="showStartCallModal($event)" />
+    <SendMessage v-if="SendMessage" v-model:visible="SendMessage" @ok="startOk" />
     <!---->
     <AppointmentDetails v-if="isAppointment" v-model:visible="isAppointment" @closeModal="closeModal(event)" />
-    <EscaltionModal v-model:visible="escalationVisible" @saveModal="saveModal($event)" />
+    <EscaltionModal v-if="escalationVisible"  v-model:visible="escalationVisible" @saveModal="saveModal($event)" />
 </div>
 </template>
 

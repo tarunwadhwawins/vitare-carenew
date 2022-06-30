@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 516px)' }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1600,y:'calc(100vh - 516px)' }" :pagination="false" @change="handleTableChange">
         <template #fullName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
 
@@ -31,7 +31,7 @@
                     <span>{{'Reset Password'}}</span>
                 </template>
                 <a class="icons">
-                    <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
+                    <KeyIcon height=16 width=16 alt="Reset Password" @click="resetPasseord(record.id)"/>
                     <!-- <img src="@/assets/images/key.svg" > -->
                     <!-- <KeyOutlined @click="resetPasseord(record.id)" /> -->
                 </a>

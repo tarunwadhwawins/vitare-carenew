@@ -29,7 +29,7 @@
             </router-link>
             <router-link to="/manage-care-coordinator" v-if="arrayToObjact(screensPermissions, 40)">
                 <a-menu-item>
-                    <UserOutlined /><span class="menuItem">Care Cordinators</span></a-menu-item>
+                    <TeamOutlined /><span class="menuItem">Care Cordinators</span></a-menu-item>
             </router-link>
             <router-link to="/manage-patients" v-if="arrayToObjact(screensPermissions, 65)">
                 <a-menu-item>
@@ -41,25 +41,25 @@
             </router-link>
             <router-link :to="{ name: 'Tasks', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 113)">
                 <a-menu-item>
-                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.tasks')}}</span></a-menu-item>
+                    <BarChartOutlined /><span class="menuItem">{{$t('sidebar.tasks')}}</span></a-menu-item>
             </router-link>
             <router-link to="/thresholds" v-if="arrayToObjact(screensPermissions, 329)">
                 <a-menu-item>
-                    <FileTextOutlined /><span class="menuItem">{{$t('sidebar.generalParameters')}}</span></a-menu-item>
+                    <ProjectOutlined /><span class="menuItem">{{$t('sidebar.generalParameters')}}</span></a-menu-item>
             </router-link>
             <router-link to="/time-log-report" v-if="arrayToObjact(screensPermissions, 332)">
                 <a-menu-item>
-                    <FileTextOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
+                    <FieldTimeOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
             </router-link>
             <router-link to="/time-tracking-report">
                 <a-menu-item>
-                    <FileTextOutlined /><span class="menuItem">{{$t('sidebar.reports')}}</span>
+                    <ReadOutlined /><span class="menuItem">{{$t('sidebar.reports')}}</span>
                 </a-menu-item>
             </router-link>
 
             <router-link v-if="linkTo" :to="linkTo">
                 <a-menu-item>
-                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.administration')}}
+                    <UserSwitchOutlined /><span class="menuItem">{{$t('sidebar.administration')}}
                     </span></a-menu-item>
             </router-link>
 
@@ -81,10 +81,16 @@ import {
     MailOutlined,
     UserOutlined,
     CalendarOutlined,
-    FileTextOutlined,
     DashboardOutlined,
     CreditCardOutlined,
     FileDoneOutlined,
+    TeamOutlined ,
+    ProjectOutlined,
+    BarChartOutlined,
+    FieldTimeOutlined,
+    ReadOutlined,
+    UserSwitchOutlined
+    
 } from "@ant-design/icons-vue";
 import {
     useStore
@@ -98,10 +104,15 @@ export default defineComponent({
         MailOutlined,
         UserOutlined,
         CalendarOutlined,
-        FileTextOutlined,
         DashboardOutlined,
         CreditCardOutlined,
-        FileDoneOutlined
+        FileDoneOutlined,
+        TeamOutlined ,
+        ProjectOutlined,
+        BarChartOutlined,
+        FieldTimeOutlined,
+        ReadOutlined,
+        UserSwitchOutlined
     },
 
     setup() {

@@ -70,7 +70,7 @@ export default {
     
     otherParam:String,
 
-    height:String,
+    height:Number,
     islimit:Number
   },
   setup(props,{emit}) {
