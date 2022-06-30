@@ -1,8 +1,8 @@
 
 <template>
-<a-modal max-width="1140px" width="100%" title="Care-Coordinator Details" centered :footer="false" :maskClosable="false" >
+<a-modal max-width="1140px" width="40%" title="Care-Coordinator Details" centered :footer="false" :maskClosable="false" @cancel="handleOk" >
 <a-row :gutter="24">
-    <a-col :sm="7" :xs="24">
+    <a-col :sm="24" :xs="24">
         <div class="patientInfo">
             <div class="patientImg">
                 <img src="@/assets/images/userAvatar.png" alt="image" />
@@ -43,7 +43,9 @@
         </div>
     </a-col>
     </a-row>
+    <TableLoader/>
 </a-modal>
+
 </template>
 <script>
 
@@ -58,12 +60,14 @@ import {
   PhoneOutlined,
   // KeyOutlined
 } from "@ant-design/icons-vue";
+import TableLoader from "@/components/loader/TableLoader.vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
     MailOutlined,
     PhoneOutlined,
+    TableLoader
   },
   setup() {
     const store = useStore();
@@ -71,7 +75,12 @@ export default defineComponent({
       return store.state.careCoordinatorSummary.staffSummary;
     });
 
+    function handleOk(){
+      store.commit('closeDetailsModal')
+    }
+
     return {
+      handleOk,
       getstaffSummary
     };
   },
