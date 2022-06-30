@@ -216,6 +216,13 @@ export default {
           "&toDate=" +
           from.format("YYYY-MM-DD")
       );
+       store.commit(
+        "otherFilters",
+        "&fromDate=" +
+          to.format("YYYY-MM-DD") +
+          "&toDate=" +
+          from.format("YYYY-MM-DD")
+      );
       store.dispatch(
         "cptCodes",
         "?fromDate=" +
@@ -224,6 +231,7 @@ export default {
           from.format("YYYY-MM-DD") +
           "&page="+store.getters.searchTable.value
       );
+      //alert(store.getters.otherFilters.value)
     }
 
     function updateFilter() {
