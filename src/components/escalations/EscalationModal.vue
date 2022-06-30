@@ -103,7 +103,7 @@
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
                                             <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                  <!-- <template #addedBy="{ record }">
-                                                    <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link>
+                                                    <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
                                                   </template> -->
                                                 <template #color="{ record }">
                                                     <a-tooltip placement="bottom">
@@ -190,7 +190,7 @@
 </a-modal>
 </template>
 <script>
-import { computed,reactive, ref } from "vue";
+import { computed,onMounted,reactive, ref } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import {
@@ -414,6 +414,10 @@ export default {
       summaryStart: "",
       summaryEnd: "",
     });
+
+    onMounted(()=>{
+      store.dispatch('flagsList')
+    })
 
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails;
@@ -817,7 +821,15 @@ let dateFormate = {
       return store.state.escalations.editEscalationPatient;
     });
 
+    function showModal(id){
+      alert(id)
+      store.dispatch("staffSummary", id)
+      store.commit('showDetailsModal')
+
+    }
+
     return {
+      showModal,
       editDataPatient,
       editDataStaff,
       formRef,
