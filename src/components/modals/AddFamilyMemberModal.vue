@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()" :maskClosable="true" zIndex="1040">
+	<a-modal width="60%" :title="isFamilyMemberEdit ? $t('global.updateFamilyMembers') :$t('global.addFamilyMembers') " centered @cancel="closeModal()" :maskClosable="true" zIndex="1040">
 		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
@@ -161,6 +161,7 @@ export default {
     const form = reactive({ ...familyMemberForm });
 
     const changedValue = () => {
+		store.state.patients.errorMsg = ''
 			isValueChanged.value = true;
     }
 
@@ -223,6 +224,7 @@ export default {
 					familyUdid: familyMemberDetails.value.id,
 					data: familyMemberForm
 				}).then(() => {
+					if(!errorMsg){
 					if(route.name == 'PatientSummary') {
 						store.dispatch('patientDetails', patientUdid)
 						store.dispatch('familyMembersList', patientUdid);
@@ -234,6 +236,7 @@ export default {
 						});
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
+					}
 					}
 				})
 			}
@@ -242,6 +245,7 @@ export default {
 					patientUdid: patientUdid,
 					data: familyMemberForm
 				}).then(() => {
+					if(!errorMsg){
 					if(route.name == 'PatientSummary') {
 						store.dispatch('patientDetails', patientUdid)
 						store.dispatch('familyMembersList', patientUdid);
@@ -253,6 +257,7 @@ export default {
 						});
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
+					}
 					}
 				})
 			}

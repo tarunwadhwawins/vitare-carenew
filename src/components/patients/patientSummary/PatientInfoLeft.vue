@@ -33,7 +33,7 @@
       <div class="pat-profile-inner">
         <div class="thumb-head">Non Compliance</div>
         <div class="thumb-desc">
-          <WarningOutlined />
+          {{ patientDetails.nonCompliance }}
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -196,7 +196,7 @@
 
 <script>
 import {
-  WarningOutlined,
+  // WarningOutlined,
   PlusOutlined,
 } from "@ant-design/icons-vue";
 
@@ -222,7 +222,7 @@ import ReferralViewModal from "@/components/patients/patientSummary/modals/Refer
 import AppointmentsTable from "@/components/communications/tables/AppointmentsTable"
 export default defineComponent({
   components: {
-    WarningOutlined,
+    // WarningOutlined,
     PlusOutlined,
     PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     PatientsModal: defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
