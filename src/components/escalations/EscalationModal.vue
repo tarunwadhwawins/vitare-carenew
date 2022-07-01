@@ -821,15 +821,13 @@ let dateFormate = {
       return store.state.escalations.editEscalationPatient;
     });
 
-    function showModal(id){
-      alert(id)
-      store.dispatch("staffSummary", id)
-      store.commit('showDetailsModal')
-
-    }
+    // function showModal(id){
+    //   store.dispatch("staffSummary", id)
+    //   store.commit('showDetailsModal')
+    // }
 
     return {
-      showModal,
+      // showModal,
       editDataPatient,
       editDataStaff,
       formRef,

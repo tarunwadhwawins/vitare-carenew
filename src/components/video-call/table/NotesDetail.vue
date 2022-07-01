@@ -10,9 +10,10 @@
                 <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
                         <div class="leftWrapper">Added By</div>
-                        <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: detailsNotes.addedById}}">
+                        <!-- <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: detailsNotes.addedById}}">
                           <div class="rightWrapper">{{ detailsNotes.addedBy }}</div>
-                        </router-link>
+                        </router-link> -->
+                        <a @click="showModal(detailsNotes.addedById)">{{ detailsNotes.addedBy }}</a>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Date Time</div>
@@ -183,7 +184,14 @@ export default defineComponent({
       addNoteVisible.value = value;
     }
 
+    function showModal(id){
+      store.dispatch("staffSummary", id)
+      store.commit('showDetailsModal')
+
+    }
+
     return {
+      showModal,
       showNoteModal,
       addNoteVisible,
       paramsId: route.params.udid,

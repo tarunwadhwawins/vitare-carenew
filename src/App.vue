@@ -87,8 +87,12 @@ export default {
         }
       }
     });
+    function handleOk(){
+      store.commit('closeDetailsModal')
+    }
 
     return {
+      handleOk,
       visibleModal,
       enUS,
       esES,
