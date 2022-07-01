@@ -8,7 +8,7 @@
          <template #escalationStaff="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
                 {{i==0?' ':','}} 
-                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link> -->
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
                 <!-- <a @click="showStaffModal(record.staffUdid)">{{ esc.staffName }}</a> -->
             </span>
         </template>
