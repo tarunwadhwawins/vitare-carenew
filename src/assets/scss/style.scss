@@ -1,6 +1,11 @@
 .pageTittle {
     margin: 0 0 20px 0;
     position: relative;
+    &.patientSummaryFilters {
+        .filter {
+            position: initial;
+        }
+    }
     .commonBtn {
         position: absolute;
         right: 0;
