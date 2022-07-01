@@ -29,6 +29,7 @@ import { staffGroups } from "./staffGroups/index"
 import createPersistedState from "vuex-persistedstate";
 import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
 import { questionnaireTemplate } from "./questionnaireTemplate/index"
+import { questionnaireTemplateSection } from "./questionnaireTemplateSection/index"
 import { questionnaire } from "./questionnaire/index"
 import { workflow} from "./workflow"
 
@@ -74,7 +75,8 @@ export default createStore({
     clinicalDashboard,
     referral,
     escalations,
-    reports
+    reports,
+    questionnaireTemplateSection
   },
   plugins: [ createPersistedState({
     reducer(state) {

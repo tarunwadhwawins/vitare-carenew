@@ -5,7 +5,7 @@
             <a-col :span="24">
                 <h2 class="pageTittle">
 
-                    {{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}
+                    {{ templateDetailsList ? templateDetailsList.sectionName : ''}}
                     <div class="commonBtn">
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Question</a-button>
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
@@ -17,17 +17,17 @@
                     </div>
                 </h2>
             </a-col>
-            <a-col :span="24">
-                <Question :question="templateDetailsList" v-if="templateDetailsList"  :edit="false" />
-               
+            <a-col :span="24" v-if="templateDetailsList">
+                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection.data" :edit="false" />
+
             </a-col>
         </a-row>
 
     </div>
     <!--modals-->
-    <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template"/>
+    <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="section" />
     <EditQuestionnaire v-model:visible="visible3" />
-    <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template"/>
+    <SearchQuestion v-if="templateDetailsList" v-model:visible="visible1" :templaterecord="templateDetailsList" @is-visible-exist="showModal2($event)" temOrSection="section" />
     <!---->
 </div>
 <TableLoader />
@@ -44,13 +44,11 @@
   import { useStore  } from "vuex"
   import { useRoute  } from 'vue-router'
 export default defineComponent({
-    name: "Question Template Details",
+    name: "Question Section Details",
     components: {
 
-      
-
         AddQuestionnaire,
-       EditQuestionnaire,
+        EditQuestionnaire,
         SearchQuestion,
         PlusOutlined,
         Question,
@@ -60,7 +58,7 @@ export default defineComponent({
         const store = useStore()
         const route = useRoute()
         const udid = route.params.udid
-       
+
         const visible2 = ref(false)
         const id = ref("");
         const showModal = (e) => {
@@ -79,8 +77,8 @@ export default defineComponent({
         };
 
         onMounted(() => {
-            store.dispatch("detailsQuestionnaireTemplate", udid)
-            store.dispatch("templateDetailsList", udid)
+            store.dispatch("templateSectionDetailsList", udid)
+            //store.dispatch("templateDetailsList", udid)
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -94,7 +92,7 @@ export default defineComponent({
             })
         })
         return {
-            
+
             visible2,
             showModal,
             visible3,
@@ -102,8 +100,8 @@ export default defineComponent({
             visible1,
             showModal2,
             udid,
-            detailsQuestionnaireTemplate: store.getters.detailsQuestionnaireTemplate,
-            templateDetailsList: store.getters.templateDetailsList,
+
+            templateDetailsList: store.getters.sectionDetailsList,
             value: ref(1),
             value2: ref(1)
         };

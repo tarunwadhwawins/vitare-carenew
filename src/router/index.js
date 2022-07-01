@@ -320,6 +320,12 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
+    path: '/question-section-detail/:udid',
+    name: 'QuestionSectionDetail',
+    component: () => import( '@/views/questionnaire-template/QuestionSectionDetail'),
+    meta: { authAdmin: true }
+  },
+  {
     path: '/template-response/:udid',
     name: 'TemplateResponse',
     component: () => import( '@/views/template-response/TemplateResponse'),

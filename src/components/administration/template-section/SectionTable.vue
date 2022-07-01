@@ -8,6 +8,14 @@
     <template #actions="{record}">
         <a-tooltip placement="bottom">
             <template #title>
+                <span>Setting</span>
+            </template>
+            <a class="icons">
+            <router-link :to="{ name: 'QuestionSectionDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
+                    <SettingTwoTone /></router-link></a>
+        </a-tooltip>
+        <a-tooltip placement="bottom">
+            <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" @click="editModal(record.id)">
@@ -35,24 +43,21 @@
 <Loader/>
 </template>
 <script>
-import {DeleteOutlined,EditOutlined,CopyOutlined,} from "@ant-design/icons-vue"
+import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
 import {warningSwal} from "@/commonMethods/commonMethod";
 import { onMounted } from "vue"
 const columns = [{
-        title: "Questionnaire Template",
-        dataIndex: "templateName",
+        title: "Section Name",
+        dataIndex: "sectionName",
 
         slots: {
-            customRender: "templateName",
+            customRender: "sectionName",
         },
     },
-    {
-        title: "Type",
-        dataIndex: "templateType",
-    },
+    
     {
         title: "Actions",
         dataIndex: "actions",
@@ -68,6 +73,7 @@ export default {
         EditOutlined,
         CopyOutlined,
         Loader,
+        SettingTwoTone
     },
     props: {},
     setup(props, {
@@ -78,8 +84,8 @@ export default {
             store.dispatch('detailsQuestionnaireTemplate',id)
             emit("edit",{show:true,id:id});
         };
-        const data = store.getters.questionnaireTemplateList
-        const meta = store.getters.questionnaireTemplateMeta 
+        const data = store.getters.questionnaireSection
+        const meta = store.getters.questionnaireSectionMeta 
         let record = []
         let scroller = ""
         onMounted(() => {
@@ -93,7 +99,7 @@ export default {
                         scroller = maxScroll;
                         meta.value = ""
                         record = data.value
-                        store.dispatch("questionnaireTemplateList", "?page=" + current_page + store.getters.searchTable.value +
+                        store.dispatch("questionnaireTemplateSectionList", "?page=" + current_page + store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         });

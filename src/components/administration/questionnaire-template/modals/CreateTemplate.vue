@@ -4,8 +4,9 @@
         <a-row :gutter="16">
             <a-col :span="12">
                 <div class="form-group">
-                    <a-form-item label="Template Name" name="templateName" :rules="[{ required: true, message: 'template' +' '+$t('global.validation') }]">
-                        <a-input v-model:value="questionnaireTemplate.templateName" placeholder="Enter Template Name" style="width: 100%" size="large" @change="checkChangeInput()" />
+                  
+                    <a-form-item :label="$t('questionnaire.templateName')" name="templateName" :rules="[{ required: true, message: $t('questionnaire.templateName') +' '+$t('global.validation') }]">
+                        <a-input v-model:value="questionnaireTemplate.templateName" :placeholder="$t('questionnaire.entertemplateName')" style="width: 100%" size="large" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateName[0]:''" />
                     </a-form-item>
 
@@ -15,7 +16,7 @@
             <a-col :span="12">
                 <div class="form-group">
                  
-                    <a-form-item label="Template Type" name="templateTypeId" :rules="[{ required: true, message: 'template Type' +' '+$t('global.validation') }]">
+                    <a-form-item :label="$t('questionnaire.templateType')" name="templateTypeId" :rules="[{ required: true, message: $t('questionnaire.templateType') +' '+$t('global.validation') }]">
                       <GlobalCodeDropDown v-if="questionnaireTemplateType" v-model:value="questionnaireTemplate.templateTypeId" :globalCode="questionnaireTemplateType" @change="checkChangeInput()"/>
                        
                          <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateTypeId[0]:''" />
@@ -24,8 +25,8 @@
             </a-col>
              <a-col :span="24">
                     <div class="form-group">
-                        <a-form-item label="Tags" name="tags" >
-                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" placeholder="Select Tags">
+                        <a-form-item :label="$t('questionnaire.tags')" name="tags" >
+                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')">
                         </a-select>
                         </a-form-item>
                     </div>
@@ -35,8 +36,8 @@
               
                 <div class="steps-action">
                    <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
-                    <a-button  type="primary" html-type="submit" :disabled="disabled" v-if="!update">Save</a-button>
-                    <a-button  type="primary" html-type="submit" v-else >Update</a-button>
+                    <a-button  type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
+                    <a-button  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button>
               </div>
             </a-col>
         </a-row>
@@ -113,8 +114,11 @@ function reset(){
     disabled.value= false
 }
     function closeModal() {
+      
       if (checkFieldsData.value) {
+        emit("is-visible", {show:true,id:props.update})
         warningSwal(messages.modalWarning).then((response) => {
+          
           if (response == true) {
             emit("is-visible", {show:false,id:props.update})
             reset()

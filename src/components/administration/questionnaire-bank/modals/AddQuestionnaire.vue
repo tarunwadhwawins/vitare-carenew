@@ -1,12 +1,12 @@
 <template>
-<a-modal width="100%" title="Add Questionnaire" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="100%" :title="$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" @finishFailed="onFinishFailed">
 
         <div class="questionnaireMain">
             <a-row :gutter="24">
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
-                        <a-form-item label="Question" name="question" :rules="[{ required: true, message: 'question' +' '+$t('global.validation') }]">
+                        <a-form-item :label="$t('questionnaire.question')" name="question" :rules="[{ required: true, message: $t('questionnaire.question') +' '+$t('global.validation') }]">
                             <a-input v-model:value="questionnaire.question" placeholder="Enter Question" style="width: 100%" size="large" @change="checkChangeInput()" />
                             <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.question[0]:''" />
                         </a-form-item>
@@ -15,7 +15,7 @@
                 </a-col>
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
-                        <a-form-item label="Type" name="dataTypeId" :rules="[{ required: true, message: dataTypeId +' '+$t('global.validation') }]">
+                        <a-form-item :label="$t('questionnaire.type')" name="dataTypeId" :rules="[{ required: true, message: $t('questionnaire.type') +' '+$t('global.validation') }]">
                             <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType()" />
 
                         </a-form-item>
@@ -23,8 +23,8 @@
                 </a-col>
                 <a-col :span="24">
                     <div class="form-group">
-                        <label> Tags</label>
-                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" placeholder="Select Tags">
+                        <label> {{$t('questionnaire.tags')}}</label>
+                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')">
                         </a-select>
                     </div>
 
@@ -37,14 +37,14 @@
                     <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
 
                         <a-col :span="1">
-                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Correct</Label>
+                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</Label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
                             </a-radio-group>
                         </a-col>
                         <a-col :span="1">
-                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Default</Label>
+                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</Label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" v-if="questionnaire.dataTypeId==244" @change="checkboxChangeDefault($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value2">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChangeDefault($event)"></a-radio>
@@ -52,21 +52,21 @@
                         </a-col>
                         <a-col :span="5">
                             <div class="form-group">
-                                <a-form-item label="Label">
-                                    <a-input v-model:value="lable.value" placeholder="Label" style="width: 100%" size="large" />
+                                <a-form-item :label="$t('questionnaire.label')">
+                                    <a-input v-model:value="lable.value" :placeholder="$t('questionnaire.label')" style="width: 100%" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :span="2">
                             <div class="form-group">
-                                <a-form-item label="Score">
+                                <a-form-item :label="$t('questionnaire.score')">
                                     <a-input v-model:value="questionnaire.labelScore[lable.key]" placeholder="Score" style="width: 100%" size="large" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="4" :xs="24">
                             <div class="form-group">
-                                <a-form-item label="Programs">
+                                <a-form-item :label="$t('questionnaire.program')">
 
                                     <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" />
                                 </a-form-item>
@@ -98,7 +98,7 @@
                 <a-col :span="3" v-else>
                     <div class="form-group">
 
-                        <label>Score</label>
+                        <label>{{$t('questionnaire.score')}}</label>
                         <a-input v-model:value="questionnaire.textScore" placeholder="Score" style="width: 100%" size="large" />
 
                     </div>
@@ -136,6 +136,7 @@ export default {
     props: {
         id: String,
         templateId: String,
+        temOrSection: String
     },
     setup(props, {
         emit
@@ -164,30 +165,28 @@ export default {
             store.dispatch("programList");
         });
 
-        function programChange(val, index,programList) {
-            
+        function programChange(val, index, programList) {
 
             questionnaire.programId[index] = val;
-programList.forEach((data)=>{
-    var test =questionnaire.programId[index].find(item => data.id==item)
-    if(test=="undefined"){
-    questionnaire.programScore[index+''+data.id] ? questionnaire.programScore[index+''+data.id] = '' : ''
-    console.log("test",questionnaire.programScore)
-    }
-})
+            programList.forEach((data) => {
+                var test = questionnaire.programId[index].find(item => data.id == item)
+                if (test == "undefined") {
+                    questionnaire.programScore[index + '' + data.id] ? questionnaire.programScore[index + '' + data.id] = '' : ''
+                    console.log("test", questionnaire.programScore)
+                }
+            })
             //  questionnaire.programId[index].forEach((item)=>{
             //      var test =programList.find(data => data.id==item)
 
+            //programList.forEach((data)=>{
 
-//programList.forEach((data)=>{
-    
-// if(item!==data.id){
-//     console.log(data.id,item)
-//     questionnaire.programScore[index+''+data.id] ? questionnaire.programScore[index+''+data.id] : ''
-// }
-//})
-//console.log(val, questionnaire.programId[index],questionnaire.programScore,programList)
-             //})
+            // if(item!==data.id){
+            //     console.log(data.id,item)
+            //     questionnaire.programScore[index+''+data.id] ? questionnaire.programScore[index+''+data.id] : ''
+            // }
+            //})
+            //console.log(val, questionnaire.programId[index],questionnaire.programScore,programList)
+            //})
         }
 
         function addLable() {
@@ -259,20 +258,30 @@ programList.forEach((data)=>{
                 if (props.templateId) {
                     store.commit("checkChangeInput", false)
                     store.dispatch("addAssiignquestionnaire", {
-                        data: [store.getters.addQuestionnaire.value.id],
-                        id: props.templateId
+                        data: {
+                            questionId: [store.getters.addQuestionnaire.value.id],
+                            id: props.templaterecord.id
+                        },
+                        id: props.templateId,
+                        temOrSection: props.temOrSection
                     }).then(() => {
-                        store.dispatch("templateDetailsList", props.templateId)
+                        if (props.temOrSection == 'section') {
+                            store.dispatch("templateSectionDetailsList", props.templateId)
+                        } else {
+                            store.dispatch("templateDetailsList", props.templateId)
+                        }
                     })
 
-                }
+                } else {
+                    store.dispatch("questionnaireList")
 
-                store.dispatch("questionnaireList")
+                }
                 emit("is-visible", {
                     show: false,
                     id: props.id
                 })
                 reset()
+
             })
             // formRef.value.validate().then(() => {
             //     console.log('values', questionnaire.lable);
@@ -282,9 +291,9 @@ programList.forEach((data)=>{
         };
 
         const removeLable = (item) => {
-            
+
             let index = questionnaire.lable.indexOf(item);
-           
+
             if (index !== -1) {
                 questionnaire.lable.splice(index, 1);
             }
@@ -332,6 +341,10 @@ programList.forEach((data)=>{
 
         function closeModal() {
             if (checkFieldsData.value) {
+                emit("is-visible", {
+                    show: true,
+                    id: props.id
+                })
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         emit("is-visible", {

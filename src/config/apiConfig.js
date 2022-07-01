@@ -132,7 +132,8 @@ export const API_ENDPOINTS = {
     
     //Questionnaire Template
     questionnaireTemplate:'questionnaireTemplate',
-    
+    //Section 
+    questionnaireTemplateSection:'questionnaireSection',
     
 
     //Questionnaire

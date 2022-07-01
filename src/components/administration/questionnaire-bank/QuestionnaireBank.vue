@@ -5,7 +5,7 @@
             <a-row :gutter="20">
                 <a-col :span="24">
                     <h2 class="pageTittle">
-                        Questionnaire Bank
+{{$t('questionnaire.questionnaireBank')}}
                         <div class="commonBtn">
 
                             <a-button class="btn primaryBtn" @click="showModal({show:true,id:''})">Add New Question</a-button>
@@ -26,7 +26,7 @@
     </div>
     <Loader />
 </div>
-<AddQuestionnaire v-model:visible="visible" @is-visible="showModal($event)" />
+<AddQuestionnaire v-model:visible="visible" @is-visible="showModal($event)" v-if="visible"/>
 <EditQuestionnaire v-model:visible="visible2" />
 </template>
 

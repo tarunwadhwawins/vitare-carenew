@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="100%" :title="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="assignQuestion" layout="vertical" @finish="addAssignQuestion" @finishFailed="onFinishFailed">
         <a-row>
             <a-col :span="16">
@@ -53,11 +53,13 @@ export default defineComponent({
         Loader,
         AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
         SearchField,
-        Option
+        Option,
+        
 
     },
     props: {
-        templaterecord: Array
+        templaterecord: Array,
+        temOrSection:String
     },
 
     setup(props, {
@@ -120,9 +122,15 @@ export default defineComponent({
         const addAssignQuestion = () => {
 
             store.dispatch("addAssiignquestionnaire", {
-                data: assignQuestion.questionId,
-                id: props.templaterecord.id
+                data: {questionId:assignQuestion.questionId,id:props.templaterecord.id},
+                id: props.templaterecord.id,
+                temOrSection:props.temOrSection
             }).then(() => {
+                if(props.temOrSection=='section'){
+                   store.dispatch("templateSectionDetailsList", props.templaterecord.id) 
+                }else{
+                    store.dispatch("templateDetailsList", props.templaterecord.id)
+                }
                 store.dispatch("templateDetailsList", props.templaterecord.id)
                 emit("is-visible-exist", false)
                 reset()

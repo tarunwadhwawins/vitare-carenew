@@ -21,7 +21,7 @@
     </div>
 </div>
 <!--modals-->
-<CreateSection v-model:visible="visible2" :update="update" @is-visible="showModal($event)" />
+<CreateSection v-model:visible="visible2" :update="update" @is-visible="showModal($event)" v-if="visible2"/>
 <!---->
 </template>
 <script>
@@ -58,7 +58,7 @@ export default {
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
-      store.dispatch("questionnaireTemplateList");
+      store.dispatch("questionnaireTemplateSectionList");
     });
 
     onUnmounted(() => {

@@ -23,7 +23,7 @@ import timeLogs from './english-modules/timeLogs'
 import programs from './english-modules/programs'
 import vitals from './english-modules/vitals'
 import staffGroups from './english-modules/staffGroups'
-
+import questionnaire from './english-modules/questionnaire'
 const english = {
     global,
     login,
@@ -50,6 +50,7 @@ const english = {
     programs,
     vitals,
     staffGroups,
+    questionnaire
 }
 
 export default english

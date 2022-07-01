@@ -134,6 +134,7 @@ const show = ref(false)
             data.push(newRescord);
           })
         : "";
+        show.value=true
       store.dispatch("addAssiignquestionnaireResponse",{data:data,id:udid}).then(()=>{
         store.dispatch("scoreCount",udid).then(()=>{
 show.value = true

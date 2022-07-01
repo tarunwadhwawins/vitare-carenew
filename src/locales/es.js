@@ -12,6 +12,7 @@ import timeTrackingReport from './spanish-modules/timeTrackingReport'
 import thresholds from './spanish-modules/thresholds'
 import timeLogReport from './spanish-modules/timeLogReport'
 import common from './spanish-modules/common'
+import questionnaire from './spanish-modules/questionnaire'
 const spanish = {
     global,
     login,
@@ -27,6 +28,7 @@ const spanish = {
     thresholds,
     timeLogReport,
     common,
+    questionnaire
 }
 
 export default spanish

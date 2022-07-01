@@ -44,7 +44,7 @@
     </a-layout>
 
     <!--modals-->
-    <CreateTemplate v-model:visible="visible2" @ok="handleOk" />
+    <CreateTemplate v-model:visible="visible2" @ok="handleOk" v-if="visible2"/>
     <!---->
 </div>
 </template>
