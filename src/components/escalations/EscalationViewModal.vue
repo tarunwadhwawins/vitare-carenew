@@ -136,6 +136,8 @@ import {
   globalDateFormat,
   dateAndTimeFormate,
   arrayToObjact,
+  showPatientModal,
+  showStaffModal
 } from "@/commonMethods/commonMethod";
 const columnData = [
   {
@@ -321,16 +323,7 @@ export default {
       return store.state.screenPermissions.screensPermissions;
     });
 
-    function showPatientModal(id){
-      store.commit("patientUdid", id)
-      store.dispatch("patientDetails", id)
-      store.commit('showPatientDetailsModal')
-    }
-
-    function showStaffModal(id){
-      store.dispatch("staffSummary", id)
-      store.commit('showStaffDetailsModal')
-    }
+    
     return {
       showStaffModal,
       showPatientModal,

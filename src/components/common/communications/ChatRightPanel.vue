@@ -14,7 +14,7 @@
             <PatientVitalsIcon :isBold="patientVitalsVisible" @onClick="showVitalsModal" :patientId="patientUdid" />
             <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
             <PinIcon @onClick="addPin" />
-            <StartCall v-if="isChat" :patientId="patientUdid" v-show="!isDetails"/>
+            <StartCall v-if="isChat && !isDetails" :patientId="patientUdid" />
             <a-col :span="8" v-if="currentUrl && !isChat">
               <div class="moreAction" @click="copyURL(currentUrl)">
                 <div class="moreActionImg purpleBgColor">
