@@ -219,7 +219,8 @@ img.reportFlag {
 	}
 	.ant-modal-body {
 		overflow:auto;
-		max-height: 80vh;
+		// max-height: 80vh;
+		max-height: 85vh;
 		min-height:300px!important;
 	}
 }

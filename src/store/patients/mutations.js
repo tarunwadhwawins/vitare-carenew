@@ -84,7 +84,7 @@ export const patient = (state, data) => {
           sorter: true,
         },
         {
-          title: "Glucose(mg / dL)",
+          title: "Glucose(mg/dL)",
           dataIndex: "glucose",
           key: "glucose",
           width: '20%',
@@ -112,11 +112,12 @@ export const patient = (state, data) => {
       sorter:true,
     },
     {
-      title: "Last Message Sent",
+      title: "Last Message",
       dataIndex: "lastMessageSent",
       ellipsis: true,
+      sorter:true,
       onFilter: (value, record) => record.name.indexOf(value) === 0,
-      width: '12%',
+      width: '15%',
     },
     {
       title: "Age ",

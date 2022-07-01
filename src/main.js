@@ -57,6 +57,7 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 
 let notificationCouter =null
 let multiUserCounter = null
+let notificationAudio = new Audio(require("@/assets/media/Notification.mp3"))
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
@@ -65,6 +66,7 @@ onMessage(messaging, (payload) => {
     notificationCouter++
     let counter = notificationCouter
    if(counter==1){
+    notificationAudio.play()
     localStorage.setItem('notificationsId',payload.data.typeId)
     notification.open({
         message: <div><h2>{`${payload.notification.title}`}</h2></div>,
@@ -109,10 +111,10 @@ onMessage(messaging, (payload) => {
         
     })
    }else{
-    
     notification.destroy(key)
     //checking if multiple user send the msg
     if(localStorage.getItem('notificationsId') != payload.data.typeId || multiUserCounter){
+        notificationAudio.play()
         multiUserCounter++ // flag counter for multiple user checking
         notification.open({
             message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
@@ -159,6 +161,7 @@ onMessage(messaging, (payload) => {
         })
         //checking if single user send the mutiple time msg
     }else if(!multiUserCounter){
+        notificationAudio.play()
         notification.open({
             message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
             description: <div> {`${payload.notification.body}`} </div>,

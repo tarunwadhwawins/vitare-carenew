@@ -1,6 +1,6 @@
 <template>
    <div id="box-droppable1" @drop="drop" @dragover="allowDrop">
-    <h3>Draggaable area 1:</h3>
+    <h3 @click="test()">Draggaable area 1:</h3>
     <hr>
     
     <div class="" draggable="true" @dragstart="onDragging" id="123">
@@ -41,7 +41,12 @@ setup() {
         // console.log(data);
         ev.target.appendChild(document.getElementById(data));
     }
+    let notificationAudio = new Audio(require("@/assets/media/Notification.mp3"))
+    function test(){
+      notificationAudio.play()
+    }
     return {
+      test,
         onDragging,
         allowDrop,
         drag,
