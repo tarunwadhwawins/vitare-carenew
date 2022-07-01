@@ -16,7 +16,7 @@ export default {
   },
   props:{
     hideEditIcon:Boolean,
-    patientUdid:Number
+    patientUdid:String
   },
   setup() {
     const store = useStore();
