@@ -102,9 +102,9 @@
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
                                             <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
-                                                 <!-- <template #addedBy="{ record }">
+                                                 <template #addedBy="{ record }">
                                                     <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
-                                                  </template> -->
+                                                  </template>
                                                 <template #color="{ record }">
                                                     <a-tooltip placement="bottom">
                                                         <template #title>
@@ -820,13 +820,13 @@ let dateFormate = {
       return store.state.escalations.editEscalationPatient;
     });
 
-    // function showModal(id){
-    //   store.dispatch("staffSummary", id)
-    //   store.commit('showDetailsModal')
-    // }
+    function showModal(id){
+      store.dispatch("staffSummary", id)
+      store.commit('showStaffDetailsModal')
+    }
 
     return {
-      // showModal,
+      showModal,
       editDataPatient,
       editDataStaff,
       formRef,
