@@ -100,10 +100,10 @@ export const staffSummaryPatient= async (state, data) => {
 
 }
 
-export const showDetailsModal= async (state) => {
+export const showStaffDetailsModal= async (state) => {
   state.visibleModal = true;
 }
 
-export const closeDetailsModal= async (state) => {
+export const closeStaffDetailsModal= async (state) => {
   state.visibleModal = false;
 }

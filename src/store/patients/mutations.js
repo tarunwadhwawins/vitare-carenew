@@ -1245,3 +1245,15 @@ export const healthConditions = (state, data) => {
     return item
   })
 }
+
+export const showPatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = true
+}
+
+export const closePatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = false
+}
+
+export const patientUdid = (state,data) => {
+  state.patientUdid = data
+}

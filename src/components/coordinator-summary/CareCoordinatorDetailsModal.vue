@@ -76,7 +76,7 @@ export default defineComponent({
     });
 
     function handleOk(){
-      store.commit('closeDetailsModal')
+      store.commit('closeStaffDetailsModal')
     }
 
     return {

@@ -20,7 +20,7 @@
               <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
             </a-col>
             <a-col :xl="8" :lg="14">
-              <div class="pageTittle">
+              <div class="pageTittle patientSummaryFilters">
                 <div class="filter">
                   <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
                   <a-button @click="showButton(2) ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>

@@ -21,6 +21,7 @@
     </a-config-provider>
   </div>
   <CareCoordinatorDetailsModal v-if="visibleModal" v-model:visible="visibleModal" @closeModal="handleOk"/>
+  <PatientDetails v-if="visiblePatientModal && patientUdid" v-model:visible="visiblePatientModal" @closeModal="handleOk"/>
 </template>
 
 <script>
@@ -31,12 +32,14 @@ import router from '@/router';
 // import 'moment/dist/locale/es';
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-import { useStore } from "vuex";
+// import PatientDetails from "./components/patients/patientSummary/modals/PatientDetails"
+import { useStore} from "vuex";
 
 
 export default {
     components: {
       // SelectLanguage,
+      PatientDetails:defineAsyncComponent(()=>import('@/components/patients/patientSummary/modals/PatientDetails')),
       CareCoordinatorDetailsModal:defineAsyncComponent(()=>import('@/components/coordinator-summary/CareCoordinatorDetailsModal'))
     },
   setup() {
@@ -50,6 +53,14 @@ export default {
     const visibleModal = computed(()=>{
       return store.state.careCoordinatorSummary.visibleModal
     })
+
+    const visiblePatientModal = computed(()=>{
+      return store.state.patients.visiblePatientDetailsModal
+    })
+
+    const patientUdid = computed(() => {
+      return store.state.patients.patientUdid;
+    });
  
 
     onMounted(() => {
@@ -88,10 +99,13 @@ export default {
       }
     });
     function handleOk(){
-      store.commit('closeDetailsModal')
+      store.commit('closeStaffDetailsModal')
+      store.commit('closePatientDetailsModal')
     }
 
     return {
+      patientUdid,
+      visiblePatientModal,
       handleOk,
       visibleModal,
       enUS,
