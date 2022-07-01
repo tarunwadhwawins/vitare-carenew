@@ -5,6 +5,7 @@ import state from './state';
 import { notification, Button } from "ant-design-vue";
 import { successSwal } from '@/commonMethods/commonMethod';
 const sipDomain = process.env.VUE_APP_SIP_DOMAIN
+let callAudio = new Audio(require("@/assets/media/skype-23266.mp3"))
 
 export function videoCall() {
     let callNotification =0
@@ -21,13 +22,29 @@ export function videoCall() {
         delegate: {
             onCallReceived: async () => {
                 callNotification=1
+                //Play video call ring tone
+                callAudio.play();
+                callAudio.loop = true
+                if (typeof callAudio.loop == 'boolean'){
+                    callAudio.loop = true;
+                }else{
+                    callAudio.addEventListener('ended', function() {
+                        this.currentTime = 0;
+                        this.play();
+                    }, false);
+                }//end play
                 localStorage.setItem('videoCallCounter',++counter)
                 notification.open({
                     message: <h3>Call from...</h3>,
                     description: <h1>{`${simpleUser.session.incomingInviteRequest.message.from._displayName}`} </h1>,
                     btn: [
                         h(Button, {
-                            onClick: () => { callNotification=0, simpleUser.hangup(), notification.close(key) },
+                            onClick: () => { 
+                                callNotification=0, 
+                                simpleUser.hangup(), 
+                                notification.close(key),
+                                callAudio.pause()
+                            },
                         },
                             "Cancel "
                         ),
@@ -37,7 +54,9 @@ export function videoCall() {
                                 callNotification=0
                                 state.simpleUser = simpleUser,
                                 router.push('/video-call'), notification.close(key)
-                            }
+                                callAudio.pause()
+                            },
+                            
                         },
                             "Accept"
                         ),
@@ -55,6 +74,7 @@ export function videoCall() {
             onCallHangup: async () => {
             if(callNotification==1){
                 notification.close(key)
+                callAudio.pause()
                 // console.log('callHangValue',callNotification);
                 // This notification used for the missed call popup
                 let showCounter = localStorage.getItem('videoCallCounter')
@@ -87,7 +107,7 @@ export function videoCall() {
 
                 }) // end popup
             }else{
-                alert('hello')
+                callAudio.pause()
                 successSwal('Call Ended! Thank You')
                 router.push('/dashboard')
             }

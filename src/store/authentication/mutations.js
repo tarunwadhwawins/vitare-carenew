@@ -7,6 +7,7 @@ import { notification, Button } from "ant-design-vue";
 const sipDomain = process.env.VUE_APP_SIP_DOMAIN
 const key = `open${Date.now()}`;
 let date = new Date();
+let callAudio = new Audio(require("@/assets/media/skype-23266.mp3"))
 export const loginSuccess = async (state, data) => {
   state.token = data.user;
   state.loggedInUser=JSON.parse(localStorage.getItem('auth')),
@@ -28,19 +29,38 @@ state.options= Web.SimpleUserOptions = {
         onCallReceived: async () => {
         callNotification=1
         localStorage.setItem('videoCallCounter',++counter)
+        //Play video call ring tone
+        callAudio.play();
+        callAudio.loop = true
+        if (typeof callAudio.loop == 'boolean'){
+            callAudio.loop = true;
+        }else{
+            callAudio.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+        }//end play
         notification.open({
           message: <h3>Call from...</h3>,
           description: <h1>{`${simpleUser.session.incomingInviteRequest.message.from._displayName}`} </h1>,
           btn: [
               h(Button,{
-                  onClick: () => { callNotification=0,simpleUser.hangup(),notification.close(key)},
+                  onClick: () => { 
+                    callNotification=0,
+                    simpleUser.hangup(),
+                    notification.close(key)
+                    callAudio.pause()
+                  },
                 },
                 "Cancel "
               ),
               h(Button,{
                   type: "primary",
-                  onClick: () =>  {callNotification=0,state.simpleUser = simpleUser,
-                  router.push('/video-call'),notification.close(key)}
+                  onClick: () =>  {
+                  callNotification=0,state.simpleUser = simpleUser,
+                  router.push('/video-call'),notification.close(key)
+                  callAudio.pause()
+                }
                 },
                 "Accept"
               ),
@@ -56,6 +76,7 @@ state.options= Web.SimpleUserOptions = {
         onCallHangup: async () => {
           if(callNotification==1){
               notification.close(key)
+              callAudio.pause()
               // This notification used for the missed call popup
               let showCounter = localStorage.getItem('videoCallCounter')
               notification.open({
@@ -63,7 +84,13 @@ state.options= Web.SimpleUserOptions = {
                   description: <h1>{`Missed Call (${showCounter})`} </h1>,
                   btn: [
                       h(Button, {
-                          onClick: () => { callNotification=0, simpleUser.hangup(), notification.close(key) },
+                          onClick: () => 
+                          {
+                             callNotification=0,
+                             simpleUser.hangup(),
+                             notification.close(key)
+                             
+                          },
                       },
                           "Cancel "
                       ),
@@ -87,6 +114,7 @@ state.options= Web.SimpleUserOptions = {
 
               }) // end popup
           }else{
+            callAudio.pause()
             successSwal('Call Ended! Thank You')
             router.push('/dashboard')
           }
