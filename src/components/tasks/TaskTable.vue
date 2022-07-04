@@ -3,7 +3,8 @@
     <a-table rowKey="id" :columns="tasksListColumns" :data-source="tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
-            <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
+            <a v-if="arrayToObjact(screensPermissions,115)" @click="taskDetails(record.id)"><span>{{ text }}</span></a>
+            <span v-else> {{ text }}</span>
         </template>
         <!-- <template #assignedBy="text">
             <router-link to="coordinator-summary">{{ text.text }}</router-link>
