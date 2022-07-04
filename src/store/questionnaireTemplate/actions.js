@@ -16,9 +16,9 @@ export const questionnaireTemplateList = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg', error.response.data)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg', error.response.data)
     }
     commit('loadingStatus', false)
   })
@@ -102,9 +102,9 @@ export const deleteQuestionnaireTemplate = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg', error.response.data)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg', error.response.data)
     }
   
     
@@ -140,8 +140,8 @@ export const addAssiignquestionnaire = async ({
   commit
 },data) => {
  
- 
-  await serviceMethod.common("post", API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/question', null, data).then((response) => {
+  let url = data.temOrSection =='section' ? 'questions/'+data.id+'/assign' : API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/question'
+  await serviceMethod.common("post", url, null, data.data).then((response) => {
 
     successSwal(response.data.message)
     commit('successMsg',response.data.message)

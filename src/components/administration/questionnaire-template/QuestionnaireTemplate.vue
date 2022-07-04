@@ -40,7 +40,7 @@ export default {
     const store = useStore();
     const checked = ref([false]);
     const visible2 = ref(false);
-    const update = ref("");
+    const update = ref('');
     const showModal = (e) => {
       update.value = e.id;
       visible2.value = e.show;

@@ -15,6 +15,7 @@ export const detailsQuestionnaireTemplate = async (state, data) => {
 	state.detailsQuestionnaireTemplate = data;
 };
 export const templateDetailsList = async (state, data) => {
+	console.log("check",data)
 	state.templateDetailsList = data;
 };
 export const scoreCount = async (state, data) => {

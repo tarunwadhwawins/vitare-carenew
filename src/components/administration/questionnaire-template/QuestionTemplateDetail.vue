@@ -8,6 +8,10 @@
                     {{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}
                     <div class="commonBtn">
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Question</a-button>
+                        <!-- <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Section</a-button> -->
+                         <!-- <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Section
+                            <PlusOutlined />
+                        </a-button> -->
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
                             <PlusOutlined />
                         </a-button>
@@ -17,10 +21,14 @@
                     </div>
                 </h2>
             </a-col>
+            <!-- <div >
+                Section Name : Testing
+            </div> -->
             <a-col :span="24">
                 <Question :question="templateDetailsList" v-if="templateDetailsList"  :edit="false" />
                
             </a-col>
+            
         </a-row>
 
     </div>

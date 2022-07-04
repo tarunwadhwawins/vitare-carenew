@@ -1,6 +1,6 @@
 <template>
 <a-modal width="100%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="update ? updateTemplate() : addTemplate()" @finishFailed="onFinishFailed">
+    <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="update ? updateTemplate() : addTemplate()" >
         <a-row :gutter="16">
             <a-col :span="12">
                 <div class="form-group">
@@ -26,7 +26,7 @@
              <a-col :span="24">
                     <div class="form-group">
                         <a-form-item :label="$t('questionnaire.tags')" name="tags" >
-                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')">
+                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
                         </a-form-item>
                     </div>
@@ -55,10 +55,13 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import TableLoader from "@/components/loader/TableLoader"
+import ErrorMessage from "@/components/common/messages/ErrorMessage"
 export default defineComponent({
+  emits: ["is-visible"],
   components:{
     TableLoader,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    ErrorMessage
   },
   props: {
     update: String,
@@ -67,6 +70,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore();
     const formRef = ref();
+    
     const questionnaireTemplate = reactive({
       templateName: "",
       templateTypeId: "",
@@ -77,7 +81,7 @@ export default defineComponent({
     watchEffect(()=>{
       
       if(props.update){
-        console.log("check",props.update)
+        
         if(store.getters.detailsQuestionnaireTemplate){
         
         Object.assign(questionnaireTemplate,store.getters.detailsQuestionnaireTemplate.value)
@@ -152,6 +156,7 @@ const errorMsg = store.getters.errorMsg.value
       disabled,
       questionnaireTemplateType:store.getters.questionnaireTemplateType,
       reset,
+      
     };
   },
 });

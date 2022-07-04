@@ -136,30 +136,7 @@ export const templateSectionDetailsList = async ({
     
   })
 }
-export const addAssiignquestionnaireToSection = async ({
-  commit
-},data) => {
- 
- let url = data.temOrSection =='section' ? 'question/assign' : API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/question'
-  await serviceMethod.common("post",url , null, data).then((response) => {
 
-    successSwal(response.data.message)
-    commit('successMsg',response.data.message)
-    
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 401) {
-      commit('errorMsg', error.response.data)
-    }
-    
-    
-    
-  })
-}
 // export const addAssiignquestionnaireResponse = async ({
 //   commit
 // },data) => {

@@ -21,6 +21,7 @@
                 <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection.data" :edit="false" />
 
             </a-col>
+            
         </a-row>
 
     </div>

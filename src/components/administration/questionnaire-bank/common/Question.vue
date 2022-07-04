@@ -1,6 +1,8 @@
 <template>
+
                 <a-collapse v-model:activeKey="activeKey" expand-icon-position="left">
                     <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" v-if="question">
+
                         <a-collapse-panel v-for="questionList in question" :key="questionList.questionId" :header="questionList.question">
                             <Option :optionList="questionList" />
                             <template #extra>

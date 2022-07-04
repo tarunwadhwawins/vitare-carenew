@@ -7,6 +7,15 @@
                           }}</router-link>
     </template>
     <template #actions="{record}">
+        
+        <a-tooltip placement="bottom">
+            <template #title>
+                <span>Assign Section</span>
+            </template>
+            <a class="icons">
+             
+                    <DiffTwoTone @click="assignSection(record.id)"/></a>
+        </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Setting</span>
@@ -31,13 +40,13 @@
                 
                     <EyeTwoTone /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
             </template>
             <a class="icons">
                 <CopyOutlined /></a>
-        </a-tooltip>
+        </a-tooltip> -->
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Delete</span>
@@ -51,15 +60,17 @@
     </template>
 </a-table>
 <Loader />
+<AssignSection v-if="visible" v-model:visible="visible" :title="detailsQuestionnaireTemplate"  />
 </template>
 
 <script>
-import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone,EyeTwoTone} from "@ant-design/icons-vue"
+import {DeleteOutlined,EditOutlined,SettingTwoTone,EyeTwoTone,DiffTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
 import {warningSwal} from "@/commonMethods/commonMethod";
-import { onMounted } from "vue"
+import { onMounted , ref } from "vue"
+import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
 const columns = [{
         title: "Questionnaire Template",
         dataIndex: "templateName",
@@ -82,13 +93,16 @@ const columns = [{
 ];
 
 export default {
+    emits:["edit"],
     components: {
         DeleteOutlined,
         EditOutlined,
-        CopyOutlined,
+       // CopyOutlined,
         Loader,
         SettingTwoTone,
-        EyeTwoTone
+        EyeTwoTone,
+        DiffTwoTone,
+        AssignSection
     },
     props: {},
     setup(props, {
@@ -102,6 +116,7 @@ export default {
                 id: id
             });
         };
+        const visible = ref(false)
         const data = store.getters.questionnaireTemplateList
         const meta = store.getters.questionnaireTemplateMeta
         let record = []
@@ -138,7 +153,11 @@ export default {
                 tableContent.scrollTo(0, scroller);
             }, 50)
         }
-
+  function assignSection(id){
+    visible.value = true
+    store.dispatch('detailsQuestionnaireTemplate', id)
+           
+  }
         function deleteModal(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
@@ -183,6 +202,8 @@ export default {
             editModal,
             deleteModal,
             handleTableChange,
+            visible,
+            assignSection
         };
     },
 };

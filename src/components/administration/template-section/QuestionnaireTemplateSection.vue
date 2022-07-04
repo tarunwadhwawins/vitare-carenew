@@ -31,6 +31,7 @@ import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 export default {
+  
   components: {
     CreateSection,
     SectionTable,

@@ -49,7 +49,6 @@ import Loader from "@/components/loader/Loader";
 import SearchField from "@/components/common/input/SearchField"
 import Option from "@/components/administration/questionnaire-bank/common/Options"
 export default defineComponent({
-    emits: ["is-visible-exist"],
     components: {
         Loader,
         AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),

@@ -24,7 +24,7 @@
                 <a-col :span="24">
                     <div class="form-group">
                         <label> {{$t('questionnaire.tags')}}</label>
-                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')">
+                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
                     </div>
 
@@ -128,6 +128,7 @@ import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default {
+    emits: ["is-visible"],
     components: {
         PlusOutlined,
         DeleteOutlined,
@@ -166,7 +167,7 @@ export default {
         });
 
         function programChange(val, index, programList) {
-
+           if(val!=undefined){
             questionnaire.programId[index] = val;
             programList.forEach((data) => {
                 var test = questionnaire.programId[index].find(item => data.id == item)
@@ -175,6 +176,7 @@ export default {
                     console.log("test", questionnaire.programScore)
                 }
             })
+           }
             //  questionnaire.programId[index].forEach((item)=>{
             //      var test =programList.find(data => data.id==item)
 

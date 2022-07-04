@@ -68,6 +68,7 @@ const columns = [{
 ];
 
 export default {
+    emits: ["edit"],
     components: {
         DeleteOutlined,
         EditOutlined,
