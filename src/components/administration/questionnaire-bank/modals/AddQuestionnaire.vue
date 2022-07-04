@@ -262,7 +262,7 @@ export default {
                     store.dispatch("addAssiignquestionnaire", {
                         data: {
                             questionId: [store.getters.addQuestionnaire.value.id],
-                            id: props.templaterecord.id
+                            id: props.templateId
                         },
                         id: props.templateId,
                         temOrSection: props.temOrSection
