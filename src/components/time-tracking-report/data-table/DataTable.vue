@@ -42,7 +42,8 @@
         <a><span @click="showReportData(record.id)">{{record.serviceId}}</span></a>
     </template>
     <template #patient="{ record }">
-        <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link>
+    <a @click="showPatientModal( record.patient.id)">{{ record.patient.fullName }}</a>
+        <!-- <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link> -->
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
@@ -91,7 +92,6 @@ import {
   computed,
   toRefs,
   reactive,
-  watchEffect,
 } from "vue";
 import { useStore } from "vuex";
 // import { EyeOutlined } from "@ant-design/icons-vue";
@@ -99,7 +99,7 @@ import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-import {exportExcel} from "@/commonMethods/commonMethod";
+import {exportExcel,showPatientModal} from "@/commonMethods/commonMethod";
 import TableLoader from "@/components/loader/TableLoader";
 const column = [
   {
@@ -371,10 +371,9 @@ export default defineComponent({
        conditionViewModal.value = true
        conditionsData.value = data
      }
-     watchEffect(()=>{
-      
-     })
+    
     return {
+      showPatientModal,
       formRef,
       exportExcel,
       conditionsData,

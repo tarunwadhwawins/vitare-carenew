@@ -3,14 +3,14 @@
 
     <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 370px)'}">
         <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions, 405)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
-            <!-- <a @click="showPatientModal(record.patientId)">{{ text }}</a> -->
+            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
+            <a @click="showPatientModal(record.patientId)">{{ text }}</a>
         </template>
          <template #escalationStaff="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
                 {{i==0?' ':','}} 
                 <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link> -->
-                <!-- <a @click="showStaffModal(record.staffUdid)">{{ esc.staffName }}</a> -->
+                <a @click="showStaffModal(record.staffUdid)">{{ esc.staffName }}</a>
             </span>
         </template>
         <template #escalationStaff="{ record }" v-else>
@@ -20,8 +20,8 @@
         </template>
         <template #escalationAssignedBy="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span>
-                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
-                <!-- <a @click="showStaffModal(record.assignedById)">{{ record.assignedBy }}</a> -->
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link> -->
+                <a @click="showStaffModal(record.assignedById)">{{ record.assignedBy }}</a>
             </span>
         </template>
         <template #escalationAssignedBy="{ record }" v-else>
@@ -61,7 +61,9 @@ import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';
 import {
-  arrayToObjact
+  arrayToObjact,
+  showPatientModal,
+  showStaffModal
 } from "@/commonMethods/commonMethod";
 export default {
   name: "EscalationTable",
@@ -179,17 +181,6 @@ export default {
         );
       }
     };
-
-    function showPatientModal(id){
-      store.commit("patientUdid", id)
-      store.dispatch("patientDetails", id)
-      store.commit('showPatientDetailsModal')
-    }
-
-    function showStaffModal(id){
-      store.dispatch("staffSummary", id)
-      store.commit('showStaffDetailsModal')
-    }
   
     return {
       showStaffModal,

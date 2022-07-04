@@ -92,7 +92,7 @@ import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import { EyeTwoTone, CloseOutlined } from "@ant-design/icons-vue";
-import { actionTrack } from "@/commonMethods/commonMethod";
+import { actionTrack,showPatientModal,showStaffModal } from "@/commonMethods/commonMethod";
 
 export default defineComponent({
   components: {
@@ -186,17 +186,6 @@ export default defineComponent({
       addNoteVisible.value = value;
     }
 
-    function showStaffModal(id){
-      store.dispatch("staffSummary", id)
-      store.commit('showStaffDetailsModal')
-
-    }
-
-    function showPatientModal(id){
-      store.commit("patientUdid", id)
-      store.dispatch("patientDetails", id)
-      store.commit('showPatientDetailsModal')
-    }
 
     return {
       showPatientModal,
