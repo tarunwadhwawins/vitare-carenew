@@ -20,8 +20,14 @@ export const timeLogReports = (state)=>{
         return state.auditTimeLogFilterDates
     })
   }
+ 
   export const auditMetaLog = (state)=>{
     return computed(()=>{
         return state.auditMetaLog
+    })
+  }
+  export const timelineReport = (state)=>{
+    return computed(()=>{
+        return state.timelineReport
     })
   }

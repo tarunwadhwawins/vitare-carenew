@@ -1,5 +1,5 @@
 <template>
-<a-form :model="contact" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
+<a-form :model="contact" ref="formRest" scrollToFirstError=true name="basic"  autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
@@ -25,16 +25,16 @@
                 </a-form-item>
             </div>
         </a-col>
+        
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <!-- <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
-                     <!-- <PhoneNumber @change="checkChangeInput()" v-model.trim:value="contact.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                      <a-input-number @change="checkChangeInput()" v-model:value.trim="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
+                      <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
+        
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24" v-if="paramId">
@@ -47,7 +47,7 @@
     </a-row>
     <a-row :gutter="24" v-show="!paramId">
         <a-col :span="24">
-            <ContactTable :Id="Id"/>
+            <ContactTable :Id="Id" @editFormOpen="editFormOpen" />
             <Loader />
         </a-col>
     </a-row>
@@ -83,17 +83,22 @@ export default defineComponent({
       lastName: "",
       email: "",
       phoneNumber: "",
+      
     });
     const formButton = ref(false);
-    const setPhoneNumber = (value) => {
-      contact.phoneNumber = value;
-    };
+   
    
     function addContacts() {
       formButton.value = true;
+      let phone = contact.phoneNumber
       store.dispatch("addContacts", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
-        data: contact,
+        data: {
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          email: contact.email,
+          phoneNumber: phone.replace(/-/g,''),
+        },
       });
       setTimeout(() => {
         if(staffs.value.closeModal==true){
@@ -101,7 +106,7 @@ export default defineComponent({
           store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
           store.state.careCoordinator.errorMsg=''
-          emit("saveModal", false)
+          emit("saveModal")
       }
       formButton.value = false;
       }, 2000);
@@ -127,6 +132,10 @@ export default defineComponent({
       formRest.value.resetFields();
     }
     })
+    function editFormOpen(){
+      Object.assign(contact,form)
+      formRest.value.resetFields();
+    }
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
@@ -138,7 +147,7 @@ export default defineComponent({
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
     return {
-      setPhoneNumber,
+      editFormOpen,
       formRest,
       checkChangeInput,
       reset,

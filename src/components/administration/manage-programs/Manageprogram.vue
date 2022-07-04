@@ -13,14 +13,14 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   Programs
-                  <div
+                  <!-- <div
                     class="commonBtn"
                     
                   >
                     <a-button class="btn primaryBtn" @click="showModal(true)" v-if="arrayToObjact(screensPermissions, 15)"
                       >Add New Program</a-button
                     >
-                  </div>
+                  </div> -->
                 </h2>
               </a-col>
               <a-col :span="12" >

@@ -9,11 +9,11 @@
            
             <router-link to="/manage-programs" v-if="arrayToObjact(screensPermissions, 15)">
                 <a-menu-item>
-                    <MailOutlined /><span class="menuItem">Programs</span></a-menu-item>
+                    <ReadOutlined /><span class="menuItem">Programs</span></a-menu-item>
             </router-link>
             <router-link to="/providers" v-if="arrayToObjact(screensPermissions, 22)">
                 <a-menu-item>
-                    <MailOutlined /><span class="menuItem">Providers</span></a-menu-item>
+                    <OneToOneOutlined  /><span class="menuItem">Providers</span></a-menu-item>
             </router-link>
             <router-link to="/roles-and-permissions" v-if="arrayToObjact(screensPermissions, 1)">
                 <a-menu-item>
@@ -31,6 +31,7 @@
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>
                 </a-menu-item>
             </router-link>
+            
             <router-link to="/dashboard" >
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
@@ -42,23 +43,25 @@
 <script>
 import { defineComponent, onUnmounted } from "vue";
 import {
-  MailOutlined,
+  OneToOneOutlined ,
   CreditCardOutlined,
   FileDoneOutlined,
   HomeOutlined,
   SafetyOutlined,
   GlobalOutlined,
+  ReadOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default defineComponent({
   components: {
-    MailOutlined,
+    OneToOneOutlined ,
     CreditCardOutlined,
     FileDoneOutlined,
     HomeOutlined,
     SafetyOutlined,
     GlobalOutlined,
+    ReadOutlined
   },
 
   setup() {

@@ -3,7 +3,8 @@
   <a-form ref="formRef" scrollToFirstError=true :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
       <div class="form-group">
           <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
-              <a-input @change="changedValue" v-model:value="clinicals.history" size="large" />
+              <a-textarea @change="changedValue" v-model:value="clinicals.history" size="large" allow-clear/>
+              
               <ErrorMessage v-if="errorMsg" :name="errorMsg.history?errorMsg.history[0]:''" />
           </a-form-item>
       </div>
@@ -72,7 +73,7 @@
           <a-col :sm="12" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
+                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
                   </a-form-item>
               </div>
@@ -80,7 +81,7 @@
           <a-col :sm="12" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: true, message: $t('global.endDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.endDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
+                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.endDate" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
                   </a-form-item>
               </div>
@@ -120,7 +121,7 @@ import { defineComponent, reactive, computed, watchEffect, ref } from "vue";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader.vue";
-import { warningSwal,timeStamp,arrayToObjact} from "@/commonMethods/commonMethod";
+import { warningSwal,timeStamp,arrayToObjact,globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
@@ -173,6 +174,7 @@ export default defineComponent({
     });
 
     const editClinicalData = (id) => {
+
       isEditMedicalHistory.value = true;
       medicalHistoryUdid.value = id;
       store.dispatch('medicalHistoryDetails', {
@@ -217,6 +219,8 @@ export default defineComponent({
           store.dispatch("clinicalHistoryList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
         });
       }
       else {
@@ -251,6 +255,8 @@ export default defineComponent({
           store.dispatch("clinicalMedicatList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
+          isEditMedicalHistory.value = false;
+          isEditMedicalRoutine.value=false
         });
       }
       else {
@@ -298,9 +304,16 @@ export default defineComponent({
     })
 
     function deleteClinicalData(id, name) {
+
       warningSwal(messages.deleteWarning).then((response) => {
         if(response == true) {
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
+          formRef.value.resetFields()
+          Object.assign(clinicalMedication, medicationForm)
+          store.commit('loadingStatus', true)
           if(patientId != null) {
+            isEditMedicalHistory.value = false;
             if(name == "deleteClinicalData") {
               store.dispatch("deleteClinicalData", {
                 id: patientId,
@@ -356,6 +369,7 @@ export default defineComponent({
     //     errorSwal(messages.fieldsRequired)
     // };
     return {
+      globalDateFormat,
       arrayToObjact,
       screensPermissions: store.getters.screensPermissions,
       changedValue,

@@ -1,7 +1,7 @@
 
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
-    <template #actions="{record}">
+<a-table rowKey="id" :columns="cptCodesColumns" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
+    <!-- <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
                 <span>{{$t('global.edit')}}</span>
@@ -16,7 +16,7 @@
             <a class="icons">
                 <DeleteOutlined /></a>
         </a-tooltip>
-    </template>
+    </template> -->
     <template #isActive="{record}" >
         <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,10)"/>
     </template>
@@ -25,19 +25,21 @@
 </template>
 <script>
 import { ref, onMounted } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+//import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import { useStore } from "vuex";
 import {
   warningSwal,
   arrayToObjact,
-  tableYScroller,
+ // tableYScroller,
+ 
 } from "@/commonMethods/commonMethod";
+
 export default {
   components: {
-    DeleteOutlined,
-    EditOutlined,
+    //DeleteOutlined,
+    //EditOutlined,
     Loader,
   },
   props: {},
@@ -78,16 +80,18 @@ export default {
 
     //infinite scroll
     let data = [];
-    let scroller = "";
+    
 
     const meta = store.getters.cptRecords.value;
     const loader = ref(false);
-    onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+ 
+   let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.cptMeta.current_page + 1;
 
           if (current_page <= meta.cptMeta.total_pages) {
@@ -103,6 +107,7 @@ export default {
                 store.getters.searchTable.value +
                   "&page=" +
                   current_page +
+               
                   store.getters.orderTable.value.data
               )
               .then(() => {
@@ -120,12 +125,13 @@ export default {
         data.push(element);
       });
       meta.cptCodesList = data;
+      loader.value = false;
       var tableContent = document.querySelector(".ant-table-body");
 
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
-      loader.value = false;
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
     }
 
     const handleTableChange = (pag, filters, sorter) => {
@@ -148,11 +154,30 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value + store.getters.orderTable.value.data
+          store.getters.searchTable.value + 
+          store.getters.orderTable.value.data
         );
       }
     };
-
+const cptCodesColumns = [
+  {
+    title: "Activity",
+    dataIndex: "name",
+    sorter:true,
+  },
+    {
+      title: "Cpt Code",
+      dataIndex: "cptCode",
+      sorter:true
+    },
+    
+    {
+      title: "Billing Amount",
+      dataIndex: "billingAmout",
+      sorter:true,
+      align: 'right'
+    },
+]
     return {
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
@@ -161,7 +186,8 @@ export default {
       editCpt,
       UpdateCptStatus,
       meta,
-      tableYScroller,
+      cptCodesColumns,
+      //tableYScroller,
       handleTableChange,
     };
   },

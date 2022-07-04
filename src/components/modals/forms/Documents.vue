@@ -1,19 +1,17 @@
 <template>
-  <a-form ref="formRef" scrollToFirstError=true :model="documents" name="basic" :label-col="{ span: 8 }"
-    :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument"
+  <a-form ref="formRef" scrollToFirstError=true :model="documents" name="basic"  autocomplete="off" layout="vertical" @finish="addDocument"
     @finishFailed="onFinishFailed">
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <a-form-item :label="$t('global.name')" name="name"
             :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
-            <a-input @change="changedValue" v-model:value="documents.name" size="large" />
+            <a-input @change="changedValue" v-model:value="documents.name" size="large" style="width:100%"/>
             <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
           </a-form-item>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
-
         <div class="form-group">
           <a-form-item :label="$t('global.document')" name="document"
             :rules="[{ required: isDocumentrequired, message: $t('global.document')+' '+$t('global.validation') }]">
@@ -58,7 +56,7 @@
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
       <a-col :span="24">
      
-        <DocumentTable :Id="Id" @onEditDocument="updateDocument" />
+        <DocumentTable :Id="Id" @onEditDocument="updateDocument" @deleteDoc="deleteDoc()"/>
         <TableLoader />
       </a-col>
     </a-row>
@@ -88,18 +86,22 @@
       TableLoader
     },
     props: {
+      patientId: {
+        type: Number
+      },
       idPatient: {
         type: String
       },
       entity: String,
-      paramId: String
+      paramId: String,
+      
     },
     setup(props, { emit }) {
 
       const store = useStore();
       const route = useRoute();
-      const patientId = reactive(props.idPatient);
-      const patientUdid = route.params.udid;
+      const patientId = props.idPatient ? reactive(props.idPatient) : route.params.udid ? route.params.udid : '';
+      
       const docValidationError = ref(false)
       const formRef = ref()
       const image = ref()
@@ -112,12 +114,7 @@
         store.commit('checkChangeInput',true)
       }
 
-      watchEffect(() => {
-        if (patientUdid) {
-          
-          store.dispatch("documents", patientUdid);
-        }
-      })
+      
 
       const filePath = computed(() => {
         return store.state.patients.uploadFile;
@@ -177,7 +174,20 @@
         store.commit('checkChangeInput', true)
         store.dispatch("uploadFile", formData);
       };
-
+      const staffs = computed(() => {
+      return store.state.careCoordinator;
+    });
+      watchEffect(() => {
+      //  console.log("check",patientId)
+        if(staffs.value.clearStaffFormValidation){
+          formRef.value.resetFields();
+          Object.assign(documents, form)
+    }
+        if (patientId) {
+          
+          store.dispatch("documents", patientId);
+        }
+      })
       const patients = computed(() => {
         return store.state.patients;
       });
@@ -252,6 +262,7 @@
                 });
                 if(props.paramId){
                 emit('document', false)
+                emit('closeModal', false)
               }else{
                 emit('onChange', false)
               }
@@ -297,6 +308,7 @@
 
       onMounted(() => {
         reset();
+        formRef.value.resetFields();
       })
 
       function reset() {
@@ -307,8 +319,14 @@
       const errorMsg = computed(() => {
         return store.state.patients.errorMsg
       })
-
+function deleteDoc(){
+  reset()
+  isEditDocument.value = false
+        isDocumentrequired.value = false
+        documentUdid.value = ''
+}
       return {
+        deleteDoc,
         image,
         docValidationError,
         changedValue,

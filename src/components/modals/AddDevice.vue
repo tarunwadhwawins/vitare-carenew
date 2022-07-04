@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="60%" title="Add Device" centered @cancel="onCloseModal()">
+  <a-modal width="60%" title="Add Device" centered @cancel="onCloseModal()" :maskClosable="false"  :footer="false">
     <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
@@ -14,7 +14,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-              <InventoryGlobalCodeDropDown :disabled="inventoryList.length==0 || inventoryForm.deviceType==''" v-model:value="inventoryForm.inventory" :globalCode="inventoryList" @change="handleChange(inventoryForm.inventory)"/>
+              <InventoryDropDownSearch :disabled="dropdownListing == null || dropdownListing?.length<=0" v-model:value="inventoryForm.inventory" :deviceTypeId="deviceTypeId" :options="dropdownListing" @handleInventoryChange="handleChange($event)"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
           </div>
@@ -31,16 +31,6 @@
         </a-col>
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
-              <div >
-                <a-input @change="changedValue" size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
-              </div>
-              <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
-            </a-form-item>
-          </div>
-        </a-col>
-        <a-col :md="12" :sm="12" :xs="24">
-          <div class="form-group">
             <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
               <div >
                 <a-input @change="changedValue" size="large"   v-model:value="inventoryForm.macAddress"  disabled />
@@ -49,16 +39,27 @@
             </a-form-item>
           </div>
         </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
+              <div >
+                <a-input @change="changedValue" size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
+              </div>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
         <a-col :sm="24" :span="24">
           <ModalButtons @is_click="handleCancel"/>
         </a-col>
       </a-row>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 
 <script>
-import { defineComponent, reactive, computed, ref, onUnmounted } from "vue";
+import { defineComponent, reactive, computed, ref, onUnmounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
@@ -66,13 +67,17 @@ import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
-import InventoryGlobalCodeDropDown from "@/components/modals/search/InventoryGlobalCodeSearch.vue"
+import InventoryDropDownSearch from "@/components/modals/search/InventoryDropDownSearch"
+import Loader from "@/components/loader/Loader";
+import Services from "@/services/serviceMethod";
+
 export default defineComponent({
   components: {
     ErrorMessage,
     ModalButtons,
     GlobalCodeDropDown,
-    InventoryGlobalCodeDropDown
+    Loader,
+    InventoryDropDownSearch
   },
   props: {
     patientDetails: {
@@ -115,16 +120,19 @@ export default defineComponent({
       
       store.dispatch("addDevice", inventoryFormData).then(() => {
         if(route.name == 'PatientSummary') {
-          formRef.value.resetFields();
-          Object.assign(inventoryForm, form)
-          store.dispatch('latestDevice', route.params.udid)
-          store.dispatch('patientTimeline', {id:route.params.udid,type:''});
-          store.dispatch('devices', route.params.udid)
+          if(errorMsg.value == null || errorMsg.value.length == 0) {
+            formRef.value.resetFields();
+            Object.assign(inventoryForm, form)
+            store.dispatch('latestDevice', route.params.udid)
+            store.dispatch('patientTimeline', {id:route.params.udid,type:''});
+            store.dispatch('devices', route.params.udid)
+            isValueChanged.value = false;
+            emit("closeModal", {
+              modal: 'addInventory',
+              value: false
+            });
+          }
         }
-        emit("closeModal", {
-          modal: 'addInventory',
-          value: false
-        });
       });
     };
 
@@ -132,8 +140,8 @@ export default defineComponent({
       return store.state.common;
     });
 
-    const inventoryList = computed(() => {
-      return store.state.patients.inventoryList;
+    const dropdownListing = computed(() => {
+      return store.state.common.dropdownListing;
     });
     const deviceData = computed(() => {
       return store.state.patients.devices;
@@ -170,23 +178,46 @@ export default defineComponent({
       });
     }
 
+    watchEffect(() => {
+      store.commit('dropdownListing', null)
+    })
+
+    const deviceTypeId = ref(null)
     function handleInventory(id) {
-      store.dispatch("inventoryList", { isAvailable: 1, deviceType: id, active: 1 });
-      inventoryForm.inventory = null;
-      inventoryForm.modelNumber = null,
-      inventoryForm.serialNumber =null,
-      inventoryForm.macAddress = null
-      store.commit('errorMsg', null)
-      isValueChanged.value = true;
+      store.commit('dropdownListing', null)
+      store.commit('loadingStatus', true)
+      if(id) {
+        deviceTypeId.value = id
+        Services.singleDropdownSearch(
+          "",
+          (d) => (store.commit('dropdownListing', d)),
+          "inventory",
+          id,
+          '1',
+          'macAddress',
+          'ASC',
+        );
+        inventoryForm.inventory = null;
+        inventoryForm.modelNumber = null,
+        inventoryForm.serialNumber =null,
+        inventoryForm.macAddress = null
+        store.commit('errorMsg', null)
+        isValueChanged.value = true;
+      }
+      store.commit('loadingStatus', false)
     }
 
     function handleChange(id){
+      inventoryForm.inventory = id;
+      // console.log('element id', id)
       isValueChanged.value = true;
-      patients.value.inventoryList.forEach(element => {
-        if(element.id==id)
-        inventoryForm.modelNumber = element.modelNumber,
-        inventoryForm.serialNumber =element.serialNumber,
-        inventoryForm.macAddress = element.macAddress
+      dropdownListing.value.forEach(element => {
+        // console.log('element element', element)
+        if(element.value == id) {
+          inventoryForm.modelNumber = element.modelNumber,
+          inventoryForm.serialNumber = element.serialNumber,
+          inventoryForm.macAddress = element.macAddress
+        }
       });
     }
     const handleCancel = () => {
@@ -216,12 +247,20 @@ export default defineComponent({
 						});
 					}
 				})
-			}
+			}else{
+        isValueChanged.value = false;
+        formRef.value.resetFields();
+      }
+      store.commit('errorMsg', null)
     }
 
     onUnmounted(() => {
       store.commit('errorMsg', null)
     })
+    
+    const handleInventoryChange = (val) => {
+      inventoryForm.inventory = val;
+    };
 
     return {
       formRef,
@@ -242,7 +281,9 @@ export default defineComponent({
       isValueChanged,
       changedValue,
       onCloseModal,
-      inventoryList,
+      dropdownListing,
+      deviceTypeId,
+      handleInventoryChange,
     };
   },
 });

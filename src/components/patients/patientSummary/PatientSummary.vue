@@ -1,8 +1,6 @@
 <template>
   <div>
-    
     <a-layout >
-      
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
@@ -10,30 +8,29 @@
         <Sidebar />
         <TableLoader v-if="loader"/>
         <a-layout-content v-else >
-         
           <a-row>
-            <a-col :xl="8" :lg="12">
-              <a-row :gutter="24">
-                <a-col :xl="12" :lg="12">
-                  <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
-                </a-col>
-                <a-col :xl="12" :lg="12">
-                  <a-button class="blueBtn" @click="startCall">Start Call</a-button>
-                  <!-- <router-link class="blueBtn" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link> -->
-                </a-col>
-              </a-row>
+
+            <a-col :xl="4" :lg="6">
+              <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-            <a-col :xl="8" :lg="12">
-              <div class="pageTittle">
+            <a-col :xl="3" :lg="2">
+              <a-button class="blueBtn" @click="sendMessage" v-if="conversationWithPatient != null">Send Message</a-button>
+            </a-col>
+            <a-col :xl="2" :lg="2">
+              <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
+            </a-col>
+            <a-col :xl="8" :lg="14">
+              <div class="pageTittle patientSummaryFilters">
                 <div class="filter">
-                  <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
-                  <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
-                  <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
-                  <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
+                  <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
+                  <a-button @click="showButton(2) ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
+                  <a-button @click="showButton(3) ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
+                  <a-button @click="showButton(4) ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
+                  <a-button @click="showButton(5) ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
                 </div>
               </div>
             </a-col>
-            <a-col :xl="8" :lg="24">
+            <a-col :xl="7" :lg="6">
               <!-- <div class="timer" @click="actionTrack(paramsId,288,'patient')" v-if="arrayToObjact(screensPermissions, 288)"> -->
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
@@ -41,6 +38,7 @@
                 <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
+
             <a-col :sm="24">
               <CriticalNotes v-if="patientCriticalNotes && patientCriticalNotes.length > 0" />
             </a-col>
@@ -50,6 +48,7 @@
               </div>
               <div v-if="button == 2">
                 <TimelineView/>
+                <TableLoader />
               </div>
               <div v-if="button == 3">
                 <CarePlanView/>
@@ -57,13 +56,19 @@
               <div v-if="button == 4">
                 <PatientVitalsView/>
               </div>
+              <div v-if="button == 5">
+                <Escalation :patientId="paramsId"/>
+              </div>
             </a-col>
           </a-row>
         </a-layout-content>
+        <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && conversation" :communication="conversation" :conversationId="conversationId" :idPatient="receiverId" />
       </a-layout>
     </a-layout>
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose" />
-    <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" />
+
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
+    <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
+    <VideoCallVue  v-if="videoModal && conferenceId" v-model:visible="videoModal" :conferenceId ="conferenceId"/>
   </div>
 </template>
 
@@ -75,15 +80,16 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-
-import TableLoader from "@/components/loader/TableLoader";
+import Escalation from "@/components/escalations/Escalation"
+import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
-import StartCallModal from "@/components/modals/StartCallModal";
-
-import dayjs from "dayjs";
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted} from "vue";
+import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
+// import StartCallModal from "@/components/modals/StartCallModal";
+// import VideoCallVue from "../../video-call/videoCall.vue";
+import dayjs from "dayjs"; 
+import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, defineAsyncComponent} from "vue";
 import { useStore } from 'vuex';
-import { useRoute  } from 'vue-router';
+import { useRoute,useRouter  } from 'vue-router';
 import {
   timeStamp,
   getSeconds,
@@ -91,8 +97,13 @@ import {
   enCodeString,
   arrayToObjact
 } from '@/commonMethods/commonMethod';
+import moment from 'moment';
 const value = ref(dayjs("12:08", "HH:mm"));
-
+function clearEvent(event){
+        event.returnValue = '';
+      
+    }
+    const stoptimervisible = ref(false);
 export default {
   components: {
     Header,
@@ -103,24 +114,21 @@ export default {
     CarePlanView,
     PatientVitalsView,
     TableLoader,
-    
+    Escalation,
     AddTimeLogModal,
     CriticalNotes,
-    StartCallModal,
+    ChatWithPatientInformation,
+    // StartCallModal,
+    VideoCallVue:defineAsyncComponent(()=>import('@/components/video-call/PatientVideoCall.vue'))
   },
   setup() {
     localStorage.removeItem('timeLogId')
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
     const patientUdid = route.params.udid
     const authUser =  JSON.parse(localStorage.getItem('auth'))
     const loggedInUserId =  authUser.user.staffUdid
-    
-    const visible1 = ref(false);
-    const visible2 = ref(false);
-    const visible7 = ref(false);
-    const visible8 = ref(false);
-    const visible9 = ref(false);
     const notevisible = ref(false);
     const devicevisible = ref(false);
     const documentvisible = ref(false);
@@ -128,19 +136,68 @@ export default {
     const timelogsvisible = ref(false);
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
-    const stoptimervisible = ref(false);
+    const chatWithPatientInfoVisible = ref(false);
+    const cancelButton = ref(localStorage.getItem('cancelButton'))
+    const videoModal = ref(false)
     const isEditTimeLog = ref(false);
-    const startCallModalVisible = ref(false);
+    // const startCallModalVisible = ref(false);
     const loader= ref(true)
-    const startOn = ref(false);
-
+    const startOn = computed(() => {
+      return store.state.patients.startOn
+    });
+    const iconLoading = ref(false)
     const onClose = (e) => {
       console.log(e, "I was closed.");
     };
 
-    const startCall = () => {
-      startCallModalVisible.value = true
-    }
+    const patientDetails = computed(()=>{
+      return store.state.patients.patientDetails
+    })
+
+    const receiverId = ref(null)
+
+    onMounted(() => {
+      if(route.name == "PatientSummary") {
+        store.dispatch('patientDetails', route.params.udid).then(() => {
+          receiverId.value = patientDetails.value.user.data.id
+          const fromDate = moment().format('X')
+          const toDate = moment().format('X')
+          let dateFilter = fromDate && toDate ? "&fromDate=" + fromDate + "&toDate=" + toDate : ''
+          store.dispatch("program", patientUdid);
+          store.commit("loadingTableStatus",true)
+          loader.value = true
+          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 99, filter: dateFilter })
+          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 100, filter: dateFilter });
+          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 101, filter: dateFilter });
+          store.dispatch('devices', route.params.udid)
+          store.dispatch('activeCptCodes')
+          store.dispatch('allPatientsList')
+          store.dispatch('allStaffList')
+          store.dispatch('flagsForPatient')
+          store.dispatch('patientFlagsList', route.params.udid);
+          store.dispatch('patientCriticalNotes', route.params.udid);
+          store.dispatch('responsiblePerson', route.params.udid);
+          store.dispatch('physiciansList', route.params.udid);
+          store.dispatch('patientConditions', route.params.udid);
+          store.dispatch('emergencyContactsList', route.params.udid).then(()=>{
+            store.commit("loadingTableStatus",false)
+            loader.value = false
+          })
+          if(!startOn.value && route.params.globalSearch) {
+            elapsedTime.value = 0;
+            store.commit('startOn', true);
+            stoptimervisible.value = false;
+            clearInterval(timer.value);
+            startTimer()
+          }
+          store.dispatch("conversationWithPatient", receiverId.value)
+        })
+      }
+    })
+
+    // const startCall = () => {
+    //   startCallModalVisible.value = true
+    // }
 
      function videoCall() {
       store.dispatch("appointmentCalls",{patientId:patientUdid})
@@ -168,21 +225,13 @@ export default {
       return store.state.patients.patientCriticalNotes
     })
 
-
     const button = ref(1);
 
-    function showButton1() {
-      button.value = 1;
+    function showButton(value) {
+      // console.log("value",value)
+      button.value = value;
     }
-    function showButton2() {
-      button.value = 2;
-    }
-    function showButton3() {
-      button.value = 3;
-    }
-    function showButton4() {
-      button.value = 4;
-    }
+    
 
     // Countdown Timer
     const elapsedTime = ref(0)
@@ -196,68 +245,27 @@ export default {
     })
     const timerValue = ref(30000)
     
-    watchEffect(() => {
-      // store.dispatch("appointmentCalls",{patientId:patientUdid})
-      timer.value = setInterval(() => {
-        elapsedTime.value += 1000;
-        if((elapsedTime.value)%timerValue.value === 0) {
-          const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-          const timeLogId =  localStorage.getItem('timeLogId')
-          if((timeLogId && timeLogId != null)) {
-            const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
-              isAutomatic: true,
-            }
-            store.dispatch('updatePatientTimeLog', {
-              timeLogId: timeLogId,
-              patientUdid: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
-          else {
-            const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
-              isAutomatic: true,
-            }
-            store.dispatch('addTimeLog', {
-              id: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
+    onMounted(() => {
+      store.dispatch('patientDetails', route.params.udid).then(() => {
+        if(!startOn.value) {
+          startTimer()
         }
-      }, 1000);
-
+      })
+      // store.dispatch("appointmentCalls",{patientId:patientUdid})
       if(route.name == 'PatientSummary') {
+        store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
         loader.value = true
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99});
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
         store.dispatch('devices', patientUdid)
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
-        store.dispatch('flagsList')
+        store.dispatch('flagsForPatient')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
-        store.dispatch('familyMembersList', patientUdid);
+        store.dispatch('responsiblePerson', patientUdid);
         store.dispatch('physiciansList', patientUdid);
+        store.dispatch('patientConditions', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid).then(()=>{
           store.commit("loadingTableStatus",false)
           loader.value = false
@@ -265,7 +273,7 @@ export default {
       }
     })
 
-    const startTimer = () => {
+    function startTimer() {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
@@ -310,22 +318,11 @@ export default {
           }
         }
       }, 1000);
-      startOn.value = false;
+      store.commit('startOn', false);
     }
-
-    function clearEvent(event){
-        event.returnValue = '';
-      
-    }
-
-    onUnmounted(() => {
-      clearInterval(timer.value);
-      localStorage.removeItem('timeLogId')
-
-      window.removeEventListener('beforeunload', clearEvent); 
-    })
 
     const isAutomatic = ref(false);
+
     const stopTimer = () => {
       clearInterval(timer.value);
       stoptimervisible.value = true;
@@ -333,83 +330,129 @@ export default {
       isEditTimeLog.value = true;
     };
   
-    const handleClose = ({modal, value}) => {
-      if(modal == 'addTimeLog') {
+    const handleClose = ({link=null,modal, value, cancelBtn}) => {
+      if(modal == 'cancelButton') {
+        if(link==true&& cancelBtn != null) {
+          elapsedTime.value = 0;
+          store.commit('startOn', true);
+          stoptimervisible.value = false;
+          clearInterval(timer.value);
+          router.push({
+            path: cancelBtn
+          });
+        }
+        else {
+          stoptimervisible.value = false;
+          startTimer()
+          store.commit('startOn', false);
+        }
+      }
+      else if(modal == 'closeTimeLogModal') {
+        startTimer()
+        store.commit('startOn', false);
+        stoptimervisible.value = false;
+      }
+      else if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
-        startOn.value = true;
+        store.commit('startOn', true);
         stoptimervisible.value = false;
         clearInterval(timer.value);
-      }
-      else if(value && modal == 'closeTimeLogModal') {
-        stoptimervisible.value = value;
-        clearInterval(timer.value);
-      }
-      else {
-        startCallModalVisible.value = modal == "startCall" ? value : false;
+        if(cancelBtn != null) {
+          router.push({
+            path: cancelBtn
+          });
+        }
       }
       if(value == undefined) {
-        timer.value = setInterval(() => {
-          elapsedTime.value += 1000;
-          if((elapsedTime.value)%timerValue.value === 0) {
-            const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-            const timeLogId =  localStorage.getItem('timeLogId')
-            if((timeLogId && timeLogId != null)) {
-              const data = {
-                category: '',
-                loggedBy: loggedInUserId,
-                performedBy: loggedInUserId,
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: '',
-                isAutomatic: true,
-              }
-              store.dispatch('updatePatientTimeLog', {
-                timeLogId: timeLogId,
-                patientUdid: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-            else {
-              const data = {
-                category: '',
-                loggedBy: loggedInUserId,
-                performedBy: loggedInUserId,
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: '',
-                isAutomatic: true,
-              }
-              store.dispatch('addTimeLog', {
-                id: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-          }
-        }, 1000);
-        startOn.value = false;
+        startTimer()
+        store.commit('startOn', false);
       }
     };
     
     onBeforeMount(() => {
-      window.addEventListener('beforeunload',clearEvent);
+        window.addEventListener('beforeunload',clearEvent);
     })
 
 
+    onUnmounted(() => {
+      store.state.patients.tabvalue = []
+      clearInterval(timer.value);
+      localStorage.removeItem('timeLogId')
+      window.removeEventListener('beforeunload', clearEvent); 
+      store.state.patients.patientDetails = ''
+      store.state.patients.patientDocuments = ''
+      store.state.patients.patientTimeline = ''
+      store.state.patients.patientConditions = []
+      store.state.patients.patientReferralSource = ''
+      store.state.patients.referralList = ''
+      store.state.patients.familyMembersList = ''
+      store.state.patients.emergencyContactsList = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.timeLineType = ''
+      store.state.patients.latestVital = []
+      store.state.patients.latestCriticalNote = []
+
+    })
+
+    const conferenceId = computed(() => {
+			return store.state.videoCall.conferenceId
+		})
+
+    const startCallForm = reactive({
+      flag: "d76ad323-cd1b-4bcf-ae3d-2300daa1ea17",
+      note: "Call",
+      patientId: route.params.udid,
+    })
+    const form = reactive({ ...startCallForm })
+
+    const startCall = () => {
+      store.commit('startOn', true);
+      iconLoading.value = true
+      videoModal.value = true
+      store.commit('loadingStatus', true)
+      store.dispatch("appointmentCalls", startCallForm).then((response)=>{
+        iconLoading.value = false
+        if(response==true && conferenceId.value){
+          // store.commit('loadingStatus', false)
+          // let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
+          // window.location.href = redirect.href;
+        }
+      })
+
+      
+     
+    }
+
+    const conversationWithPatient = computed(() => {
+      return store.state.communications.conversationWithPatient
+    })
+
+    const conversation = computed(() => {
+      return store.state.communications.conversationsList
+    })
+    const conversationId = ref(null)
+    
+    const sendMessage = () => {
+      conversationId.value = conversationWithPatient.value.id
+      store.dispatch("conversation", conversationId.value).then(() => {
+        // console.log("conversation", conversation.value)
+        chatWithPatientInfoVisible.value = true
+      })
+    }
+
     return {
+      videoModal,
+      patientDetails,
+      form,
+      startCallForm,
       clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       enCodeString,
-      conferenceId:store.getters.conferenceId,
+      conferenceId,
       videoCall,
       startCall,
-      startCallModalVisible,
+      sendMessage,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,
@@ -422,11 +465,6 @@ export default {
       next,
       prev,
       handleChange,
-      visible1,
-      visible2,
-      visible7,
-      visible8,
-      visible9,
       notevisible,
       devicevisible,
       documentvisible,
@@ -436,16 +474,18 @@ export default {
       bloodglucosevisible,
       stoptimervisible,
       patientCriticalNotes,
+      chatWithPatientInfoVisible,
+      conversation,
+      conversationId,
+      conversationWithPatient,
+      receiverId,
 
       handleClose,
+      cancelButton,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
-      activeKey: ref("2"),
-      activeKey1: ref("8"),
-      activeKey2: ref("10"),
-      activeKey3: ref("12"),
-      activeKey4: ref("14"),
+    
       value1: ref(),
       size: ref("large"),
       value3: ref([]),
@@ -453,28 +493,31 @@ export default {
       dayjs,
       onClose,
       button,
-      showButton1,
-      showButton2,
-      showButton3,
-      showButton4,
-      value10: ref([]),
+      showButton,
       startOn,
-      loader
+      loader,
+      iconLoading
     };
 
     
   },
+
   beforeRouteLeave (to, from, next) {
-   var button= document.getElementById("timer")
-   if(button){
-     button.click()
-     console.log(to, from)
-   }else{
-     next()
-   }
-    
-    
-  },
+  localStorage.setItem('cancelButton', to.fullPath)
+  // cancelButton.value = to.fullPath
+
+  //  if(to.path!='/logout'&&to.path!='/'){
+      var button= document.getElementById("timer")
+     if(button){
+       button.click()
+     }else{
+       next()
+     }
+  //  }else{
+  //     window.removeEventListener('beforeunload', clearEvent);
+  //      next()
+  //    }
+    }
   
 };
 </script>
@@ -493,6 +536,6 @@ export default {
 }
 .blueBtn {
   position: relative;
-  top: 3px;
+  top: 0;
 }
 </style>

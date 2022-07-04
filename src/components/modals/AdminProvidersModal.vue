@@ -1,8 +1,8 @@
 <template>
-<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
-            <a-steps :current="current">
+            <a-steps v-model:current="current">
                 <a-step v-for="item in steps" :key="item.title" :title="item.title" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Providers'">
@@ -25,7 +25,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="countryId" :rules="[{ required: true, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-if="globalCode.country" v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
@@ -56,7 +56,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                     <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/> -->
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
@@ -72,7 +72,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.modules')" name="moduleId" :rules="[{ required: true, message: $t('providers.modules')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown :listHeight="100" v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -144,9 +144,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number v-model:value="providerLocationForm.phoneNumber" size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/>
-                                    <!-- <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" /> -->
-                                    <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/> -->
+                                    <!-- <a-input-number size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/> -->
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerLocationForm.phoneNumber"  placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -185,7 +184,7 @@
                                     </a-tooltip>
                                 </template>
                             </a-table>
-                            <Loader />
+                            <!-- <Loader /> -->
                         </a-col>
                         <a-col :span="24">
                             <div class="steps-action">
@@ -201,16 +200,18 @@
             </div>
         </a-col>
     </a-row>
+    <Loader/>
 </a-modal>
 </template>
 <script>
 import { ref, computed, reactive, watchEffect } from "vue";
 import { useStore } from "vuex";
-import Loader from "./../loader/Loader";
+import Loader from "@/components/loader/Loader";
 import {
   warningSwal,
   successSwal,
   arrayToObjact,
+  errorSwal
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { DeleteOutlined,EditOutlined } from "@ant-design/icons-vue";
@@ -235,7 +236,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const current = ref(0);
+    // const current = ref(0);
     const visible = ref(true);
     const store = useStore();
     const clearLocationForm =ref()
@@ -268,40 +269,60 @@ export default {
       isActive: 1,
     });
 
-    const setPhoneNumberProviderForm = (value) => {
-      providerForm.phoneNumber = value;
-    };
-    const setPhoneNumberProviderLocationForm = (value) => {
-      providerLocationForm.phoneNumber = value;
-    };
+    const current = computed({
+      get: () => store.state.provider.counter,
+      set: (value) => {
+        if ((providersData.value.provider||providersData.value.updateSingleProvider) && !value ==1) {
+          store.state.provider.counter = value;
+          console.log('value',store.state.provider.counter)
+        } else {
+          if (Object.values(providerForm).filter((item) => item != "").length >= 9 ) {
+            submitProviderForm();
+          } else {
+            errorSwal(messages.fieldsRequired);
+            store.state.provider.counter = 0;
+          }
+        }
+      },
+    });
+
+    const providersData = computed(() => {
+      return store.state.provider;
+    })
 
     function UpdateStatus(event) {
       providerForm.isActive = event;
     }
     const submitProviderForm = () => {
-      if (!providerId) {
-        store.dispatch("provider", providerForm);
+      console.log('providersData',providersData)
+      providerForm.phoneNumber = providerForm.phoneNumber.replace(/-/g,'')
+      if (providersData.value.provider == null && !providerId) {
+        store.dispatch("provider", providerForm).then((resp)=>{
+          if(resp==true){
+            store.state.provider.providersListAll = "";
+            store.dispatch("providersListAll");
+          }
+        })
       } else {
         store.dispatch("updateSingleProvider", {
           data:providerForm,
-          id: providerId,
-        });
+          id: providerId?providerId:providersData.value.provider.id,
+        }).then((resp)=>{
+          if(resp==true){
+            store.state.provider.providersListAll = "";
+            store.dispatch("providersListAll");
+          }
+        })
       }
-      store.state.provider.providersListAll = "";
-      setTimeout(() => {
-        store.dispatch("providersListAll");
-      }, 2000);
+      
 
-      current.value++;
     };
 
     const providerLocationlistData = computed(() => {
       return store.state.provider.providerLocationList;
     })
 
-    const providersData = computed(() => {
-      return store.state.provider;
-    })
+    
 
     const columns = computed(() => {
       return store.state.provider.columns;
@@ -327,6 +348,9 @@ export default {
           if(response == true)
           clearLocationForm.value.resetFields()
           store.commit('editProviderLocation', null)
+          store.state.provider.providersListAll = "";
+          store.dispatch("providersListAll");
+          store.dispatch("providerLocationList", proId);
         });
         
       }else{
@@ -336,21 +360,20 @@ export default {
         }).then((response)=>{
           if(response == true)
           clearLocationForm.value.resetFields()
+          store.state.provider.providersListAll = "";
+          store.dispatch("providersListAll");
+          store.dispatch("providerLocationList", proId);
         });
       }
-      store.state.provider.providersListAll = "";
-      store.dispatch("providersListAll");
-      setTimeout(() => {
-        store.dispatch("providerLocationList", proId);
-      }, 2000);
+      
     };
 
     const next = () => {
-      current.value++;
-    };
-    const prev = () => {
-      current.value--;
-    };
+            store.commit("providerCounterPlus");
+        };
+        const prev = () => {
+            store.commit("providerCounterMinus");
+        };
 
     const globalCode = computed(() => {
       return store.state.common;
@@ -373,9 +396,13 @@ export default {
     function saveModal() {
       successSwal(messages.formSuccess);
       Object.assign(providerLocationForm, form);
+      Object.assign(providerForm, form);
       //store.dispatch("provider");
-      store.commit("resetCounter");
+      store.commit("providerResetCounter");
       emit("closeModal", false);
+      store.commit('editProviderLocation', null)
+      store.commit("checkChangeInput", false);
+      providersData.value.provider=null
     }
 
     function checkChangeInput() {
@@ -387,13 +414,14 @@ export default {
     });
 
     function closeModal() {
+      emit("closeModal", true)
       if (checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
             emit("closeModal", false);
             Object.assign(providerForm, form);
             Object.assign(providerLocationForm, form);
-            store.commit("resetCounter");
+            store.commit("providerResetCounter");
             store.commit("checkChangeInput", false);
             store.state.provider.provider = null;
             store.commit('editProviderLocation', null)
@@ -401,10 +429,13 @@ export default {
             emit("closeModal", true);
           }
         });
+      } else {
+        emit("closeModal", false);
       }
     }
 
     function editProviderLocation(id) {
+      store.commit("loadingStatus", true);
       if (providerId != null) {
             store
               .dispatch("editProviderLocation", {
@@ -420,9 +451,13 @@ export default {
     }
 
     function deleteProviderLocation(id) {
+      
       if (providerId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
+            store.commit("loadingStatus", true);
             store
               .dispatch("deleteProviderLocation", {
                 id: providerId,
@@ -430,12 +465,15 @@ export default {
               })
               .then(() => {
                 store.dispatch("providerLocationList", providerId);
-              }, 2000);
+              });
           }
         });
       } else {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
+            store.commit("loadingStatus", true);
             store.dispatch("deleteProviderLocation", {
               id: providersData.value.provider.id,
               locationId: id,
@@ -471,8 +509,8 @@ export default {
       editProviderLocation,
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
-      setPhoneNumberProviderForm,
-      setPhoneNumberProviderLocationForm,
+      // setPhoneNumberProviderForm,
+      // setPhoneNumberProviderLocationForm,
       checkChangeInput,
       checkFieldsData,
       UpdateStatus,

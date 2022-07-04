@@ -20,22 +20,28 @@
       </div> -->
     </a-config-provider>
   </div>
+  <CareCoordinatorDetailsModal v-if="visibleModal" v-model:visible="visibleModal" @closeModal="handleOk"/>
+  <PatientDetails v-if="visiblePatientModal && patientUdid" v-model:visible="visiblePatientModal" @closeModal="handleOk"/>
 </template>
 
 <script>
-import { watchEffect, ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, defineAsyncComponent } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
+import router from '@/router';
 // import 'moment/dist/locale/es';
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-import { useStore } from "vuex";
+// import PatientDetails from "./components/patients/patientSummary/modals/PatientDetails"
+import { useStore} from "vuex";
 
 
 export default {
-  //   components: {
-  //     SelectLanguage,
-  //   },
+    components: {
+      // SelectLanguage,
+      PatientDetails:defineAsyncComponent(()=>import('@/components/patients/patientSummary/modals/PatientDetails')),
+      CareCoordinatorDetailsModal:defineAsyncComponent(()=>import('@/components/coordinator-summary/CareCoordinatorDetailsModal'))
+    },
   setup() {
     const store = useStore();
     const locale = ref(enUS.locale);
@@ -44,29 +50,64 @@ export default {
       return store.state.authentication.expiresIn;
     });
 
-    watchEffect(() => {
+    const visibleModal = computed(()=>{
+      return store.state.careCoordinatorSummary.visibleModal
+    })
+
+    const visiblePatientModal = computed(()=>{
+      return store.state.patients.visiblePatientDetailsModal
+    })
+
+    const patientUdid = computed(() => {
+      return store.state.patients.patientUdid;
+    });
+ 
+
+    onMounted(() => {
+       document.body.classList.add("test");
       if (refreshToken.value != null) {
-        store.dispatch("globalCodes");
-        store.dispatch("timeLine", 122);
-        store.dispatch("permissions");
-        store.dispatch("appointmentConference");
-        store.dispatch("notificationList");
         if (refreshToken.value > date.getTime()) {
+          store.dispatch("globalCodes");
+          store.dispatch("permissions");
+          store.dispatch("escalationStaus")
+          store.dispatch("appointmentConference");
+          store.dispatch("notificationList");
+         
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {
             store.dispatch("refreshToken");
           }, differenceDate);
         } else {
-          store.dispatch("logoutUser");
+          localStorage.removeItem('user');
+          localStorage.removeItem('barmenu');
+          localStorage.removeItem('staff');
+          localStorage.removeItem('token');
+          localStorage.removeItem('auth');
+          localStorage.removeItem('roleAuth');
+          localStorage.removeItem('access');
+          localStorage.removeItem('accessPermission');
+          localStorage.removeItem('permission');
+          localStorage.removeItem('screensPermission');
+          localStorage.removeItem('widgetsPermission');
+          localStorage.removeItem('fireBaseToken');
+          localStorage.removeItem('expiresIn');
+          localStorage.removeItem('checkLogin');
+          setTimeout(() => {
+            router.go();
+          }, 1000);
         }
       }
     });
-
-    onMounted(() => {
-      document.body.classList.add("test");
-    });
+    function handleOk(){
+      store.commit('closeStaffDetailsModal')
+      store.commit('closePatientDetailsModal')
+    }
 
     return {
+      patientUdid,
+      visiblePatientModal,
+      handleOk,
+      visibleModal,
       enUS,
       esES,
       locale,

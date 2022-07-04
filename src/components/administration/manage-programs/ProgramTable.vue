@@ -1,8 +1,8 @@
 
 <template>
 <a-col :span="24">
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
-        <template #actions="text">
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList"  :scroll="{ x: 900,y:'calc(100vh - 370px)'}" @change="handleTableChange" :pagination=false>
+        <!-- <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
@@ -19,7 +19,7 @@
                     <DeleteOutlined />
                 </a>
             </a-tooltip>
-        </template>
+        </template> -->
         <template #isActive="{record}" >
             <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,16)"/>
         </template>
@@ -29,11 +29,11 @@
 </template>
 <script>
 import { ref, onMounted, watchEffect } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+//import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import {
   warningSwal,
   arrayToObjact,
-  tableYScroller,
+ 
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
@@ -42,8 +42,8 @@ import TableLoader from "@/components/loader/TableLoader";
 export default {
   components: {
     TableLoader,
-    DeleteOutlined,
-    EditOutlined,
+    //DeleteOutlined,
+    //EditOutlined,
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -67,9 +67,12 @@ export default {
     function deleteProgram(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteManageProgram", id.udid);
-          store.state.programs.programList = "";
-          store.dispatch("manageProgramList");
+          store.commit('loadingTableStatus', true)
+          store.dispatch("deleteManageProgram", id.udid).then(()=>{
+            store.dispatch("manageProgramList")
+          })
+          
+          
         }
       });
     }
@@ -82,14 +85,15 @@ export default {
     //ifinitescroller
     const meta = store.getters.programsRecord.value;
     const loader = ref(false);
-    let scroller = "";
+    
     let data = [];
-    onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+    let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.programMeta.current_page + 1;
 
           if (current_page <= meta.programMeta.total_pages) {
@@ -121,11 +125,12 @@ export default {
         data.push(element);
       });
       meta.manageProgramList = data;
-      var tableContent = document.querySelector(".ant-table-body");
+var tableContent = document.querySelector(".ant-table-body");
 
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 5000);
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
       loader.value = false;
     }
 
@@ -162,7 +167,7 @@ export default {
       deleteProgram,
       editProgram,
       UpdateProgramStatus,
-      tableYScroller,
+     
       handleTableChange,
     };
   },

@@ -22,13 +22,6 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: true, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="inventoryForm.serialNumber" size="large" @change="checkChangeInput()"/>
-            </a-form-item>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
             <a-form-item :label="$t('inventory.macAddress')" name="macAddress" :rules="[{ required: true, message: $t('inventory.macAddress')+' '+$t('global.validation')  }]">
               <a-input v-model:value="inventoryForm.macAddress" size="large" @change="checkChangeInput()"/>
             </a-form-item>
@@ -36,13 +29,20 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
+            <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: false, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
+              <a-input v-model:value="inventoryForm.serialNumber" size="large" @change="checkChangeInput()"/>
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
             <a-form-item :label="$t('inventory.activeStatus')" name="isActive">
-              <a-switch v-model:checked="inventoryForm.isActive" />
+              <a-switch @change="checkChangeInput()" v-model:checked="inventoryForm.isActive" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <ModalButtons  :Id="isAdd"/>
+          <ModalButtons @is_cancel="closeModal" :Id="isAdd"/>
         </a-col>
       </a-row>
       <Loader />
@@ -123,7 +123,7 @@ export default {
 
     const submitForm = () => {
       if(props.isAdd) {
-        
+				//Object.assign(inventoryForm, form)
         store.dispatch('updateInventory', {id: inventoryForm.id, data: inventoryForm}).then(() => {
           store.dispatch('inventoriesList')
 
@@ -131,7 +131,7 @@ export default {
         })
       }
       else {
-        console.log('data', inventoryForm)
+        // console.log('data', inventoryForm)
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
@@ -155,6 +155,7 @@ export default {
 		};
 
     function closeModal() {
+      emit("is-visible", true)
 			if (checkFieldsData.value) {
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
@@ -168,6 +169,7 @@ export default {
 			}
 			else {
 				formRef.value.resetFields();
+        emit("is-visible", false)
 			}
 		}
     return {

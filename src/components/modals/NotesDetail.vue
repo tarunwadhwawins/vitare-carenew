@@ -5,9 +5,16 @@
         <div class="text-right mb-24">
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
-          <template #flags="{ record }">
-            <Flags :flag="record.color" />
+          <template #priority="{ record }">
+            <span>{{record.flag}}</span>
           </template>
+          <template #type="{ record }">
+            <span>{{record.type=="patientFlag" ? "Patient Flag" : record.type}}</span>
+          </template>
+          <template #addedBy="{record}">  
+          <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.addedById  }}" v-if="record.addedByType=='staff'">{{record.addedBy}}</router-link> 
+         <router-link :to="{ name: 'PatientSummary', params: { udid:record.addedById }}" v-else>{{record.addedBy}}</router-link> 
+        </template>
         </a-table>
       </a-col>
     </a-row>
@@ -16,14 +23,14 @@
 <script>
 import { computed, defineComponent, watchEffect } from "vue";
 import { useStore } from "vuex";
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import {
   actionTrack
 } from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
-    Flags,
+    // Flags,
   },
   props:{
     Id:String
@@ -63,6 +70,9 @@ export default defineComponent({
         dataIndex: "type",
         key: "type",
         className: "note-type",
+        slots: {
+          customRender: "type",
+        },
       },
       {
         title: "Note",
@@ -75,13 +85,16 @@ export default defineComponent({
         title: "Added By",
         dataIndex: "addedBy",
         key: "addedBy",
+        slots: {
+          customRender: "addedBy",
+        },
       },
       {
-        title: "Flag",
+        title: "Priority",
         dataIndex: "color",
         key: "color",
         slots: {
-          customRender: "flags",
+          customRender: "priority",
         },
         className: "note-flag",
       },

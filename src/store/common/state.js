@@ -1,6 +1,6 @@
 export default {
     gender:null,
-    language:null,
+    language:[],
     country:null,
     state:null,
     pmOfcontact:null,
@@ -12,10 +12,10 @@ export default {
     deviceType:null,
     program:null,
     timeline:null,
-    taskPriority:null,
+    taskPriority:[],
     network:null,
-    specialization:null,
-    taskCategory:null,
+    specialization:[],
+    taskCategory:[],
     successMsg:null, 
     insuranceName:null,
     insuranceType:null,
@@ -40,10 +40,14 @@ export default {
     searchTable:null,
     notificationList:null,
     dropdownLoadingStatus:false,
+    dropdownListing:null,
     loadingTableStatus:null,
     actionTrack:null,
     orderTable:null,
     getNotificationsList:null,
+    filter:null,
+    removalReason:[],
+    apiCounter:0,
     // phone msaking objects
     bindProps:{
         mode:"national",
@@ -58,7 +62,13 @@ export default {
         autocomplete: "off", 
         onlyCountries:['US'],
         
-    }
-
+    },
+    escalationType:null,
+    toScroll:false,
+    dateFilter:null,
+    taskType:null,
+    taskStatus: [],
+    otherFilters:null,
+    CPTCodeStatus:null
 
 }

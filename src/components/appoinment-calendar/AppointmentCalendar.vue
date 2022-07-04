@@ -47,19 +47,11 @@ import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {
-    ref,
-    watchEffect,
-    computed
-} from "vue";
-import {
-    useStore
-} from "vuex"
+import {ref,computed,onUnmounted, onMounted, watchEffect} from "vue";
+import { useStore} from "vuex"
 import moment from "moment"
 import Loader from "@/components/loader/Loader"
-import {
-    arrayToObjact
-} from "@/commonMethods/commonMethod"
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 export default {
     components: {
         AddAppointment,
@@ -158,17 +150,18 @@ export default {
                 monthRecord.value = true
             })
         }
-
-        watchEffect(() => {
+watchEffect(()=>{
+      if (props.headerData) {
+                
+                selectDate(props.headerData)
+            }
+})
+        onMounted(() => {
             store.dispatch("getStaffs").then(() => {
 
             })
-            store.dispatch("allPatientsList")
-            store.dispatch("allStaffList")
-            if (props.headerData) {
-                console.log("check", props.headerData)
-                selectDate(props.headerData)
-            }
+           
+          
             searchApi()
         })
 
@@ -218,10 +211,30 @@ export default {
         };
 
         function staffSelect() {
+             let staffId = []
+            store.getters.appointmentRecords.value.getStaff ? store.getters.appointmentRecords.value.getStaff.map((item) => {
+                staffId.push(item.id)
+            }) : ''
+            physiciansId.value = staffId;
+             store.dispatch("searchAppointment", {
+                fromDate: fromDate.value,
+                toDate: toDate.value,
+                tabId: activeKey.value,
+                physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
+            }).then(() => {
+                monthRecord.value = true
+            })
             showLoaderMain.value = false
         }
 
-       
+        onUnmounted(() => {
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+            store.commit("filter", '')
+            store.commit("dataFilter",'')
+        })
         return {
             screensPermissions:store.getters.screensPermissions,
             arrayToObjact,

@@ -17,7 +17,7 @@
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
           <template #document="{record}">
-            <a :href="record.document" target="_blank">
+            <a :href="record.document" download>
               <FileOutlined />
             </a>
           </template>
@@ -118,7 +118,7 @@ export default defineComponent({
             id: patientId,
             documentId: id,
           }
-          console.log('data', data);
+          // console.log('data', data);
           store.dispatch('deleteDocument', data).then(() => {
             store.dispatch('patientDocuments', patientId)
             if(patientDocuments.value.length <= 1) {

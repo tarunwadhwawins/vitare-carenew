@@ -1,12 +1,16 @@
 <template>
+<!-- <div> -->
   <a-select
+  class=""
+  :listHeight="listHeight?listHeight:150"
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
     :mode="mode"
     :value="value"
     @input="updateValue"
     style="width: 100%"
     :show-search="true"
-    placeholder="input search text"
+    :placeholder="placeholder ? placeholder : 'input search text'"
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
@@ -14,13 +18,19 @@
     @search="handleStaffSearch"
     @change="handleStaffChange"
     size="large"
+    :disabled="isDisabled"
   >
     <template v-if="loadingStatus" #notFoundContent>
       <a-spin size="small" />
       <p>Data not found!</p>
     </template>
   </a-select>
+<!-- </div> -->
+
+  
 </template>
+ 
+
 
 <script>
 import { defineComponent, ref, onMounted, watchEffect } from "vue";
@@ -32,12 +42,20 @@ export default defineComponent({
     value: String,
     checkSameAsStaff: Boolean,
     mode: String,
+    placeholder: String,
     close: Boolean,
+    editDataStaff:Array,
+    listHeight: Number,
+    isDisabled: Boolean,
   },
 
   setup(props, context) {
     const store = useStore();
     const staffData = ref([]);
+
+    // const editDataStaff = computed(()=>{
+    //     return store.state.escalations.editEscalationStaff
+    // });
 
     const updateValue = (event) => {
       context.emit("update:modelValue", event.target.value);
@@ -53,6 +71,9 @@ export default defineComponent({
           "staff"
         );
       }
+      
+        props.editDataStaff?staffData.value = props.editDataStaff:staffData.value
+        
     });
 
     const handleStaffSearch = (val) => {
@@ -62,6 +83,7 @@ export default defineComponent({
     };
 
     const handleStaffChange = (val) => {
+      // Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
       if (props.checkSameAsStaff) {
         context.emit("handlePatientChange", val);
       } else {
@@ -70,6 +92,7 @@ export default defineComponent({
     };
 
     return {
+      // editDataStaff,
       loadingStatus: store.getters.dropdownLoadingStatus,
       handleStaffChange,
       handleStaffSearch,

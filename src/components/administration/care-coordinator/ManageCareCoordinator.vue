@@ -138,7 +138,7 @@
       title="Add New Coordinator"
       centered
       @ok="handleOk"
-      :footer="null"
+      :footer="false"
     >
       <a-row :gutter="24">
         <a-col :span="24">

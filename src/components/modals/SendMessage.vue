@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="800px" title="Send Message" centered :footer="null">
+  <a-modal width="800px" title="Send Message" centered :footer="false">
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <div class="form-group">
@@ -7,6 +7,7 @@
 
           <a-select
             v-model:value="value"
+            :getPopupContainer="triggerNode => triggerNode.parentNode"
             show-search
             placeholder="Select Patient"
             style="width: 100%"

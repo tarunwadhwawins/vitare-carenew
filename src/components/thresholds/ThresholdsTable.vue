@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: tableYScroller }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :pagination="false" @change="handleTableChange" :scroll="{ y:'calc(100vh - 470px)'}">
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,330)">
                 <template #title>
@@ -36,7 +36,7 @@ import {
 } from "@ant-design/icons-vue";
 import {
     warningSwal,
-    tableYScroller,
+    
     arrayToObjact
 } from "@/commonMethods/commonMethod";
 import {
@@ -92,6 +92,7 @@ export default {
                 title: "General Parameters Group",
                 dataIndex: "generalParameterGroup",
                 sorter: true,
+                width: '30%',
                 customRender: ({
                     index
                 }) => {
@@ -109,6 +110,7 @@ export default {
                 title: "Device Type",
                 dataIndex: "deviceType",
                 sorter: true,
+                width: '25%',
                 customRender: ({
                     index
                 }) => {
@@ -131,13 +133,13 @@ export default {
             {
                 title: "High Limit ",
                 dataIndex: "highLimit",
-
+align: 'right',
                 customRender: renderContent,
             },
             {
                 title: "Low Limit ",
                 dataIndex: "lowLimit",
-
+align: 'right',
                 customRender: renderContent,
             },
 
@@ -152,6 +154,7 @@ export default {
 
         const meta = store.getters.vitalDataGetters.value;
         let data = [];
+        
         let scroller = "";
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
@@ -162,7 +165,7 @@ export default {
                     let current_page = meta.generalParameterMeta.current_page + 1;
 
                     if (current_page <= meta.generalParameterMeta.total_pages) {
-                        scroller = maxScroll;
+                       scroller = maxScroll;
                         data = meta.vitalList;
                         store.state.thresholds.generalParameterMeta = "";
                         store.state.thresholds.vitalList = "";
@@ -190,7 +193,8 @@ export default {
 
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller);
-            }, 500);
+            }, 50);
+            
         }
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
@@ -220,7 +224,7 @@ export default {
             editParameter,
             meta,
             columns,
-            tableYScroller,
+            
             handleTableChange
         };
     },

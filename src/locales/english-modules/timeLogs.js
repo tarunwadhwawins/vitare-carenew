@@ -4,8 +4,9 @@ const timeLogs = {
   performedBy: "Performed By",
   date: "Date",
   timeAmount: "Time Amount",
-  cptCode: "CPT Code",
+  cptCode: "Activity",
   note: "Note",
+  activeCode:"Activity"
 }
 
 export default timeLogs;

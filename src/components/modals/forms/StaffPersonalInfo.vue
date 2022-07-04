@@ -1,25 +1,33 @@
 <template>
-<a-modal max-width="1140px" scrollToFirstError=true width="100%" :title="$t('careCoordinator.coordinatorsModal.updateCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
-<a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+<a-modal max-width="1140px" scrollToFirstError=true width="100%" :title="$t('careCoordinator.coordinatorsModal.updateCoordinator')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
+<a-form :model="personalInfoData" class="basic" name="basic"  scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
     <!-- <PersonalInformation /> -->
     <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" @change="checkChangeInput()" />
                     <ErrorMessage v-if="errorMsg && !personalInfoData.firstName" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
+            <div class="form-group">
+                <a-form-item :label="$t('global.middleName')" name="middleName">
+                    <a-input v-model:value="personalInfoData.middleName" size="large" class="middleName" @change="checkChangeInput()" />
+                    <ErrorMessage v-if="errorMsg && !personalInfoData.middleName" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="personalInfoData.lastName" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.lastName" @change="checkChangeInput()" size="large"/>
                     <ErrorMessage v-if="errorMsg && !personalInfoData.lastName" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item name="designationId" :label="$t('global.designation')" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.designationId" :globalCode="careCordinator.designations"/>
@@ -28,7 +36,7 @@
             </div>
 
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item name="genderId" :label="$t('global.gender')" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.genderId" :globalCode="careCordinator.gender"/>
@@ -36,26 +44,31 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
-                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()"/>
+                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()" size="large"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="8" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <!-- <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
-                    <!-- <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                      <a-input-number @change="checkChangeInput()" v-model:value.trim="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   maxlength="10" />
-
+                      <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   />
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="4" :xs="24" :xl="8">
+          <div class="form-group">
+              <a-form-item label="Extension" name="extension" :rules="[{ required: true, message: $t('global.validValidation')+' '+'Extension'.toLowerCase(),pattern:regex.extension}]">
+                  <a-input  @change="checkChangeInput()"  v-model:value="personalInfoData.extension" placeholder="Enter 4 digit number" size="large" maxlength="4"  style="width: 100%" />
+                  <ErrorMessage v-if="errorMsg && !personalInfoData.extension" :name="errorMsg.extension?errorMsg.extension[0]:''" />
+              </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.specializationId" :globalCode="careCordinator.specialization"/>
@@ -63,7 +76,7 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" :xl="8">
             <div class="form-group">
                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.networkId" :globalCode="careCordinator.network"/>
@@ -74,7 +87,8 @@
     </a-row>
 
     <div class="steps-action">
-        <a-button  type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+      <ModalButtons :Id="Id" @is_cancel="closeModal" />
+      <!-- <a-button  type="primary" html-type="submit">{{$t('global.update')}}</a-button> -->
     </div>
 </a-form>
 </a-modal>
@@ -90,18 +104,21 @@ import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import ModalButtons from "@/components/common/button/ModalButtons";
 // import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
     // PhoneNumber,
     ErrorMessage,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    ModalButtons,
   },
   setup(props, { emit }) {
     const store = useStore()
     const route = useRoute()
     const personalInfoData = reactive({
       firstName: "",
+      middleName: "",
       lastName: "",
       designationId: "",
       genderId: "",
@@ -110,11 +127,12 @@ export default {
       specializationId: "",
       networkId: "",
       roleId: '',
+      extension:''
       
     });
 
      const setPhoneNumber = (value) => {
-       console.log(personalInfoData.phoneNumber)
+      //  console.log(personalInfoData.phoneNumber)
       personalInfoData.phoneNumber = value;
     };
 
@@ -126,15 +144,35 @@ export default {
       Object.assign(personalInfoData,getstaffSummary.value)
     })
 
+     const form = reactive({
+      ...personalInfoData,
+    });
+
     const personalInfo = () => {
+      let phone = personalInfoData.phoneNumber
       store.dispatch("updateStaff", {
       id:route.params.udid,
-      data:personalInfoData
+      data:{
+        firstName: personalInfoData.firstName,
+        middleName: personalInfoData.middleName,
+        lastName: personalInfoData.lastName,
+        designationId: personalInfoData.designationId,
+        genderId: personalInfoData.genderId,
+        email: personalInfoData.email,
+        phoneNumber: phone.replace(/-/g,''),
+        specializationId: personalInfoData.specializationId,
+        networkId: personalInfoData.networkId,
+        roleId: personalInfoData.roleId,
+        extension: personalInfoData.extension
+      }
       });
       setTimeout(()=>{
         if(careCoordinators.value.closeModal==true){
           store.dispatch("staffSummary", route.params.udid);
           emit("saveModal", false)
+          store.commit("resetCounter")
+          store.commit('checkChangeInput',false)
+          Object.assign(personalInfoData, form);
       }
       },2000)
       
@@ -162,9 +200,7 @@ export default {
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
 
-    const form = reactive({
-      ...personalInfoData,
-    });
+   
 
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
@@ -176,25 +212,33 @@ export default {
       Object.assign(personalInfoData, form);
       store.dispatch("allStaffList");
     }
+
     const checkFieldsData = computed(()=>{
       return store.state.common.checkChangeInput;
     })
+
     function closeModal() {
-      if(checkFieldsData.value){
-      warningSwal(messages.modalWarning).then((response) => {
-        if (response == true) {
-          emit("saveModal", false)
-          Object.assign(personalInfoData, form);
-          store.commit("resetCounter")
-          store.state.careCoordinator.addStaff =null
-          store.commit('checkChangeInput',false)
-        } else {
-          emit("saveModal", true);
-        }
-      });
+      emit("saveModal", true)
+      if(checkFieldsData.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("saveModal", false)
+            Object.assign(personalInfoData, form)
+            store.commit("resetCounter")
+            store.state.careCoordinator.addStaff =null
+            store.commit('checkChangeInput',false)
+          }
+          else {
+            emit("saveModal", true);
+          }
+        });
+      }
+      else {
+        emit("saveModal", false)
       }
     }
-     onUnmounted(()=>{
+
+    onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
          
@@ -217,6 +261,7 @@ export default {
       onFinishFailed,
       personalInfo,
       bindProps: store.state.common.bindProps,
+      Id:true
     };
   },
 };
@@ -235,5 +280,6 @@ export default {
 
 .steps-action {
   text-align: right;
+
 }
 </style>

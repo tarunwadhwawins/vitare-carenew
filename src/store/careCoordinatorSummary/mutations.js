@@ -1,7 +1,8 @@
-import{meridiemFormatFromTimestamp,dateOnlyFormat} from "../../commonMethods/commonMethod"
+import{meridiemFormatFromTimestamp,dateOnlyFormat,globalDateFormat} from "@/commonMethods/commonMethod"
 
 export const staffSummary= async (state, data) => {
     state.staffSummary = data;
+    state.staffSummary['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 }
 
 export const staffSummaryAppointment= async (state, data) => {
@@ -18,7 +19,7 @@ export const staffSummaryAppointment= async (state, data) => {
           },
         },
         {
-          title: "Date Time ",
+          title: "Date & Time ",
           dataIndex: "date",
         },
         {
@@ -40,15 +41,17 @@ export const staffSummaryAppointment= async (state, data) => {
 
 
 export const staffSummaryPatient= async (state, data) => {
-    state.staffSummaryPatient = data.map(element => {
-        element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
+  state.staffSummaryMeta = data.meta.pagination;
+    state.staffSummaryPatient = data.data.map(element => {
+     
+        // element.flags = element.flagColor?element.flagColor:'',
         element.lastName=element.lastName?element.lastName :'',
-        element.firstName=element.name?element.name+' '+element.lastName :'' ,
-        element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
-        element.weight=element.weight?element.weight:'',
-        element.bp = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}),
-        element.spo2 = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}),
-        element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}),
+        element.firstName=element.name?element.name+' '+element.lastName :'' 
+        element.lastReadingDate=element.lastReadingDate?dateOnlyFormat(element.lastReadingDate,globalDateFormat):''
+        element.weight=element.weight?element.weight:''
+        element.bp = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}):''
+        element.spo2 = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}):'',
+        element.glucose = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}):'',
         element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10)>0?Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10):1
         return element
  })
@@ -62,34 +65,29 @@ export const staffSummaryPatient= async (state, data) => {
         },
         {
           title: "Name",
-          dataIndex: "firstName",
+          dataIndex: "fullName",
+          width: '15%',
+          sorter:true,
           slots: {
-            customRender: "firstName",
+            customRender: "fullName",
           },
         },
         {
           title: "Age",
-          dataIndex: "dob",
-          sorter: {
-            compare: (a, b) => a.age - b.age,
-            multiple: 3,
-          },
+          dataIndex: "age",
+          width: '10%',
+          align: 'right',
+          sorter: true,
         },
         {
-          title: "Sex",
-          dataIndex: "gender",
-          sorter: {
-            compare: (a, b) => a.sex - b.sex,
-            multiple: 2,
-          },
+          title: "Gender",
+          dataIndex: "genderName",
+          sorter: true,
         },
         {
           title: "Last Reading Date",
           dataIndex: "lastReadingDate",
-          sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-          },
+          
         },
         // {
         //     title: "Actions",
@@ -99,4 +97,13 @@ export const staffSummaryPatient= async (state, data) => {
         //     },
         //   },
       ];
+
+}
+
+export const showStaffDetailsModal= async (state) => {
+  state.visibleModal = true;
+}
+
+export const closeStaffDetailsModal= async (state) => {
+  state.visibleModal = false;
 }

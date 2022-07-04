@@ -49,3 +49,33 @@ export const loadingStatus = (state)=>{
         return state.notificationList
     })
   }
+  export const filter = (state)=>{
+    return computed(()=>{
+        return state.filter
+    })
+  }
+  export const dateFilter = (state)=>{
+    return computed(()=>{
+        return state.dateFilter
+    })
+  }
+  export const otherFilters = (state)=>{
+    return computed(()=>{
+        return state.otherFilters
+    })
+  }
+  export const escalationType = (state)=>{
+    return computed(()=>{
+        return state.escalationType
+    })
+  }
+  export const removalReason = (state)=>{
+    return computed(()=>{
+        return state.removalReason
+    })
+  }
+  export const apiCounter = (state)=>{
+    return computed(()=>{
+        return state.apiCounter
+    })
+  }

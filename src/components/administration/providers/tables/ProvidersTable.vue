@@ -1,5 +1,5 @@
 <template>
-<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false @change="handleTableChange">
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y:'calc(100vh - 470px)'}" :pagination=false @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,23)">
         <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
@@ -30,7 +30,7 @@ import { useStore } from "vuex";
 import {
   warningSwal,
   arrayToObjact,
-  tableYScroller,
+ 
 } from "@/commonMethods/commonMethod";
 export default {
   components: {
@@ -51,13 +51,14 @@ export default {
     const meta = store.getters.providerMeta;
     let url = store.getters.searchTable;
     let data = [];
-    let scroller = "";
-    onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+    
+   let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.current_page + 1;
 
           if (current_page <= meta.total_pages) {
@@ -88,9 +89,10 @@ export default {
       providersListAll.value = data;
       var tableContent = document.querySelector(".ant-table-body");
 
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
     }
 
     const providersData = computed(() => {
@@ -180,7 +182,7 @@ export default {
       updateStatus,
       providerId,
       props,
-      tableYScroller,
+     
       text: "provider-summary",
       handleTableChange,
     };

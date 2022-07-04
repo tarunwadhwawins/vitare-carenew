@@ -1,12 +1,20 @@
 <template>
-  <a-row :gutter="24">
+  <a-row :gutter="24" v-bind:class="vitalGrid">
 
-    <template v-if="showVitals == true">
+    <template v-if="!patientDevices || patientDevices.length == 0">
+      <a-col :sm="24">
+        <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
+      </a-col>
+    </template>
+    
+    <template v-for="device in patientDevices" :key="device.id">
+      
       <VitalsGrid
-        v-if="bloodPressure && bloodPressure.length > 0"
+        v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"
-        :activeKey="activeKey1"
-        className="dangerValue"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodPressureTimeline"
+        commit="bloodPressureTimeline"
         :tableColumns="bloodPressureColumns"
         :tableData="bloodPressure"
         :chartOptions="bloodPressureOptions"
@@ -15,10 +23,11 @@
       />
 
       <VitalsGrid
-        v-if="bloodGlucose && bloodGlucose.length > 0"
+        v-if="device.deviceType == 'Glucose'"
         title="Blood Glucose"
-        :activeKey="activeKey2"
-        className="dangerValue"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodGlucoseTimeline"
+        commit="bloodGlucoseTimeline"
         :tableColumns="bloodGlucoseColumns"
         :tableData="bloodGlucose"
         :chartOptions="bloodGlucoseOptions"
@@ -27,10 +36,11 @@
       />
 
       <VitalsGrid
-        v-if="bloodOxygen && bloodOxygen.length > 0"
+        v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
-        :activeKey="activeKey3"
-        className="dangerValue"
+        :deviceId="device.deviceTypeId"
+        :filterButtons="bloodOxygenTimeline"
+        commit="bloodOxygenTimeline"
         :tableColumns="bloodOxygenColumns"
         :tableData="bloodOxygen"
         :chartOptions="bloodOxygenOptions"
@@ -39,28 +49,30 @@
       />
     </template>
 
-  <template v-else>
-    <a-col :sm="24">
-      <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
-    </a-col>
-  </template>
-
   </a-row>
-  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
+  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" :patientId="patientId" @ok="handleOk" />
 </template>
 
 <script>
-import { computed, ref } from 'vue-demi';
+import { computed, ref, watchEffect } from 'vue-demi';
 import AddVitalsModal from "@/components/modals/AddVitalsModal";
 import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
 import {
   yaxis,
 } from '@/commonMethods/commonMethod'
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+
 export default {
   components: {
     AddVitalsModal,
     VitalsGrid,
+  },
+  props: {
+		patientId: {
+			type: Number
+		},
   },
   setup() {
     const store = useStore();
@@ -80,8 +92,26 @@ export default {
       return store.state.patients
     })
 
-    const handleOk = () => {
-      visibleAddVitalsModal.value = false;
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
+
+    const handleOk = (value) => {
+      visibleAddVitalsModal.value = value ? value : true
+      if(value && checkChangedInput.value) {
+          warningSwal(messages.modalWarning).then((response) => {
+              if (response == true) {
+                  visibleAddVitalsModal.value = false
+                  store.commit('checkChangeInput', false)
+              }
+              else {
+                  visibleAddVitalsModal.value = true
+              }
+          });
+      }
+      else {
+          visibleAddVitalsModal.value = false;
+      }
     }
 
     const bloodPressureColumns = patients.value.bloodPressureColumns
@@ -96,12 +126,19 @@ export default {
     const bloodOxygen = computed(() => {
       return store.state.patients.bloodOxygen
     })
-    if(bloodPressure.value.length > 0 || bloodGlucose.value.length > 0 || bloodOxygen.value.length > 0) {
+    if((bloodPressure.value != null && bloodPressure.value.length > 0) || (bloodGlucose.value != null && bloodGlucose.value.length > 0) || (bloodOxygen.value != null && bloodOxygen.value.length > 0)) {
       showVitals.value = true;
     }
-    const bloodPressureGraph = patients.value.bloodPressureGraph
-    const bloodOxygenGraph = patients.value.bloodOxygenGraph
-    const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
+    const bloodPressureGraph = computed(() => {
+      return store.state.patients.bloodPressureGraph
+    })
+    const bloodOxygenGraph = computed(() => {
+      return store.state.patients.bloodOxygenGraph
+    })
+    const bloodGlucoseGraph = computed(() => {
+      return store.state.patients.bloodGlucoseGraph
+    })
+
     const patientDevices = patients.value.devices
 
     const showAddBPModal = () => {
@@ -119,21 +156,24 @@ export default {
       visibleAddVitalsModal.value = true;
       title.value = 'Blood Glucose';
     };
-    
-    if(bloodPressureGraph != null) {
-      bloodPressureSeries.value = bloodPressureGraph.records
-      bloodPressureTimesArray.value = bloodPressureGraph.timesArray
-    }
 
-    if(bloodGlucoseGraph != null) {
-      bloodGlucoseSeries.value = bloodGlucoseGraph.records
-      bloodGlucoseTimesArray.value = bloodGlucoseGraph.timesArray
-    }
+    watchEffect(() => {
+      if(bloodPressureGraph.value != null) {
+        bloodPressureSeries.value = bloodPressureGraph.value.records
+        bloodPressureTimesArray.value = bloodPressureGraph.value.timesArray
+      }
 
-    if(bloodOxygenGraph != null) {
-      bloodOxygenSeries.value = bloodOxygenGraph.records
-      bloodOxygenTimesArray.value = bloodOxygenGraph.timesArray
-    }
+      if(bloodGlucoseGraph.value != null) {
+        bloodGlucoseSeries.value = bloodGlucoseGraph.value.records
+        bloodGlucoseTimesArray.value = bloodGlucoseGraph.value.timesArray
+      }
+
+      if(bloodOxygenGraph.value != null) {
+        bloodOxygenSeries.value = bloodOxygenGraph.value.records
+        bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
+      }
+      // console.log('bloodOxygenGraph', bloodOxygenSeries.value)
+    })
     
     const bloodPressureOptions = {
       chart: {
@@ -227,6 +267,10 @@ export default {
 
       patientDevices,
       showVitals,
+      vitalGrid:'vitalGrid',
+      bloodOxygenTimeline: store.getters.bloodOxygenTimeline,
+      bloodGlucoseTimeline: store.getters.bloodGlucoseTimeline,
+      bloodPressureTimeline: store.getters.bloodPressureTimeline,
     }
   }
 }
@@ -238,5 +282,9 @@ export default {
     background: #f6c9af;
     padding: 15px;
     font-size: 16px !important;
+  }
+  .vitalGrid {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
   }
 </style>

@@ -6,15 +6,15 @@
           <a-col :sm="24" :xs="24">
             <a-form-item :label="$t('global.careCoodinator')" name="staff" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation') }]">
               <a-input v-if="isEditCareCoordinator" :disabled="disabled" :value="patientCareCoordinatorName" size="large" />
-              <StaffDropDown v-else :disabled="disabled" v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
+              <StaffDropDown v-else :disabled="disabled" v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event); checkChangeInput()" :close="closeValue" />
             </a-form-item>
           </a-col>
           <a-col :sm="24" :xs="24">
             <a-form-item :label="$t('global.isPrimary')" name="isPrimary" :rules="[{ required: true, message: $t('global.isPrimary')+' '+$t('global.validation') }]">
-              <a-switch v-model:checked="addCareTeamForm.isPrimary" size="large" />
+              <a-switch @change="checkChangeInput()" v-model:checked="addCareTeamForm.isPrimary" size="large" />
             </a-form-item>
           </a-col>
-          <a-col :sm="4" :xs="24">
+          <a-col  :sm="4" :md="8" :xs="24"> 
             <a-button class="add-button" size="large" html-type="submit">{{ buttontext }}</a-button>
           </a-col>
         </a-row>
@@ -76,7 +76,7 @@ export default defineComponent({
         Object.assign(addCareTeamForm, patientCareCoordinatorDetails.value)
         patientCareCoordinatorName.value = patientCareCoordinatorDetails.value != null ? patientCareCoordinatorDetails.value.staff : ''
       }
-      console.log('props.staffType', props.staffType)
+      // console.log('props.staffType', props.staffType)
       store.dispatch('patientCareCoordinatorsList', {
         patientUdid: patientUdid,
         type: props.staffType
@@ -94,13 +94,21 @@ export default defineComponent({
     function checkChangeInput() {
       store.commit('checkChangeInput', true)
     }
+    
+    const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
 
     const changedValue = () => {
       isValueChanged.value = true;
     }
 
     function onCloseModal() {
-      if(isValueChanged.value) {
+      emit("closeModal", {
+        modal: 'addCareTeam',
+        value: true
+      });
+      if(checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
             emit("closeModal", {
@@ -108,7 +116,7 @@ export default defineComponent({
               value: false
             });
             Object.assign(addCareTeamForm, form);
-            isValueChanged.value = false;
+            store.commit('checkChangeInput', false)
           }
           else {
             emit("closeModal", {
@@ -117,6 +125,12 @@ export default defineComponent({
             });
           }
         })
+      }
+      else {
+        emit("closeModal", {
+          modal: 'addCareTeam',
+          value: false
+        });
       }
     }
     

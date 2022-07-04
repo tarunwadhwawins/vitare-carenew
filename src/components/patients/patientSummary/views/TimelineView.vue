@@ -5,7 +5,7 @@
         <PatientInfoTop :patientDetails="patientDetails"/>
       </a-col>
       <a-col :sm="24" :xs="24">
-        <PatientTimeline className="thumbDesc patientTimeline mt-28"/>
+        <PatientTimeline className="thumbDesc patientTimeline mt-28 timelineView"/>
       </a-col>
     </a-row>
   </div>

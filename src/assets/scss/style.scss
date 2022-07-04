@@ -1,6 +1,11 @@
 .pageTittle {
     margin: 0 0 20px 0;
     position: relative;
+    &.patientSummaryFilters {
+        .filter {
+            position: initial;
+        }
+    }
     .commonBtn {
         position: absolute;
         right: 0;
@@ -61,6 +66,10 @@
             border-right: 1px solid $gray-color-300;
             background-color: #e0dfdf;
             color: #000;
+            font-size: 13px;
+            padding: 0 10px;
+            margin: 0 0 10px;
+
             &:last-child {
                 border-right: none;
             }
@@ -242,11 +251,37 @@
     &.orangeBg {
         background-color: #ff4500;
     }
+    &.redBg {
+        background-color: #ed4242;
+    }
     &.greenBg {
         background-color: #008000;
     }
     &.yellowBg {
         background-color: #fdda0d;
+    }
+
+    // Cards
+    &.escalationBg {
+        background-color: #ffffff;
+    }
+    &.criticalBg {
+        background-color: #ed4242;
+    }
+    &.moderateBg {
+        background-color: #f77029;
+    }
+    &.wnlBg {
+        background-color: #008000;
+    }
+    &.watchlistBg {
+        background-color: #fdda0d;
+    }
+    &.trendingBg {
+        background-color: #be4620;
+    }
+    &.messagesBg {
+        background-color: #3338ac;
     }
 }
 
@@ -549,28 +584,56 @@
     margin: 0 0 30px;
 }
 
+.ant-row.sectionPatient .image-section img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+.ant-row.sectionPatient {
+    padding: 30px;
+}
+.ant-col.ant-col-1.iconsPatient {
+    position: relative;
+    top: -40px;
+}
+
 .patientInfo {
     background-color: #fff;
     position: relative;
     z-index: 0;
+    .patientImgInner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-left: 15px;
+        .edit-button {
+            font-size: 11px;
+        }
+    }
     .patientImg {
-        margin: 0 auto;
         position: relative;
         display: flex;
         align-items: center;
-        padding: 15px;
+        padding: 25px 15px 15px;
         border-bottom: 1px solid $gray-color-200;
         img {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 15px 0 0;
         }
         .editIcon {
             position: absolute;
             top: 15px;
             right: 15px;
+            span {
+                svg {
+                    font-size: 22px;
+                }
+            }
         }
     }
     .name {
@@ -579,6 +642,7 @@
         padding: 10px 0;
     }
     .info {
+        padding: 0 0 0 20px;
         p {
             font-family: $font-family-semi-bold;
             color: $black-color;
@@ -671,6 +735,8 @@
 }
 
 .pat-profile {
+    // max-height: calc(100vh - 540px);
+    // overflow: auto;
     .pat-profile-inner {
         display: flex;
         justify-content: space-between;
@@ -872,7 +938,7 @@
 }
 .patientsVitals {
     margin: 20px 0 0;
-    height: 375px;
+    max-height: calc(100vh - 470px);
     overflow: auto;
     padding: 0 15px;
     .ant-card {
@@ -891,7 +957,12 @@
             }
         }
     }
-    .ant-checkbox-group {
+    &.timelineView {
+        .defaultTimeline {
+            max-height: calc(100vh - 540px);
+        }
+    }
+    > .ant-checkbox-group {
         width: 100%;
         background-color: #fff;
         padding: 15px 10px;
@@ -912,12 +983,21 @@
                 display: none;
             }
         }
+        .icons {
+            margin: 0 0 0 10px;
+            display: inline-block;
+            span {
+                svg {
+                    font-size: 20px;
+                }
+            }
+        }
     }
     .ant-timeline {
         padding: 40px 20px 0;
         overflow: auto;
         &.defaultTimeline {
-            height: 480px;
+            // max-height: calc(100vh - 280px);
         }
         &.fullTimeline {
             height: calc(100vh - 450px);
@@ -940,17 +1020,32 @@
             height: 40px;
             .anticon {
                 font-size: 20px;
-                &.redIcon {
+                &.brownIcon {
                     color: #880808;
                 }
+                &.redIcon {
+                    color: #ff0000;
+                }
                 &.orangeIcon {
-                    color: #ff4500;
+                    color: #f2811f;
                 }
                 &.greenIcon {
                     color: #008000;
                 }
                 &.yellowIcon {
-                    color: #fdda0d;
+                    color: #f1f439;
+                }
+                &.blueIcon {
+                    color: #287cfb;
+                }
+                &.messageIcon {
+                    color: #3646ac;
+                }
+                &.tealIcon {
+                    color: #3c9b8e;
+                }
+                &.mustardIcon {
+                    color: #da8822;
                 }
             }
         }
@@ -1103,14 +1198,23 @@
         margin: 0 0 0 5px;
     }
 }
+.videoWrapper {
+    display: flex;
+    gap: 15px;
+
+    .leftWrapper {
+        position: relative;
+        min-width: 320px;
+        width: 50%;
+    }
+}
 .videoCall {
     position: relative;
-    border-radius: 15px;
     overflow: hidden;
     video {
-        height: calc(100vh - 260px);
         width: 100%;
         object-fit: cover;
+        border-radius: 15px;
     }
     .largeImg {
         width: 100%;
@@ -1179,8 +1283,53 @@
     border-radius: 15px;
     height: 100%;
     position: relative;
-    .header {
+    flex: 1;
+    min-width: 320px;
+    .moreAction {
+        text-align: center;
+        padding: 0 0 10px;
+        cursor: pointer;
+        .moreActionImg {
+            height: 40px;
+            width: 40px;
+            padding: 10px;
+            border-radius: 5px;
+            margin: auto;
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: contain;
+            }
+        }
+        p {
+            font-size: 12px;
+            padding: 3px 0 0;
+            word-break: break-all;
+        }
+    }
+    .dragImg {
+        position: absolute;
+        left: -33px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #fff;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px;
+        cursor: pointer;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+    }
+    .header {
+        display: block;
         align-items: center;
         position: relative;
         img {
@@ -1189,7 +1338,6 @@
             border-radius: 50%;
             object-fit: cover;
             overflow: hidden;
-            margin: 0 10px 0 0;
         }
         .name {
             h4 {
@@ -1210,32 +1358,47 @@
             padding: 2px 10px;
             border-radius: 18px;
         }
-    }
-    .body {
-        padding: 30px 0 0;
-        .moreAction {
-            text-align: center;
-            padding: 10px 0;
-            cursor: pointer;
-            .moreActionImg {
-                height: 50px;
-                width: 50px;
-                padding: 10px;
-                border-radius: 5px;
-                margin: auto;
-                img {
-                    height: 100%;
-                    width: 100%;
-                    object-fit: contain;
+        .patientInfo {
+            width: 100%;
+            border-radius: 10px;
+            .patientImg {
+                border: none;
+                .image-section {
+                    position: initial;
+                    img {
+                        min-width: 80px;
+                        min-height: 80px;
+                        max-width: 80px;
+                        max-height: 80px;
+                    }
                 }
-            }
-            p {
-                font-size: 13px;
-                padding: 5px 0 0;
-                word-break: break-all;
+                .info {
+                    p {
+                        font-size: 13px;
+                        a {
+                            padding: 0;
+                        }
+                    }
+                }
             }
         }
     }
+    .body {
+        padding: 10px 0 0;
+        .patientTimeline {
+            .ant-checkbox-group {
+                .ant-checkbox-wrapper {
+                    margin: 0 5px 5px 0;
+                }
+            }
+            .ant-timeline.defaultTimeline {
+                height: calc(100vh - 505px);
+            }
+        }
+    }
+}
+
+.videoWrapper {
     .footer {
         position: absolute;
         bottom: 20px;
@@ -1411,7 +1574,7 @@
             display: none;
         }
         .chatWrapper {
-            padding: 10px 0;
+            padding: 8px 0;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -1437,6 +1600,9 @@
                 color: #999;
                 padding: 3px 0 0 0px;
             }
+        }
+        .time {
+            font-size: 10px !important;
         }
     }
     .sendMessage {
@@ -1466,4 +1632,93 @@
             vertical-align: bottom !important;
         }
     }
+}
+.notesDetailBg {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none;
+    border-radius: 15px;
+    &.show {
+        display: block;
+    }
+    &.addNotes {
+        .notesDetail {
+            max-width: 600px;
+        }
+    }
+}
+.notesDetail {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    width: 100%;
+    z-index: 99;
+    border-radius: 5px;
+    .notesHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e3e3e3;
+        .anticon {
+            cursor: pointer;
+        }
+    }
+    .notesBody {
+        padding: 10px;
+        .calendarDropdown {
+            width: 100%;
+            .leftWrapper {
+                min-width: auto;
+            }
+        }
+    }
+}
+
+.callRightWrapper .patientTimeline .ant-timeline {
+    overflow: unset !important;
+}
+.steps-action button.ant-btn.modal-button {
+    margin: 0 10px 0 0 !important;
+    width: 80px;
+    &:last-child {
+        margin: 0!important;
+    }
+}
+.noData .ant-timeline-item-tail {
+    display: none;
+}
+.noData .ant-timeline-item-head.ant-timeline-item-head-blue {
+    display: none;
+}
+
+.patientBox {
+    .ant-col {
+        margin: auto !important;
+    }
+}
+
+.patientIcons .editIcon span svg {
+    font-size: 20px;
+}
+
+.apexcharts-xaxis-texts-g {
+    transform: scale(0.97) translate(20px, 10px);
+}
+.customBtn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
+    padding: 10px 0 0;
+    height: 40px;
+}
+.overflow-wrap {
+    overflow-wrap: anywhere;
 }

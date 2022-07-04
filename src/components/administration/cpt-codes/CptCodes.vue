@@ -11,21 +11,21 @@
                     <a-col :span="24">
                         <h2 class="pageTittle">
                             CPT Codes
-                            <div class="commonBtn" >
-                                <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,9)"/>
-                            </div>
+                            <!-- <div class="commonBtn">
+                                <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,9)" />
+                            </div> -->
                         </h2>
                     </a-col>
-                    <a-col :span="12" >
-                        <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)"/>
+                    <a-col :span="12">
+                        <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)" />
                     </a-col>
                     <a-col :span="12">
                         <div class="text-right mb-24">
-                            <ExportToExcel  @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)"/>
+                            <ExportToExcel @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)" />
                         </div>
                     </a-col>
                     <a-col :span="24">
-                        <CptCodesTable  @is-visible="editModal($event)" />
+                        <CptCodesTable @is-visible="editModal($event)" />
                     </a-col>
                 </a-row>
             </div>
@@ -36,8 +36,7 @@
 </a-layout>
 
 <!-- Add CPT Code Modal -->
-<CptCodesModal  v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :cptId="editId" />
-
+<CptCodesModal v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :cptId="editId" />
 </template>
 
 <script>
@@ -45,9 +44,9 @@ import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
-import { ref,watchEffect,onUnmounted} from "vue";
+import { ref,onUnmounted, onMounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
-import Button from "@/components/common/button/Button";
+//import Button from "@/components/common/button/Button";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
@@ -61,7 +60,7 @@ export default {
         CptCodesModal,
         CptCodesTable,
         SearchField,
-        Button,
+       // Button,
         ExportToExcel,
     },
     setup() {
@@ -85,32 +84,36 @@ export default {
             visible.value = false;
         };
 
-        const searchData = (value) => {
-            console.log('searchGlobalCodes', value)
-        };
-        watchEffect(() => {
+        // const searchData = (value) => {
+        //     console.log('searchGlobalCodes', value)
+        // };
+        onMounted(() => {
+            
+                store.dispatch('cptCodesList')
+           
+
             store.dispatch('serviceList')
-            store.dispatch('cptCodesList')
+
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            store.commit("dataFilter")
 
         })
-        
-        
-        onUnmounted(()=>{
+
+        onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
-
+            store.commit("filter", '')
         })
         return {
             exportExcel,
-            screensPermissions:store.getters.screensPermissions,
+            screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
-            searchData,
+            // searchData,
             visible,
             showModal,
             handleOk,

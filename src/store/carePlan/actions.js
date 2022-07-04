@@ -1,6 +1,10 @@
 import serviceMethod from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
+import { 
+	successSwal,
+	//  errorSwal,
+	errorLogWithDeviceInfo 
+} from '@/commonMethods/commonMethod';
 
 export const addCarePlan = async ({ commit }, data) => {
 	commit('loadingStatus', true)
@@ -9,10 +13,14 @@ export const addCarePlan = async ({ commit }, data) => {
     successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('failure', error);
 		commit('loadingStatus', false)
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 
@@ -23,10 +31,14 @@ export const carePlansList = async ({ commit }, patientId) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('failure', error);
 		commit('loadingStatus', false)
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 
@@ -37,9 +49,13 @@ export const deleteCarePlan = async ({ commit }, {patientId, carePlanId}) => {
     successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('failure', error);
 		commit('loadingStatus', false)
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }

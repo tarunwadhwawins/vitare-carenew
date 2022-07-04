@@ -18,8 +18,8 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/views/dashboard/Dashboard'),
+    name: 'ClinicalDashboard',
+    component: () => import('@/views/clinic/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
 
@@ -44,7 +44,13 @@ const routes = [
     component: () => import('../components/tasks/tasks'),
     meta: { authAdmin: true }
   },
-
+  
+  {
+    path: '/manage-patients',
+    name: 'PatientsWithFilter',
+    component: () => import('@/views/patients/Patients'),
+    meta: { authAdmin: true }
+  },
   {
     path: '/manage-patients',
     name: 'Patients',
@@ -103,6 +109,12 @@ const routes = [
     path: '/notifications',
     name: 'Notifications',
     component: () => import('@/components/notifications/Notifications'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/request-call-notifications',
+    name: 'CallNotifications',
+    component: () => import('@/components/notifications/RequestCallNotifications'),
     meta: { authAdmin: true }
   },
   {
@@ -264,7 +276,32 @@ const routes = [
     component: () => import('@/components/TestCountdown.vue'),
     meta: { authAdmin: true }
   },
- 
+  ///clinic
+  // {
+  //   path: '/clinicDashboard',
+  //   name: 'Clinic Dashboard',
+  //   component: () => import('@/views/clinic/dashboard/Dashboard'),
+  //   meta: { authAdmin: true }
+  // },
+  {
+    path: '/businessDashboard',
+    name: 'BusinessDashboard',
+    component: () => import('@/views/business/dashboard/Dashboard'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/referral',
+    name: 'Referral',
+    component: () => import('@/views/referral/Referral'),
+    meta: { authAdmin: true }
+  },
+
+  {
+    path: '/escalation',
+    name: 'Escalation',
+    component: () => import('@/views/manage-care-coordinator/StaffEscalation'),
+    meta: { authAdmin: true }
+  },
 
 
 ]
@@ -290,13 +327,24 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    if (isLoggedIn()) {
-      next({
-        name: "Dashboard",
-        query: { redirect: to.fullPath },
 
-      });
-    } else {
+    if (isLoggedIn()) {
+      if(to.name!="Login"){
+        // console.log("logged dashboard");
+        next({
+          name: "ClinicalDashboard",
+          query: { redirect: to.fullPath },
+
+        });
+      }else{
+        // console.log("loggedin dashboard");
+        next({
+          name: "ClinicalDashboard",
+
+        });
+      }
+    }else{
+
       next();
     }
   }

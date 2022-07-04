@@ -1,5 +1,9 @@
-import serviceMethod from '../../services/serviceMethod'
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '../../commonMethods/commonMethod'
+import serviceMethod from '@/services/serviceMethod'
+import { 
+  successSwal,
+  //  errorSwal,
+   errorLogWithDeviceInfo 
+  } from '@/commonMethods/commonMethod'
 
 
 export const addStaff = async ({
@@ -9,11 +13,15 @@ export const addStaff = async ({
     commit('addStaff', response.data.data);
     commit('counterPlus')
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -31,12 +39,16 @@ export const updateStaff = async ({
     commit('closeModal',true)
     commit('counterPlus')
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
@@ -51,25 +63,47 @@ commit('loadingTableStatus', true)
     commit('staff', response.data);
    commit('loadingTableStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingTableStatus', false)
   })
 }
+export const staffDelete = async ({commit}, id) => {
 
+  await serviceMethod.common("delete", "staff", id, null).then((response) => {
+    successSwal(response.data.message)
+ 
+  }).catch((error) => { 
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    commit('errorMsg', error);
+
+  })
+}
 export const specializationStaff = async ({commit}) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", "staff/specialization/count", null, null).then((response) => {
     commit('specializationStaff', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -81,10 +115,14 @@ export const networkStaff = async ({commit}) => {
     commit('networkStaff', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -100,12 +138,16 @@ export const addContacts = async ({
     commit('closeModal',true)
     commit('checkChangeInput',false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
@@ -121,10 +163,14 @@ export const staffContactList = async ({commit},id) => {
     commit('staffContactList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -136,10 +182,14 @@ export const deleteContact = async ({commit},data) => {
     commit('deleteContact', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -151,28 +201,40 @@ export const contactDetails = async ({ commit }, data) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
 }
 
 export const updateContact = async ({ commit }, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/contact/${data.contactId}`, null, data.data).then((response) => {
     commit('loadingStatus', false)
+    commit('errorMsg', null);
+    status = true
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    commit('errorMsg', error);
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    commit('errorMsg', error.response.data);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
+  return status
 }
 
 
@@ -187,12 +249,16 @@ export const addAvailability = async ({
     commit('closeModal',true)
     commit('checkChangeInput',false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
@@ -210,10 +276,14 @@ export const availabilityList = async ({commit},id) => {
     commit('closeModal',true)
     commit('checkChangeInput',false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -225,10 +295,14 @@ export const deleteAvailability = async ({commit},data) => {
     commit('deleteAvailability', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -240,10 +314,14 @@ export const availabilityDetails = async ({commit}, data) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -251,18 +329,33 @@ export const availabilityDetails = async ({commit}, data) => {
 
 
 export const updateAvailability = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/availability/${data.availabilityId}`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
-    commit('errorMsg', error);
-    if(error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+      if(error.response.status === 422){
+        commit('errorMsg', error.response.data)
+        commit('closeModal',false)
+        commit('loadingStatus', false)
+      }else if(error.response.status === 500){
+        // errorSwal(error.response.data.message)
+        commit('closeModal',false)
+        commit('loadingStatus', false)
+      }else if(error.response.status === 401){
+        commit('errorMsg', error.response.data.message)
+        commit('loadingStatus', false)
+      }
   })
+
+  return status
 }
 
 
@@ -272,10 +365,14 @@ export const roles = async ({commit}) => {
     commit('roles', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -287,19 +384,23 @@ export const roles = async ({commit}) => {
 export const addStaffRole = async ({
   commit
 }, data) => {
-  console.log('addRole',data.data)
+  // console.log('addRole',data.data)
   await serviceMethod.common("post", `staff/${data.id}/role`, null, data.data).then((response) => {
     commit('addStaffRole', response.data.data);
     successSwal(response.data.message)
     commit('closeModal',true)
     commit('checkChangeInput',false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
@@ -313,10 +414,14 @@ export const roleList = async ({commit},id) => {
     commit('roleList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -330,7 +435,7 @@ export const deleteStaffRole = async ({commit},data) => {
   }).catch((error) => { 
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -343,10 +448,14 @@ export const providers = async ({commit}) => {
     commit('providers', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -358,11 +467,15 @@ export const addProvider = async ({
   await serviceMethod.common("post", `staff/${data.id}/provider`, null, data.data).then((response) => {
     commit('addProvider', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -376,10 +489,14 @@ export const providerList = async ({commit},id) => {
     commit('providerList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -390,10 +507,14 @@ export const deleteProvider = async ({commit},data) => {
     commit('deleteProvider', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('errorMsg', error);
     if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -406,16 +527,20 @@ export const addStaffDocument = async ({commit}, data) => {
     commit('closeModal',true)
     commit('checkChangeInput',false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -428,8 +553,58 @@ export const deleteStaffDocument = async ({
     commit('deleteStaffDocument', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    // errorSwal(error.response.data.message)
+  })
+}
+
+
+export const documentStaffDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `staff/${data.staffUdid}/document/${data.documentUdid}`, null, null).then((response) => {
+    commit('documentStaffDetails', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+}
+
+export const updateStaffDocument = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `staff/${data.staffUdid}/document/${data.documentUdid}`, null, data.data).then((result) => {
+    successSwal(result.data.message)
+    commit('loadingStatus', false)
+    commit('closeModal',true)
+  }).catch((error) => {
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
   })
 }
 
@@ -443,9 +618,13 @@ export const staffDocuments = async ({
     commit('staffDocuments', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('loadingStatus', false)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 }
 
@@ -456,16 +635,22 @@ export const updateStaffStatus = async ({commit}, data) => {
     commit('updateStaffStatus', response.data.data);
      successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('closeModal',false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('closeModal',false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
+
+

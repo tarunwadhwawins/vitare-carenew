@@ -2,6 +2,11 @@
   <a-row :span="24">
     <a-col :sm="24" :xs="24">
       <a-table rowKey="id" :columns="careTeamColumns" :data-source="patientStaff" :pagination="false">
+        <template #staff="{record}">
+            <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid:record.staffId}}">
+              {{ record.staff }}
+            </router-link>
+        </template>
         <template #actions="{record}">
           <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,298)">
             <template #title>
@@ -24,6 +29,7 @@
           <a-checkbox v-model:checked="checked"></a-checkbox>
         </template>
       </a-table>
+      <Loader />
     </a-col>
   </a-row>
   <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="true"/>
@@ -40,6 +46,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal, actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
+import Loader from "@/components/loader/Loader";
 
   export default defineComponent({
     props: {
@@ -48,6 +55,7 @@ import { messages } from '@/config/messages';
       },
     },
     components: {
+      Loader,
       DeleteOutlined,
       EditOutlined,
       AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
@@ -64,6 +72,9 @@ import { messages } from '@/config/messages';
           title: "Care Coordinator",
           dataIndex: "staff",
           key: "staff",
+          slots: {
+            customRender: "staff"
+          },
         },
         {
           title: "Is Primary",

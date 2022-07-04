@@ -2,18 +2,26 @@
 import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
+  dateFormat,
   dateTimeFormat,
   dobFormat,
   dobFormat2,
+  // hourOnlyFormat,
   // timeFormatSimple
   convertResponse,
   convertData,
   convertChartResponse,
   timestampToDate,
   // createDynamicColumns,
-} from '../../commonMethods/commonMethod';
+  globalDateFormat,
+  dateAndTimeFormate,
+  dateOnlyFormatSImple,
+  // fullDateTimeFormat,
+} from '@/commonMethods/commonMethod';
+// import moment from 'moment';
 
 export const addDemographic = (state, data) => {
+  data.contactTime = data.contactTimeId
   state.addDemographic = data
 }
 export const status = (state, data) => {
@@ -22,101 +30,157 @@ export const status = (state, data) => {
 
 
 export const patient = (state, data) => {
-  state.column = [{
-    title: "Flags",
-    dataIndex: "flags",
-    slots: {
-      customRender: "flags",
-    },
-    
-  },
-  {
-    title: "Last Name",
-    dataIndex: "lastName",
-    slots: {
-      customRender: "lastName",
-    },
-    sorter: true
-  },
-  {
-    title: "First Name",
-    dataIndex: "firstName",
-    slots: {
-      customRender: "firstName",
-    },
-    sorter: true,
-  },
-
-  {
-    title: "Readings ",
-    dataIndex: "patientVitals",
-    
-    slots: {
-      customRender: "patientVitals",
-    },
-    children: [{
-      title: "BP (mmHg)",
-      dataIndex: "bp",
-      key: "bp",
+  state.column = [
+    {
+      title: "Flags",
+      dataIndex: "flags",
+      slots: {
+        customRender: "flags",
+      },
+      width: '8%',
+      
     },
     {
-      title: "Spo2(%)",
-      dataIndex: "spo2",
-      key: "spo2",
+      title: "Flag Date",
+      dataIndex: "flagTmeStamp",
+      slots: {
+        customRender: "flagTmeStamp",
+      },
+      width: '15%',
+      sorter: true,
+      
     },
     {
-      title: "Glucose (mg / dL)",
-      dataIndex: "glucose",
-      key: "glucose",
+      title: "Name",
+      dataIndex: "fullName",
+      slots: {
+        customRender: "fullName",
+      },
+      sorter: true,
+      width: '16%',
     },
     {
-      title: "Weight (LBS)",
-      dataIndex: "weight",
-      key: "weight",
+      title: "Readings ",
+      dataIndex: "patientVitals",
+      
+      slots: {
+        customRender: "patientVitals",
+      },
+      children: [
+        {
+          title: "BP(mmHg)",
+          dataIndex: "bp",
+          key: "bp",
+          width: '15%',
+          align: 'right',
+          sorter: true,
+        },
+        {
+          title: "Spo2(%)",
+          dataIndex: "spo2",
+          key: "spo2",
+          width: '13%',
+          align: 'right',
+          sorter: true,
+        },
+        {
+          title: "Glucose(mg/dL)",
+          dataIndex: "glucose",
+          key: "glucose",
+          width: '20%',
+          align: 'right',
+          sorter: true,
+        },
+        {
+          title: "Weight(LBS)",
+          dataIndex: "weight",
+          key: "weight",
+          sorter:true,
+          width: '17%',
+          align: 'right'
+        },
+      ],
+    },
+ 
+    {
+      title: "Non Compliant",
+      dataIndex: "nonCompliance",
+      slots: {
+        customRender: "compliance",
+      },
+      width: '15%',
       sorter:true,
     },
-    ],
-  },
- 
-  {
-    title: "Non Compliant",
-    dataIndex: "nonCompliance",
-   
-    slots: {
-      customRender: "compliance",
+    {
+      title: "Last Message",
+      dataIndex: "lastMessageSent",
+      ellipsis: true,
+      sorter:true,
+      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      width: '15%',
     },
-  },
-  {
-    title: "Last Message Sent",
-    dataIndex: "lastMessageSent",
-    
-    ellipsis: true,
-    
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-  },
-  {
-    title: "Age ",
-    dataIndex: "dob",
-    sorter: true,
-  },
-  {
-    title: "Sex ",
-    dataIndex: "gender",
-   
-  }
+    {
+      title: "Age ",
+      dataIndex: "age",
+      sorter: true,
+      width: '10%',
+      align: 'right'
+    },
+    {
+      title: "Gender ",
+      dataIndex: "genderName",
+      width: '10%',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'isActive',
+      slots: {
+        customRender: 'status'
+      },
+      width: '10%',
+    },
+    {
+      title:"Action ",
+      dataIndex: "actions",
+      slots: {
+        customRender: "action",
+      },
+      width: '10%',
+    }
   ];
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
     .map(element => {
-      element.flags = element.patientFlags.data[0] ? element.patientFlags.data[0].flags.data.color : '',
+      // const flagTimeStamp = element.flagTmeStamp
+      element.isActive= element.isActive=='Active' ? true : false,
+      element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
         element.firstName = element.name ? element.name : '',
+        // element.flagTmeStamp = 'September 30, 2022 12:30 PM',
+        element.flagTmeStamp = element.flagTmeStamp ? dateFormat(element.flagTmeStamp) : '',
         element.lastReadingDate = element.lastReadingDate ? element.lastReadingDate : '',
         element.weight = element.weight ? element.weight : '',
-        element.bp = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }),
-        element.spo2 = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }),
-        element.glucose = element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }),
-        element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) > 0 ? Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) : 1
+
+        element.bp = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
+        element.spo2 = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
+        element.glucose = element.patientVitals.data.length  > 0? element.patientVitals.data.map(vitalData => {  if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : '',
+        element.glucose = element.glucose !=''?element.glucose.filter(vitalData => {  if (typeof vitalData !== 'undefined') { return vitalData } }):'',
+        element.glucose = element.glucose.length >0 ? element.glucose[element.glucose.length-1]:''
+        /* if(flagTimeStamp != null && flagTimeStamp != "") {
+          const flagTimeDate = dateOnlyFormatSImple(flagTimeStamp)
+          const todayDate = moment().format('yyyy-MM-DD')
+          if(todayDate == flagTimeDate && element.flagName == 'Critical') {
+            const flagTimeDateTime = fullDateTimeFormat(flagTimeStamp)
+            const todayDateTime = moment().format('HH')
+            const addedHours = moment(flagTimeDateTime).add(2, 'hours').format('HH')
+            if(todayDateTime >= addedHours) {
+              element.isBlackFlag = true
+            }
+            else {
+              element.isBlackFlag = false
+            }
+          }
+        } */
       return element
     })
 
@@ -142,16 +206,24 @@ export const resetCounter = (state) => {
   state.counter = 0
 }
 
+
 export const addPatientProgram = (state, data) => {
   state.addPatientProgram = data
 }
 
 
 export const programPatients = (state, data) => {
+  state.programsPatient = []
   state.program = data.map(element => {
+
+    const program = (element.program).split(" - ")[0]
+    if (!state.programsPatient.includes(program)) {
+      state.programsPatient.push(program);
+    }
+    
     element.status = element.status == 1 ? 'Active' : 'Inactive'
-    element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
-      element.dischargeDate = dateOnlyFormat(element.dischargeDate)
+    element.onboardingScheduleDate = element.onboardingScheduleDate ? dateOnlyFormat(element.onboardingScheduleDate) : ""
+    element.dischargeDate = element.dischargeDate ? dateOnlyFormat(element.dischargeDate) : ""
     return element;
   })
   state.columns = [
@@ -187,7 +259,6 @@ export const programPatients = (state, data) => {
       },
     },
   ];
-
 }
 
 
@@ -235,14 +306,13 @@ export const devices = (state, data) => {
       dataIndex: "modelNumber",
     },
     {
-      title: "Serial No",
-      dataIndex: "serialNumber",
-    },
-    {
       title: "MAC Address",
       dataIndex: "macAddress",
     },
-
+    {
+      title: "Serial No",
+      dataIndex: "serialNumber",
+    },
     {
       title: "Active/Inactive",
       dataIndex: "active",
@@ -375,7 +445,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data
-  console.log("check",data)
+  // console.log("check",data)
   state.documentColumns = [
     {
       title: "Name",
@@ -423,62 +493,66 @@ export const uploadFile = (state, data) => {
 // }
 
 export const patientDetails = (state, patient) => {
-  patient.email = patient.user.data.email ? patient.user.data.email : null;
+  patient.email = patient.user.data ? patient.user.data.email : null;
+  patient.phoneNumber = patient.user.data.phoneNumber ? patient.user.data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3") : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
   patient.gender = patient.genderId ? patient.genderId : null;
-  patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
-  patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
-  patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  patient.contactTime = patient.contactTimeId.length > 0 ? patient.contactTimeId : [];
+  patient.contactType = patient.contactType.length > 0 ? patient.contactType : [];
+  patient.otherLanguage = patient.otherLanguage.length > 0 ? patient.otherLanguage : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
-  // patient.phoneNumber = patient.phoneNumber ? formatPhoneNumber(patient.phoneNumber) : null;
-  patient.phoneNumber = patient.phoneNumber ? patient.phoneNumber : null;
-  
-  if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
-    patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
-    patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
-    patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
-    patient.familyContactType = patient.patientFamilyMember.data.contactType.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
-    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
-    patient.familyGender = patient.patientFamilyMember.data.genderId;
-    patient.relation = patient.patientFamilyMember.data.relationId;
-    patient.isPrimary = patient.patientFamilyMember.data.isPrimary ? true : false;
-  }
-  else {
-    patient.fullName = null;
-    patient.familyEmail = null;
-    patient.familyPhoneNumber = null;
-    patient.familyContactType = [];
-    patient.familyContactTime = [];
-    patient.familyGender = null;
-    patient.relation = null;
-  }
-  
-  if(patient.emergencyContact && patient.emergencyContact.data) {
-    patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
-    patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
-    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
-    patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
-    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
-    patient.emergencyGender = patient.emergencyContact.data.genderId;
-    patient.sameAsPrimary = patient.emergencyContact.data.sameAsPrimary;
-  }
-  else {
-    patient.emergencyFullName = null;
-    patient.emergencyEmail = null;
-    patient.emergencyPhoneNumber = null;
-    patient.emergencyContactType = [];
-    patient.emergencyContactTime = [];
-    patient.isPrimary = null;
-    patient.emergencyGender = null;
-  }
 
   state.patientDetails = patient
+  state.patientDetails['phoneNumber'] = patient.user.data.patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  state.patientDetails['phoneNumber'] = patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+}
+
+export const responsiblePerson = (state, data) => {
+  const responsiblePerson = data.map(item => {
+    item.gender = item.genderId;
+    item.relation = item.relationId;
+    item.self = item.self ? true : false;
+    item.phoneNumber = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+    return item
+  })
+
+  state.responsiblePerson = responsiblePerson[0]
+}
+
+export const emergencyContact = (state, data) => {
+  if(data.length>0){
+    data[0].contactType = data[0].contactType.length > 0 ? data[0].contactType : [];
+  data[0].contactTime = data[0].contactTimeId.length > 0 ? data[0].contactTimeId : [];
+  data[0].gender = data[0].genderId;
+  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
+  state.emergencyContact = data[0]
+  }else{
+    state.emergencyContact = data
+  }
+  
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline
+  state.patientTimeline = timeline.data
+  state.patientTimelineMeta = timeline.meta.pagination
+}
+
+export const patientVitalsTimeline = (state, timeline) => {
+  state.patientVitalsTimeline = timeline
+}
+
+export const bloodOxygenTimeline = (state, timeline) => {
+  state.bloodOxygenTimeline = timeline
+}
+
+export const bloodGlucoseTimeline = (state, timeline) => {
+  state.bloodGlucoseTimeline = timeline
+}
+
+export const bloodPressureTimeline = (state, timeline) => {
+  state.bloodPressureTimeline = timeline
 }
 
 export const addCondition = (state, data) => {
@@ -487,6 +561,11 @@ export const addCondition = (state, data) => {
 
 export const addPatientReferals = (state, data) => {
   state.addPatientReferals = data
+
+  state.editPatientReferral = [{
+    value:data.id,
+    label:data.name
+  }]
 }
 
 export const addPatientPhysician = (state, data) => {
@@ -502,9 +581,30 @@ export const patientDocumentsSuccess = (state, documents) => {
 
 export const patientConditions = (state, conditions) => {
   state.patientConditions = conditions.map(condition => {
-    condition = condition.conditionId
+    condition.condition = condition.conditionCode+'-'+condition.conditionDescription
+    condition.startDate = condition.startDate ? dateOnlyFormat(condition.startDate) : ""
+    condition.endDate = condition.endDate ? dateOnlyFormat(condition.endDate) : ""
     return condition;
   })
+  // state.patientConditions = conditions
+  state.conditionsList = conditions
+  state.latestCondition = conditions[0]
+}
+
+export const isConditionEdit = (state, data) => {
+  state.isConditionEdit = data
+}
+
+export const conditionDetails = (state, condition) => { 
+  condition.condition = condition.conditionId
+  condition.startDate = condition.startDate ? dateOnlyFormatSImple(condition.startDate) : ""
+  condition.endDate = condition.endDate ? dateOnlyFormatSImple(condition.endDate) : ""
+  state.conditionDetails = condition
+
+  state.editConditionDetails=[{
+    value:condition.conditionId,
+    label:condition.conditionCode+' - '+condition.conditionDescription
+  }]
 }
 
 export const patientReferralSource = (state, referralSource) => {
@@ -566,6 +666,10 @@ export const physicianErrorMsg = (state, data) => {
   state.physicianErrorMsg = data
 }
 
+export const emergencyErrorMsg = (state, data) => {
+  state.emergencyErrorMsg = data
+}
+
 export const closeModal = (state, data) => {
   state.closeModal = data
 }
@@ -610,10 +714,12 @@ export const bitrixFormCheck = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
+  // console.log('data',data)
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)
   state.fetchFromBitrixStatus = true
   state.fetchFromBitrix = {
+    id:'',
     firstName: '',
     lastName: '',
     dob: '',
@@ -649,10 +755,18 @@ export const fetchFromBitrix = (state, data) => {
     emergencyGender: "",
     sameAsPrimary: false,
     isPrimary: true,
-    familyMemberId: '',
+    responsiblePersonId: '',
     emergencyId: '',
   }
+
+  state.fetchFromBitrixInsurance = {
+    insuranceNumber:[],
+    insuranceName:[]
+  }
   state.getBitrixFieldsName.map(item => {
+    if (item.patientId == "bitrix") {
+      state.fetchFromBitrix.id = data[item.bitrixId]
+    }
     if (item.patientId == "firstName") {
       state.fetchFromBitrix.firstName = data[item.bitrixId]
     }
@@ -759,13 +873,36 @@ export const fetchFromBitrix = (state, data) => {
     if (item.patientId == "isPrimary") {
       state.fetchFromBitrix.isPrimary = data[item.bitrixId]
     }
-    if (item.patientId == "familyMemberId") {
-      state.fetchFromBitrix.familyMemberId = data[item.bitrixId]
+    if (item.patientId == "responsiblePersonId") {
+      state.fetchFromBitrix.responsiblePersonId = data[item.bitrixId]
     }
     if (item.patientId == "emergencyId") {
       state.fetchFromBitrix.emergencyId = data[item.bitrixId]
     }
+
+
+    if (item.patientId == "insuranceNumber") {
+      state.fetchFromBitrixInsurance.insuranceNumber.push(data[item.bitrixId])
+    }
+    if (item.patientId == "insuranceName") {
+      state.fetchFromBitrixInsurance.insuranceName.push(data[item.bitrixId])
+    }
+    if (item.patientId == "secondaryInsuranceNumber") {
+      state.fetchFromBitrixInsurance.insuranceNumber.push(data[item.bitrixId])
+    }
+    if (item.patientId == "secondaryInsuranceName") {
+      state.fetchFromBitrixInsurance.insuranceName.push(data[item.bitrixId])
+    }
   })
+}
+
+export const patientFlags = (state, count) => {
+  const data = count.flags
+  state.grids = {
+    xlGrid: parseInt(24 / data.length),
+    smGrid: parseInt(24 / parseInt(data.length / 2))
+  }
+	state.patientFlags = count.data
 }
 
 export const patientVitals = (state, vitals) => {
@@ -780,6 +917,7 @@ export const patientVitals = (state, vitals) => {
         vitalField: vital.vitalField,
         deviceType: vital.deviceType,
         value: vital.value,
+        color: vital.color,
       })
       if (!timeArray.includes(vital.takeTime)) {
         timeArray.push(vital.takeTime);
@@ -791,6 +929,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+    // console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
@@ -982,8 +1121,12 @@ export const criticalNotesList = (state, data) => {
   state.criticalNotesList = data
 }
 
-export const familyMembersList = (state, familyMembers) => {
-  state.familyMembersList = familyMembers.map(member => {
+export const latestCriticalNote = (state, data) => {
+  state.latestCriticalNote = data[0]
+}
+
+export const familyMembersList = (state, responsiblePersons) => {
+  state.familyMembersList = responsiblePersons.map(member => {
     member.isPrimary = member.isPrimary ? 'Yes' : 'No'
     member.contactType = member.contactType ? JSON.parse(member.contactType) : []
     member.contactTime = member.contactTimeId ? JSON.parse(member.contactTimeId) : []
@@ -991,17 +1134,17 @@ export const familyMembersList = (state, familyMembers) => {
   })
 }
 
-export const familyMemberDetails = (state, familyMember) => {
-  if(familyMember) {
-    familyMember.familyEmail = familyMember.email
-    familyMember.familyPhoneNumber = familyMember.phoneNumber
-    familyMember.familyContactType = familyMember.contactType ? JSON.parse(familyMember.contactType) : []
-    familyMember.familyContactTime = familyMember.contactTimeId ? JSON.parse(familyMember.contactTimeId) : []
-    familyMember.familyGender = familyMember.genderId
-    familyMember.relation = familyMember.relationId
-    familyMember.isPrimary = familyMember.isPrimary ? true : false
+export const familyMemberDetails = (state, responsiblePerson) => {
+  if(responsiblePerson) {
+    responsiblePerson.familyEmail = responsiblePerson.email
+    responsiblePerson.familyPhoneNumber = responsiblePerson.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+    responsiblePerson.familyContactType = responsiblePerson.contactType ? JSON.parse(responsiblePerson.contactType) : []
+    responsiblePerson.familyContactTime = responsiblePerson.contactTimeId ? JSON.parse(responsiblePerson.contactTimeId) : []
+    responsiblePerson.familyGender = responsiblePerson.genderId
+    responsiblePerson.relation = responsiblePerson.relationId
+    responsiblePerson.isPrimary = responsiblePerson.isPrimary ? true : false
   }
-  state.familyMemberDetails = familyMember
+  state.familyMemberDetails = responsiblePerson
 }
 
 export const physiciansList = (state, physicians) => {
@@ -1017,6 +1160,7 @@ export const emergencyContactsList = (state, emergencyContacts) => {
   state.emergencyContactsList = emergencyContacts.map(contact => {
     contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
     contact.email = contact.emergencyEmail
+    contact.phoneNumber = contact.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
     contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
     contact.contactTime = contact.contactTimeId ? JSON.parse(contact.contactTimeId) : []
     return contact
@@ -1027,6 +1171,7 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.isPrimary = emergencyContact.isPrimary ? 'Yes' : 'No'
   emergencyContact.gender = emergencyContact.genderId
   emergencyContact.email = emergencyContact.emergencyEmail
+  emergencyContact.phoneNumber = emergencyContact.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact
@@ -1039,8 +1184,8 @@ export const timeLineType = (state, data) => {
 export const programDetails = (state, data) => {
   const format = 'YYYY-MM-DD';
   data.program = data.programId
-  data.onboardingScheduleDate = timestampToDate(data.onboardingScheduleDate, format)
-  data.dischargeDate = timestampToDate(data.dischargeDate, format)
+  data.onboardingScheduleDate = data.onboardingScheduleDate ? timestampToDate(data.onboardingScheduleDate, format) : ""
+  data.dischargeDate = data.dischargeDate ? timestampToDate(data.dischargeDate, format) : ""
   state.programDetails = data
 }
 
@@ -1069,4 +1214,47 @@ export const documentDetails = (state, data) => {
 
 export const isPicuteLoading = (state, data) => {
   state.isPicuteLoading = data
+}
+
+
+export const patientVitalList = (state, data) => {
+  state.patientVitalList = data.map((item) => {
+		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
+    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
+		return item;
+	})
+}
+
+export const referralList = (state, data) => {
+  state.referralList = data
+}
+export const referralDetail = (state, data) => {
+  state.referralDetail = data
+}
+
+export const startOn = (state, data) => {
+  state.startOn = data
+}
+
+export const criticalNoteDetails = (state, data) => {
+  state.criticalNoteDetails = data
+}
+
+export const healthConditions = (state, data) => {
+  state.healthConditions = data.map(item => {
+    item.name = item.code+' - '+item.description
+    return item
+  })
+}
+
+export const showPatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = true
+}
+
+export const closePatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = false
+}
+
+export const patientUdid = (state,data) => {
+  state.patientUdid = data
 }

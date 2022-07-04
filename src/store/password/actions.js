@@ -9,7 +9,11 @@ export const resetPassword = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
@@ -29,7 +33,11 @@ export const forgotPassword = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
@@ -50,7 +58,11 @@ export const validateCode = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 404) {
       commit('validateCode', false)
       errorSwal('Invalid Code')
@@ -75,7 +87,11 @@ export const setupPassword = async ({ commit }, data) => {
     commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)

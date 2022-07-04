@@ -4,7 +4,7 @@ const sidebar = {
   patients: 'Patients',
   appointmentCalendar: 'Appointment Calendar',
   tasks: 'Tasks',
-  reports: 'Reports',
+  reports: 'Billing',
   generalParameters: 'General Parameters',
   auditTimeLog: 'Audit Time Log',
   administration: 'Administration',

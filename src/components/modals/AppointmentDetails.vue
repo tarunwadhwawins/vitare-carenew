@@ -1,5 +1,5 @@
 <template>
-<a-modal width="45%" title="Appointment Details" centered :footer="null" :maskClosable="false" zIndex="1060">
+<a-modal width="45%" title="Appointment Details" centered :footer="false" :maskClosable="false" zIndex="1060">
     <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
             <div class="form-group">
@@ -17,19 +17,25 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Care Coordinator</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.staff}}
+                            <!-- {{appointmentDetails?.staff}} -->
+                            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: appointmentDetails?.staffUdid } }">{{ appointmentDetails?.staff }}</router-link>
                         </div>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Patient</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.patient}}
+                            <!-- {{appointmentDetails?.patient}} -->
+                            <router-link :to="{ name: 'PatientSummary', params: { udid: appointmentDetails?.patientUdid } }">{{ appointmentDetails?.patient }}</router-link>
                         </div>
                     </div>
-                    <div class="itemWrapper">
+                    <div class="itemWrapper" >
                         <div class="leftWrapper">Start Time</div>
-                        <div class="rightWrapper">{{ dateAndTimeFormate(appointmentDetails?.startTime,'hh:mm A') }}</div>
+                        <div class="rightWrapper">{{ dateAndTimeFormate(appointmentDetails?.startTime,'hh:mm A') }} {{appointmentDetails?.abbr}}</div>
                     </div>
+                    <!-- <div class="itemWrapper">
+                        <div class="leftWrapper">Time Zone</div>
+                        <div class="rightWrapper">{{ appointmentDetails.timezone?'('+appointmentDetails.timezone.data.abbr+')':'' }}</div>
+                    </div> -->
                     <div class="itemWrapper">
                         <div class="leftWrapper">Duration</div>
                         <div class="rightWrapper">{{ appointmentDetails?.duration }}</div>

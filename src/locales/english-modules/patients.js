@@ -7,23 +7,31 @@ const patient = {
     watchList:'Watch List',
     messages:'Messages',
     escalations:'Escalations',
+    patientConditions:'Condition(s)',
+    referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
+    fax:'Fax',
+    sameAsabove:'Same as above',
+    primaryPhysician:'Primary Care Coordinator',
 
 
   demographics:{
-    language:'Language',
-    otherLanguage:'Other Language',
-    nickName:'Nick Name',
+    language:'Primary Language',
+    otherLanguage:'Secondary Language',
+    nickName:'NickName',
     weight:'Weight',
     height:'Height',
-    preferredMethodofContact:'Preferred Method of Contact',
-    preferredTimeofDayforContact:'Preferred time of day for contact',
+    preferredMethodofContact:'Contact Method in Order of Preference',
+    preferredTimeofDayforContact:'Time of Day to Contact in Order of Preference',
     MRN:'MRN( Medical Record Number) ',
     suiteorApartment:'Suite or Apartment',
-    primaryFamilyMember:'Primary Family Member',
+    primaryFamilyMember:'Responsible Person',
+    responsiblePerson:'Responsible Person',
+    self:'Self',
     fullName:'Full Name',
     emailAddress:'Email Address',
     emergencyContact:'Emergency Contact',
-    sameAsPrimaryFamilyMemberInfo:'Same as primary family member info'
+    sameAsPrimaryFamilyMemberInfo:'Same as Responsible Person info',
+    sameAsResponsiblePersonInfo:'Same as Responsible Person info',
   },
 
   conditions:{
@@ -36,11 +44,6 @@ const patient = {
     H00:'Diseases of the eye and adnexa (H00-H59)',
     H60:'Diseases of the ear and mastoid process(H60-H95)',
     I00:'Diseases of the circulatory system (I00-I99)',
-    referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
-    fax:'Fax',
-    primaryPhysician:'Primary Care Coordinator',
-    sameAsabove:'Same as above'
-
   },
 
   programs:{

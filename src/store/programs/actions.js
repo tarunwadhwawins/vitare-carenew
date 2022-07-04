@@ -1,6 +1,6 @@
 import serviceMethod from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorSwal, successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import {  successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const manageProgramList = async ({
   commit
@@ -12,13 +12,17 @@ export const manageProgramList = async ({
     commit('program', response.data);
     commit('loadingTableStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
-      errorSwal(error.response.data)
+      // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingTableStatus', false)
   });
@@ -34,13 +38,17 @@ export const addManageProgram = async ({
     commit('programMsg', response.data.message);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
-      errorSwal(error.response.data)
+      // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   });
 
@@ -56,13 +64,17 @@ export const editManageProgram = async ({
     commit('editProgram', response.data.data)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
-      errorSwal(error.response.data)
+      // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   });
 
@@ -76,13 +88,17 @@ export const updateManageProgram = async ({
     successSwal(response.data.message)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
-      errorSwal(error.response.data)
+      // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   });
 
@@ -96,13 +112,17 @@ export const deleteManageProgram = async ({
     successSwal(response.data.message)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
-      errorSwal(error.response.data)
+      // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   });
 

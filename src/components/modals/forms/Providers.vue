@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <label>{{$t('global.provider')}}</label>
-                <a-select v-if="staffs.providers!=null" v-model:value="provider.provider" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="staffs.providers.map((item) => ({ label: item.name, value: item.id }))" @change="handleChange" />
+                <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" v-if="staffs.providers!=null" v-model:value="provider.provider" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="staffs.providers.map((item) => ({ label: item.name, value: item.id }))" @change="handleChange" />
             </div>
         </a-col>
     </a-row>

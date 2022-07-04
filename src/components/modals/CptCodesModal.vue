@@ -1,6 +1,6 @@
 
 <template>
-<a-modal max-width="1140px" width="100%" :title="cptId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="cptId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="cptCodeForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
@@ -114,6 +114,7 @@ export default {
     const formButton = ref(false);
     const durationList = store.getters.commonRecords.value;
     watchEffect(() => {
+      console.log('check',props.cptId)
       if (props.cptId) {
         store.commit("loadingStatus", true);
         if (cptCodesGetters.value.cptCodeDetails) {
@@ -124,7 +125,8 @@ export default {
       }
     });
     const submitForm = () => {
-      if (props.cptId != null) {
+      
+      if (props.cptId) {
         store.dispatch("updateCptCode", {
           data: cptCodeForm,
           id: props.cptId,
@@ -159,6 +161,7 @@ export default {
 			return store.state.common.checkChangeInput;
 		})
     function closeModal() {
+      emit("is-visible", true)
       if (checkFieldsData.value) {
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
@@ -176,6 +179,7 @@ export default {
 			}
 			else {
 				reset()
+        emit("is-visible", false)
 			}
       
     }

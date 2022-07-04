@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
     timeLine:"patient/new",
     timeLineType:"timeLineType",
     patientProfile:"patientProfile",
+    referral:"referral",
     
     // Appointments
     appointment:"appointment",
@@ -37,6 +38,7 @@ export const API_ENDPOINTS = {
     network:"staff/network",
 
     // Communications
+    communication:"communication",
     communicationsList:"communication",
     communicationTypes:"communication/type",
     addCommunication:"communication",
@@ -46,12 +48,12 @@ export const API_ENDPOINTS = {
     CallPlanned:"call/staff",
 
     //conversation
-    conversation:'get-conversation',
+    conversation:'conversation',
+    getConversation:'get-conversation',
     conversationSend:'send-message',
 
     // Tasks
-    addTask:"task",
-    tasksList:"task",
+    task:"task",
     taskStatus:"task/status",
     allTaskStatus:"task/status/summery",
     taskPriority:"task/priority",
@@ -84,6 +86,8 @@ export const API_ENDPOINTS = {
     // timeLogs
     timeLog: 'patient/timeLog',
     deleteTimeLog: 'deleteTimeLog',
+    
+    activeCptCodes :'cptCodeActivities',
 
     //Thresholds
     getVital:'field',
@@ -118,6 +122,17 @@ export const API_ENDPOINTS = {
     forgotPassword:'forgot/password',
     validateCode:'forgotPassword/verify',
     setupPassword:'generate/newPassword',
+
+    //clinical dashboard
+    clinicalTask:'taskCount',
+    patientsFlag:'patientFlagCount',
+    appointmentCount:'appointmentCount',
+    escalationCount:'escalationCount',
+    referalCount:"referalCount",
+    referralList:'referral',
+
+    // Conditions
+    condition: "condition"
 };
 
 // export const getApiUrl = key => {
