@@ -121,6 +121,7 @@ export const singleEscalationRecord = (state, data) => {
     item.category = item.note.category
     item.type = item.note.type,
     item.addedBy = item.note.addedBy
+    item.addedById = item.note.addedById
     item.color = item.note.color
     item.flag = item.note.flag
     item.note = item.note.note
