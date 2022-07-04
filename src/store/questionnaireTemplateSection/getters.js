@@ -24,4 +24,9 @@ export const sectionDetailsList = (state) => {
     return state.sectionDetailsList
   })
 }
+export const allSections = (state) => {
+  return computed(() => {
+    return state.allSections
+  })
+}
 

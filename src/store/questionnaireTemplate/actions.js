@@ -1,6 +1,6 @@
 import serviceMethod from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorSwal, successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import {  successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const questionnaireTemplateList = async ({
   commit
@@ -35,9 +35,9 @@ export const addQuestionnaireTemplate = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     
     
@@ -57,9 +57,9 @@ export const detailsQuestionnaireTemplate = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     commit('loadingTableStatus', false)
     
@@ -79,9 +79,9 @@ export const updateQuestionnaireTemplate = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     
     
@@ -127,9 +127,9 @@ export const templateDetailsList = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     commit('loadingTableStatus', false)
     
@@ -151,9 +151,9 @@ export const addAssiignquestionnaire = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     
     
@@ -173,9 +173,9 @@ export const addAssiignquestionnaireResponse = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     
     
@@ -185,7 +185,7 @@ export const addAssiignquestionnaireResponse = async ({
 export const scoreCount = async ({
   commit
 },id) => {
-  await serviceMethod.common("post", 'questionnaire/response/score/'+id, null, null).then((response) => {
+  await serviceMethod.common("get", 'questionnaire/response/score/'+id, null, null).then((response) => {
 
     
     commit('scoreCount',response.data.data)
@@ -195,9 +195,9 @@ export const scoreCount = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      commit('errorMsg',error.response.data.message)
     }
     
     
@@ -207,3 +207,27 @@ export const scoreCount = async ({
 
 
 
+//questionnaire section assign to template.
+export const sectionAssignToTemplate = async ({
+  commit
+},data) => {
+  console.log("data",data)
+  await serviceMethod.common("post", 'questionnaireSection/'+data.id+'/assign', null, data.data).then((response) => {
+
+    successSwal(response.data.message)
+    commit('successMsg',response.data.message)
+    
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg',error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg',error.response.data.message)
+    }
+    
+    
+    
+  })
+}

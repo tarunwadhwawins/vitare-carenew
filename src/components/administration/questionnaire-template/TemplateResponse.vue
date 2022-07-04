@@ -60,8 +60,9 @@
             </div>
         </a-col>
     </a-form>
-    <a-table v-if="show" rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
+    <a-table v-if="data" rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
 </a-table>
+
     <TableLoader />
 </div>
 </template>
@@ -173,7 +174,7 @@ show.value = true
       value: ref("1"),
       show,
       columns,
-      data:[{"program":"TCM Transitional","score":23},{"program":"Metal Wellness","score":10}]
+      data:store.getters.scoreCount
     };
   },
 });

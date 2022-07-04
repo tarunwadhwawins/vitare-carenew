@@ -37,7 +37,6 @@
             </template>
             <a class="icons">
             <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" target="_blank">
-                
                     <EyeTwoTone /></router-link></a>
         </a-tooltip>
         <!-- <a-tooltip placement="bottom">
@@ -60,7 +59,7 @@
     </template>
 </a-table>
 <Loader />
-<AssignSection v-if="visible" v-model:visible="visible" :title="detailsQuestionnaireTemplate"  />
+<AssignSection v-if="visible" v-model:visible="visible"  />
 </template>
 
 <script>
@@ -110,7 +109,7 @@ export default {
     }) {
         const store = useStore();
         const editModal = (id) => {
-            store.dispatch('detailsQuestionnaireTemplate', id)
+           store.dispatch("detailsQuestionnaireTemplate", id)
             emit("edit", {
                 show: true,
                 id: id

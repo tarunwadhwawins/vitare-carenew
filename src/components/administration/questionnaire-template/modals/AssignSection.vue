@@ -1,14 +1,14 @@
 <template>
-<a-modal width="100%" :title="title" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="section" layout="vertical" @finish="update ? updateTemplate() : addTemplate()" >
+<a-modal width="100%" :title="detailsQuestionnaireTemplate.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+    <a-form ref="formRef" :model="section" layout="vertical" @finish="assignSection" >
         <a-row :gutter="16">
             <a-col :span="12">
                 <div class="form-group">
                  
-                    <a-form-item :label="$t('questionnaire.templateType')" name="templateTypeId" :rules="[{ required: true, message: $t('questionnaire.templateType') +' '+$t('global.validation') }]">
-                      <GlobalCodeDropDown v-if="sectionType" v-model:value="section.sectionId" :globalCode="sectionType" @change="checkChangeInput()"/>
+                    <a-form-item :label="$t('questionnaire.sectionName')" name="sectionId" :rules="[{ required: true, message: $t('questionnaire.sectionName') +' '+$t('global.validation') }]">
+                      <GlobalCodeDropDown v-if="sectionType" v-model:value="section.sectionId" :globalCode="sectionType" @change="checkChangeInput()" mode="multiple"/>
                        
-                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateTypeId[0]:''" />
+                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.sectionId[0]:''" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -45,7 +45,7 @@ export default defineComponent({
     ErrorMessage
   },
   props: {
-    update: String,
+    udid: String,
   },
 
   setup(props, { emit }) {
@@ -54,13 +54,14 @@ export default defineComponent({
     
     const section = reactive({
       
-     sectionId: "",
+     sectionId: [],
      
     });
     const disabled= ref(false)
     const form = reactive({...section})
+     const detailsQuestionnaireTemplate =  store.getters.detailsQuestionnaireTemplate
     watchEffect(()=>{
-      
+      store.dispatch("allSections");
     //   if(props.update){
         
     //     if(store.getters.detailssection){
@@ -73,8 +74,9 @@ export default defineComponent({
     //   }
     })
     const assignSection = () => {
+      console.log("check",detailsQuestionnaireTemplate.value)
       disabled.value= true
-      store.dispatch("assignSection", section).then(()=>{
+      store.dispatch("sectionAssignToTemplate",  {id:detailsQuestionnaireTemplate.value.id,sectionId:section.sectionId}).then(()=>{
         if(store.state.common.successMsg){
           emit("is-visible", {show:false,id:props.update})
           reset()
@@ -93,15 +95,15 @@ function reset(){
     function closeModal() {
       
       if (checkFieldsData.value) {
-        emit("is-visible", {show:true,id:props.update})
+        emit("is-visible", {show:true,id:detailsQuestionnaireTemplate.id})
         warningSwal(messages.modalWarning).then((response) => {
           
           if (response == true) {
-            emit("is-visible", {show:false,id:props.update})
+            emit("is-visible", {show:false,id:detailsQuestionnaireTemplate.id})
             reset()
             disabled.value= false
           } else {
-            emit("is-visible", {show:true,id:props.update})
+            emit("is-visible", {show:true,id:detailsQuestionnaireTemplate.id})
           }
         });
       } else {
@@ -125,9 +127,9 @@ const errorMsg = store.getters.errorMsg.value
       checkFieldsData,
       errorMsg,
       formRef,
-     
       disabled,
-      sectionType:store.getters.sectionType,
+      detailsQuestionnaireTemplate,
+      sectionType:store.getters.allSections,
       reset,
       
     };

@@ -18,7 +18,7 @@
                 </h2>
             </a-col>
             <a-col :span="24" v-if="templateDetailsList">
-                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection.data" :edit="false" />
+                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection.data" :edit="false" temOrSection="section"/>
 
             </a-col>
             

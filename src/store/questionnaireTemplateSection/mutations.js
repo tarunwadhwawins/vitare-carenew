@@ -1,6 +1,6 @@
 export const questionnaireSection = async (state, data) => {
 	state.questionnaireSection = data.data;
-	state.questionnaireSectionMeta = data.meta.pagination;
+	state.questionnaireSectionMeta = data.meta ? data.meta.pagination : ''
 };
 export const questionnaireTemplateSection = async (state, data) => {
 	state.questionnaireTemplateSection = data;
@@ -16,5 +16,11 @@ export const questionnaireTemplateSection = async (state, data) => {
 // };
 export const sectionDetailsList = async (state, data) => {
 	state.sectionDetailsList = data;
+};
+export const allSections = async (state, data) => {
+	state.allSections = data.data.map((item)=>{
+		item.name = item.sectionName
+		return item
+	});
 };
 

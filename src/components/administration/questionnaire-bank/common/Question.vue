@@ -3,8 +3,10 @@
                 <a-collapse v-model:activeKey="activeKey" expand-icon-position="left">
                     <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" v-if="question">
 
-                        <a-collapse-panel v-for="questionList in question" :key="questionList.questionId" :header="questionList.question">
-                            <Option :optionList="questionList" />
+                        <a-collapse-panel v-for="questionList in question" :key="questionList.questionId" :header="temOrSection=='section' ? questionList.question.data.question:questionList.question" >
+                           
+                            <Option :optionList="questionList.question.data.options" v-if="temOrSection=='section'"/>
+                            <Option :optionList="questionList" v-else/>
                             <template #extra>
                                  <EditOutlined @click="showModal1" v-if="edit"/> 
                                 <DeleteOutlined /></template>
@@ -34,6 +36,7 @@ EditQuestionnaire,
     props:{
         question:Array,
         edit:Boolean,
+        temOrSection:String
     },
     setup() {
         const store = useStore()

@@ -5,7 +5,7 @@ import { successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod
 export const questionnaireTemplateSectionList = async ({
   commit
 },page) => {
-  let link = page ?API_ENDPOINTS['questionnaireTemplateSection']+page : API_ENDPOINTS['questionnaireTemplateSection']
+  let link = page ? API_ENDPOINTS['questionnaireTemplateSection']+page : API_ENDPOINTS['questionnaireTemplateSection']
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 
@@ -136,29 +136,29 @@ export const templateSectionDetailsList = async ({
     
   })
 }
+//Show all sections in drow down
+export const allSections = async ({
+  commit
+},page) => {
+  let link = page ? API_ENDPOINTS['questionnaireTemplateSection']+page : API_ENDPOINTS['questionnaireTemplateSection']
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", link, null, null).then((response) => {
 
-// export const addAssiignquestionnaireResponse = async ({
-//   commit
-// },data) => {
-//   await serviceMethod.common("post", API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/client', null, data.data).then((response) => {
+    commit('allSections', response.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data)
+    }
+    commit('loadingStatus', false)
+  })
+}
 
-//     successSwal(response.data.message)
-//     commit('successMsg',response.data.message)
-    
-//   }).catch((error) => {
-//     errorLogWithDeviceInfo(error)
-//     if (error.response.status === 422) {
-//       commit('errorMsg', error.response.data)
-//     } else if (error.response.status === 500) {
-//       errorSwal(error.response.data.message)
-//     } else if (error.response.status === 401) {
-//       errorSwal(error.response.data.message)
-//     }
-    
-    
-    
-//   })
-// }
 // export const scoreCount = async ({
 //   commit
 // },id) => {
