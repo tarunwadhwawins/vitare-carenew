@@ -16,7 +16,7 @@
         <a-row :gutter="24">
 
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  escalationCount">
-                <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
+                <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" :linkTo="arrayToObjact(screensPermissions,404)?'Escalation':''" :data="escalationRecord"></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,14) && escalationList">
                 <a-card title="Escalations List" class="common-card" style="height:436px">
@@ -27,7 +27,7 @@
                 </a-card>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  clicalTask">
-                <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list" ></ApexChart>
+                <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" ></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
                 <a-card title="My Tasks List" class="common-card" style="height:436px">
@@ -40,7 +40,7 @@
                 </a-card>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,1) && patientsFlag">
-                <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="PatientsWithFilter"></ApexChart>
+                <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" :linkTo="arrayToObjact(screensPermissions,65)?'PatientsWithFilter':''"></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) &&  appointmentCount">
                 <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" :linkTo="arrayToObjact(screensPermissions,112) ? 'AppointmnetCalendar':''"></ApexChart>
