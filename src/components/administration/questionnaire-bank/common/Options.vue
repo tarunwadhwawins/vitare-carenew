@@ -1,5 +1,5 @@
 <template>
-            
+        
                             <div v-if="optionList.dataTypeId==244">
                                 <a-col :span="24" v-for="(options,index) in optionList.options" :key="index">
                                     <div class="questionOutput">

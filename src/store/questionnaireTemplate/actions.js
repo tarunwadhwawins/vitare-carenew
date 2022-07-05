@@ -212,7 +212,7 @@ export const sectionAssignToTemplate = async ({
   commit
 },data) => {
   console.log("data",data)
-  await serviceMethod.common("post", 'questionnaireSection/'+data.id+'/assign', null, data.data).then((response) => {
+  await serviceMethod.common("post", 'questionnaireSection/'+data.id+'/assign', null, data).then((response) => {
 
     successSwal(response.data.message)
     commit('successMsg',response.data.message)

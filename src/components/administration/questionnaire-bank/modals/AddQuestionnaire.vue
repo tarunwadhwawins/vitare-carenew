@@ -67,7 +67,6 @@
                         <a-col :sm="4" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('questionnaire.program')">
-
                                     <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" />
                                 </a-form-item>
                             </div>

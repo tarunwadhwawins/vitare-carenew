@@ -41,6 +41,7 @@
     "vue-timer-hook": "0.0.22",
     "vue-use-infinite-scroll": "0.0.3",
     "vue3-apexcharts": "^1.4.1",
+    "vue3-draggable": "^2.0.9",
     "vue3-tel-input": "^1.0.4",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.1.0"

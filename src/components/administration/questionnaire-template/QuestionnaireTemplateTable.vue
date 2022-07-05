@@ -153,8 +153,9 @@ export default {
             }, 50)
         }
   function assignSection(id){
-    visible.value = true
+   
     store.dispatch('detailsQuestionnaireTemplate', id)
+     visible.value = true
            
   }
         function deleteModal(id) {
