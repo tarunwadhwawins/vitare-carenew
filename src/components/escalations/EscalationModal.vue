@@ -106,13 +106,13 @@
                                                     <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
                                                   </template>
                                                 <template #color="{ record }">
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
+                                                    <!-- <a-tooltip placement="bottom">
+                                                        <template #title> -->
                                                             <span>{{ record.flag }}</span>
-                                                        </template>
+                                                        <!-- </template>
                                                         <a class="icons">
                                                             <Flags :flag="record.color" /></a>
-                                                    </a-tooltip>
+                                                    </a-tooltip> -->
                                                 </template>
                                             </a-table>
                                         </a-form-item>
@@ -254,7 +254,7 @@ const notesColumns = [
     },
   },
   {
-    title: "Color",
+    title: "Priority",
     dataIndex: "color",
     slots: {
       customRender: "color",
