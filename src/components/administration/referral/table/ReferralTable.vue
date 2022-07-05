@@ -3,7 +3,9 @@
 
 <a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :scroll="{ y:'calc(100vh - 470px)'}" :pagination="false" @change="handleTableChange">
         <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions,407)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
+          <a @click="showPatientModal( record.patientId)" v-if="arrayToObjact(screensPermissions, 65)">{{ text }}</a>
+          <span v-else>{{text}}</span>
         </template> 
         <template #patientName="{ text }" v-else>
             <span>{{ text }}</span>
@@ -21,7 +23,7 @@ import { useStore } from "vuex";
 import {
   
   arrayToObjact,
-  
+  showPatientModal
 } from "@/commonMethods/commonMethod";
 import { useRoute } from 'vue-router';
 export default {
@@ -133,6 +135,7 @@ const  dateFilter = ref('')
     };
    
     return {
+      showPatientModal,
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       loader,
