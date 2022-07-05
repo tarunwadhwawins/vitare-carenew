@@ -6,7 +6,7 @@
                 <div class="form-group">
                  
                     <a-form-item :label="$t('questionnaire.sectionName')" name="sectionId" :rules="[{ required: true, message: $t('questionnaire.sectionName') +' '+$t('global.validation') }]">
-                      <GlobalCodeDropDown v-if="sectionType" v-model:value="section.sectionId" :globalCode="sectionType" @change="checkChangeInput()" mode="multiple"/>
+                      <GlobalCodeDropDown v-if="sectionType" v-model:value="section.sectionId" :globalCode="sectionType" @change="checkChangeInput();sectionSelect($event);" mode="multiple"/>
                        
                          <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.sectionId[0]:''" />
                     </a-form-item>
@@ -74,9 +74,9 @@ export default defineComponent({
     //   }
     })
     const assignSection = () => {
-      console.log("check",detailsQuestionnaireTemplate.value)
-      disabled.value= true
-      store.dispatch("sectionAssignToTemplate",  {id:detailsQuestionnaireTemplate.value.id,sectionId:section.sectionId}).then(()=>{
+     
+      //disabled.value= true
+      store.dispatch("sectionAssignToTemplate",  {id:detailsQuestionnaireTemplate.value.id,sectionId:[...section.sectionId]}).then(()=>{
         if(store.state.common.successMsg){
           emit("is-visible", {show:false,id:props.update})
           reset()
@@ -85,7 +85,10 @@ export default defineComponent({
         }
       })
     }
-
+const  sectionSelect = (val)=>{
+//section.sectionId = val
+console.log(val)
+}
 function reset(){
    store.state.patients.errorMsg = ""
     store.commit("checkChangeInput", false)
@@ -131,6 +134,7 @@ const errorMsg = store.getters.errorMsg.value
       detailsQuestionnaireTemplate,
       sectionType:store.getters.allSections,
       reset,
+      sectionSelect
       
     };
   },

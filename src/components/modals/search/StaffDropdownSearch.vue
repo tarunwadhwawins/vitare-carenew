@@ -66,12 +66,12 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      Services.singleDropdownSearch("", (d) => (staffData.value = d), props.targetRecords, "staff");
+      Services.singleDropdownSearch("", (d) => (staffData.value = d), "staff",props.targetRecords );
     });
     
     watchEffect(() => {
       if (props.close) {
-        Services.singleDropdownSearch("", (d) => (staffData.value = d), props.targetRecords, "staff");
+        Services.singleDropdownSearch("", (d) => (staffData.value = d), "staff",props.targetRecords);
       }
       
         props.editDataStaff?staffData.value = props.editDataStaff:staffData.value
@@ -82,7 +82,7 @@ export default defineComponent({
       store.commit("dropdownLoadingStatus", true);
       staffData.value = [];
       const value = val.target ? val.target.value : val
-      Services.singleDropdownSearch(value, (d) => (staffData.value = d), props.targetRecords, "staff");
+      Services.singleDropdownSearch(value, (d) => (staffData.value = d), "staff",props.targetRecords);
     };
 
     const handleStaffChange = (val) => {
