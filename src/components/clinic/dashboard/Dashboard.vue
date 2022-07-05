@@ -27,10 +27,10 @@
                 </a-card>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  clicalTask">
-                <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" ></ApexChart>
+                <ApexChart title="Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" ></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
-                <a-card title="My Tasks List" class="common-card" style="height:436px">
+                <a-card title="Tasks List" class="common-card" style="height:436px">
                     <template #extra v-if="tasksList.length > 0">
                         <router-link :to="{ name:'Tasks',query: {
                             view: 'list'
@@ -43,7 +43,7 @@
                 <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" :linkTo="arrayToObjact(screensPermissions,65)?'PatientsWithFilter':''"></ApexChart>
             </a-col>
             <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) &&  appointmentCount">
-                <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" :linkTo="arrayToObjact(screensPermissions,112) ? 'AppointmnetCalendar':''"></ApexChart>
+                <ApexChart title="Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" :linkTo="arrayToObjact(screensPermissions,112) ? 'AppointmnetCalendar':''"></ApexChart>
             </a-col>
 
         </a-row>
