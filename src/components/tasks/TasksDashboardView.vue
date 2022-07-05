@@ -18,7 +18,7 @@
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-        <a-card title="Task Completion over" class="common-card grapCardWrap">
+        <a-card title="Task Completion" class="common-card grapCardWrap">
             <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" />
         </a-card>
     </a-col>
