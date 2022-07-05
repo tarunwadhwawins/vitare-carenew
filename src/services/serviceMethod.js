@@ -3,7 +3,7 @@ import authHeader from './authHeader';
 import store from "../store/index"
 // import jsonp from "fetch-jsonp";
 import qs from "qs";
-import { errorSwal } from '@/commonMethods/commonMethod';
+// import { errorSwal } from '@/commonMethods/commonMethod';
 import router from '@/router';
 
 const API_URL = process.env.VUE_APP_API_URL
@@ -229,11 +229,11 @@ class ServiceMethodService {
                         store.commit('errorMsg', error.response.data)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         this.removeStorage()
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
 
                     }
@@ -295,11 +295,11 @@ class ServiceMethodService {
                         store.commit('errorMsg', error.response.data)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         this.removeStorage()
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     }
                 });

@@ -9,7 +9,7 @@
             <Sidebar />
             <a-layout-content>
                 <div class="common-bg">
-                    <a-row>
+                    <a-row v-if="arrayToObjact(screensPermissions, 411)">
                         <a-col :span="24">
                             <h2 class="pageTittle">{{$t('global.reports')}}
                                 <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="cptTimeline" />
@@ -50,7 +50,7 @@
                             </a-form>
                         </a-col>
                     </a-row>
-                    <a-row>
+                    <a-row v-if="arrayToObjact(screensPermissions, 411)">
                         <a-col :span="24">
                             <DataTable />
                             <!-- <TableLoader /> -->
@@ -69,7 +69,7 @@ import Header from "../layout/header/Header";
 import { onMounted, ref, onUnmounted, reactive } from "vue";
 import moment from "moment";
 // import TableLoader from "@/components/loader/TableLoader";
-import { timeStampFormate } from "@/commonMethods/commonMethod";
+import { timeStampFormate,arrayToObjact } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable";
 import DateFilter from "@/components/common/DateFilter.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -255,6 +255,7 @@ export default {
     }
 
     return {
+      arrayToObjact,
       startDate,
       endDate,
       updateFilter,
@@ -266,6 +267,7 @@ export default {
       patient,
       Buttons: store.getters.cptTimeline,
       size: ref("large"),
+      screensPermissions:store.getters.screensPermissions,
     };
   },
 };

@@ -6,11 +6,11 @@
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
             </router-link> -->
-            <router-link to="/dashboard">
+            <router-link to="/dashboard" v-if="arrayToObjact(widgetsPermissions,13)||arrayToObjact(widgetsPermissions,5)||arrayToObjact(widgetsPermissions,1)||arrayToObjact(widgetsPermissions,2)||arrayToObjact(widgetsPermissions,14)||arrayToObjact(widgetsPermissions,6)||arrayToObjact(screensPermissions, 65)">
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Clinical Dashboard</span></a-menu-item>
             </router-link>
-            <router-link to="/businessDashboard">
+            <router-link to="/businessDashboard" v-if="arrayToObjact(widgetsPermissions,3)||arrayToObjact(widgetsPermissions,4)||arrayToObjact(widgetsPermissions,5)||arrayToObjact(widgetsPermissions,6)">
                 <a-menu-item>
                     <CreditCardOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
             </router-link>
@@ -51,7 +51,7 @@
                 <a-menu-item>
                     <FieldTimeOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
             </router-link>
-            <router-link to="/time-tracking-report">
+            <router-link to="/time-tracking-report" v-if="arrayToObjact(screensPermissions, 411)">
                 <a-menu-item>
                     <ReadOutlined /><span class="menuItem">{{$t('sidebar.reports')}}</span>
                 </a-menu-item>
@@ -159,6 +159,7 @@ export default defineComponent({
             screensPermissions,
             arrayToObjact,
             roles,
+             widgetsPermissions: store.getters.widgetsPermissions,
         };
     },
 });

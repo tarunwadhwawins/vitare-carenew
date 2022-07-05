@@ -125,7 +125,7 @@
                                     <a-menu-item key="4" v-if="arrayToObjact(screensPermissions, 107)">
                                         <a href="javascript:void(0)" @click="showStartCallModal(true)">{{ $t("header.startCall") }}</a>
                                     </a-menu-item>
-                                    <a-menu-item key="5">
+                                    <a-menu-item key="5" v-if="arrayToObjact(screensPermissions, 403)">
                                         <a href="javascript:void(0)" @click="showEscalationModal(true)">{{ 'Add Escalation' }}</a>
                                     </a-menu-item>
                                 </a-menu>
