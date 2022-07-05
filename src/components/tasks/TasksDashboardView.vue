@@ -8,7 +8,7 @@
     <a-col :xl="8" :sm="12" :xs="24">
         <a-card title="Task Priority" class="common-card grapCardWrap">
             <IncompleteTasksFilter />
-            <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" />
+            <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" linkTo="tasks" />
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">

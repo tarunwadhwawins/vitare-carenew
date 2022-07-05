@@ -83,7 +83,7 @@ const columnData = [{
         title: "Name",
         dataIndex: "patientName",
         sorter: true,
-        width: '17%',
+        width: '18%',
         slots: {
             customRender: "patientName",
         },
@@ -91,7 +91,7 @@ const columnData = [{
     {
         title: "Type",
         dataIndex: "escalationType",
-        width: '20%',
+        width: '17%',
     sorter: true,
 
         slots: {
@@ -109,6 +109,7 @@ const columnData = [{
         title: "Assigned By",
         dataIndex: "assignedBy",
         sorter: true,
+        width: '20%',
         slots: {
             customRender: "escalationAssignedBy",
         }
