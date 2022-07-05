@@ -146,18 +146,23 @@ export const financialSuccess = (state, data) => {
 	};
 };
 export const callStatusSuccess = (state, count) => {
-	let categories =
-		count.length > 0
-			? count.map((item) => {
-					return item.text;
-				})
-			: [ 'Completed', 'In Queue' ];
-	let data =
-		count.length > 0
-			? count.map((item) => {
-					return item.total;
-				})
-			: [ 0, 0 ];
+	let categories = [];
+	let data = [];
+	let barColors = [];
+
+	if(count.length > 0) {
+		count.map((item) => {
+			categories.push(item.text);
+			data.push(item.total);
+			barColors.push(item.color);
+		})
+	}
+	else {
+		categories.push('Completed', 'In Queue', 'Going On')
+		data.push(0, 0, 0)
+		barColors.push('#121258', '#ffb526', '#218421')
+	}
+	
 	state.callStatus = {
 		calloption: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -166,12 +171,11 @@ export const callStatusSuccess = (state, count) => {
 			},
 			plotOptions: plotOptions(10, '20%', '100%', true, false, 'bottom'),
 			dataLabels: dataLabels(false),
-			colors: [ '#121258', '#218421', '#ffb526' ],
+			colors: barColors,
 			stroke: {
 				width: 1,
 				colors: [ '#fff' ]
 			},
-
 			grid: {
 				row: {
 					colors: [ '#fff', '#f2f2f2' ]
