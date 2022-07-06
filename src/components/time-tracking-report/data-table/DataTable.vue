@@ -14,9 +14,10 @@
     </a-col>
     <a-col :span="2">
         <div class="button-left">
-            <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
+            <a-button :disabled="!status || checkStatus?.length>1" class="blueBtn" @click="submitStatus">Submit</a-button>
         </div>
     </a-col>
+        
     </a-row>
       
     </a-col>
@@ -36,6 +37,7 @@
         </div>
     </a-col> -->
 </a-row>
+<ErrorMessage v-if="checkStatus?.length>1" name="Please select record of same status." />
 <a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     
     <template #serviceId="{ record }" v-if="arrayToObjact(screensPermissions, 414)">
@@ -102,6 +104,7 @@ import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {exportExcel,showPatientModal,arrayToObjact} from "@/commonMethods/commonMethod";
 import TableLoader from "@/components/loader/TableLoader";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 const column = [
   {
     title: "#",
@@ -204,6 +207,7 @@ const column = [
 ];
 export default defineComponent({
   components: {
+    ErrorMessage,
     TableLoader,
     // EyeOutlined,
     GlobalCodeDropDown,
@@ -329,11 +333,13 @@ export default defineComponent({
       reportViewModal.value = true;
     }
     let statusArray =[]
-    // let checkStatus = []
+    const checkStatus = ref([])
     const onSelectChange = (selectedRowKeys,selectedRows) => {
       statusArray = selectedRows.map((item)=>item.status.name)
-      console.log('statusArray',statusArray)
-      // console.log('status',statusArray.every((e, i, a) => a.indexOf(e) === i))
+      checkStatus.value = statusArray.filter(function(item, pos) {
+        return statusArray.indexOf(item) == pos;
+      })
+      console.log('statusArray',checkStatus.value)
       if(!selectedRowKeys.length>0){
         status.value = null
       }
@@ -381,6 +387,7 @@ export default defineComponent({
      }
     
     return {
+      checkStatus,
       arrayToObjact,
       showPatientModal,
       formRef,

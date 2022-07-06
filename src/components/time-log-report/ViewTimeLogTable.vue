@@ -3,7 +3,9 @@
     
         <a-table   :columns="columns" :data-source="modalData" :pagination="false">
             <template #createdBy="{record}">
-                <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.createdById}}" >{{record.createdBy}}</router-link>
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.createdById}}" >{{record.createdBy}}</router-link> -->
+                <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.createdById)" >{{ record.createdBy }}</a>
+            <span v-else >{{record.staff}}</span>
             </template>
             <template #flag="{ record }">
             <a-tooltip placement="bottom">
@@ -26,6 +28,10 @@ import {
 
 import TableLoader from "@/components/loader/TableLoader";
 import Flags from "@/components/common/flags/Flags";
+import {
+   showStaffModal,
+   arrayToObjact,
+} from "@/commonMethods/commonMethod";
 export default {
     components: {
  
@@ -93,10 +99,13 @@ export default {
 			store.state.timeLogReport.timeLogView = ''
 		}
         
-        return {       
+        return { 
+            showStaffModal,   
+            arrayToObjact,   
             columns,
             closeModal,
             modalData:store.getters.timeLogView,
+            screensPermissions: store.getters.screensPermissions,
             
         };
     },

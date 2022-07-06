@@ -20,9 +20,10 @@
     <template #from="{ record }" class="custom" >
       <div v-if="record.is_sender_patient" class="customTd">
         <span v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
+        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
           {{record.from}}
-        </router-link>
+        </router-link> -->
+        <a @click="showPatientModal( record.fromId)" >{{ record.from }}</a>
         </span>
         <span v-else>
           {{record.from}}
@@ -30,9 +31,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
           {{record.from}}
-        </router-link>
+        </router-link> -->
+        <a @click="showStaffModal( record.fromId)" >{{ record.from }}</a>
         </span>
         <span v-else>
           {{record.from}}
@@ -43,9 +45,10 @@
     <template #to="{ record }" class="custom">
       <div v-if="record.is_receiver_patient" class="customTd">
         <span v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
+        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link>
+        </router-link> -->
+         <a @click="showPatientModal( record.toId)" >{{ record.to }}</a>
         </span>
         <span v-else>
           {{record.to}}
@@ -53,9 +56,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link>
+        </router-link> -->
+        <a @click="showStaffModal( record.toId)" >{{ record.to }}</a>
         </span>
         <span v-else>
           {{record.to}}
@@ -153,7 +157,7 @@ import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 //import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
-import {  arrayToObjact, } from "@/commonMethods/commonMethod";
+import {  arrayToObjact,showStaffModal,showPatientModal } from "@/commonMethods/commonMethod";
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
 import CommunicationView from '@/components/modals/CommunicationView'
 import {
@@ -398,6 +402,8 @@ export default {
     };
 
     return {
+      showPatientModal,
+      showStaffModal,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       communicationColumns,
