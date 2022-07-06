@@ -45,11 +45,12 @@
                         <div class="rightWrapper">{{ appointmentDetails?.status }}</div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">flag</div>
+                        <div class="leftWrapper">Priority</div>
                         <div class="rightWrapper">
-                           <a-tooltip placement="top" :title="appointmentDetails?.flagName">
+                           <!-- <a-tooltip placement="top" :title="appointmentDetails?.flagName">
                             <span class="box" :style="{ 'background-color': appointmentDetails?.flagColor}"></span>
-                           </a-tooltip>
+                           </a-tooltip> -->
+                           <span>{{appointmentDetails?.flagName}}</span>
                         </div>
                     </div>
                     <div class="itemWrapper">

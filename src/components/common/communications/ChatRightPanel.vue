@@ -140,6 +140,7 @@ export default {
       notesDetailVisible.value = false
       documentDetailVisible.value = false
       timelineDetailVisible.value = true
+      patientAppointmentsVisible.value = false
     }
 
     const showNotesModal = () => {

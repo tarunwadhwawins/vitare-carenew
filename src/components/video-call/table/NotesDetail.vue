@@ -42,8 +42,11 @@
                         </div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Flags</div>
-                        <div class="rightWrapper"><span class="box" :title="detailsNotes.flag" :style="{ 'background-color': detailsNotes.color }"></span></div>
+                        <div class="leftWrapper">Priority</div>
+                        <div class="rightWrapper">
+                          <!-- <span class="box" :title="detailsNotes.flag" :style="{ 'background-color': detailsNotes.color }"></span> -->
+                          <span>{{detailsNotes.flag}}</span>
+                        </div>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Note</div>
@@ -61,7 +64,8 @@
         <a-button @click="showNoteModal" type="primary">{{'Add Note'}}</a-button>
         <a-table :scroll="{ y: 250 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
             <template #flags="{ record }">
-              <Flags :flag="record.color" :data="record" />
+              <!-- <Flags :flag="record.color" :data="record" /> -->
+              <span>{{record.flag}}</span>
             </template>
             <template #action="{record}">
               <a-tooltip placement="right">
@@ -88,7 +92,7 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useStore } from "vuex";
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import { EyeTwoTone, CloseOutlined } from "@ant-design/icons-vue";
@@ -96,7 +100,7 @@ import { actionTrack,showPatientModal,showStaffModal } from "@/commonMethods/com
 
 export default defineComponent({
   components: {
-    Flags,
+    // Flags,
     EyeTwoTone,
     CloseOutlined,
     Loader,
@@ -144,7 +148,7 @@ export default defineComponent({
         className: "note-date",
       },
       {
-        title: "Flag",
+        title: "Priority",
         dataIndex: "color",
         key: "color",
         slots: {

@@ -61,7 +61,7 @@
 
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
+                    <a-form-item label="Priority" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-model:value="addTimeLogForm.flag" :globalCode="flagsList" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>

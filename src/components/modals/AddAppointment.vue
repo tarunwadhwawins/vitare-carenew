@@ -62,7 +62,7 @@
             </a-col>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+                    <a-form-item label="Priority" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-model:value="appointmentForm.flag" :globalCode="flagsList" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>

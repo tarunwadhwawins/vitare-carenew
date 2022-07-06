@@ -8,11 +8,12 @@
             <span v-else >{{record.staff}}</span>
             </template>
             <template #flag="{ record }">
-            <a-tooltip placement="bottom">
+            <span>{{record.flag}}</span>
+            <!-- <a-tooltip placement="bottom">
                
                 <a class="icons">
                     <Flags :flag="record.color" :data="record" /></a>
-            </a-tooltip>
+            </a-tooltip> -->
         </template>
         </a-table>
         <TableLoader />
@@ -27,7 +28,7 @@ import {
 } from "vuex";
 
 import TableLoader from "@/components/loader/TableLoader";
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import {
    showStaffModal,
    arrayToObjact,
@@ -37,7 +38,7 @@ export default {
  
        
         TableLoader,
-        Flags
+        // Flags
     
     },
     props:{

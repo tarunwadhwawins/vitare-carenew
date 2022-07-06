@@ -58,8 +58,11 @@
                         <div class="rightWrapper">{{ cardRecords.duration }}</div>
                     </div>
                     <div class="itemWrapper">
-                      <div class="leftWrapper">Flags</div>
-                      <div class="rightWrapper"><span class="box" :title="cardRecords.flagName" :style="{ 'background-color': cardRecords.flags }"></span></div>
+                      <div class="leftWrapper">Priority</div>
+                      <div class="rightWrapper">
+                        <!-- <span class="box" :title="cardRecords.flagName" :style="{ 'background-color': cardRecords.flags }"></span> -->
+                         <span >{{cardRecords.flagName}}</span>
+                      </div>
                   </div>
                     <div class="notesWrapper">
                         <span>Notes</span>

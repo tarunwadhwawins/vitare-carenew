@@ -13,7 +13,8 @@
             <span v-else :title="messages.access">{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
-            <Flags :flag="record.flagColor" :data="record" />
+            <!-- <Flags :flag="record.flagColor" :data="record" /> -->
+            <span>{{record.flagName}}</span>
         </template>
         <template #flag="{ text }">
             <span>
@@ -77,7 +78,7 @@ import {
 } from "@/commonMethods/commonMethod";
 
 
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';
 
 export default {
@@ -88,7 +89,7 @@ export default {
         TableLoader,
         AuditTimeLog,
         ViewTimeLogTable,
-        Flags,
+        // Flags,
     },
 props:{
 
