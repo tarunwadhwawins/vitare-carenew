@@ -1,5 +1,6 @@
 <template>
-  <a-select v-if="globalCode && !isColor" class="" 
+
+  <a-select v-if="globalCode.length>0 && !isColor" class="" 
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     :listHeight="listHeight?listHeight:150"
@@ -74,7 +75,8 @@
 <script>
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
-  props:{
+  props:
+  {
     globalCode:Array,
     mode:String,
     maxTagTextLength:Number,
@@ -84,7 +86,7 @@ export default defineComponent({
   setup(props, { emit }) {
  
     const filterOption = (input, globalCode) => {
-      console.log('globalCode', globalCode,input)
+      
       return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
 

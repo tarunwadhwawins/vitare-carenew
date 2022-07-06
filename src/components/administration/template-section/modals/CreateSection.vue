@@ -42,9 +42,11 @@ import { useStore } from "vuex";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import TableLoader from "@/components/loader/TableLoader"
+import ErrorMessage from "@/components/common/messages/ErrorMessage"
 export default defineComponent({
     components: {
         TableLoader,
+        ErrorMessage
     },
     props: {
         update: String,

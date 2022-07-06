@@ -1,6 +1,6 @@
 <template>
 
-<draggable v-model="item" @clone="change($event)">
+<draggable v-model="item" @clone="change($event)" v-if="type!='single'">
     
     <template v-slot:item="{item}" >
         
@@ -21,11 +21,27 @@
                 </a-collapse>
     </template>
 </draggable>
+<a-collapse v-model:activeKey="activeKey" expand-icon-position="left" v-else-if="type=='single'">
+
+                    <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" >
+
+                        <a-collapse-panel  :header="temOrSection=='section' ? question.question.question:question.question" >
+                           
+                            <Option :optionList="question.question" v-if="temOrSection=='section'"/>
+                            <Option :optionList="question" v-else/>
+                            <template #extra>
+                                 <EditOutlined @click="showModal1" v-if="edit"/> 
+                                <DeleteOutlined /></template>
+                        </a-collapse-panel>
+
+                    </a-collapse>
+
+                </a-collapse>
          <EditQuestionnaire v-model:visible="visible3" />  
 </template>
 
 <script>
-  import { defineComponent, ref,onMounted,onUnmounted,reactive, watchEffect } from "vue"
+  import { defineComponent, ref,onMounted,onUnmounted,reactive } from "vue"
   import { DeleteOutlined,EditOutlined } from "@ant-design/icons-vue"
   import { useStore } from "vuex"
   import EditQuestionnaire from "@/components/modals/EditQuestionnaire"
@@ -41,11 +57,8 @@ EditQuestionnaire,
         Draggable
         
     },
-    props:{
-        question:Array,
-        edit:Boolean,
-        temOrSection:String
-    },
+    props:
+        ['question','type','edit','temOrSection'],
     setup(props) {
         const store = useStore()
         const visible3 = ref(false)
@@ -54,10 +67,8 @@ EditQuestionnaire,
             visible3.value = true
         }
        
-const item = reactive(props.question)
-watchEffect(()=>{
-    console.log("check",item)
-})
+const item = props.question ? reactive(props.question) : ''
+
         onMounted(() => {
         
             store.dispatch("searchTable", '&search=')

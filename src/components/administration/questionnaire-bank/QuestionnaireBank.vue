@@ -27,7 +27,7 @@
     <Loader />
 </div>
 <AddQuestionnaire v-model:visible="visible" @is-visible="showModal($event)" v-if="visible" />
-<EditQuestionnaire v-model:visible="visible2" />
+
 </template>
 
 <script>
@@ -39,7 +39,7 @@ import Question from "@/components/administration/questionnaire-bank/common/Ques
 export default {
     components: {
         AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
-        EditQuestionnaire: defineAsyncComponent(() => import("@/components/modals/EditQuestionnaire")),
+       
         Loader,
         SearchField,
         Question,

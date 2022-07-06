@@ -1,6 +1,6 @@
 <template>
 <a-modal width="100%" :title="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="assignQuestion" layout="vertical" @finish="addAssignQuestion" @finishFailed="onFinishFailed">
+    <a-form ref="formRef" :model="assignQuestion" layout="vertical" @finish="addAssignQuestion" >
         <a-row>
             <a-col :span="16">
                 <SearchField endPoint="question" />
@@ -59,7 +59,7 @@ export default defineComponent({
 
     },
     props: {
-        templaterecord: Array,
+        templaterecord: Object,
         temOrSection:String
     },
 

@@ -1,10 +1,10 @@
 <template>
     <a-modal width="100%" title="Cardiopulmonary Resuscitation (CPR)" centered>
       <template #footer>
-        <a-button key="back" class="btn secondaryBtn" @click="handleCancel"
+        <a-button key="back" class="btn secondaryBtn" 
           >Cancel</a-button
         >
-        <a-button key="submit" class="btn primaryBtn" @click="handleOk"
+        <a-button key="submit" class="btn primaryBtn" 
           >Save</a-button
         >
       </template>

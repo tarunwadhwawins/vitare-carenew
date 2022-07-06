@@ -1,7 +1,7 @@
 <template>
 <div class="common-bg">
     <div class="questionnaireMain">
-        <a-row :gutter="24">
+        <a-row :gutter="24" >
             <a-col :span="24">
                 <h2 class="pageTittle">
 
@@ -21,16 +21,18 @@
                     </div>
                 </h2>
             </a-col>
-            
-            <a-col :span="24" v-if="detailsQuestionnaireTemplate">
+        </a-row>
+        <a-row :gutter="24" v-if="detailsQuestionnaireTemplate">
+            <a-col :span="24" v-for="templateRecords,index in detailsQuestionnaireTemplate.questionnaireQuestion" :key="index">
            
-                <Question :question="detailsQuestionnaireTemplate.questionnaireQuestion" temOrSection="section"  :edit="false" />
-               <div v-for="sectionName in detailsQuestionnaireTemplate.assignedSection" :key="sectionName.id">
-                <div v-for="subSectionName in sectionName.questionniareSection" :key="subSectionName.id">
+                <Question v-if="templateRecords.entityType=='question'" :question="templateRecords.question" temOrSection="template"  :edit="false" type="single"/>
+               <div v-else>
+               
+                <!-- <div v-for="sectionName in templateRecords.questionnaireSection" :key="sectionName.id">-->
 
-                Section Name : {{subSectionName.sectionName}}
-<Question :question="subSectionName.questionSection" temOrSection="section"  :edit="false" />
-                </div>
+                Section Name : {{templateRecords.questionnaireSection.sectionName}}
+<Question :question="templateRecords.questionnaireSection.questionSection" temOrSection="section"  :edit="false" />
+                <!-- </div>  -->
             </div>
             </a-col>
             
@@ -38,8 +40,8 @@
 
     </div>
     <!--modals-->
-    <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template"/>
-    <EditQuestionnaire v-model:visible="visible3" />
+    <AddQuestionnaire v-if="visible2"  v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template"/>
+    
     <AssignSection v-if="sectionVisible" v-model:visible="sectionVisible"  @is-visible="showSection($event)"/>
     <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template"/>
     <!---->
@@ -49,10 +51,8 @@
 </template>
 
 <script>
-  import { defineComponent, ref,onMounted,onUnmounted } from "vue"
+  import { defineComponent,defineAsyncComponent, ref,onMounted,onUnmounted } from "vue"
   import { PlusOutlined } from "@ant-design/icons-vue"
-  import AddQuestionnaire from "@/components/administration/questionnaire-bank/modals/AddQuestionnaire"
-  import EditQuestionnaire from "@/components/modals/EditQuestionnaire"
   import SearchQuestion from "@/components/administration/questionnaire-template/modals/SearchQuestion"
   import Question from "@/components/administration/questionnaire-bank/common/Question"
   import TableLoader from "@/components/loader/TableLoader"
@@ -62,8 +62,8 @@
 export default defineComponent({
     name: "Question Template Details",
     components: {
-        AddQuestionnaire,
-       EditQuestionnaire,
+        AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
+ 
         SearchQuestion,
         PlusOutlined,
         Question,
@@ -83,10 +83,10 @@ export default defineComponent({
 
         }
         const sectionVisible =  ref(false)
-        const visible3 = ref(false)
-        const showModal1 = () => {
-            visible3.value = true
-        };
+        // const visible3 = ref(false)
+        // const showModal1 = () => {
+        //     visible3.value = true
+        // };
         const visible1 = ref(false)
         const showModal2 = (e) => {
             store.dispatch("questionnaireList")
@@ -115,8 +115,7 @@ sectionVisible.value = e.show
             
             visible2,
             showModal,
-            visible3,
-            showModal1,
+           
             visible1,
             showModal2,
             udid,

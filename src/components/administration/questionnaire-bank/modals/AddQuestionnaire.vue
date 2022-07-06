@@ -1,6 +1,6 @@
 <template>
 <a-modal width="100%" :title="$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" @finishFailed="onFinishFailed">
+    <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" >
 
         <div class="questionnaireMain">
             <a-row :gutter="24">
@@ -16,15 +16,15 @@
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
                         <a-form-item :label="$t('questionnaire.type')" name="dataTypeId" :rules="[{ required: true, message: $t('questionnaire.type') +' '+$t('global.validation') }]">
-                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType()" />
-
+                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType();" made="single"/>
+ <ErrorMessage v-if="errorMsg" :name="errorMsg.dataTypeId?errorMsg.dataTypeId[0]:''" />
                         </a-form-item>
                     </div>
                 </a-col>
                 <a-col :span="24">
                     <div class="form-group">
                         <label> {{$t('questionnaire.tags')}}</label>
-                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
+                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%"   mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
                     </div>
 
@@ -37,14 +37,14 @@
                     <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
 
                         <a-col :span="1">
-                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</Label>
+                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
                             </a-radio-group>
                         </a-col>
                         <a-col :span="1">
-                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</Label>
+                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" v-if="questionnaire.dataTypeId==244" @change="checkboxChangeDefault($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value2">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChangeDefault($event)"></a-radio>
@@ -109,7 +109,7 @@
                         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
                             <a-button class="modal-button" style="margin-right: 8px" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
                             <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-                            <a-button v-if="Id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+                            <a-button v-if="id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
                         </a-form-item>
                     </div>
                 </a-col>
@@ -126,12 +126,15 @@ import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import ErrorMessage from "@/components/common/messages/ErrorMessage"
 export default {
+    name:'Add Questionnaire',
     emits: ["is-visible"],
     components: {
         PlusOutlined,
         DeleteOutlined,
         GlobalCodeDropDown,
+        ErrorMessage
     },
     props: {
         id: String,
@@ -366,6 +369,7 @@ export default {
                 //disabled.value= false
             }
         }
+        const errorMsg = store.getters.errorMsg.value
         return {
             questionnaire,
             programChange,
@@ -388,6 +392,7 @@ export default {
             radioChange,
             radioChangeDefault,
             reset,
+            errorMsg
         };
     },
 };
