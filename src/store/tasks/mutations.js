@@ -35,7 +35,7 @@ export const task = async (state, tasks) => {
 				customRender: 'status'
 			}
 		},
-		
+
 		{
 			title: 'Category',
 			dataIndex: 'category',
@@ -45,11 +45,10 @@ export const task = async (state, tasks) => {
 			}
 		},
 
-		
 		{
 			title: 'Assigned By',
 			dataIndex: 'assignedBy',
-			
+
 			slots: {
 				customRender: 'assigned'
 			}
@@ -67,19 +66,19 @@ export const task = async (state, tasks) => {
 
 export const taskStatusSuccess = async (state, status) => {
 	//console.log("status",status)
-	let data = []
-	status.forEach(element => {
-		
-		if(element.text!="Total Tasks"){
-			data.push(element)
+	let data = [];
+	status.forEach((element) => {
+		if (element.text != 'Total Tasks') {
+			data.push(element);
 		}
 	});
 	state.taskStatus = status;
 	state.incompleteAllTask = data.map((item) => item.total);
 	state.completedAllTask = {
 		chart: {
-			type: 'pie'
+			type: 'pie',
 		},
+		indexLabel: data.map((item) => item.text),
 		labels: data.map((item) => item.text),
 		colors: data.map((item) => item.color),
 		responsive: [
@@ -320,7 +319,6 @@ export const taskTeamMember = async (state, TeamMember) => {
 };
 
 export const taskCategory = async (state, TeamMember) => {
-	
 	state.taskCategory.business = TeamMember.map((item) => item.total);
 	state.taskCategory.premium = {
 		chart: {
@@ -346,10 +344,10 @@ export const taskCategory = async (state, TeamMember) => {
 };
 
 export const searchTasks = async (state, result) => {
-	state.tasksList = result.map(item => {
+	state.tasksList = result.map((item) => {
 		item.dueDate = dateOnlyFormat(item.dueDate);
 		item.startDate = dateOnlyFormat(item.startDate);
-		return item
+		return item;
 	});
 };
 
