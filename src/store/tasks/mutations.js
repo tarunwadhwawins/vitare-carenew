@@ -1,4 +1,4 @@
-import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat,timeStamp,startimeAdd,endTimeAdd } from '../../commonMethods/commonMethod';
 import moment from 'moment';
 export const task = async (state, tasks) => {
 	state.tasksList = tasks.data.map((element) => {
@@ -35,7 +35,7 @@ export const task = async (state, tasks) => {
 				customRender: 'status'
 			}
 		},
-		
+
 		{
 			title: 'Category',
 			dataIndex: 'category',
@@ -45,11 +45,10 @@ export const task = async (state, tasks) => {
 			}
 		},
 
-		
 		{
 			title: 'Assigned By',
 			dataIndex: 'assignedBy',
-			
+
 			slots: {
 				customRender: 'assigned'
 			}
@@ -67,19 +66,19 @@ export const task = async (state, tasks) => {
 
 export const taskStatusSuccess = async (state, status) => {
 	//console.log("status",status)
-	let data = []
-	status.forEach(element => {
-		
-		if(element.text!="Total Tasks"){
-			data.push(element)
+	let data = [];
+	status.forEach((element) => {
+		if (element.text != 'Total Tasks') {
+			data.push(element);
 		}
 	});
 	state.taskStatus = status;
 	state.incompleteAllTask = data.map((item) => item.total);
 	state.completedAllTask = {
 		chart: {
-			type: 'pie'
+			type: 'pie',
 		},
+		indexLabel: data.map((item) => item.text),
 		labels: data.map((item) => item.text),
 		colors: data.map((item) => item.color),
 		responsive: [
@@ -128,34 +127,41 @@ export const allTaskStatusSuccess = async (state, status) => {
 	today.subtract(7, 'days');
 	for (let i = 0; i < 7; i++) {
 		var day = today.add(1, 'days');
+		
 		// status.forEach((item)=>{
 		//   let obj = item.includes(day.format('dddd'))
 
 		// })
 		const results = completed.filter((object) => Object.values(object).includes(day.format('dddd')));
+	
 		let obj = '';
 		if (results.length > 0) {
 			results.forEach((items) => {
 				task.push({
 					count: items.total,
-					time: day.format('ddd')
+					time: day.format('ddd'),
+					from:timeStamp(startimeAdd(day)),
+					today:timeStamp(endTimeAdd(today))
 				});
 			});
 		} else {
 			obj = {
 				count: 0,
-				time: day.format('ddd')
+				time: day.format('ddd'),
+				from:timeStamp(startimeAdd(day)),
+				today:timeStamp(endTimeAdd(today))
 			};
 			task.push(obj);
 		}
 	}
+	state.taskComplete = task
 	// state.completionSeries = [{
 	//   name :'Completed',
 	//     data : task.map(item => item.total)
 	// }]
 	state.completionSeries = [
 		{
-			name: 'Complete',
+			name: 'Completed',
 			data: task.map((item) => {
 				return item.count;
 			})
@@ -320,7 +326,6 @@ export const taskTeamMember = async (state, TeamMember) => {
 };
 
 export const taskCategory = async (state, TeamMember) => {
-	
 	state.taskCategory.business = TeamMember.map((item) => item.total);
 	state.taskCategory.premium = {
 		chart: {
@@ -346,10 +351,10 @@ export const taskCategory = async (state, TeamMember) => {
 };
 
 export const searchTasks = async (state, result) => {
-	state.tasksList = result.map(item => {
+	state.tasksList = result.map((item) => {
 		item.dueDate = dateOnlyFormat(item.dueDate);
 		item.startDate = dateOnlyFormat(item.startDate);
-		return item
+		return item;
 	});
 };
 

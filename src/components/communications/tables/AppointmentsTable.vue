@@ -5,10 +5,12 @@
       <a-button @click="showAddAppointmentModal()" type="primary">{{ "Add Appointment" }}</a-button>
       <a-table rowKey="id" :columns="appointmentColumns" :data-source="patientAppointmentsList" :pagination="false">
         <template #staff="{record}" >
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}">{{ record.staff.fullName }}</router-link>
+        <a @click="showStaffModal(record.staff.id)">{{ record.staff.fullName }}</a>
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}">{{ record.staff.fullName }}</router-link> -->
     </template>
         <template #flag="{ record }">
-          <Flags :flag="record.flagColor" :data="record" />
+          <!-- <Flags :flag="record.flagColor" :data="record" /> -->
+          <span>{{record.flagName}}</span>
         </template>
       </a-table>
       </div>
@@ -20,6 +22,7 @@
 <script>
 import {
   actionTrack,
+  showStaffModal
 } from '@/commonMethods/commonMethod';
 import {
   computed,
@@ -27,11 +30,11 @@ import {
   defineAsyncComponent
 } from 'vue-demi';
 import { useStore } from 'vuex';
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 
 export default {
   components: {
-    Flags,
+    // Flags,
     AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
   },
   props: {
@@ -98,7 +101,7 @@ export default {
         ellipsis: true,
       },
       {
-        title: "Flags",
+        title: "Priority",
         dataIndex: "flag",
         className: "appointment-flags",
         key: "flag",
@@ -118,6 +121,7 @@ export default {
     const patientName = patientDetails.value != null ? patientDetails.value.fullName : ''
 
     return {
+      showStaffModal,
       showAddAppointmentModal,
       addAppointmentVisible,
       appointmentColumns,

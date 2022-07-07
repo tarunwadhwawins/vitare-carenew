@@ -55,7 +55,7 @@ export const timeLog = async (state, data) => {
       align: 'right'
     },
     {
-      title: "Flag",
+      title: "Priority",
       dataIndex: "flagColor",
       slots: {
         customRender: "flags",
@@ -105,7 +105,7 @@ export const timeLogView = async (state, data) => {
     dataIndex: "note",
   },
   {
-    title: "Flag",
+    title: "Priority",
     dataIndex: "flag",
     slots: {
       customRender: "flag",
