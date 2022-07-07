@@ -78,7 +78,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'gender')" />
                                     <ErrorMessage v-if="errorMsg && !demographics.gender" :name="errorMsg.gender ? errorMsg.gender[0] : ''" />
                                 </a-form-item>
                             </div>
@@ -86,15 +86,17 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.language')" name="language" :rules="[{ required: false, message: $t('patient.demographics.language')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.language" :globalCode="globalCode.language" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.language?errorMsg.language[0]:''" />
+                                    <!-- <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.language" :globalCode="globalCode.language" /> -->
+                                   <GlobalCodeDropDown  v-model:value="demographics.language" @handleGlobalChange="handleGlobalChange($event,'singleLang')" :dataId="13" :close="closeValue" />
+                                   <ErrorMessage v-if="errorMsg" :name="errorMsg.language?errorMsg.language[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.otherLanguage')" name="otherLanguage" :rules="[{ required: false, message: $t('patient.demographics.otherLanguage')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.otherLanguage" mode="multiple" :globalCode="globalCode.language" />
+                                    <!-- <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.otherLanguage" mode="multiple" :globalCode="globalCode.language" /> -->
+                                    <GlobalCodeDropDown mode="multiple" v-model:value="demographics.otherLanguage" @handleGlobalChange="handleGlobalChange($event,'multiLang')" :dataId="13" :close="closeValue" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.otherLanguage?errorMsg.otherLanguage[0]:''" />
                                 </a-form-item>
 
@@ -126,7 +128,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'contactType')" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactType?errorMsg.contactType[0]:''" />
                                 </a-form-item>
                             </div>
@@ -134,7 +136,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'contactTime')" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -142,7 +144,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.placeOfService')" name="placeOfService" :rules="[{ required: false, message: $t('global.placeOfService')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.placeOfService" :globalCode="globalCode.placeOfService" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.placeOfService" :dataId="67" @handleGlobalChange="handleGlobalChange($event,'placeOfService')" />
 
                                 </a-form-item>
                             </div>
@@ -177,7 +179,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: false, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.state" :globalCode="globalCode.state" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.state" :dataId="21" @handleGlobalChange="handleGlobalChange($event,'state')"  />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
                                 </a-form-item>
                             </div>
@@ -194,7 +196,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :globalCode="globalCode.country" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :dataId="20" @handleGlobalChange="handleGlobalChange($event,'country')" />
 
                                 </a-form-item>
                             </div>
@@ -222,7 +224,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.relation" :globalCode="globalCode.relation" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.relation" :dataId="8" @handleGlobalChange="handleGlobalChange($event,'relation')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -270,7 +272,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @keyup="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @keyup="changedValue" v-model:value="demographics.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'contactType')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -278,7 +280,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'contactTime')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -287,7 +289,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'gender')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -299,7 +301,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.relation" :globalCode="globalCode.relation" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.relation" :dataId="8" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.relation')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -347,7 +349,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.contactType')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -355,7 +357,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.contactTime')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -364,7 +366,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.gender" :globalCode="globalCode.gender" :disabled="disableResponsiblePerson" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.gender')" :disabled="disableResponsiblePerson" />
 
                                 </a-form-item>
                             </div>
@@ -433,7 +435,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableResponsiblePerson" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'contactType')" :disabled="disableResponsiblePerson" />
 
                                     </a-form-item>
                                 </div>
@@ -441,7 +443,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableResponsiblePerson" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'contactTime')" :disabled="disableResponsiblePerson" />
 
                                     </a-form-item>
                                 </div>
@@ -450,7 +452,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" :disabled="disableResponsiblePerson" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'gender')" :disabled="disableResponsiblePerson" />
 
                                     </a-form-item>
                                 </div>
@@ -513,7 +515,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.contactType')" :disabled="disableEmergencyContact" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.preferredMethodofContact?emergencyErrorMsg.preferredMethodofContact[0]:''" />
 
                                     </a-form-item>
@@ -522,7 +524,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.contactTime')" :disabled="disableEmergencyContact" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.preferredTimeofDayforContact?emergencyErrorMsg.preferredTimeofDayforContact[0]:''" />
 
                                     </a-form-item>
@@ -532,7 +534,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.gender" :globalCode="globalCode.gender" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'responsiblePersonForm.gender')" :disabled="disableEmergencyContact" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.gender?errorMsg.gender[0]:''" />
 
                                     </a-form-item>
@@ -589,7 +591,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactType" mode="multiple" :dataId="14" @handleGlobalChange="handleGlobalChange($event,'emergencyContactForm.contactType')" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.pmOfcontact ? emergencyErrorMsg.pmOfcontact[0] : ''" />
                                     </a-form-item>
 
@@ -598,7 +600,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactTime" mode="multiple" :dataId="15" @handleGlobalChange="handleGlobalChange($event,'emergencyContactForm.contactTime')" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.ptOfDayContact ? emergencyErrorMsg.ptOfDayContact[0] : ''" />
                                     </a-form-item>
 
@@ -607,7 +609,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.gender" :globalCode="globalCode.gender" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.gender" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'emergencyContactForm.gender')" />
                                         <ErrorMessage v-if="emergencyErrorMsg" :name="emergencyErrorMsg.gender ? emergencyErrorMsg.gender[0] : ''" />
                                     </a-form-item>
 
@@ -771,7 +773,7 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.insuranceName')" name="insuranceName" :rules="i==0?[{ required: true, message: $t('patient.insurance.insuranceName')+' '+$t('global.validation') }]:''">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="insuranceData.insuranceName[i]" :globalCode="globalCode.insuranceName" />
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="insuranceData.insuranceName[i]" :dataId="18" @handleGlobalChange="handleGlobalChange($event,'insuranceName')" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.insuranceName?errorMsg.insuranceName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -826,6 +828,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
+// import Language from "@/components/modals/search/LanguageSearch.vue";
 import {
   successSwal,
   warningSwal,
@@ -844,6 +847,7 @@ export default defineComponent({
     isEdit: Boolean,
   },
   components: {
+    // Language,
     // PhoneNumber,
     //StaffDropDown,
     PatientConditions,
@@ -1586,7 +1590,59 @@ const insuranceDataReset = reactive({
       }
     }
 
+    const handleGlobalChange = (data,type)=>{
+      if(type=='singleLang'){
+        demographics.language = data
+      }
+      if(type=='multiLang'){
+        demographics.otherLanguage = data
+      }
+      if(type=='gender'){
+        demographics.gender = data
+      }
+      if(type=='contactType'){
+        demographics.contactType = data
+      }
+      if(type=='contactTime'){
+        demographics.contactTime = data
+      }
+      if(type=='placeOfService'){
+        demographics.placeOfService = data
+      }
+      if(type=='state'){
+        demographics.state = data
+      }
+      if(type=='country'){
+        demographics.country = data
+      }
+      if(type == 'responsiblePersonForm.relation'){
+        responsiblePersonForm.relation =data
+      }
+      if(type=='responsiblePersonForm.contactType'){
+        responsiblePersonForm.contactType = data
+      }
+      if(type=='responsiblePersonForm.contactTime'){
+        responsiblePersonForm.contactTime = data
+      }
+      if(type=='responsiblePersonForm.gender'){
+        responsiblePersonForm.gender = data
+      }
+      if(type=='emergencyContactForm.contactType'){
+        emergencyContactForm.contactType = data
+      }
+      if(type=='emergencyContactForm.contactTime'){
+        emergencyContactForm.contactTime = data
+      }
+      if(type=='emergencyContactForm.gender'){
+        emergencyContactForm.gender = data
+      }
+      if(type=='insuranceName'){emergencyContactForm.gender
+        insuranceData.insuranceName = data
+      }
+    }
+
     return {
+      handleGlobalChange,
       convertToFeet,
       convertToCm,
       selectHeight,

@@ -20,14 +20,14 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :globalCode="common.taskStatus" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :dataId="5" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskStatus')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.priority" :globalCode="common.taskPriority" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.priority" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'taskForm.priority')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -69,7 +69,7 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :globalCode="common.taskCategory" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :dataId="6" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskCategory')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -372,7 +372,19 @@ export default defineComponent({
             }
 
         }
+         const handleGlobalChange = (data,type) =>{
+      if (type == "taskForm.taskStatus") {
+        taskForm.taskStatus = data;
+      }
+      if (type == "taskForm.priority") {
+        taskForm.priority = data;
+      }
+      if (type == "taskForm.taskCategory") {
+        taskForm.taskCategory = data;
+      }
+    }
         return {
+            handleGlobalChange,
             globalDateFormat,
             changeDate,
             taskFormFailed,

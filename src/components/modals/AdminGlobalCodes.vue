@@ -7,7 +7,7 @@
             <a-col :sm="9" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-                            <GlobalCodeDropDown  v-if="globalCodeCategories" @change="checkChangeInput()"  v-model:value="globalCodeForm.globalCodeCategory" :globalCode="globalCodeCategories"/>
+                            <ArrayDataSearch  v-if="globalCodeCategories" @change="checkChangeInput()"  v-model:value="globalCodeForm.globalCodeCategory" :globalCode="globalCodeCategories"/>
                     </a-form-item>
                 </div>
             </a-col>
@@ -58,12 +58,12 @@ import {
 import {
     messages
 } from "../../config/messages";
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import Loader from "@/components/loader/Loader"
 export default {
     components: {
         ModalButtons,
-        GlobalCodeDropDown,
+        ArrayDataSearch,
         Loader
     },
     props: {

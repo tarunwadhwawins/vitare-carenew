@@ -17,7 +17,7 @@
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
 								<a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<GlobalCodeDropDown @change="changedValue"  v-model:value="addPhysicianForm.designation" :globalCode="globalCode.designations"/>
+									<GlobalCodeDropDown @change="changedValue"  v-model:value="addPhysicianForm.designation" :dataId="17" @handleGlobalChange="handleGlobalChange($event)"/>
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
 								</a-form-item>
 							</div>
@@ -213,7 +213,12 @@ export default {
 			return store.state.patients.errorMsg
 		})
 
+		const handleGlobalChange = (data) =>{
+			addPhysicianForm.designation = data
+		}
+
 		return {
+			handleGlobalChange,
 			setPhoneNumber,
 			formRef,
 			globalCode,

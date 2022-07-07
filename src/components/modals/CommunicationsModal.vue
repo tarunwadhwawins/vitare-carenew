@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.messageCategory')" name="messageCategoryId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageCategory')+' '+$t('global.validation')  }]">
 
-                        <GlobalCodeDropDown v-model:value="messageForm.messageCategoryId" :globalCode="messageCategories" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="messageForm.messageCategoryId" :dataId="24" @handleGlobalChange="handleGlobalChange($event,'messageForm.messageCategoryId')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.priority')" name="priorityId" :rules="[{ required: true, message: $t('communications.communicationsModal.priority')+' '+$t('global.validation')  }]">
 
-                        <GlobalCodeDropDown v-model:value="messageForm.priorityId" :globalCode="taskPriority" @change="checkChangeInput()" :isColor="true" />
+                        <GlobalCodeDropDown v-model:value="messageForm.priorityId" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'messageForm.priorityId')" @change="checkChangeInput()" :isColor="true" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -238,9 +238,19 @@ export default defineComponent({
         function referenceId() {
             messageForm.referenceId = "";
         }
+
+        const handleGlobalChange = (data,type) =>{
+      if (type == "messageForm.messageCategoryId") {
+        messageForm.messageCategoryId = data;
+      }
+      if (type == "messageForm.priorityId") {
+        messageForm.priorityId = data;
+      }
+    }
        
        
         return {
+            handleGlobalChange,
             loadingStatus: store.getters.loadingStatus,
             staffData,
             patientData,

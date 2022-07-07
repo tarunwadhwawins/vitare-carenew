@@ -8,7 +8,7 @@
 
                     <a-form-item :label="$t('global.service')" name="serviceId" :rules="[{ required: true, message: $t('global.service') +' '+$t('global.service')+' '+$t('global.validation')  }]">
                       
-                        <GlobalCodeDropDown v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" :globalCode="cptCodesGetters.service" @change="checkChangeInput()"/>
+                        <ArrayDataSearch v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" :globalCode="cptCodesGetters.service" @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.serviceId?errorMsg.serviceId[0]:''" />
                     </a-form-item>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId" :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
                        
-                        <GlobalCodeDropDown v-if="durationList.duration" v-model:value="cptCodeForm.durationId" :globalCode="durationList.duration" @change="checkChangeInput()"/>
+                        <GlobalCodeDropDown v-if="durationList.duration" v-model:value="cptCodeForm.durationId" :dataId="31" @handleGlobalChange="handleGlobalChange($event)" @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
                     </a-form-item>
                 </div>
@@ -76,6 +76,7 @@ import Loader from "@/components/loader/Loader";
 import { warningSwal } from "./../../commonMethods/commonMethod";
 import { messages } from "./../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 
 export default {
   components: {
@@ -83,6 +84,7 @@ export default {
     Loader,
     ErrorMessage,
     GlobalCodeDropDown,
+    ArrayDataSearch
   },
   props: {
     cptId: {
@@ -183,7 +185,11 @@ export default {
 			}
       
     }
+    const handleGlobalChange = (data) =>{
+      cptCodeForm.durationId = data
+    }
     return {
+      handleGlobalChange,
       formButton,
       size: ref("large"),
       checked,

@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.type')" name="typeId" :rules="[{required: true,message: $t('global.type') + ' ' + $t('global.validation'),},]">
                        
-                        <GlobalCodeDropDown v-model:value="program.typeId" :globalCode="globalCode.programCategories" @change="handleDevice(); checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="program.typeId" :dataId="26" @handleGlobalChange="handleGlobalChange($event)" @change="handleDevice(); checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType ? errorMsg.deviceType[0] : ''" />
                     </a-form-item>
                 </div>
@@ -168,7 +168,11 @@ export default {
                 emit("is-visible", false);
             }
     }
+    const handleGlobalChange = (data) =>{
+      program.typeId = data
+    }
     return {
+      handleGlobalChange,
       form,
       program,
       programs,

@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.type')" name="deviceTypeId" :rules="[{required: true,message: $t('global.type') + ' ' + $t('global.validation'),},]">
                        
-                        <GlobalCodeDropDown v-model:value="thresholdForm.deviceTypeId" :globalCode="globalCode.deviceType" :disabled="threshodId ? true : false" @change="handleDevice(); checkChangeInput();" />
+                        <GlobalCodeDropDown v-model:value="thresholdForm.deviceTypeId" :dataId="22" @handleGlobalChange="handleGlobalChange($event)" :disabled="threshodId ? true : false" @change="handleDevice(); checkChangeInput();" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType ? errorMsg.deviceType[0] : ''" />
                     </a-form-item>
                 </div>
@@ -236,7 +236,12 @@ export default {
             }
         });
 
+        const handleGlobalChange = (data) =>{
+            thresholdForm.deviceTypeId = data
+        }
+
         return {
+            handleGlobalChange,
             handleDevice,
             globalCode,
             thresholdForm,

@@ -10,7 +10,7 @@
     <a-col :span="8" style="padding-bottom:15px" v-else>
     <a-row :span="24" v-if="arrayToObjact(screensPermissions, 412)">
       <a-col :span="18">
-        <GlobalCodeDropDown  ref="formRef" v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+        <GlobalCodeDropDown  ref="formRef" v-model:value="status" :dataId="68" @handleGlobalChange="handleGlobalChange($event)" placeholder="Please select status" />
     </a-col>
     <a-col :span="2">
         <div class="button-left">
@@ -385,8 +385,13 @@ export default defineComponent({
        conditionViewModal.value = true
        conditionsData.value = data
      }
+
+    const handleGlobalChange = (data) =>{
+        status.value = data
+    }
     
     return {
+      handleGlobalChange,
       checkStatus,
       arrayToObjact,
       showPatientModal,
