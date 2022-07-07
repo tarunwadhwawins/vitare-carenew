@@ -1,6 +1,6 @@
 <template>
 <a-modal width="100%" :title="name ? $t('questionnaire.addQuestionnaire') +'('+name+')':$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" >
+    <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire">
 
         <div class="questionnaireMain">
             <a-row :gutter="24">
@@ -15,16 +15,27 @@
                 </a-col>
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
-                        <a-form-item :label="$t('questionnaire.type')" name="dataTypeId" :rules="[{ required: true, message: $t('questionnaire.type') +' '+$t('global.validation') }]">
-                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType();" made="single"/>
- <ErrorMessage v-if="errorMsg" :name="errorMsg.dataTypeId?errorMsg.dataTypeId[0]:''" />
+                        <a-form-item label="Question Type" name="questionType" :rules="[{ required: true, message: 'Question Type' +' '+$t('global.validation') }]">
+                            <a-select ref="select" v-model:value="questionnaire.questionType" style="width: 100%" size="large" placeholder="Select Question Type" :getPopupContainer="triggerNode => triggerNode.parentNode">
+                                <a-select-option value="Test">Test</a-select-option>
+                                <a-select-option value="Survey">Survey</a-select-option>
+                            </a-select>
+                            <ErrorMessage v-if="errorMsg" :name="errorMsg.dataTypeId?errorMsg.questionType[0]:''" />
                         </a-form-item>
                     </div>
                 </a-col>
-                <a-col :span="24">
+                <a-col :sm="12" :xs="24">
+                    <div class="form-group">
+                        <a-form-item :label="$t('questionnaire.type')" name="dataTypeId" :rules="[{ required: true, message: $t('questionnaire.type') +' '+$t('global.validation') }]">
+                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType();" made="single" />
+                            <ErrorMessage v-if="errorMsg" :name="errorMsg.dataTypeId?errorMsg.dataTypeId[0]:''" />
+                        </a-form-item>
+                    </div>
+                </a-col>
+                <a-col :sm="12" :xs="24">
                     <div class="form-group">
                         <label> {{$t('questionnaire.tags')}}</label>
-                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%"   mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
+                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
                     </div>
 
@@ -36,7 +47,7 @@
                     </a-row>
                     <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
 
-                        <a-col :span="1">
+                        <a-col :span="1" v-if="questionnaire.questionType == 'Test'">
                             <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
@@ -67,16 +78,23 @@
                         <a-col :sm="4" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('questionnaire.program')">
-                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" />
+                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" :max-tag-count="2" :maxTagTextLength="5" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :span="2" v-for="(programScores,i) in questionnaire.programId[lable.key]" :key="i">
-                            <div class="form-group">
-                                <a-form-item :title="(arrayToObjact(programList, programScores)).name" :label="(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,20)+'...' : (arrayToObjact(programList, programScores)).name">
-                                    <a-input v-model:value="questionnaire.programScore[(lable.key+''+programScores)]" :placeholder="(arrayToObjact(programList, programScores)).name +' Score'" style="width: 100%" size="large" @change="checkChangeInput()" />
-                                </a-form-item>
-                            </div>
+                            <a-tooltip>
+                                <template #title>
+                                    <span>{{(arrayToObjact(programList, programScores)).name}}</span>
+                                </template>
+
+                                <div class="form-group">
+
+                                    <a-form-item class="labelTitleNone" :label="(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,10)+'...' : (arrayToObjact(programList, programScores)).name">
+                                        <a-input v-model:value="questionnaire.programScore[(lable.key+''+programScores)]" :placeholder="(arrayToObjact(programList, programScores)).name +' Score'" style="width: 100%" size="large" @change="checkChangeInput()" />
+                                    </a-form-item>
+                                </div>
+                            </a-tooltip>
                         </a-col>
                         <a-button v-if="questionnaire.lable.length > 1" class="mt-30" danger :size="size" :disabled="questionnaire.lable.length === 1" @click="removeLable(lable)">
                             <template #icon>
@@ -128,7 +146,7 @@ import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
 export default {
-    name:'Add Questionnaire',
+    name: 'Add Questionnaire',
     emits: ["is-visible"],
     components: {
         PlusOutlined,
@@ -140,7 +158,7 @@ export default {
         id: String,
         templateId: String,
         temOrSection: String,
-        name:String
+        name: String
     },
     setup(props, {
         emit
@@ -150,6 +168,7 @@ export default {
         const value = ref("1");
         const value2 = ref("1");
         const questionnaire = reactive({
+            questionType: '',
             default: [],
             answer: [],
             question: "",
@@ -170,16 +189,16 @@ export default {
         });
 
         function programChange(val, index, programList) {
-           if(val!=undefined){
-            questionnaire.programId[index] = val;
-            programList.forEach((data) => {
-                var test = questionnaire.programId[index].find(item => data.id == item)
-                if (test == "undefined") {
-                    questionnaire.programScore[index + '' + data.id] ? questionnaire.programScore[index + '' + data.id] = '' : ''
-                    console.log("test", questionnaire.programScore)
-                }
-            })
-           }
+            if (val != undefined) {
+                questionnaire.programId[index] = val;
+                programList.forEach((data) => {
+                    var test = questionnaire.programId[index].find(item => data.id == item)
+                    if (test == "undefined") {
+                        questionnaire.programScore[index + '' + data.id] ? questionnaire.programScore[index + '' + data.id] = '' : ''
+                        console.log("test", questionnaire.programScore)
+                    }
+                })
+            }
             //  questionnaire.programId[index].forEach((item)=>{
             //      var test =programList.find(data => data.id==item)
 
@@ -270,11 +289,11 @@ export default {
                         id: props.templateId,
                         temOrSection: props.temOrSection
                     }).then(() => {
-                        
+
                         if (props.temOrSection == 'section') {
                             store.dispatch("templateSectionDetailsList", props.templateId)
                         } else {
-                           
+
                             store.dispatch("detailsQuestionnaireTemplate", props.templateId)
                         }
                     })
