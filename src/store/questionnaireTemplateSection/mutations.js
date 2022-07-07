@@ -15,7 +15,8 @@ export const questionnaireTemplateSection = async (state, data) => {
 // 	state.detailsQuestionnaireTemplate = data;
 // };
 export const sectionDetailsList = async (state, data) => {
-	state.sectionDetailsList = data;
+	console.log("check",data)
+	state.sectionDetailsList = data.data;
 };
 export const allSections = async (state, data) => {
 	state.allSections = data.data.map((item)=>{

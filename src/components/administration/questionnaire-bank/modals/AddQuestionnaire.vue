@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="100%" :title="name ? $t('questionnaire.addQuestionnaire') +'('+name+')':$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" >
 
         <div class="questionnaireMain">
@@ -139,7 +139,8 @@ export default {
     props: {
         id: String,
         templateId: String,
-        temOrSection: String
+        temOrSection: String,
+        name:String
     },
     setup(props, {
         emit
@@ -269,10 +270,12 @@ export default {
                         id: props.templateId,
                         temOrSection: props.temOrSection
                     }).then(() => {
+                        
                         if (props.temOrSection == 'section') {
                             store.dispatch("templateSectionDetailsList", props.templateId)
                         } else {
-                            store.dispatch("templateDetailsList", props.templateId)
+                           
+                            store.dispatch("detailsQuestionnaireTemplate", props.templateId)
                         }
                     })
 

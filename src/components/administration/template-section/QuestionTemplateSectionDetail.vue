@@ -18,7 +18,8 @@
                 </h2>
             </a-col>
             <a-col :span="24" v-if="templateDetailsList">
-                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection.data" :edit="false" temOrSection="section"/>
+               
+                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection" :edit="false" temOrSection="section" type="multipale"/>
 
             </a-col>
             
@@ -26,9 +27,9 @@
 
     </div>
     <!--modals-->
-    <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="section" />
+    <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="section" :name="templateDetailsList ? templateDetailsList.sectionName : ''" />
     <EditQuestionnaire v-model:visible="visible3" />
-    <SearchQuestion v-if="templateDetailsList" v-model:visible="visible1" :templaterecord="templateDetailsList" @is-visible-exist="showModal2($event)" temOrSection="section" />
+    <SearchQuestion v-if="templateDetailsList" v-model:visible="visible1" :templaterecord="templateDetailsList" @is-visible-exist="showModal2($event)" temOrSection="section"  />
     <!---->
 </div>
 <TableLoader />

@@ -1,5 +1,5 @@
 <template>
-
+    
 <draggable v-model="item" @clone="change($event)" v-if="type!='single'">
     
     <template v-slot:item="{item}" >

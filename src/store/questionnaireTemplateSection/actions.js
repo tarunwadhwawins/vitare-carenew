@@ -120,8 +120,10 @@ export const templateSectionDetailsList = async ({
  
   await serviceMethod.common("get", API_ENDPOINTS['questionnaireTemplateSection']+'/'+id, null, null).then((response) => {
 
-    commit('sectionDetailsList', response.data.data);
+
+    commit('sectionDetailsList', response.data);
     commit('loadingTableStatus', false)
+    
   }).catch((error) => {
     errorLogWithDeviceInfo(error)
     if (error.response.status === 422) {

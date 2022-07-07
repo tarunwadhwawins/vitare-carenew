@@ -59,7 +59,7 @@
     </template>
 </a-table>
 <Loader />
-<AssignSection v-if="visible" v-model:visible="visible"  />
+<AssignSection v-if="visible" v-model:visible="visible"  @is-visible="showSection($event)" :update="true"/>
 </template>
 
 <script>
@@ -158,6 +158,7 @@ export default {
      visible.value = true
            
   }
+
         function deleteModal(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
@@ -196,6 +197,10 @@ export default {
                 )
             }
         }
+        const showSection = (e) =>{
+    
+visible.value = e.show
+}
         return {
             columns,
             data,
@@ -203,7 +208,8 @@ export default {
             deleteModal,
             handleTableChange,
             visible,
-            assignSection
+            assignSection,
+            showSection
         };
     },
 };

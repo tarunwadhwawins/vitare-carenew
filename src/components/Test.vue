@@ -1,57 +1,130 @@
 <template>
-   <div id="box-droppable1" @drop="drop" @dragover="allowDrop">
-    <h3>Draggaable area 1:</h3>
-    <hr>
-    
-    <div class="" draggable="true" @dragstart="onDragging" id="123">
-      <h2>Drag mee</h2>
-      <p>this is a text</p>
-    </div>
-     
-    <img id="img-draggable" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" draggable="true" @dragstart="drag" width="336">
-  </div>
-  
-  <div id="box-droppable2" @drop="drop" @dragover="allowDrop">
-    <h3>Droppable area 2:</h3>
-    <hr>
-  </div>
+  <a-tree
+    class="draggable-tree"
+    draggable
+    block-node
+    :tree-data="gData"
+    @dragenter="onDragEnter"
+    @drop="onDrop"
+  />
 </template>
-
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+const x = 3;
+const y = 2;
+const z = 1;
+const genData = [];
 
+const generateData = (_level, _preKey, _tns) => {
+  const preKey = _preKey || '0';
+  const tns = _tns || genData;
+  const children = [];
+
+  for (let i = 0; i < x; i++) {
+    ///console.log("check",`${preKey}-${i}`)
+    const key = `${preKey}-${i}`;
+    tns.push({
+      title: key,
+      key,
+    });
+
+    if (i < y) {
+      children.push(key);
+    }
+
+  }
+
+  if (_level < 0) {
+    return tns;
+  }
+
+  const level = _level - 1;
+  children.forEach((key, index) => {
+    tns[index].children = [];
+    return generateData(level, key, tns[index].children);
+  });
+  console.log("test",children)
+};
+
+generateData(z);
 export default defineComponent({
-  components: {
-    
-  },
-setup() {
-    const onDragging = (ev) => {
-        console.log(ev);
-        ev.dataTransfer.setData("text", ev.target.id);
+  setup() {
+    const expandedKeys = ref(['0-0', '0-0-0', '0-0-0-0']);
+    const gData = ref(genData);
+
+    const onDragEnter = info => {
+      console.log(info); // expandedKeys 
+      // expandedKeys.value = info.expandedKeys;
     };
-    const allowDrop = (ev) => {
-        ev.preventDefault();
+
+    const onDrop = info => {
+      console.log(info);
+      const dropKey = info.node.key;
+      const dragKey = info.dragNode.key;
+      const dropPos = info.node.pos.split('-');
+      const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+
+      const loop = (data, key, callback) => {
+        data.forEach((item, index) => {
+          if (item.key === key) {
+            return callback(item, index, data);
+          }
+
+          if (item.children) {
+            return loop(item.children, key, callback);
+          }
+        });
+      };
+
+      const data = [...gData.value]; // Find dragObject
+
+      let dragObj;
+      loop(data, dragKey, (item, index, arr) => {
+        arr.splice(index, 1);
+        dragObj = item;
+      });
+
+      if (!info.dropToGap) {
+        // Drop on the content
+        loop(data, dropKey, item => {
+          item.children = item.children || []; /// where to insert
+
+          item.children.unshift(dragObj);
+        });
+      } else if ((info.node.children || []).length > 0 && // Has children
+      info.node.expanded && // Is expanded
+      dropPosition === 1 // On the bottom gap
+      ) {
+        loop(data, dropKey, item => {
+          item.children = item.children || []; // where to insert 
+
+          item.children.unshift(dragObj);
+        });
+      } else {
+        let ar = [];
+        let i = 0;
+        loop(data, dropKey, (_item, index, arr) => {
+          ar = arr;
+          i = index;
+        });
+
+        if (dropPosition === -1) {
+          ar.splice(i, 0, dragObj);
+        } else {
+          ar.splice(i + 1, 0, dragObj);
+        }
+      }
+
+      gData.value = data;
     };
-    const drag = (ev) => {
-        ev.dataTransfer.setData("text", ev.target.id);
-    };
-    const drop = (ev) => {
-        ev.preventDefault();
-        let data = ev.dataTransfer.getData("text");
-        console.log(data);
-        ev.target.appendChild(document.getElementById(data));
-    }
+
     return {
-        onDragging,
-        allowDrop,
-        drag,
-        drop,
-    }
-}
-  
+      expandedKeys,
+      gData,
+      onDragEnter,
+      onDrop,
+    };
+  },
 
 });
 </script>
-<style>
-
-</style>

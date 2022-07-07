@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="detailsQuestionnaireTemplate.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="100%" :title="detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName:''" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="section" layout="vertical" @finish="assignSection" >
         <a-row :gutter="16">
             <a-col :span="12">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref, reactive, defineComponent, computed,watchEffect } from "vue";
+import { ref, reactive, defineComponent, computed,watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
@@ -46,6 +46,7 @@ export default defineComponent({
   },
   props: {
     udid: String,
+    update:Boolean
   },
 
   setup(props, { emit }) {
@@ -60,18 +61,30 @@ export default defineComponent({
     const disabled= ref(false)
     const form = reactive({...section})
      const detailsQuestionnaireTemplate =  store.getters.detailsQuestionnaireTemplate
-    watchEffect(()=>{
-      store.dispatch("allSections");
-    //   if(props.update){
-        
-    //     if(store.getters.detailssection){
-        
-    //     Object.assign(section,store.getters.detailssection.value)
+     onMounted(()=>{
+        store.dispatch("allSections").then(()=>{
+if(detailsQuestionnaireTemplate.value){
+        detailsQuestionnaireTemplate.value.questionnaireQuestion.map((item)=>{
+          if(item.entityType=='questionnaireSection'){
 
-    //     }else{
-    //       Object.assign(section,form)
-    //     }
-    //   }
+section.sectionId.push(item.questionnaireSection.id)
+          
+          }
+        })
+}
+        })
+     })
+    watchEffect(()=>{
+    
+      
+        
+        
+          
+
+        
+
+      
+      
     })
     const assignSection = () => {
      
@@ -80,7 +93,7 @@ export default defineComponent({
         if(store.state.common.successMsg){
           emit("is-visible", {show:false,id:props.update})
           reset()
-          store.dispatch("sectionList")
+          store.dispatch("detailsQuestionnaireTemplate",detailsQuestionnaireTemplate.value.id)
           disabled.value= false
         }
       })

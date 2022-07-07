@@ -34,7 +34,7 @@
 
         </a-row>
     </a-form>
-    <AddQuestionnaire v-model:visible="visible1" @is-visible="showModal($event)" />
+    <AddQuestionnaire v-model:visible="visible1" @is-visible="showModal($event)" :name="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName"/>
 
     <Loader />
 </a-modal>
@@ -60,7 +60,8 @@ export default defineComponent({
     },
     props: {
         templaterecord: Object,
-        temOrSection:String
+        temOrSection:String,
+      
     },
 
     setup(props, {

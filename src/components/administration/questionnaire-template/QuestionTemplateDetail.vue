@@ -9,7 +9,7 @@
                     <div class="commonBtn">
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Question</a-button>
                         <!-- <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Section</a-button> -->
-                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showSection({show:true,id:detailsQuestionnaireTemplate.id})">Add Section
+                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showSection({show:true,id:detailsQuestionnaireTemplate.id})">Assign Section
                             <PlusOutlined />
                         </a-button>
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
@@ -40,10 +40,10 @@
 
     </div>
     <!--modals-->
-    <AddQuestionnaire v-if="visible2"  v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template"/>
+    <AddQuestionnaire v-if="visible2"  v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template" :name="detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''" />
     
-    <AssignSection v-if="sectionVisible" v-model:visible="sectionVisible"  @is-visible="showSection($event)"/>
-    <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template"/>
+    <AssignSection v-if="sectionVisible" v-model:visible="sectionVisible"  @is-visible="showSection($event)" :update="true"/>
+    <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template" />
     <!---->
     
 </div>
