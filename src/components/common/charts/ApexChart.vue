@@ -78,8 +78,34 @@ export default {
                             }
                         })
                     }
-                } else if (props.type == "area" && config.globals.labels[config.dataPointIndex] != undefined) {
-                    console.log(config.globals.labels[config.dataPointIndex], config)
+                } else if (props.type == "area") {
+                    if (props.data) {
+
+                        console.log("check",props.data[config.globals.labels[config.dataPointIndex]-1])
+
+ router.push({
+                            name: props.linkTo,
+                            query: {
+                                view: props.listView ? props.listView : '',
+                                fromDate: store.getters.dateFilter.value ? store.getters.dateFilter.value.fromDate : props.data[config.globals.labels[config.dataPointIndex]-1] ? props.data[config.globals.labels[config.dataPointIndex]-1].from : '',
+                                toDate: store.getters.dateFilter.value ? store.getters.dateFilter.value.toDate : props.data[config.globals.labels[config.dataPointIndex]-1] ? props.data[config.globals.labels[config.dataPointIndex]-1].today : '',
+                                filter: config.globals.seriesNames[config.seriesIndex]
+                            }
+                        })
+
+                    }else{
+ router.push({
+                            name: props.linkTo,
+                            query: {
+                                view: props.listView ? props.listView : '',
+                                fromDate: store.getters.dateFilter.value ? store.getters.dateFilter.value.fromDate : '',
+                                toDate: store.getters.dateFilter.value ? store.getters.dateFilter.value.toDate : '',
+                                filter: config.globals.seriesNames[config.seriesIndex]
+                            }
+                        })
+                    }
+                   
+                    //console.log(config.globals.labels[config.dataPointIndex], config.globals.seriesNames[config.seriesIndex])
                 } else if (props.type == "pie") {
                     if (props.listView) {
                         config.globals.selectedDataPoints.map((item) => {

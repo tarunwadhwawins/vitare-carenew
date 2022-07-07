@@ -1,4 +1,4 @@
-import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat,timeStamp,startimeAdd,endTimeAdd } from '../../commonMethods/commonMethod';
 import moment from 'moment';
 export const task = async (state, tasks) => {
 	state.tasksList = tasks.data.map((element) => {
@@ -127,34 +127,41 @@ export const allTaskStatusSuccess = async (state, status) => {
 	today.subtract(7, 'days');
 	for (let i = 0; i < 7; i++) {
 		var day = today.add(1, 'days');
+		
 		// status.forEach((item)=>{
 		//   let obj = item.includes(day.format('dddd'))
 
 		// })
 		const results = completed.filter((object) => Object.values(object).includes(day.format('dddd')));
+	
 		let obj = '';
 		if (results.length > 0) {
 			results.forEach((items) => {
 				task.push({
 					count: items.total,
-					time: day.format('ddd')
+					time: day.format('ddd'),
+					from:timeStamp(startimeAdd(day)),
+					today:timeStamp(endTimeAdd(today))
 				});
 			});
 		} else {
 			obj = {
 				count: 0,
-				time: day.format('ddd')
+				time: day.format('ddd'),
+				from:timeStamp(startimeAdd(day)),
+				today:timeStamp(endTimeAdd(today))
 			};
 			task.push(obj);
 		}
 	}
+	state.taskComplete = task
 	// state.completionSeries = [{
 	//   name :'Completed',
 	//     data : task.map(item => item.total)
 	// }]
 	state.completionSeries = [
 		{
-			name: 'Complete',
+			name: 'Completed',
 			data: task.map((item) => {
 				return item.count;
 			})

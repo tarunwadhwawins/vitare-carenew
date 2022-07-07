@@ -73,17 +73,17 @@
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :span="12">
+            <!-- <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
                         <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                     </a-form-item>
                 </div>
-            </a-col>
+            </a-col> -->
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(moment().subtract(1,'days'))" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -151,7 +151,6 @@ export default defineComponent({
             assignedTo: [],
             assignedName: [],
             taskCategory: [],
-            startDate: "",
             dueDate: "",
             entityType: "",
         });
@@ -174,7 +173,7 @@ export default defineComponent({
                             priority: taskForm.priority,
                             assignedTo: taskForm.assignedTo,
                             taskCategory: taskForm.taskCategory,
-                            startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                            startDate: timeStamp(moment()),
                             dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
                             entityType: taskForm.entityType,
                         },
@@ -211,7 +210,7 @@ export default defineComponent({
                         priority: taskForm.priority,
                         assignedTo: isPatientTask ? [idPatient] : taskForm.assignedTo,
                         taskCategory: taskForm.taskCategory,
-                        startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                        startDate: timeStamp(moment()),
                         dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
                         entityType: isPatientTask ? "patient" : taskForm.entityType,
                     })
@@ -367,7 +366,7 @@ export default defineComponent({
         };
 
         function changeDate() {
-            if (moment(taskForm.startDate) > moment(taskForm.dueDate)) {
+            if (moment() > moment(taskForm.dueDate)) {
                 taskForm.dueDate = ''
             }
 
