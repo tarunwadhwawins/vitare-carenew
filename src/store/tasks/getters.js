@@ -10,3 +10,8 @@ export const taskRecords = (state)=>{
         return state.tasksList
     })
   }
+  export const taskComplete = (state)=>{
+    return computed(()=>{
+        return state.taskComplete
+    })
+  }

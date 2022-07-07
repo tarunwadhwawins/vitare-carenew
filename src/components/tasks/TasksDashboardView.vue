@@ -19,7 +19,7 @@
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
         <a-card title="Task Completion" class="common-card grapCardWrap">
-            <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords"/>
+            <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords" :data="taskComplete"/>
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -150,7 +150,8 @@ if (route.query.filter || route.query.fromDate) {
             toggle,
             CompletedTasksFilterCount,
             linkOpen,
-            updateRecords
+            updateRecords,
+            taskComplete:store.getters.taskComplete
         };
     },
 };
