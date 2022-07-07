@@ -11,7 +11,7 @@
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
                             <PlusOutlined />
                         </a-button>
-                        <router-link to="/questionnaire-template" class="b-inline ml-10">
+                        <router-link to="/template-section" class="b-inline ml-10">
                             <a-button class="btn primaryBtn">Back</a-button>
                         </router-link>
                     </div>
@@ -19,7 +19,7 @@
             </a-col>
             <a-col :span="24" v-if="templateDetailsList">
                
-                <Question v-if="templateDetailsList.questionSection" :question="templateDetailsList.questionSection" :edit="false" temOrSection="section" type="multipale"/>
+                <Question v-if="templateDetailsList" :question="templateDetailsList" :edit="false" temOrSection="section" type="multipale"/>
 
             </a-col>
             
@@ -29,7 +29,7 @@
     <!--modals-->
     <AddQuestionnaire v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="section" :name="templateDetailsList ? templateDetailsList.sectionName : ''" />
     <EditQuestionnaire v-model:visible="visible3" />
-    <SearchQuestion v-if="templateDetailsList" v-model:visible="visible1" :templaterecord="templateDetailsList" @is-visible-exist="showModal2($event)" temOrSection="section"  />
+    <SearchQuestion v-if="visible1" v-model:visible="visible1" :templaterecord="templateDetailsList" @is-visible-exist="showModal2($event)" temOrSection="section"  />
     <!---->
 </div>
 <TableLoader />
@@ -102,7 +102,6 @@ export default defineComponent({
             visible1,
             showModal2,
             udid,
-
             templateDetailsList: store.getters.sectionDetailsList,
             value: ref(1),
             value2: ref(1)

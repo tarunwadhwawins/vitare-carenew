@@ -1,13 +1,14 @@
 <template>
 <div class="common-bg">
     <h2 class="pageTittle">{{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}</h2>
-    <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed">
-        <div class="template" v-for="questionList in templateDetailsList" :key="questionList.questionId">
-            <a-typography-title :level="5">{{ questionList.question }}</a-typography-title>
-            <div class="templateInner">
-                <div v-if="questionList.dataTypeId==243">
-                    <a-radio-group v-if="questionList.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[questionList.id]">
-                        <a-col :span="24" v-for="(options,index) in questionList.options" :key="index">
+    
+    <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
+        <div class="template" v-for="questionList in detailsQuestionnaireTemplate.questionnaireQuestion" :key="questionList.id">
+            <a-typography-title :level="5">{{ questionList }}</a-typography-title>
+            <!-- <div class="templateInner">
+                <div v-if="questionList.question.dataTypeId==243">
+                    <a-radio-group v-if="questionList.question.dataTypeId==243" v-model:value="questionnaireTemplate.question.radioOption[questionList.id]">
+                        <a-col :span="24" v-for="(options,index) in questionList.question.options" :key="index">
                             <div class="questionOutput">
                                 <div>{{index+1}}.</div>
                                 <a-radio v-model:value="options.id"></a-radio>
@@ -18,9 +19,9 @@
                         </a-col>
                     </a-radio-group>
                 </div>
-                <div v-else-if="questionList.dataTypeId==244">
-                    <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[questionList.id]">
-                        <a-col :span="24" v-for="(options,index) in questionList.options" :key="index">
+                <div v-else-if="questionList.question.dataTypeId==244">
+                    <a-checkbox-group v-model:value="questionnaireTemplate.question.checkBoxOption[questionList.id]">
+                        <a-col :span="24" v-for="(options,index) in questionList.question.options" :key="index">
                             <div class="questionOutput">
                                 <div>{{index+1}}.</div>
                                 <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
@@ -37,7 +38,7 @@
                         
                             <div class="form-group">
                                 <a-form-item name="templateName">
-                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.id]" placeholder="Enter Text..." :bordered="false" :rows="2"  width="100%" />
+                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.question.id]" placeholder="Enter Text..." :bordered="false" :rows="2"  width="100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
                                 </a-form-item>
 
@@ -46,7 +47,7 @@
                         </div>
                     </a-col>
                 </div>
-            </div>
+            </div> -->
 
         </div>
         <a-col :span="24" v-if="templateDetailsList.length>0">

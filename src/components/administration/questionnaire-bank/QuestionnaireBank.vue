@@ -19,7 +19,7 @@
 
                 <a-col :span="24">
 
-                    <Question :question="questionnaireList" v-if="questionnaireList.length>0" :edit="true" />
+                    <Question :question="questionnaireList" v-if="questionnaireList.length>0" :edit="true" type="question"/>
                 </a-col>
             </a-row>
         </div>

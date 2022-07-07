@@ -14,7 +14,7 @@
             </a-col>
 
             <a-col :span="12">
-                <div class="form-group">
+                <div class="form-group questionnairTag">
                     <a-form-item :label="$t('questionnaire.tags')" name="tags">
                         <a-select ref="select" v-model:value="questionnaireSection.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>

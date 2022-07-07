@@ -1,13 +1,25 @@
 <template>
-    
+    <!-- {{item}}
 <draggable v-model="item" @clone="change($event)" v-if="type!='single'">
     
-    <template v-slot:item="{item}" >
+    <template v-slot:item="{item}" > -->
         
-                <a-collapse v-model:activeKey="item.questionId" expand-icon-position="left" >
-                    <a-collapse v-model:activeKey="item.questionId" expand-icon-position="right" >
+                <a-collapse v-model:activeKey="activeKey" expand-icon-position="left" v-if="type!='single'" >
+                    <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" v-if="type=='question'">
 
-                        <a-collapse-panel  :header="temOrSection=='section' ? item.question.question:item.question" >
+                        <a-collapse-panel v-for="item,index in question" :key="index" :header="item.question" >
+                           
+                            <Option :optionList="item.question" v-if="temOrSection=='section'"/>
+                            <Option :optionList="item" v-else/>
+                            <template #extra>
+                                 <EditOutlined @click="showModal1" v-if="edit"/> 
+                                <DeleteOutlined /></template>
+                        </a-collapse-panel>
+
+                    </a-collapse>
+                     <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" v-else>
+
+                        <a-collapse-panel v-for="item,index in question.questionSection" :key="index" :header="temOrSection=='section' ? item.question.question:item.question" >
                            
                             <Option :optionList="item.question" v-if="temOrSection=='section'"/>
                             <Option :optionList="item" v-else/>
@@ -19,8 +31,8 @@
                     </a-collapse>
 
                 </a-collapse>
-    </template>
-</draggable>
+    <!-- </template>
+</draggable> -->
 <a-collapse v-model:activeKey="activeKey" expand-icon-position="left" v-else-if="type=='single'">
 
                     <a-collapse v-model:activeKey="activeKey" expand-icon-position="right" >
@@ -46,7 +58,7 @@
   import { useStore } from "vuex"
   import EditQuestionnaire from "@/components/modals/EditQuestionnaire"
   import Option from "@/components/administration/questionnaire-bank/common/Options"
-  import Draggable from "vue3-draggable";
+  //import Draggable from "vue3-draggable";
 export default defineComponent({
     name: "Question Template Details",
     components: {
@@ -54,7 +66,7 @@ EditQuestionnaire,
         DeleteOutlined,
         EditOutlined,
         Option,
-        Draggable
+       //Draggable
         
     },
     props:

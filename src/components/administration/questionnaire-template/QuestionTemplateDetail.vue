@@ -26,12 +26,12 @@
             <a-col :span="24" v-for="templateRecords,index in detailsQuestionnaireTemplate.questionnaireQuestion" :key="index">
            
                 <Question v-if="templateRecords.entityType=='question'" :question="templateRecords.question" temOrSection="template"  :edit="false" type="single"/>
-               <div v-else>
+               <div class="healthTemplateBox" v-else>
                
                 <!-- <div v-for="sectionName in templateRecords.questionnaireSection" :key="sectionName.id">-->
 
-                Section Name : {{templateRecords.questionnaireSection.sectionName}}
-<Question :question="templateRecords.questionnaireSection.questionSection" temOrSection="section"  :edit="false" />
+                <h4>Section Name : {{templateRecords.questionnaireSection.sectionName}}</h4>
+<Question :question="templateRecords.questionnaireSection" temOrSection="section"  :edit="false" type="multiple"/>
                 <!-- </div>  -->
             </div>
             </a-col>
@@ -43,7 +43,7 @@
     <AddQuestionnaire v-if="visible2"  v-model:visible="visible2" @is-visible="showModal($event)" :templateId="udid" temOrSection="template" :name="detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''" />
     
     <AssignSection v-if="sectionVisible" v-model:visible="sectionVisible"  @is-visible="showSection($event)" :update="true"/>
-    <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template" />
+    <SearchQuestion v-if="visible1" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template" />
     <!---->
     
 </div>
@@ -129,3 +129,13 @@ sectionVisible.value = e.show
     },
 });
 </script>
+<style lang="scss">
+    .healthTemplateBox{
+        padding: 15px;
+        border-radius: 5px;
+        border: 1px solid #e3e3e3;
+        h4 {
+            margin:  0 0 10px;
+        }
+    }
+</style>

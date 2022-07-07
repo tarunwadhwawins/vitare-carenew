@@ -130,6 +130,7 @@ export default {
                     data
                 }).then(() => {
                     store.dispatch('globalCodesList')
+                    store.dispatch("globalCodes");
                 })
 
             } else {
@@ -137,6 +138,7 @@ export default {
 
                 store.dispatch('addGlobalCode', globalCodeForm).then(() => {
                     store.dispatch('globalCodesList')
+                    store.dispatch("globalCodes");
                 })
                 emit('close-modal', false);
             }

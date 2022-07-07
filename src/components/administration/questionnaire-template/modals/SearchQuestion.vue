@@ -77,32 +77,45 @@ export default defineComponent({
         // const form = reactive({
         //     ...assignQuestion
         // })
-        const templateDetailsList = store.getters.templateDetailsList
+        const templateDetailsList = reactive(props.templaterecord)
         const questionnaireList = store.getters.questionnaireList
         onMounted(() => {
             //store.dispatch("questionnaireList")
         })
         watchEffect(() => {
-if(props.temOrSection && templateDetailsList.questionSection ){
- if (templateDetailsList.questionSection.data.length > 0 && questionnaireList.value.length > 0) {
-                templateDetailsList.questionSection.data.value.forEach(element => {
-                  
-                    var index = questionnaireList.value.findIndex(a => a.id === element.id)
-                    if(index!==-1){
-                      questionnaireList.value.splice(index, 1)
-                    }
 
-                });
+if(props.temOrSection=='section' && props.templaterecord){
+ 
+ if (questionnaireList.value) {
+      
+               props.templaterecord.questionSection.forEach(element => {
+                 
+                    var index = questionnaireList.value.find(a => a.id === element.question.id)
+                    if(index){
+assignQuestion.checkBox[index.id] = true
+assignQuestion.questionId.push(index.id)
+                    }
+                    
+
+                }) 
 
             }
 }else{
-     if (templateDetailsList.value.length > 0 && questionnaireList.value.length > 0) {
-                templateDetailsList.value.forEach(element => {
+     if (props.templaterecord && questionnaireList.value.length > 0) {
+      
+                 props.templaterecord.questionnaireQuestion.forEach(element => {
+                 
+                  if(element.entityType=="question"){
+                    console.log("test",questionnaireList.value)
+                    var index = questionnaireList.value.find(a => a.id === element.question.id)
+                     if(index){
+  assignQuestion.checkBox[index.id] = true
+assignQuestion.questionId.push(index.id)
+                     }
                   
-                    var index = questionnaireList.value.findIndex(a => a.id === element.id)
-                    if(index!==-1){
-                      questionnaireList.value.splice(index, 1)
-                    }
+                  }
+                    
+                   
 
                 });
 
@@ -139,7 +152,7 @@ if(props.temOrSection && templateDetailsList.questionSection ){
         const addAssignQuestion = () => {
 
             store.dispatch("addAssiignquestionnaire", {
-                data: {questionId:assignQuestion.questionId},
+                data: {questionId:getUnique(assignQuestion.questionId)},
                 id: props.templaterecord.id,
                 temOrSection:props.temOrSection
             }).then(() => {
@@ -147,7 +160,7 @@ if(props.temOrSection && templateDetailsList.questionSection ){
                 if(props.temOrSection=='section'){
                    store.dispatch("templateSectionDetailsList", props.templaterecord.id) 
                 }else{
-                    store.dispatch("templateDetailsList", props.templaterecord.id)
+                    store.dispatch("detailsQuestionnaireTemplate", props.templaterecord.id)
                 }
                
                 emit("is-visible-exist", false)
@@ -188,6 +201,17 @@ if(props.temOrSection && templateDetailsList.questionSection ){
                 //disabled.value= false
             }
         }
+         function getUnique(array){
+        var uniqueArray = [];
+        
+        // Loop through array values
+        for(let i=0; i < array.length; i++){
+            if(uniqueArray.indexOf(array[i]) === -1) {
+                uniqueArray.push(array[i]);
+            }
+        }
+        return uniqueArray;
+    }
         return {
             addAssignQuestion,
             assignQuestion,

@@ -33,7 +33,7 @@
                     </div>
                 </a-col>
                 <a-col :sm="12" :xs="24">
-                    <div class="form-group">
+                    <div class="form-group questionnairTag">
                         <label> {{$t('questionnaire.tags')}}</label>
                         <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
@@ -89,8 +89,8 @@
                                 </template>
 
                                 <div class="form-group">
-
-                                    <a-form-item class="labelTitleNone" :label="(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,10)+'...' : (arrayToObjact(programList, programScores)).name">
+<span><label>{{(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,10)+'...' : (arrayToObjact(programList, programScores)).name}}</label></span>
+                                    <a-form-item  >
                                         <a-input v-model:value="questionnaire.programScore[(lable.key+''+programScores)]" :placeholder="(arrayToObjact(programList, programScores)).name +' Score'" style="width: 100%" size="large" @change="checkChangeInput()" />
                                     </a-form-item>
                                 </div>
