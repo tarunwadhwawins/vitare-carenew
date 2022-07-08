@@ -5,7 +5,7 @@
         <a-row :gutter="24">
             <a-col :span="24" v-if="flags.length==0">
                 <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
-                    <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" @change="checkChangeInput()" />
+                    <ArrayDataSearch v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" @change="checkChangeInput()" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                 </a-form-item>
             </a-col>
@@ -46,9 +46,11 @@ import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal } from "@/commonMethods/commonMethod";
-import { messages } from "../../config/messages";
+import { messages } from "@/config/messages";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 export default {
   components: {
+    ArrayDataSearch,
     Loader,
     GlobalCodeDropDown,
   },
