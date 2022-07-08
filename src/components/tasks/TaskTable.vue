@@ -34,7 +34,7 @@
             </router-link> -->
             <a @click="showStaffModal( record.assignedById)" >{{  record.assignedBy  }}</a>
         </template>
-        <template #action="{ record }">
+        <template #action="{ record }" v-if="!dataList">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
                 <template #title>
                     <span>{{ $t('global.edit') }}</span>
@@ -49,7 +49,7 @@
                 <a class="icons">
                     <DeleteOutlined @click="deleteTask(record.id)" /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom" >
+            <a-tooltip placement="bottom" v-if="!dataList">
                 <template #title>
                     <span>{{$t('tasks.createAppointment')}}</span>
                 </template>

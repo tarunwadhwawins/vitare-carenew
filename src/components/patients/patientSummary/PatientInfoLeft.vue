@@ -167,7 +167,10 @@
             </div>
         </div>
     </div>
-    <TaskModal v-if="TaskModalVisible" v-model:visible="TaskModalVisible"/>
+    <TaskTableModal v-if="TaskModalVisible" v-model:visible="TaskModalVisible" @isEdit="editTask($event)"/>
+    
+    <TasksModal  v-model:visible="visibleTaskModal" @saveTaskModal="handleOk($event)" :taskId="taskID"/>
+
     <ReferralViewModal v-if="referralDetail" v-model:visible="referralView" :referralDetail="referralDetail" />
     <AddFamilyMemberModal v-model:visible="addfamilyMembersVisible" :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="false" />
     <!-- <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" :staffType="1" /> -->
@@ -211,7 +214,7 @@ import {
 
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
-
+// import TasksModal from "@/components/modals/TasksModal";
 import {
   ref,
   computed,
@@ -305,14 +308,18 @@ export default defineComponent({
     ),
     ReferralViewModal,
     AppointmentsTable,
-    TaskModal:defineAsyncComponent(() =>
+    TaskTableModal:defineAsyncComponent(() =>
       import("@/components/tasks/modals/TaskTableModal")
     ),
+    TasksModal:defineAsyncComponent(() =>
+      import("@/components/modals/TasksModal")
+    ),
   },
-  setup() {
+  setup(props,{emit}) {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
+    const visibleTaskModal =ref(false)
     const TaskModalVisible = ref(false)
     const appointmentShowVisible = ref(false);
     const isEditTimeLog = ref(false);
@@ -693,7 +700,18 @@ export default defineComponent({
       store.dispatch('showTaskModalData',id)
       TaskModalVisible.value = true
     }
+
+    const editTask = (id) => {
+      visibleTaskModal.value = true
+      console.log('id=>',id)
+            emit("isEdit", {
+                check: true,
+                id: id
+            });
+        };
     return {
+      visibleTaskModal,
+      editTask,
       TaskModalVisible,
       showTaskModal,
       patientAppointmentsList,

@@ -1,13 +1,13 @@
 <template>
 <a-modal max-width="1140px" width="90%" title="Task List" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
-    <TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns" :dataList="dataList" ></TaskTable>
+    <TaskTable  :tasksListColumns="tasksListColumns" :dataList="dataList" ></TaskTable>
 </a-modal>
 </template>
 
 <script>
 import TaskTable from "@/components/tasks/TaskTable";
-import { computed } from 'vue-demi';
-import store from "../../../store";
+import { computed } from 'vue';
+import {useStore} from "vuex";
 const tasksListColumns = [{
         title: 'Priority ',
         dataIndex: 'priority',
@@ -55,33 +55,28 @@ const tasksListColumns = [{
             customRender: 'assignedBy'
         }
     },
-    {
-        title: 'Actions',
-        dataIndex: 'actions',
-        slots: {
-            customRender: 'action'
-        }
-    }
+    // {
+    //     title: 'Actions',
+    //     dataIndex: 'actions',
+    //     slots: {
+    //         customRender: 'action'
+    //     }
+    // }
 ];
 export default {
     components: {
-        TaskTable
+        TaskTable,
     },
 
-    setup(props,{emit}) {
-        const editTask = (id) => {
-            emit("isEdit", {
-                check: true,
-                id: id
-            });
-        };
+    setup() {
+        const store = useStore()
+        
         const dataList = computed(()=>{
             return store.state.tasks.showTaskModalData
         })
         return {
             dataList,
             tasksListColumns,
-            editTask
         }
     }
 }
