@@ -23,7 +23,7 @@
                       $t('notes.category') + ' ' + $t('global.validation'),
                   },
                 ]">
-                    <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.category" :globalCode="noteCategories" />
+                    <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.category" :dataId="49" @handleGlobalChange="handleGlobalChange($event,'addNoteForm.category')" />
                 </a-form-item>
             </div>
         </a-col>
@@ -36,7 +36,7 @@
                     message: $t('notes.type') + ' ' + $t('global.validation'),
                   },
                 ]">
-                    <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.type" :globalCode="noteTypes" />
+                    <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.type" :dataId="35" @handleGlobalChange="handleGlobalChange($event,'addNoteForm.type')"  />
                 </a-form-item>
             </div>
         </a-col>
@@ -49,7 +49,7 @@
                     message: 'Priority' + ' ' + $t('global.validation'),
                   },
                 ]">
-                    <GlobalCodeDropDown v-model:value="addNoteForm.flag" :globalCode="flagsList" />
+                    <ArrayDataSearch v-model:value="addNoteForm.flag" :globalCode="flagsList" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                 </a-form-item>
             </div>
@@ -84,12 +84,14 @@ import { timeStampLocal } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import moment from "moment";
 // import Loader from "@/components/loader/Loader";
 // import { CloseOutlined } from "@ant-design/icons-vue";
 
 export default defineComponent({
   components: {
+    ArrayDataSearch,
     ModalButtons,
     // Loader,
     GlobalCodeDropDown,
@@ -174,7 +176,17 @@ export default defineComponent({
         });
     };
 
+      const handleGlobalChange = (data,type) =>{
+      if (type == "addNoteForm.category") {
+        addNoteForm.category = data;
+      }
+      if (type == "addNoteForm.type") {
+        addNoteForm.type = data;
+      }
+      }
+
     return {
+      handleGlobalChange,
       size: ref("large"),
       handleClear,
       formRef,

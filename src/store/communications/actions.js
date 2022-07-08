@@ -285,3 +285,22 @@ export const conversationWithPatient = async ({ commit }, receiverId) => {
 		commit('failure', error.response.data);
 	})
 }
+
+export const replyCommunication = async ({ commit }, data) => {
+	await ServiceMethodService.common("post", API_ENDPOINTS['communication']+`/${data.communicationId}/reply`, null, data.data).then((response) => {
+		successSwal(response.data.message)
+	})
+	.catch((error) => {
+		if (error.response) {
+			if (error.response.status == 401) {
+				//AuthService.logout();
+			}
+			errorLogWithDeviceInfo(error.response);
+		}
+		else {
+			errorLogWithDeviceInfo(error);
+		}
+		commit('failure', error.response.data);
+		// errorSwal(error.response.data.message)
+	})
+}

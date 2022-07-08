@@ -31,7 +31,7 @@
                         <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
                     </a-select> -->
-                    <GlobalCodeDropDown v-model:value="documents.type" :globalCode="globalCode.documentTypes" @change="checkChangeInput()" />
+                    <GlobalCodeDropDown v-model:value="documents.type" :dataId="11" @handleGlobalChange="handleGlobalChange($event,'documents.type')" @change="checkChangeInput()" />
                     <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" /> -->
                 </a-form-item>
             </div>
@@ -40,7 +40,7 @@
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
                     <!-- <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" /> -->
-                    <GlobalCodeDropDown v-model:value="documents.tags" mode="multiple" :globalCode="globalCode.documentTags" @change="checkChangeInput()" />
+                    <GlobalCodeDropDown v-model:value="documents.tags" mode="multiple" :dataId="12" @handleGlobalChange="handleGlobalChange($event,'documents.tags')" @change="checkChangeInput()" />
                     <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" /> -->
                 </a-form-item>
             </div>
@@ -296,7 +296,17 @@ export default defineComponent({
       store.commit("checkChangeInput", true);
     }
 
+    const handleGlobalChange = (data,type) =>{
+      if (type == "documents.type") {
+        documents.type = data;
+      }
+      if (type == "documents.tags") {
+        documents.tags = data;
+      }
+      }
+
     return {
+      handleGlobalChange,
       documentDetails,
       image,
       formRest,

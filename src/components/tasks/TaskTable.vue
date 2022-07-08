@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24">
-    <a-table rowKey="id" :columns="tasksListColumns" :data-source="tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="tasksListColumns" :data-source="dataList?dataList:tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
             <a v-if="arrayToObjact(screensPermissions,115)" @click="taskDetails(record.id)"><span>{{ text }}</span></a>
@@ -49,7 +49,7 @@
                 <a class="icons">
                     <DeleteOutlined @click="deleteTask(record.id)" /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" >
                 <template #title>
                     <span>{{$t('tasks.createAppointment')}}</span>
                 </template>
@@ -83,7 +83,8 @@ export default {
         height: Number,
         tasksListColumns: Array,
         fromAll: Boolean,
-        islimit:Number
+        islimit:Number,
+        dataList:Array
     },
     setup(props, {
         emit

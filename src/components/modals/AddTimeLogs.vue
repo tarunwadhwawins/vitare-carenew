@@ -6,7 +6,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.category')" name="category" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.category" :globalCode="timeLogCategories" />
+                        <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.category" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'addTimeLogForm.category')" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -54,7 +54,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.cptCode')" name="cptCode" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.cptCode" :globalCode="cptCodesList" />
+                        <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.cptCode" :dataId="68" @handleGlobalChange="handleGlobalChange($event,'addTimeLogForm.cptCode')" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -62,7 +62,7 @@
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Priority" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="addTimeLogForm.flag" :globalCode="flagsList" />
+                        <ArrayDataSearch v-model:value="addTimeLogForm.flag" :globalCode="flagsList" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>
                 </div>
@@ -105,6 +105,7 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 
 export default defineComponent({
   components: {
@@ -112,6 +113,7 @@ export default defineComponent({
     GlobalCodeDropDown,
     Loader,
     StaffDropDown,
+    ArrayDataSearch,
   },
   props: {
     isEditForm: {
@@ -347,8 +349,17 @@ export default defineComponent({
         addTimeLogForm.performedBy = val;
       }
     };
+    const handleGlobalChange = (data,type) =>{
+            if(type =='addTimeLogForm.category'){
+                addTimeLogForm.category = data
+            }
+            if(type=='addTimeLogForm.cptCode'){
+                addTimeLogForm.cptCode = data
+            }
+        }
 
     return {
+      handleGlobalChange,
       globalDateFormat,
       size: ref("large"),
       handleClear,

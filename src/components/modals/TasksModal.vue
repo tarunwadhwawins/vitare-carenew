@@ -20,19 +20,19 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :globalCode="common.taskStatus" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :dataId="5" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskStatus')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.priority" :globalCode="common.taskPriority" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.priority" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'taskForm.priority')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
 
-            <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!taskId">
+            <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
                     <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
@@ -41,49 +41,46 @@
                         <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
                             <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
                         </div>
-                        
-                        
-                        <a-input type="hidden" id="entityType" :value="toggleTo?taskForm.entityType= 'patient' : taskForm.entityType='staff'" />
+                        <a-input type="hidden" id="entityType" :value="toggleTo ? taskForm.entityType= 'patient' : taskForm.entityType = 'staff'" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo">
+            <a-col :sm="12" :xs="24" v-show="toggleTo">
                 <div class="form-group">
-
                     <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
                         <PatientDropDown v-if="!taskId" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
-                        <PatientDropDown v-else mode="multiple" :disabled="true" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
 
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
+            <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown v-if="!taskId" :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
-                        <!-- <StaffDropDown v-else mode="multiple" :disabled="taskId?true:false"  v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" /> -->
-                        <PatientDropDown v-else mode="multiple" :disabled="true" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <StaffDropDown v-if="!taskId" mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <StaffDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <!-- <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" /> -->
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :globalCode="common.taskCategory" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :dataId="6" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskCategory')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :span="12">
+            <!-- <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
                         <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                     </a-form-item>
                 </div>
-            </a-col>
+            </a-col> -->
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(moment().subtract(1,'days'))" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -140,7 +137,7 @@ export default defineComponent({
         const value = ref("");
         const staffData = ref([]);
         const patientData = ref([]);
-        const idPatient = reactive(props.patientId);
+        // const idPatient = reactive(props.patientId);
         const isPatientTask = props.patientId ? true : false;
         const closeValue = ref(false);
         const taskForm = reactive({
@@ -151,7 +148,6 @@ export default defineComponent({
             assignedTo: [],
             assignedName: [],
             taskCategory: [],
-            startDate: "",
             dueDate: "",
             entityType: "",
         });
@@ -174,7 +170,7 @@ export default defineComponent({
                             priority: taskForm.priority,
                             assignedTo: taskForm.assignedTo,
                             taskCategory: taskForm.taskCategory,
-                            startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                            startDate: timeStamp(moment()),
                             dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
                             entityType: taskForm.entityType,
                         },
@@ -209,11 +205,13 @@ export default defineComponent({
                         description: taskForm.description,
                         taskStatus: taskForm.taskStatus,
                         priority: taskForm.priority,
-                        assignedTo: isPatientTask ? [idPatient] : taskForm.assignedTo,
+                        assignedTo: taskForm.assignedTo,
+                        // assignedTo: isPatientTask ? [idPatient] : taskForm.assignedTo,
                         taskCategory: taskForm.taskCategory,
-                        startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                        startDate: timeStamp(moment()),
                         dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
-                        entityType: isPatientTask ? "patient" : taskForm.entityType,
+                        entityType: taskForm.entityType,
+                        // entityType: isPatientTask ? "patient" : taskForm.entityType,
                     })
                     .then(() => {
                         closeValue.value = true;
@@ -287,9 +285,9 @@ export default defineComponent({
         watchEffect(() => {
             // store.dispatch("allStaffList");
             if (tasks.value.editTask && props.taskId) {
-
                 Object.assign(taskForm, tasks.value.editTask);
-                toggleTo.value = taskForm.entityType == "staff" ? false : true;
+                toggleTo.value = tasks.value.editTask.entityType == "staff" ? false : true;
+                taskForm.entityType = tasks.value.editTask.entityType
             }
         });
 
@@ -302,13 +300,9 @@ export default defineComponent({
         });
 
         function buttonToggle() {
-            if (toggleTo.value == true) {
-                toggleTo.value = !toggleTo.value;
-                taskForm.assignedTo = [];
-            } else {
-                toggleTo.value = !toggleTo.value;
-                taskForm.assignedTo = [];
-            }
+            toggleTo.value = !toggleTo.value;
+            taskForm.assignedTo = [];
+            taskForm.assignedName = [];
         }
 
         function checkChangeInput() {
@@ -367,12 +361,24 @@ export default defineComponent({
         };
 
         function changeDate() {
-            if (moment(taskForm.startDate) > moment(taskForm.dueDate)) {
+            if (moment() > moment(taskForm.dueDate)) {
                 taskForm.dueDate = ''
             }
 
         }
+         const handleGlobalChange = (data,type) =>{
+      if (type == "taskForm.taskStatus") {
+        taskForm.taskStatus = data;
+      }
+      if (type == "taskForm.priority") {
+        taskForm.priority = data;
+      }
+      if (type == "taskForm.taskCategory") {
+        taskForm.taskCategory = data;
+      }
+    }
         return {
+            handleGlobalChange,
             globalDateFormat,
             changeDate,
             taskFormFailed,

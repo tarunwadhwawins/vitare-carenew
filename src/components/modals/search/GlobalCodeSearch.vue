@@ -1,127 +1,95 @@
-<template>
-  <a-select v-if="globalCode && !isColor" class="" 
+<template>{{id}}
+  <a-select
   :getPopupContainer="triggerNode => triggerNode.parentNode"
-    :value="value"
+    ref="select"
+    class=""
     :listHeight="listHeight?listHeight:150"
-    show-search
-    showArrow
     :mode="mode"
-    placeholder="Please Select"
-    style="width: 100%"
-    size="large"
-    :options="globalCode.map((item) => ({label: item.name, value: item.id?item.id:item.udid }))"
-    :filter-option="filterOption"
-    @change="handleChange"
-  ></a-select>
-
-  <a-select v-else-if="globalCode && isColor" class="" 
-  :getPopupContainer="triggerNode => triggerNode.parentNode"
-  :listHeight="listHeight?listHeight:150"
     :value="value"
-    show-search
-    :mode="mode"
-    placeholder="Please Select"
+    @input="updateValue"
     style="width: 100%"
+    :show-search="true"
+    :placeholder="placeholder?placeholder:'input search text'"
+    :show-arrow="true"
+    :filter-option="false"
+    :not-found-content="loadingStatus ? undefined : null"
+    :options="globalData"
+    @search="handleGlobalSearch"
+    @change="handleGlobalChange"
     size="large"
-    :filter-option="filterOption">
-    <a-select-option class="priority" v-for="item in globalCode" :key="item.id">
-      <span v-if="isColor" class="circleBox" :style="item.style">
-        <span class="circleBoxName">{{ item.name }}</span>
-      </span>
-      <span v-else>{{ item.name }}</span>
-    </a-select-option>
+  >
+    <template v-if="loadingStatus" #notFoundContent>
+      <a-spin size="small" />
+      <p>Data not found!</p>
+    </template>
   </a-select>
-
-  <a-select v-else>
-     <a-select-option value="" hidden>{{'Please Select'}}</a-select-option>
-  </a-select>
-<!-- 
-    :options="globalCode.map((item) => ({label: isColor ? item.color+' '+item.name : item.name, value: item.id ? item.id : item.udid }))"
-     -->
-    <!-- <a-select v-if="globalCode && !isColor"
-    :value="value"
-    show-search
-    :mode="mode"
-    placeholder="Please Select"
-    style="width: 100%"
-    size="large"
-    :filter-option="filterOption"
-    :options="globalCode.map((item) => ({label: item.name, value: item.id?item.id:item.udid }))">
-  </a-select>
-  <a-select v-else>
-     <a-select-option value="" hidden>{{'Please Select'}}</a-select-option>
-  </a-select>
-  <a-select v-if="globalCode && isColor"
-    :value="value"
-    show-search
-    :mode="mode"
-    placeholder="Please Select"
-    style="width: 100%"
-    size="large"
-    :filter-option="filterOption">
-    <a-select-option class="priority" v-for="item in globalCode" :key="item.id">
-      <span v-if="isColor" class="circleBox" :style="item.style">
-        <span class="circleBoxName">{{ item.name }}</span>
-      </span>
-      <span v-else>{{ item.name }}</span>
-    </a-select-option>
-  </a-select>
-  <a-select v-if="!globalCode">
-     <a-select-option value="" hidden>{{'Please Select'}}</a-select-option>
-  </a-select> -->
 </template>
+
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, watchEffect, onMounted,ref } from "vue";
+import { useStore } from "vuex";
+import Services from "@/services/serviceMethod";
 export default defineComponent({
-  props:{
-    globalCode:Array,
-    mode:String,
-    isColor:Boolean,
-    listHeight:Number
+  components: {},
+  props: {
+    value: String,
+    mode: String,
+    close: Boolean,
+    editDataGlobal:Array,
+    placeholder:String,
+    listHeight:Number,
+    dataId:Number
   },
-  setup(props, { emit }) {
- 
-    const filterOption = (input, globalCode) => {
-      // console.log('globalCode', globalCode,input)
-      return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+
+  setup(props, context) {
+    const store = useStore();
+    const globalData = ref()
+    
+   
+
+    const updateValue = (event) => {
+      context.emit("update:modelValue", event.target.value);
+    };
+    watchEffect(() => {
+      if (props.close) {
+        Services.singleDropdownSearch(
+          "",
+          (d) => (globalData.value = d),
+          `globalCode?orderField=priority&globalCodeCategoryId=${props.dataId}`
+        );
+        store.commit("checkChangeInput", false);
+      }
+       props.editDataGlobal?globalData.value = props.editDataGlobal:globalData.value
+    });
+    onMounted(() => {
+      Services.singleDropdownSearch(
+        "",
+        (d) => (globalData.value = d),
+        `globalCode?orderField=priority&globalCodeCategoryId=${props.dataId}`
+      );
+    });
+
+    const handleGlobalSearch = (val) => {
+      store.commit("dropdownLoadingStatus", true);
+      globalData.value = [];
+      Services.singleDropdownSearch(
+        val,
+        (d) => (globalData.value = d),
+        `globalCode?orderField=priority&globalCodeCategoryId=${props.dataId}`
+      );
     };
 
-    const handleChange = () => {
-      emit('change')
-    }
+    const handleGlobalChange = (val) => {
+      context.emit("handleGlobalChange", val);
+    };
 
     return {
-      value: ref(undefined),
-      filterOption,
-      handleChange,
+      loadingStatus: store.getters.dropdownLoadingStatus,
+      handleGlobalChange,
+      handleGlobalSearch,
+      globalData,
+      updateValue,
     };
   },
-
 });
 </script>
-
-<style scoped>
-  /* .ant-select-selection-item {
-    padding-left: 35px !important;
-    position: relative !important;
-    top: -7px !important;
-  }
-  .ant-select-selection-item .circleBox {
-    position: relative;
-    top: 6px;
-  } */
-  .ant-select-selection-item .circleBox { 
-    position: relative;
-    top: 6px;
-  }
-  .ant-select-selection-item .circleBoxName { 
-    position: relative;
-    top: -6px;
-    left: 35px;
-  }
-  .ant-select-item-option-content .circleBoxName { 
-    padding-left: 35px;
-    position: relative;
-    top: 2px;
-  }
-</style>

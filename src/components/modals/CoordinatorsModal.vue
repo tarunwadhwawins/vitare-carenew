@@ -32,11 +32,11 @@
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.lastName" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                                 </a-form-item>
                             </div>
-                        </a-col>
+                        </a-col> 
                         <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.designationId" :globalCode="careCordinator.designations" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.designationId" :dataId="17" @handleGlobalChange="handleGlobalChange($event,'personalInfoData.designationId')" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.designationId" :name="errorMsg.designationId?errorMsg.designationId[0]:''" />
                                 </a-form-item>
                             </div>
@@ -45,7 +45,7 @@
                         <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.genderId" :globalCode="careCordinator.gender" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.genderId" :dataId="9" @handleGlobalChange="handleGlobalChange($event,'personalInfoData.genderId')" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.genderId" :name="errorMsg.genderId?errorMsg.genderId[0]:''" />
                                 </a-form-item>
                             </div>
@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
 
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.specializationId" :globalCode="careCordinator.specialization" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.specializationId" :dataId="2" @handleGlobalChange="handleGlobalChange($event,'personalInfoData.specializationId')" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.specializationId" :name="errorMsg.specializationId?errorMsg.specializationId[0]:''" />
                                 </a-form-item>
                             </div>
@@ -86,7 +86,7 @@
                         <a-col :sm="12" :xs="24" :xl="8">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.networkId" :globalCode="careCordinator.network" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.networkId"  :dataId="10" @handleGlobalChange="handleGlobalChange($event,'personalInfoData.networkId')" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.networkId" :name="errorMsg.networkId?errorMsg.networkId[0]:''" />
                                 </a-form-item>
                             </div>
@@ -355,7 +355,23 @@ export default {
         })
         const paramId = addStaff.value ? addStaff.value.id : ''
 
+         const handleGlobalChange = (data,type) =>{
+      if (type == "personalInfoData.designationId") {
+        personalInfoData.designationId = data;
+      }
+      if (type == "personalInfoData.genderId") {
+        personalInfoData.genderId = data;
+      }
+       if (type == "personalInfoData.specializationId") {
+        personalInfoData.specializationId = data;
+      }
+       if (type == "personalInfoData.networkId") {
+        personalInfoData.networkId = data;
+      }
+    }
+
         return {
+            handleGlobalChange,
             setPhoneNumber,
             phone,
             formRef,

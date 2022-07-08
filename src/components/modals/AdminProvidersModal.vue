@@ -25,7 +25,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="countryId" :rules="[{ required: true, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-if="globalCode.country" v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-if="globalCode.country" v-model:value="providerForm.countryId" :dataId="20" @handleGlobalChange="handleGlobalChange($event,'providerForm.countryId')" @change="checkChangeInput()" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
@@ -33,7 +33,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="stateId" :rules="[{ required: true, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.stateId" :globalCode="globalCode.state" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-model:value="providerForm.stateId" :dataId="21" @handleGlobalChange="handleGlobalChange($event,'providerForm.stateId')" @change="checkChangeInput()" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
                                 </a-form-item>
                             </div>
@@ -65,14 +65,14 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.tags')" name="tagId" :rules="[{ required: true, message: $t('providers.tags')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.tagId" mode="multiple" :globalCode="providerTags" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-model:value="providerForm.tagId" mode="multiple" :dataId="12" @handleGlobalChange="handleGlobalChange($event,'providerForm.tagId')" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.modules')" name="moduleId" :rules="[{ required: true, message: $t('providers.modules')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown :listHeight="100" v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown :listHeight="100" v-model:value="providerForm.moduleId" mode="multiple"  :dataId="48" @handleGlobalChange="handleGlobalChange($event,'providerForm.moduleId')" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -121,7 +121,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="stateId" :rules="[{ required: true, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerLocationForm.stateId" :globalCode="globalCode.state" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown v-model:value="providerLocationForm.stateId" :dataId="21" @handleGlobalChange="handleGlobalChange($event,'providerLocationForm.stateId')" @change="checkChangeInput()" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.stateId[0]:''" />
                                 </a-form-item>
                             </div>
@@ -503,7 +503,26 @@ export default {
       }
     });
 
+    const handleGlobalChange = (data, type) => {
+      if (type == "providerForm.countryId") {
+        providerForm.countryId = data;
+      }
+      if (type == "providerForm.stateId") {
+        providerForm.stateId = data;
+      }
+      if (type == "providerForm.tagId") {
+        providerForm.tagId = data;
+      }
+      if (type == "providerForm.moduleId") {
+        providerForm.moduleId = data;
+      }
+      if (type == "providerLocationForm.stateId") {
+        providerLocationForm.stateId = data;
+      }
+    };
+
     return {
+      handleGlobalChange,
       clearLocationForm,
       editProviderLocationData,
       editProviderLocation,

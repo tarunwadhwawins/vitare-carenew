@@ -33,17 +33,17 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Message Type') {
             state.messageType = element.globalCode;
         }
-        if (element.name === 'Language') {
-            //Arrangd english(2) and spanish(12) default top language
-            let defaultLang = []
-            let temp = [2,12]
-            defaultLang.splice(0,2, element.globalCode[2],element.globalCode[12]);
-            let orderLang = element.globalCode.filter(function(value, index) {
-                return temp.indexOf(index) == -1;
-           })
-           state.language = defaultLang.concat(orderLang)
+        // if (element.name === 'Language') {
+        //     //Arrangd english(2) and spanish(12) default top language
+        //     let defaultLang = []
+        //     let temp = [2,12]
+        //     defaultLang.splice(0,2, element.globalCode[2],element.globalCode[12]);
+        //     let orderLang = element.globalCode.filter(function(value, index) {
+        //         return temp.indexOf(index) == -1;
+        //    })
+        //    state.language = defaultLang.concat(orderLang)
            
-        }
+        // }
         if (element.name === 'Country') {
             state.country = element.globalCode;
         }

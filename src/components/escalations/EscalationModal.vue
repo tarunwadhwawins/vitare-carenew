@@ -19,14 +19,14 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :dataId="60" @handleGlobalChange="handleGlobalChange($event)" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Flag" name="flagId" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="escalation.flagId" :globalCode="flagsList" />
+                                    <ArrayDataSearch @change="checkChangeInput()" v-model:value="escalation.flagId" :globalCode="flagsList" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -210,6 +210,7 @@ import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vu
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader.vue";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 const notesColumns = [
   {
     title: "Select All",
@@ -386,6 +387,7 @@ export default {
     PatientDropDown,
     Loader,
     DateFilter,
+    ArrayDataSearch,
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -826,7 +828,12 @@ let dateFormate = {
       store.commit('showStaffDetailsModal')
     }
 
+    const handleGlobalChange = (data) =>{
+      escalation.escalationType = data
+    }
+
     return {
+      handleGlobalChange,
       showModal,
       editDataPatient,
       editDataStaff,
