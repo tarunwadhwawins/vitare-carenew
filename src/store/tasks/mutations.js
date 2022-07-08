@@ -401,6 +401,12 @@ export const latestTaskSuccess = async (state, result) => {
 };
 
 export const showTaskModalData = (state, data) => {
-  state.showTaskModalData = data
+//   state.showTaskModalData = data
+  state.showTaskModalData = data.map((element) => {
+	element.dueDate = dateOnlyFormat(element.dueDate);
+	element.startDate = dateOnlyFormat(element.startDate);
+	element.category = element.category.map((item) => item.taskCategory);
+	return element;
+});
 
 }

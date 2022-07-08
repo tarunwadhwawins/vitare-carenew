@@ -14,8 +14,8 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy');changedValue" :isDisabled="isDisabled" />
-                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy');changedValue"  />
+                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large" :isDisabled="isDisabled">
                             <a-select-option value="" hidden>Select Logged By</a-select-option>
                             <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
                         </a-select> -->
@@ -26,8 +26,8 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy');changedValue" :isDisabled="isDisabled" />
-                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy');changedValue"  />
+                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large" :isDisabled="isDisabled">
                             <a-select-option value="" hidden>Select Performed By</a-select-option>
                             <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
                         </a-select> -->

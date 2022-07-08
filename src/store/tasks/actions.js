@@ -349,6 +349,7 @@ export const showTaskModalData = async ({ commit }, id) => {
 	commit('loadingStatus', true);
 	await ServiceMethodService.common('get', `patient/${id}/taskAssigned`, null, null)
 		.then((response) => {
+			console.log(response)
 			commit('showTaskModalData', response.data.data);
 			commit('loadingStatus', false);
 		})
