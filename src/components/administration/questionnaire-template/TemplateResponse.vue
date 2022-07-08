@@ -4,7 +4,9 @@
     
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
         <div class="template" v-for="questionList in detailsQuestionnaireTemplate.questionnaireQuestion" :key="questionList.id">
-            <a-typography-title :level="5">{{ questionList }}</a-typography-title>
+        <div v-if="questionList.entityType=='question'">
+          <div v-for="record,index in questionList.question" :key="index">
+            <a-typography-title :level="5"></a-typography-title>
             <!-- <div class="templateInner">
                 <div v-if="questionList.question.dataTypeId==243">
                     <a-radio-group v-if="questionList.question.dataTypeId==243" v-model:value="questionnaireTemplate.question.radioOption[questionList.id]">
@@ -48,7 +50,57 @@
                     </a-col>
                 </div>
             </div> -->
+        </div>
+        </div>
+        <div class="healthTemplateBox" v-else>
+       <h4>Section Name : {{questionList.questionnaireSection.sectionName}}</h4>
+<div v-for="record,index in questionList.questionnaireSection.questionSection" :key="index">
+ <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
+            <div class="templateInner">
+                <div v-if="record.question.dataTypeId==243">
+                    <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[record.question.id]">
+                        <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                            <div class="questionOutput">
+                                <div>{{index+1}}.</div>
+                                <a-radio v-model:value="options.id"></a-radio>
+                                <div class="ml-10 ">
+                                    <p>{{ options.option }}</p>
+                                </div>
+                            </div>
+                        </a-col>
+                    </a-radio-group>
+                </div>
+                <div v-else-if="record.question.dataTypeId==244">
+                    <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[record.question.id]">
+                        <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                            <div class="questionOutput">
+                                <div>{{index+1}}.</div>
+                                <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
+                                </a-checkbox>
+                                <div class="ml-10 ">
+                                    <p>{{ options.option }}</p>
+                                </div>
+                            </div>
+                        </a-col>
+                    </a-checkbox-group>
+                </div>
+                <div v-else>
+                    <a-col :span="24">
+                        
+                            <div class="form-group">
+                                <a-form-item name="templateName">
+                                    <a-textarea v-model:value="questionnaireTemplate.templateText[record.question.question.id]" placeholder="Enter Text..." :bordered="false" :rows="2"  width="100%" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
+                                </a-form-item>
 
+                           
+
+                        </div>
+                    </a-col>
+                </div>
+            </div>
+</div> 
+            </div>
         </div>
         <a-col :span="24" v-if="templateDetailsList.length>0">
 
@@ -109,10 +161,11 @@ const show = ref(false)
       store.dispatch("detailsQuestionnaireTemplate", udid);
       store.dispatch("templateDetailsList", udid);
     });
+    const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
     const ansTemplate = () => {
       let data = [];
-      templateDetailsList.value
-        ? templateDetailsList.value.forEach((element) => {
+      detailsQuestionnaireTemplate.value
+        ? detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
             let newRescord = "";
             if (element.dataTypeId == 244) {
               newRescord = {
@@ -146,22 +199,32 @@ show.value = true
     };
     const templateDetailsList = store.getters.templateDetailsList;
     watchEffect(() => {
-      templateDetailsList.value
-        ? templateDetailsList.value.forEach((element) => {
-            if (element.dataTypeId == 243 || element.dataTypeId == 244) {
+      console.log("check",detailsQuestionnaireTemplate.value)
+      detailsQuestionnaireTemplate.value
+        ? detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
+           
+         if(element.entityType!='question'){
+          element.questionnaireSection.questionSection.map((records)=>{
+
+         
+ if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
               let checkBox = [];
-              element.options.forEach((item) => {
-                if (item.defaultOption == 1 && element.dataTypeId == 243) {
-                  questionnaireTemplate.radioOption[element.id] = item.id;
+              records.question.options.forEach((item) => {
+                if (item.defaultOption == 1 && records.question.dataTypeId == 243) {
+                  questionnaireTemplate.radioOption[records.question.id] = item.id;
                 }
-                if (item.defaultOption == 1 && element.dataTypeId == 244) {
+                if (item.defaultOption == 1 && records.question.dataTypeId == 244) {
+                  console.log("check",records.question)
                   checkBox.push(item.id);
                 }
               });
               if (checkBox.length > 0) {
-                questionnaireTemplate.checkBoxOption[element.id] = checkBox;
+                questionnaireTemplate.checkBoxOption[records.question.id] = checkBox;
               }
             }
+            })
+         }
+           
           })
         : "";
     });
@@ -169,7 +232,7 @@ show.value = true
     return {
       udid,
       questionnaireTemplate,
-      detailsQuestionnaireTemplate: store.getters.detailsQuestionnaireTemplate,
+      detailsQuestionnaireTemplate,
       templateDetailsList,
       ansTemplate,
       value: ref("1"),
