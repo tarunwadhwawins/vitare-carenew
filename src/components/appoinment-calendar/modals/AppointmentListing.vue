@@ -4,11 +4,17 @@
 
     <a-table rowKey="id" :columns="columns" :data-source="appointmentsRecords">
       <template #staff="{text,record}" >
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link>
+      <a @click="showStaffModal( record.staff_id)" v-if="arrayToObjact(screensPermissions, 40)" >{{ text }}</a>
+      <span v-else>{{text}}</span>
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link> -->
     </template>
     <template #patient="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient_id } }">{{ text }}</router-link>
-
+            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient_id } }">{{ text }}</router-link> -->
+        <a @click="showPatientModal( record.patient_id)" >{{ text }}</a>
+        </template>
+        <template #patient="{ text }" v-else>
+            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient_id } }">{{ text }}</router-link> -->
+        <span>{{ text }}</span>
         </template>
       <template #flags="{ record }">
         
@@ -26,7 +32,7 @@
 </template>
 <script>
 
-import { dateAndTimeFormate , arrayToObjact} from "@/commonMethods/commonMethod";
+import { dateAndTimeFormate , arrayToObjact,showStaffModal,showPatientModal} from "@/commonMethods/commonMethod";
 import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
 import { reactive } from 'vue-demi';
@@ -104,6 +110,8 @@ export default {
     }
     const appointmentsRecords = reactive(props.appointments)
     return {
+      showPatientModal,
+      showStaffModal,
       screensPermissions: store.getters.screensPermissions,
     arrayToObjact,
       columns,

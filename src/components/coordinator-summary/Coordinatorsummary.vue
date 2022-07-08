@@ -22,7 +22,7 @@
                                 </template>
                                 <a >
                                     <!-- <KeyOutlined  @click="resetPasseord()" /> -->
-                                    <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord()"/>
+                                    <KeyIcon height=16 width=16 alt="Reset Password" @click="resetPasseord()"/>
                                 </a>
                             </a-tooltip>
                             <a-tooltip placement="top" class="editIcon">

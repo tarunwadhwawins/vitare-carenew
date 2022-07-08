@@ -1,6 +1,6 @@
 <template>
   <div class="callRightWrapper chatBoxRight">
-    <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+    <span  v-if="!isDetails" class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
     <div class="header">
       <a-row>
         <a-col :span="12">
@@ -14,7 +14,7 @@
             <PatientVitalsIcon :isBold="patientVitalsVisible" @onClick="showVitalsModal" :patientId="patientUdid" />
             <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
             <PinIcon @onClick="addPin" />
-            <StartCall v-if="isChat" :patientId="patientUdid" />
+            <StartCall v-if="isChat && !isDetails" :patientId="patientUdid" />
             <a-col :span="8" v-if="currentUrl && !isChat">
               <div class="moreAction" @click="copyURL(currentUrl)">
                 <div class="moreActionImg purpleBgColor">
@@ -113,6 +113,7 @@ export default {
     currentUrl: {
       type: String
     },
+    isDetails:Boolean
   },
   setup(props) {
     const store = useStore()
@@ -139,6 +140,7 @@ export default {
       notesDetailVisible.value = false
       documentDetailVisible.value = false
       timelineDetailVisible.value = true
+      patientAppointmentsVisible.value = false
     }
 
     const showNotesModal = () => {

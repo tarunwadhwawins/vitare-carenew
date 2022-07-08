@@ -158,7 +158,7 @@ export default defineComponent({
             id: pId,
             documentId: id,
           };
-          console.log("data", data);
+          // console.log("data", data);
           store.dispatch("deleteDocument", data).then(() => {
             store.dispatch("patientDocuments", pId);
             if (patientDocuments.value.length <= 1) {

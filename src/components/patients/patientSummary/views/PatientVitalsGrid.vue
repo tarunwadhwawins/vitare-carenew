@@ -172,7 +172,7 @@ export default {
         bloodOxygenSeries.value = bloodOxygenGraph.value.records
         bloodOxygenTimesArray.value = bloodOxygenGraph.value.timesArray
       }
-      console.log('bloodOxygenGraph', bloodOxygenSeries.value)
+      // console.log('bloodOxygenGraph', bloodOxygenSeries.value)
     })
     
     const bloodPressureOptions = {

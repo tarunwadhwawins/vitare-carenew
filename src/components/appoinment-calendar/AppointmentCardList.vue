@@ -28,7 +28,8 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Coordinator</div>
                         <div class="rightWrapper" v-if="arrayToObjact(screensPermissions,38)">
-                            <router-link :to="{ name: 'CoordinatorSummary', params: { udid:cardRecords.staff_id}}">{{cardRecords.staff}}</router-link>
+                        <a @click="showStaffModal(cardRecords.staff_id)" >{{ cardRecords.staff }}</a>
+                            <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:cardRecords.staff_id}}">{{cardRecords.staff}}</router-link> -->
                         </div>
                         <div class="rightWrapper" v-else>
                             <span >{{cardRecords.staff}}</span>
@@ -37,7 +38,8 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Patient</div>
                         <div class="rightWrapper" v-if="arrayToObjact(screensPermissions,63)">
-                            <router-link :to="{ name: 'PatientSummary', params: { udid:cardRecords.patient_id}}">{{cardRecords.patient}}</router-link>
+                         <a @click="showPatientModal( cardRecords.patient_id)" >{{ cardRecords.patient }}</a>
+                            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid:cardRecords.patient_id}}">{{cardRecords.patient}}</router-link> -->
                         </div>
                         <div class="rightWrapper" v-else>
                             <span >{{cardRecords.patient}}</span>
@@ -56,8 +58,11 @@
                         <div class="rightWrapper">{{ cardRecords.duration }}</div>
                     </div>
                     <div class="itemWrapper">
-                      <div class="leftWrapper">Flags</div>
-                      <div class="rightWrapper"><span class="box" :title="cardRecords.flagName" :style="{ 'background-color': cardRecords.flags }"></span></div>
+                      <div class="leftWrapper">Priority</div>
+                      <div class="rightWrapper">
+                        <!-- <span class="box" :title="cardRecords.flagName" :style="{ 'background-color': cardRecords.flags }"></span> -->
+                         <span >{{cardRecords.flagName}}</span>
+                      </div>
                   </div>
                     <div class="notesWrapper">
                         <span>Notes</span>
@@ -112,7 +117,7 @@
 <script>
 import { ref, reactive, computed } from "vue";
 import { FileAddOutlined } from "@ant-design/icons-vue";
-import { dateAndTimeFormate,arrayToObjact } from "@/commonMethods/commonMethod";
+import { dateAndTimeFormate,arrayToObjact,showStaffModal,showPatientModal } from "@/commonMethods/commonMethod";
 
 import { useStore } from "vuex";
 import AppointmentListing from "@/components/appoinment-calendar/modals/AppointmentListing"
@@ -219,6 +224,8 @@ export default {
       store.state.appointment.showMoreRecords = "";
     }
     return {
+      showPatientModal,
+      showStaffModal,
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       visible,

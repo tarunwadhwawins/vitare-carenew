@@ -3,7 +3,7 @@ import authHeader from './authHeader';
 import store from "../store/index"
 // import jsonp from "fetch-jsonp";
 import qs from "qs";
-import { errorSwal } from '@/commonMethods/commonMethod';
+// import { errorSwal } from '@/commonMethods/commonMethod';
 import router from '@/router';
 
 const API_URL = process.env.VUE_APP_API_URL
@@ -148,17 +148,26 @@ class ServiceMethodService {
         }
         currentValue = value;
         function fake() {
-            const str = qs.stringify({
-                code: "utf-8",
-                search: value,
-                deviceType: deviceType ? deviceType : "",
-                isAvailable: isAvailable ? isAvailable : "",
-                orderField: orderField ? orderField : "",
-                orderBy: orderBy ? orderBy : "",
-            });
+            var str = {}
+            if(endpoint == 'inventory') {
+                str = qs.stringify({
+                    code: "utf-8",
+                    search: value,
+                    deviceType: deviceType ? deviceType : "",
+                    isAvailable: isAvailable ? isAvailable : "",
+                    orderField: orderField ? orderField : "",
+                    orderBy: orderBy ? orderBy : "",
+                });
+            }
+            else {
+                str = qs.stringify({
+                    code: "utf-8",
+                    search: value,
+                });
+            }
             
             const searchUrl = `${endpoint}` + '?' + `${str.trim()}`
-            console.log('searchUrl', searchUrl)
+            // console.log('searchUrl', searchUrl)
             axios.get(API_URL + searchUrl, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
@@ -194,7 +203,7 @@ class ServiceMethodService {
                             else if(item.macAddress && item.fullName) {
                                 label = `${item.modelNumber} (${item.macAddress})`
                             }
-                            console.log('label', label)
+                            // console.log('label', label)
                             if(endpoint == 'inventory') {
                                 data.push({
                                     value: item.udid?item.udid:item.id,
@@ -222,11 +231,11 @@ class ServiceMethodService {
                         store.commit('errorMsg', error.response.data)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         this.removeStorage()
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
 
                     }
@@ -288,11 +297,11 @@ class ServiceMethodService {
                         store.commit('errorMsg', error.response.data)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         this.removeStorage()
-                        errorSwal(error.response.data.message)
+                        // errorSwal(error.response.data.message)
                         store.commit('dropdownLoadingStatus', false)
                     }
                 });

@@ -4,8 +4,16 @@ import store from '@/store/index'
 import Bowser from "bowser";
 // import momentTimeZone from 'moment-timezone';
 
+export function showPatientModal(id){
+	store.commit("patientUdid", id)
+	store.dispatch("patientDetails", id)
+	store.commit('showPatientDetailsModal')
+  }
 
-
+ export function showStaffModal(id){
+	store.dispatch("staffSummary", id)
+	store.commit('showStaffDetailsModal')
+  }
 //for all timeStamp to according date and time format
 export function dateAndTimeFormate(timeStamp, format) {
 	var date = moment.unix(new Date(timeStamp));

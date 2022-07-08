@@ -3,16 +3,18 @@
     <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
           
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link>
-    
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link> -->
+             <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staffId)" >{{ record.staff }}</a>
             <span v-else >{{record.staff}}</span>
         </template>
         <template #patient="{record}">
-             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link>
+         <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patientId)" >{{record.patient }}</a>
+             <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link> -->
             <span v-else :title="messages.access">{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
-            <Flags :flag="record.flagColor" :data="record" />
+            <!-- <Flags :flag="record.flagColor" :data="record" /> -->
+            <span>{{record.flagName}}</span>
         </template>
         <template #flag="{ text }">
             <span>
@@ -70,11 +72,13 @@ import {
 import {
     warningSwal,
     arrayToObjact,
-   timeStampFormate
+   timeStampFormate,
+   showStaffModal,
+   showPatientModal
 } from "@/commonMethods/commonMethod";
 
 
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';
 
 export default {
@@ -85,7 +89,7 @@ export default {
         TableLoader,
         AuditTimeLog,
         ViewTimeLogTable,
-        Flags,
+        // Flags,
     },
 props:{
 
@@ -213,7 +217,8 @@ props:{
         }
 
         return {
-
+            showPatientModal,
+            showStaffModal,
             screensPermissions: store.getters.screensPermissions,
             handleTableChange,
             Id,

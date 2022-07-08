@@ -232,7 +232,8 @@ img.reportFlag {
 	}
 	.ant-modal-body {
 		overflow:auto;
-		max-height: 80vh;
+		// max-height: 80vh;
+		max-height: 85vh;
 		min-height:300px!important;
 	}
 }
@@ -252,6 +253,13 @@ img.reportFlag {
 	height: 25px;
 	border-radius: 50%;
 	display: inline-block;
+}
+.ant-select-selection-search-input {
+	line-height: 39px!important;
+}
+.ant-table-thead > tr > th {
+	font-weight: 600;
+	font-size: 15px;
 }
 
 /*----*/

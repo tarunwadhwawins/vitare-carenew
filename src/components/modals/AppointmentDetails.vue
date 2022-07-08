@@ -17,13 +17,15 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Care Coordinator</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.staff}}
+                            <!-- {{appointmentDetails?.staff}} -->
+                            <router-link v-if="appointmentDetails && appointmentDetails.staffUdid" :to="{ name: 'CoordinatorSummary', params: { udid: appointmentDetails.staffUdid } }">{{ appointmentDetails.staff }}</router-link>
                         </div>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Patient</div>
                         <div class="rightWrapper">
-                            {{appointmentDetails?.patient}}
+                            <!-- {{appointmentDetails?.patient}} -->
+                            <router-link v-if="appointmentDetails && appointmentDetails.patientUdid" :to="{ name: 'PatientSummary', params: { udid: appointmentDetails.patientUdid } }">{{ appointmentDetails.patient }}</router-link>
                         </div>
                     </div>
                     <div class="itemWrapper" >
@@ -43,11 +45,12 @@
                         <div class="rightWrapper">{{ appointmentDetails?.status }}</div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">flag</div>
+                        <div class="leftWrapper">Priority</div>
                         <div class="rightWrapper">
-                           <a-tooltip placement="top" :title="appointmentDetails?.flagName">
+                           <!-- <a-tooltip placement="top" :title="appointmentDetails?.flagName">
                             <span class="box" :style="{ 'background-color': appointmentDetails?.flagColor}"></span>
-                           </a-tooltip>
+                           </a-tooltip> -->
+                           <span>{{appointmentDetails?.flagName}}</span>
                         </div>
                     </div>
                     <div class="itemWrapper">

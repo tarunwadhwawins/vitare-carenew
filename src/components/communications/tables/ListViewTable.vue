@@ -20,9 +20,10 @@
     <template #from="{ record }" class="custom" >
       <div v-if="record.is_sender_patient" class="customTd">
         <span v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
+        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
           {{record.from}}
-        </router-link>
+        </router-link> -->
+        <a @click="showPatientModal( record.fromId)" >{{ record.from }}</a>
         </span>
         <span v-else>
           {{record.from}}
@@ -30,9 +31,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
           {{record.from}}
-        </router-link>
+        </router-link> -->
+        <a @click="showStaffModal( record.fromId)" >{{ record.from }}</a>
         </span>
         <span v-else>
           {{record.from}}
@@ -43,9 +45,10 @@
     <template #to="{ record }" class="custom">
       <div v-if="record.is_receiver_patient" class="customTd">
         <span v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
+        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link>
+        </router-link> -->
+         <a @click="showPatientModal( record.toId)" >{{ record.to }}</a>
         </span>
         <span v-else>
           {{record.to}}
@@ -53,9 +56,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
+        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link>
+        </router-link> -->
+        <a @click="showStaffModal( record.toId)" >{{ record.to }}</a>
         </span>
         <span v-else>
           {{record.to}}
@@ -131,6 +135,14 @@
           <MessageOutlined />
         </a>
       </a-tooltip>
+      <a-tooltip placement="bottom" v-else-if="record.type == 'Email'">
+        <template #title>
+          <span>{{ $t("common.reply") }}</span>
+        </template>
+        <a class="icons" @click="showModal(record, $event)">
+          <MessageOutlined />
+        </a>
+      </a-tooltip>
       <a-tooltip placement="bottom" v-else>
         <template #title>
           <span>{{ $t("common.view") }}</span>
@@ -142,7 +154,7 @@
     </template>
 
   </a-table>
-  <CommunicationGmailView v-model:visible="visibleGmail" />
+  <ReplyEmailModal v-model:visible="visibleGmail" @is-visible="handleOk" :communication="communicationId" />
   <CommunicationView v-model:visible="visibleCommunication" v-if="visibleCommunication" />
   <!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
   <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
@@ -153,8 +165,8 @@ import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 //import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
-import {  arrayToObjact, } from "@/commonMethods/commonMethod";
-import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
+import {  arrayToObjact,showStaffModal,showPatientModal } from "@/commonMethods/commonMethod";
+import ReplyEmailModal from '@/components/modals/ReplyEmailModal'
 import CommunicationView from '@/components/modals/CommunicationView'
 import {
   EyeOutlined,
@@ -173,7 +185,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
-    CommunicationGmailView,
+    ReplyEmailModal,
     CommunicationView,
     //Chat,
     ChatWithPatientInformation,
@@ -366,38 +378,42 @@ export default {
       }
     };
     const showModal = (e, event) => {
-      store.commit('loadingStatus', true)
-      setTimeout(() => {
-        if(e.is_receiver_patient || e.is_sender_patient) {
-          chatWithPatientInfoVisible.value = true;
-        }
-        else {
-          visible.value = true;
-        }
-        store.commit('loadingStatus', false)
-        communicationId.value = e;
-        event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
-      }, 3000)
-    }
-
-    const viewData = (e) => {
-      if(e.type == 'App Call') {
-        store.dispatch('callDetails', e.id).then(() => {
-          visibleCommunication.value = true;
-        })
+      if(e.type == 'App Message') {
+        store.commit('loadingStatus', true)
+        setTimeout(() => {
+          if(e.is_receiver_patient || e.is_sender_patient) {
+            chatWithPatientInfoVisible.value = true;
+          }
+          else {
+            visible.value = true;
+          }
+          store.commit('loadingStatus', false)
+          communicationId.value = e;
+          event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
+        }, 3000)
       }
       else {
+        communicationId.value = e;
         store.dispatch('communicationsView', e.id).then(() => {
           visibleGmail.value = true;
         })
       }
+    }
+
+    const viewData = (e) => {
+      store.dispatch('callDetails', e.id).then(() => {
+        visibleCommunication.value = true;
+      })
     };
 
-    const handleOk = () => {
+    const handleOk = (value) => {
       visible.value = false;
+      visibleGmail.value = value ? value : false;
     };
 
     return {
+      showPatientModal,
+      showStaffModal,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       communicationColumns,

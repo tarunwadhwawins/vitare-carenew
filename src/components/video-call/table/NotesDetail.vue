@@ -10,9 +10,12 @@
                 <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
                         <div class="leftWrapper">Added By</div>
-                        <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: detailsNotes.addedById}}">
+                        <!-- <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: detailsNotes.addedById}}">
                           <div class="rightWrapper">{{ detailsNotes.addedBy }}</div>
-                        </router-link>
+                        </router-link> -->
+                        <a v-if="detailsNotes.addedByType == 'staff'" @click="showStaffModal(detailsNotes.addedById)">{{ detailsNotes.addedBy }}</a>
+                        <a v-else @click="showPatientModal(detailsNotes.addedById)">{{ detailsNotes.addedBy }}</a>
+
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Date Time</div>
@@ -39,8 +42,11 @@
                         </div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Flags</div>
-                        <div class="rightWrapper"><span class="box" :title="detailsNotes.flag" :style="{ 'background-color': detailsNotes.color }"></span></div>
+                        <div class="leftWrapper">Priority</div>
+                        <div class="rightWrapper">
+                          <!-- <span class="box" :title="detailsNotes.flag" :style="{ 'background-color': detailsNotes.color }"></span> -->
+                          <span>{{detailsNotes.flag}}</span>
+                        </div>
                     </div>
                     <div class="itemWrapper">
                         <div class="leftWrapper">Note</div>
@@ -58,7 +64,8 @@
         <a-button @click="showNoteModal" type="primary">{{'Add Note'}}</a-button>
         <a-table :scroll="{ y: 250 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
             <template #flags="{ record }">
-              <Flags :flag="record.color" :data="record" />
+              <!-- <Flags :flag="record.color" :data="record" /> -->
+              <span>{{record.flag}}</span>
             </template>
             <template #action="{record}">
               <a-tooltip placement="right">
@@ -85,15 +92,15 @@ import {
   defineAsyncComponent,
 } from "vue";
 import { useStore } from "vuex";
-import Flags from "@/components/common/flags/Flags";
+// import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import { EyeTwoTone, CloseOutlined } from "@ant-design/icons-vue";
-import { actionTrack } from "@/commonMethods/commonMethod";
+import { actionTrack,showPatientModal,showStaffModal } from "@/commonMethods/commonMethod";
 
 export default defineComponent({
   components: {
-    Flags,
+    // Flags,
     EyeTwoTone,
     CloseOutlined,
     Loader,
@@ -141,7 +148,7 @@ export default defineComponent({
         className: "note-date",
       },
       {
-        title: "Flag",
+        title: "Priority",
         dataIndex: "color",
         key: "color",
         slots: {
@@ -183,7 +190,10 @@ export default defineComponent({
       addNoteVisible.value = value;
     }
 
+
     return {
+      showPatientModal,
+      showStaffModal,
       showNoteModal,
       addNoteVisible,
       paramsId: route.params.udid,

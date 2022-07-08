@@ -76,7 +76,7 @@ export default defineComponent({
         Object.assign(addCareTeamForm, patientCareCoordinatorDetails.value)
         patientCareCoordinatorName.value = patientCareCoordinatorDetails.value != null ? patientCareCoordinatorDetails.value.staff : ''
       }
-      console.log('props.staffType', props.staffType)
+      // console.log('props.staffType', props.staffType)
       store.dispatch('patientCareCoordinatorsList', {
         patientUdid: patientUdid,
         type: props.staffType

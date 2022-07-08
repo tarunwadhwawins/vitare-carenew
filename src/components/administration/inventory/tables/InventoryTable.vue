@@ -31,7 +31,8 @@
             <template #title>
                 <span>{{'Assigned to '+ record.fullName }}</span>
             </template>
-            <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link>
+            <!-- <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link> -->
+            <a v-if="record.patientId"  @click="showPatientModal(record.patientId )" >{{ record.isAvailable }}</a>
         </a-tooltip>
         <a-tooltip v-else>
            <span>{{ record.isAvailable }}</span>
@@ -46,7 +47,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
-import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
+import { warningSwal, arrayToObjact,showPatientModal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 export default {
@@ -220,6 +221,7 @@ export default {
       }
     };
     return {
+      showPatientModal,
       arrayToObjact,
       screensPermissions: store.getters.screensPermissions,
       deleteInventory,

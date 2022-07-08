@@ -76,6 +76,7 @@ const global = {
   familyMembers:'Family Members',
   responsiblePersons:'Responsible Persons',
   addFamilyMembers:'Add Family Member',
+  updateFamilyMembers: 'Update Family Member',
   addResponsiblePersons:'Add Responsible Person',
   physicians:'Care Coordinators',
   addPhysician:'Add Care Coordinator',

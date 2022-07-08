@@ -19,5 +19,6 @@ export default {
   latestTask: null,
   taskPermissions:null,
   allTaskStatus:null,
-  completeTaskRate:null
+  completeTaskRate:null,
+  taskComplete:[]
 }

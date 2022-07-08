@@ -20,23 +20,28 @@
       </div> -->
     </a-config-provider>
   </div>
+  <CareCoordinatorDetailsModal v-if="visibleModal" v-model:visible="visibleModal" @closeModal="handleOk"/>
+  <PatientDetails v-if="visiblePatientModal && patientUdid" v-model:visible="visiblePatientModal" @closeModal="handleOk"/>
 </template>
 
 <script>
-import { watchEffect, ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, defineAsyncComponent } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
 import router from '@/router';
 // import 'moment/dist/locale/es';
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-import { useStore } from "vuex";
+// import PatientDetails from "./components/patients/patientSummary/modals/PatientDetails"
+import { useStore} from "vuex";
 
 
 export default {
-  //   components: {
-  //     SelectLanguage,
-  //   },
+    components: {
+      // SelectLanguage,
+      PatientDetails:defineAsyncComponent(()=>import('@/components/patients/patientSummary/modals/PatientDetails')),
+      CareCoordinatorDetailsModal:defineAsyncComponent(()=>import('@/components/coordinator-summary/CareCoordinatorDetailsModal'))
+    },
   setup() {
     const store = useStore();
     const locale = ref(enUS.locale);
@@ -45,10 +50,18 @@ export default {
       return store.state.authentication.expiresIn;
     });
 
-    watchEffect(() => {
+    const visibleModal = computed(()=>{
+      return store.state.careCoordinatorSummary.visibleModal
+    })
 
-      
+    const visiblePatientModal = computed(()=>{
+      return store.state.patients.visiblePatientDetailsModal
+    })
+
+    const patientUdid = computed(() => {
+      return store.state.patients.patientUdid;
     });
+ 
 
     onMounted(() => {
        document.body.classList.add("test");
@@ -59,8 +72,7 @@ export default {
           store.dispatch("escalationStaus")
           store.dispatch("appointmentConference");
           store.dispatch("notificationList");
-          store.dispatch("allPatientsList")
-          store.dispatch("allStaffList")
+         
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {
             store.dispatch("refreshToken");
@@ -86,8 +98,16 @@ export default {
         }
       }
     });
+    function handleOk(){
+      store.commit('closeStaffDetailsModal')
+      store.commit('closePatientDetailsModal')
+    }
 
     return {
+      patientUdid,
+      visiblePatientModal,
+      handleOk,
+      visibleModal,
       enUS,
       esES,
       locale,

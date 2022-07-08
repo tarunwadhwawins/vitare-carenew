@@ -30,7 +30,7 @@ export const deletePatientCareCoordinator = (state, data) => {
 }
 
 export const patientCareCoordinatorDetails = (state, data) => {
-  console.log('staff data', data.staff)
+  // console.log('staff data', data.staff)
   data.isPrimary = data.isPrimary == 1 ? true : false
   state.patientCareCoordinatorDetails = data
 }

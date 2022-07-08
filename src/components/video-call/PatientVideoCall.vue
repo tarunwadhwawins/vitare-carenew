@@ -136,7 +136,7 @@ export default {
             store.commit("videoLoadingStatus", true);
             if (props.conferenceId) {
               currentUrl.value = window.location.origin + '/#/video-call/'+enCodeString(props.conferenceId);
-              console.log('window.location',window.location)
+              // console.log('window.location',window.location)
               decodedUrl.value = props.conferenceId;
               let callNotification = 0;
               const key = `open${Date.now()}`;

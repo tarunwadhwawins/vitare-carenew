@@ -19,14 +19,14 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :dataId="60" @handleGlobalChange="handleGlobalChange($event)" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Flag" name="flagId" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="escalation.flagId" :globalCode="flagsList" />
+                                    <ArrayDataSearch @change="checkChangeInput()" v-model:value="escalation.flagId" :globalCode="flagsList" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -102,17 +102,17 @@
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
                                             <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
-                                                 <!-- <template #addedBy="{ record }">
-                                                    <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link>
-                                                  </template> -->
+                                                 <template #addedBy="{ record }">
+                                                    <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
+                                                  </template>
                                                 <template #color="{ record }">
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
+                                                    <!-- <a-tooltip placement="bottom">
+                                                        <template #title> -->
                                                             <span>{{ record.flag }}</span>
-                                                        </template>
+                                                        <!-- </template>
                                                         <a class="icons">
                                                             <Flags :flag="record.color" /></a>
-                                                    </a-tooltip>
+                                                    </a-tooltip> -->
                                                 </template>
                                             </a-table>
                                         </a-form-item>
@@ -190,7 +190,7 @@
 </a-modal>
 </template>
 <script>
-import { computed,reactive, ref } from "vue";
+import { computed,onMounted,reactive, ref } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import {
@@ -210,6 +210,7 @@ import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vu
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader.vue";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 const notesColumns = [
   {
     title: "Select All",
@@ -254,7 +255,7 @@ const notesColumns = [
     },
   },
   {
-    title: "Color",
+    title: "Priority",
     dataIndex: "color",
     slots: {
       customRender: "color",
@@ -386,6 +387,7 @@ export default {
     PatientDropDown,
     Loader,
     DateFilter,
+    ArrayDataSearch,
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -414,6 +416,10 @@ export default {
       summaryStart: "",
       summaryEnd: "",
     });
+
+    onMounted(()=>{
+      store.dispatch('flagsList')
+    })
 
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails;
@@ -447,7 +453,7 @@ export default {
     };
     const handleStaffChange = (val) => {
       escalation.staffIds = val;
-      console.log(val);
+      // console.log(val);
     };
 
     const notesList = computed(() => {
@@ -644,9 +650,9 @@ export default {
       }
     };
 
-    function escalationType(e) {
-      console.log("value", e);
-    }
+    // function escalationType(e) {
+    //   console.log("value", e);
+    // }
     const carePlanList = computed(() => {
       return store.state.escalations.esacalationCarePlansList;
     });
@@ -657,7 +663,7 @@ export default {
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
     function showButton(id) {
-      console.log("gdfg", id);
+      // console.log("gdfg", id);
       button.value = id;
       if (id != 126) {
         apiCall(timeLineButton.value);
@@ -675,7 +681,7 @@ export default {
             dateSelect.value = moment(escalationDetails.summaryEnd).add(1, 'day')
         }
 function changeDate (){
-  console.log("check",escalationDetails.summaryStart)
+  // console.log("check",escalationDetails.summaryStart)
   if(escalationDetails.summaryStart && escalationDetails.summaryEnd){
 let dateFormate = {
           fromDate: timeStamp(startimeAdd(moment(escalationDetails.summaryStart))),
@@ -816,7 +822,18 @@ let dateFormate = {
       return store.state.escalations.editEscalationPatient;
     });
 
+    function showModal(id){
+      store.dispatch("staffSummary", id)
+      store.commit('showStaffDetailsModal')
+    }
+
+    const handleGlobalChange = (data) =>{
+      escalation.escalationType = data
+    }
+
     return {
+      handleGlobalChange,
+      showModal,
       editDataPatient,
       editDataStaff,
       formRef,
@@ -843,7 +860,7 @@ let dateFormate = {
       carePlanColumns,
       carePlanList,
       activeKey,
-      escalationType,
+      // escalationType,
       submitDetailsForm,
       submitEscalationForm,
       vitalColumns,
@@ -876,8 +893,8 @@ let dateFormate = {
         },
       ],
     };
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">

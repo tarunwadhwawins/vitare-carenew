@@ -9,7 +9,7 @@
             <Sidebar />
             <a-layout-content>
                 <div class="common-bg">
-                    <a-row>
+                    <a-row v-if="arrayToObjact(screensPermissions, 411)">
                         <a-col :span="24">
                             <h2 class="pageTittle">{{$t('global.reports')}}
                                 <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="cptTimeline" />
@@ -50,10 +50,10 @@
                             </a-form>
                         </a-col>
                     </a-row>
-                    <a-row>
+                    <a-row v-if="arrayToObjact(screensPermissions, 411)">
                         <a-col :span="24">
                             <DataTable />
-                            <TableLoader />
+                            <!-- <TableLoader /> -->
                         </a-col>
                     </a-row>
                 </div>
@@ -68,8 +68,8 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import { onMounted, ref, onUnmounted, reactive } from "vue";
 import moment from "moment";
-import TableLoader from "@/components/loader/TableLoader";
-import { timeStampFormate } from "@/commonMethods/commonMethod";
+// import TableLoader from "@/components/loader/TableLoader";
+import { timeStampFormate,arrayToObjact } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable";
 import DateFilter from "@/components/common/DateFilter.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -79,7 +79,7 @@ export default {
     Header,
     Sidebar,
     DataTable,
-    TableLoader,
+    // TableLoader,
     DateFilter,
   },
 
@@ -216,6 +216,13 @@ export default {
           "&toDate=" +
           from.format("YYYY-MM-DD")
       );
+       store.commit(
+        "otherFilters",
+        "&fromDate=" +
+          to.format("YYYY-MM-DD") +
+          "&toDate=" +
+          from.format("YYYY-MM-DD")
+      );
       store.dispatch(
         "cptCodes",
         "?fromDate=" +
@@ -248,6 +255,7 @@ export default {
     }
 
     return {
+      arrayToObjact,
       startDate,
       endDate,
       updateFilter,
@@ -259,6 +267,7 @@ export default {
       patient,
       Buttons: store.getters.cptTimeline,
       size: ref("large"),
+      screensPermissions:store.getters.screensPermissions,
     };
   },
 };

@@ -39,7 +39,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId" :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :globalCode="durationList" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :dataId="31" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.durationId')" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
                     </a-form-item>
                 </div>
@@ -55,15 +55,15 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :globalCode="typeOfVisitList" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :dataId="1" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.typeOfVisit')" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="appointmentForm.flag" :globalCode="flagsList" />
+                    <a-form-item label="Priority" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+                        <ArrayDataSearch v-model:value="appointmentForm.flag" :globalCode="flagsList" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>
                 </div>
@@ -119,6 +119,7 @@ import {
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import Loader from "@/components/loader/Loader";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 
 export default {
     components: {
@@ -128,7 +129,8 @@ export default {
         StaffDropDown,
         Loader,
         GlobalCodeDropDown,
-        TimeZoneDropDown
+        TimeZoneDropDown,
+        ArrayDataSearch
     },
     props: {
         staff: {
@@ -183,6 +185,10 @@ export default {
         })
 
         onMounted(() => {
+            // closeValue.value = true;
+            //             setTimeout(()=>{
+            //                 closeValue.value = false;
+            //             },100)
             store.state.flags.flagsList ? '' : store.dispatch('flagsList')
            // store.dispatch("allPatientsList")
            // store.dispatch("allStaffList")
@@ -252,7 +258,10 @@ export default {
                 flag: appointmentForm.flag,
                 timezoneId:appointmentForm.timezoneId
             }).then(() => {
-				closeValue.value = true
+				closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                 if (props.patientId != null && route.name == 'PatientSummary') {
                     
                     store.dispatch('latestAppointment', patientUdid)
@@ -263,7 +272,7 @@ export default {
                     });
                 }
                 if (store.state.appointment.successMsg) {
-                    closeValue.value = false
+                    
                     store.dispatch("calendarDateSelect", moment(date))
                     store.state.appointment.successMsg = null
                     emit('is-visible', {
@@ -284,7 +293,7 @@ export default {
                     modal: 'addAppointment',
                     value: false
                 });
-				closeValue.value = false
+				
             });
 			
             store.commit('checkChangeInput', false)
@@ -358,7 +367,17 @@ export default {
             // }
         //}
 
+        const handleGlobalChange = (data,type) =>{
+            if(type =='appointmentForm.durationId'){
+                appointmentForm.durationId = data
+            }
+            if(type=='appointmentForm.typeOfVisit'){
+                appointmentForm.typeOfVisit = data
+            }
+        }
+
         return {
+            handleGlobalChange,
             handleTimeZoneChange,
             checkFieldsData,
             checkChangeInput,

@@ -99,3 +99,11 @@ export const staffSummaryPatient= async (state, data) => {
       ];
 
 }
+
+export const showStaffDetailsModal= async (state) => {
+  state.visibleModal = true;
+}
+
+export const closeStaffDetailsModal= async (state) => {
+  state.visibleModal = false;
+}

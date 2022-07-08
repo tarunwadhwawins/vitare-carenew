@@ -7,7 +7,7 @@
             
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
                
-                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :globalCode="inventoryTypes" @change="onSelectOption(); checkChangeInput()" />
+                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="handleGlobalChange($event)" @change="onSelectOption(); checkChangeInput()" />
             </a-form-item>
           </div>
         </a-col>
@@ -15,7 +15,7 @@
           <div class="form-group">
             <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
                 
-                <GlobalCodeDropDown   v-model:value="inventoryForm.deviceModelId" :globalCode="deviceModalsList" @change="checkChangeInput()"/>
+                <ArrayDataSearch   v-model:value="inventoryForm.deviceModelId" :globalCode="deviceModalsList" @change="checkChangeInput()"/>
             </a-form-item>
             
           </div>
@@ -56,6 +56,7 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import Loader from "@/components/loader/Loader"
 // import AutoComplete from "@/components/common/input/AutoComplete";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import {
 	warningSwal
 } from "@/commonMethods/commonMethod";
@@ -67,7 +68,8 @@ export default {
     ModalButtons,
     // AutoComplete,
     Loader,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    ArrayDataSearch
   },
   props: {
     isAdd: {
@@ -131,7 +133,7 @@ export default {
         })
       }
       else {
-        console.log('data', inventoryForm)
+        // console.log('data', inventoryForm)
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
@@ -172,13 +174,14 @@ export default {
         emit("is-visible", false)
 			}
 		}
+    const handleGlobalChange = (data) =>{
+      inventoryForm.deviceType = data
+    }
     return {
-      
-    
+      handleGlobalChange,
       inventoryForm,
       submitForm,
       handleCancel,
-     
       size: ref("large"),
       checked,
       onSelectOption,

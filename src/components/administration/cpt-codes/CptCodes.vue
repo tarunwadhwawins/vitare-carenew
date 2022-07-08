@@ -84,9 +84,9 @@ export default {
             visible.value = false;
         };
 
-        const searchData = (value) => {
-            console.log('searchGlobalCodes', value)
-        };
+        // const searchData = (value) => {
+        //     console.log('searchGlobalCodes', value)
+        // };
         onMounted(() => {
             
                 store.dispatch('cptCodesList')
@@ -113,7 +113,7 @@ export default {
             exportExcel,
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
-            searchData,
+            // searchData,
             visible,
             showModal,
             handleOk,

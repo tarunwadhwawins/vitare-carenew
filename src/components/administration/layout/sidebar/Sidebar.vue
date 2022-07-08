@@ -9,11 +9,11 @@
 
             <router-link to="/manage-programs" v-if="arrayToObjact(screensPermissions, 15)">
                 <a-menu-item>
-                    <MailOutlined /><span class="menuItem">Programs</span></a-menu-item>
+                    <ReadOutlined /><span class="menuItem">Programs</span></a-menu-item>
             </router-link>
             <router-link to="/providers" v-if="arrayToObjact(screensPermissions, 22)">
                 <a-menu-item>
-                    <MailOutlined /><span class="menuItem">Providers</span></a-menu-item>
+                    <OneToOneOutlined  /><span class="menuItem">Providers</span></a-menu-item>
             </router-link>
             <router-link to="/roles-and-permissions" v-if="arrayToObjact(screensPermissions, 1)">
                 <a-menu-item>
@@ -88,7 +88,25 @@ import {
     reactive
 } from "vue";
 import {
-    MailOutlined,
+   
+  OneToOneOutlined ,
+  CreditCardOutlined,
+  FileDoneOutlined,
+  HomeOutlined,
+  SafetyOutlined,
+  GlobalOutlined,
+  ReadOutlined,
+  FileTextOutlined,
+  TeamOutlined,
+  ApartmentOutlined,
+  ReconciliationOutlined,
+  DownOutlined
+} from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
+export default defineComponent({
+  components: {
+    OneToOneOutlined ,
     CreditCardOutlined,
     FileDoneOutlined,
   
@@ -100,36 +118,12 @@ import {
    
     FileTextOutlined,
     DownOutlined,
-    
+    ReadOutlined,
     TeamOutlined,
    
-} from "@ant-design/icons-vue";
-import {
-    useStore
-} from "vuex";
-import {
-    arrayToObjact
-} from "@/commonMethods/commonMethod";
-export default defineComponent({
-    components: {
-        
-        FileDoneOutlined,
-        HomeOutlined,
-        ApartmentOutlined,
-        ReconciliationOutlined,
-       
-        FileTextOutlined,
-        DownOutlined,
-       
-        TeamOutlined,
-       
-        MailOutlined,
-        CreditCardOutlined,
-     
-        
-        SafetyOutlined,
-        GlobalOutlined,
-    },
+},
+
+
 
     setup() {
         const store = useStore();

@@ -19,14 +19,14 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('documents.type')+' '+$t('global.validation') }]">
-              <GlobalCodeDropDown @change="changedValue" v-model:value="addDocumentForm.type" :globalCode="globalCode.documentTypes"/>
+              <GlobalCodeDropDown @change="changedValue" v-model:value="addDocumentForm.type" :dataId="11" @handleGlobalChange="handleGlobalChange($event,'addDocumentForm.type')"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('documents.tags')+' '+$t('global.validation') }]">
-              <GlobalCodeDropDown @change="changedValue" v-model:value="addDocumentForm.tags" mode="multiple" :globalCode="globalCode.documentTags"/>
+              <GlobalCodeDropDown @change="changedValue" v-model:value="addDocumentForm.tags" mode="multiple" :dataId="12" @handleGlobalChange="handleGlobalChange($event,'addDocumentForm.tags')"/>
             </a-form-item>
           </div>
         </a-col>
@@ -160,7 +160,17 @@ export default defineComponent({
       });
     }
 
+    const handleGlobalChange = (data,type) =>{
+            if(type =='addDocumentForm.type'){
+                addDocumentForm.type = data
+            }
+            if(type=='addDocumentForm.tags'){
+                addDocumentForm.tags = data
+            }
+        }
+
     return {
+      handleGlobalChange,
       formRef,
       handleClear,
       size: ref("large"),

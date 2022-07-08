@@ -105,6 +105,9 @@ export default {
     editConditionDetails:null,
     tabvalue:[],
     patientTimelineMeta:null,
-    fetchFromBitrixInsurance:null
+    fetchFromBitrixInsurance:null,
+    visiblePatientDetailsModal:false,
+    patientUdid:null
+
 
 }

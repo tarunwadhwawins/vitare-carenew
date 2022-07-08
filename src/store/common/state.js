@@ -1,6 +1,6 @@
 export default {
     gender:null,
-    language:null,
+    language:[],
     country:null,
     state:null,
     pmOfcontact:null,

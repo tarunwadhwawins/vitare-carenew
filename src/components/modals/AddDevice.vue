@@ -5,7 +5,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-              <GlobalCodeDropDown @change="handleInventory" v-model:value="inventoryForm.deviceType" :globalCode="globalCode.deviceType"/>
+              <GlobalCodeDropDown @change="handleInventory" v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="handleGlobalChange($event,'inventoryForm.deviceType')"/>
               <ErrorMessage v-if="errorMsg && errorMsg.message" :name="errorMsg.message ? errorMsg.message : ''" />
               <ErrorMessage v-if="errorMsg && errorMsg.deviceType" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
             </a-form-item>
@@ -209,10 +209,10 @@ export default defineComponent({
 
     function handleChange(id){
       inventoryForm.inventory = id;
-      console.log('element id', id)
+      // console.log('element id', id)
       isValueChanged.value = true;
       dropdownListing.value.forEach(element => {
-        console.log('element element', element)
+        // console.log('element element', element)
         if(element.value == id) {
           inventoryForm.modelNumber = element.modelNumber,
           inventoryForm.serialNumber = element.serialNumber,
@@ -262,7 +262,12 @@ export default defineComponent({
       inventoryForm.inventory = val;
     };
 
+    const handleGlobalChange = (data) =>{
+      inventoryForm.deviceType = data
+    }
+
     return {
+      handleGlobalChange,
       formRef,
       handleCancel,
       handleChange,

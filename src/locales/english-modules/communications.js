@@ -26,6 +26,7 @@ const communications = {
     messageCategory:'Message Category',
     priority:'Priority',
     message:'Message',
+    reply:'Reply',
     messageType:'Message Type',
     type:'Type',
     email:'Email',

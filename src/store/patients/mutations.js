@@ -84,7 +84,7 @@ export const patient = (state, data) => {
           sorter: true,
         },
         {
-          title: "Glucose(mg / dL)",
+          title: "Glucose(mg/dL)",
           dataIndex: "glucose",
           key: "glucose",
           width: '20%',
@@ -112,11 +112,12 @@ export const patient = (state, data) => {
       sorter:true,
     },
     {
-      title: "Last Message Sent",
+      title: "Last Message",
       dataIndex: "lastMessageSent",
       ellipsis: true,
+      sorter:true,
       onFilter: (value, record) => record.name.indexOf(value) === 0,
-      width: '12%',
+      width: '15%',
     },
     {
       title: "Age ",
@@ -443,7 +444,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data
-  console.log("check",data)
+  // console.log("check",data)
   state.documentColumns = [
     {
       title: "Name",
@@ -712,7 +713,7 @@ export const bitrixFormCheck = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
-  console.log('data',data)
+  // console.log('data',data)
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)
   state.fetchFromBitrixStatus = true
@@ -927,7 +928,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
-    console.log('vitals.length', patientGraphData)
+    // console.log('vitals.length', patientGraphData)
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
@@ -1243,4 +1244,16 @@ export const healthConditions = (state, data) => {
     item.name = item.code+' - '+item.description
     return item
   })
+}
+
+export const showPatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = true
+}
+
+export const closePatientDetailsModal = (state) => {
+  state.visiblePatientDetailsModal = false
+}
+
+export const patientUdid = (state,data) => {
+  state.patientUdid = data
 }

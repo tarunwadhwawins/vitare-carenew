@@ -4,7 +4,8 @@
         <a-col :span="24">
             <a-table :dataSource="dataArray" :columns="columnData" :pagination="false" rowKey="id">
                 <template #patientName="{ text, record }" v-if="arrayToObjact(screensPermissions, 405)">
-                    <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+                    <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
+                    <a  @click="showPatientModal(record.patientId)">{{ text }}</a>
                 </template>
                 <template #patientName="{ text }" v-else>
                     <span>{{ text }}</span>
@@ -30,7 +31,8 @@
         <a-col :sm="24" :xs="24">
             <strong>Assigned By : </strong>
             <span v-if="arrayToObjact(screensPermissions, 408)">
-                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link> -->
+                <a @click="showStaffModal(record.assignedById)">{{ record.assignedBy }}</a>
             </span>
             <div v-else>
                 <span>{{ record.assignedBy }}</span>
@@ -43,7 +45,8 @@
             <strong>Assigned Staff : </strong>
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id">
                 {{i==0?' ':','}}
-                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link> -->
+                <a @click="showStaffModal(esc.staffUdid)">{{ esc.staffName }}</a>
             </span>
         </a-col>
         <a-col :sm="24" :xs="24" v-else>
@@ -71,16 +74,17 @@
                 <a-collapse-panel key="3" header="Notes" v-show="record?record.escalationNotes.data.length>0:false">
                     <a-table rowKey="id" :columns="notesColumns" :data-source="escalation.escalationNots" :pagination="false">
                     <template #addedBy="{ record }">
-                      <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link>
+                      <a @click="showStaffModal(record.addedById)">{{ record.addedBy }}</a>
+                      <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.addedById } }">{{ record.addedBy }}</router-link> -->
                     </template>
                         <template #color="{ record }">
-                            <a-tooltip placement="bottom">
-                                <template #title>
+                            <!-- <a-tooltip placement="bottom">
+                                <template #title> -->
                                     <span>{{ record.flag }}</span>
-                                </template>
-                                <a class="icons">
+                                <!-- </template> -->
+                                <!-- <a class="icons">
                                     <Flags :flag="record.color" /></a>
-                            </a-tooltip>
+                            </a-tooltip> -->
                         </template>
                     </a-table>
                 </a-collapse-panel>
@@ -132,6 +136,8 @@ import {
   globalDateFormat,
   dateAndTimeFormate,
   arrayToObjact,
+  showPatientModal,
+  showStaffModal
 } from "@/commonMethods/commonMethod";
 const columnData = [
   {
@@ -196,7 +202,7 @@ const notesColumns = [
     }
   },
   {
-    title: "Color",
+    title: "Priority",
     dataIndex: "color",
     slots: {
       customRender: "color",
@@ -316,7 +322,11 @@ export default {
     const screensPermissions = computed(() => {
       return store.state.screenPermissions.screensPermissions;
     });
+
+    
     return {
+      showStaffModal,
+      showPatientModal,
       arrayToObjact,
       screensPermissions,
       escalation,

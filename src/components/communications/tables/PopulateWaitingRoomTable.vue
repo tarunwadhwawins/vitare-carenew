@@ -5,9 +5,11 @@
     :data-source="dataRecord"
     :pagination="pagination">
     <template #patient="{record}" v-if="arrayToObjact(screensPermissions,63)">
-      <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
+      <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
         {{ record.patient }}
-      </router-link>
+      </router-link> -->
+      <a @click="showPatientModal( record.patientUdid)" v-if="arrayToObjact(screensPermissions, 65)">{{ record.patient }}</a>
+      <span v-else>{{record.patient}}</span>
     </template>
     <template #patient="{record}" v-else>
       <span>
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import {enCodeString,arrayToObjact} from "@/commonMethods/commonMethod";
+import {enCodeString,arrayToObjact,showPatientModal} from "@/commonMethods/commonMethod";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
@@ -38,6 +40,7 @@ props:["colomnsRecord","dataRecord","pagination"],
       }
     }
     return {
+      showPatientModal,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       videoCall,

@@ -50,15 +50,21 @@ export const login = async ({
     })
     .catch((error) => {
       if (error.response) {
+        if (error.response.status == 422) {
+          commit('loginFailure', 'Invalid Login Credentials');
+          commit('failure', 'Invalid Login Credentials');
+        }
+        else if (error.response.status == 401) {
+          commit('loginFailure', 'Invalid Login Credentials');
+          commit('failure', 'Invalid Login Credentials');
+        }
+        else {
+          commit('loginFailure', error);
+        }
         errorLogWithDeviceInfo(error.response);
-      } else {
-        errorLogWithDeviceInfo(error);
       }
-      if (error.response.status == 401) {
-        commit('loginFailure', 'Invalid Login Credentials');
-        commit('failure', 'Invalid Login Credentials');
-      } else {
-        commit('loginFailure', error);
+      else {
+        errorLogWithDeviceInfo(error);
       }
     });
 };
@@ -124,7 +130,7 @@ export const logoutUser = async ({
   commit('loadingTableStatus', true)
   await ServiceMethodService.common('post', 'logout', null, [])
     .then(() => {
-      console.log(commit)
+      // console.log(commit)
       //if(response){
       successSwal('Logout Successfully ');
       localStorage.removeItem('user');

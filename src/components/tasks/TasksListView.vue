@@ -60,7 +60,7 @@ const tasksListColumns = [{
         }
     },
     {
-        title: 'Name',
+        title: 'Title',
         dataIndex: 'title',
         sorter: true,
         slots: {

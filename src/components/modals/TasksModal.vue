@@ -20,14 +20,14 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :globalCode="common.taskStatus" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :dataId="5" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskStatus')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.priority" :globalCode="common.taskPriority" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.priority" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'taskForm.priority')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -69,21 +69,21 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :globalCode="common.taskCategory" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :dataId="6" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskCategory')" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :span="12">
+            <!-- <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
                         <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                     </a-form-item>
                 </div>
-            </a-col>
+            </a-col> -->
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(moment().subtract(1,'days'))" v-model:value="taskForm.dueDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -123,7 +123,7 @@ export default defineComponent({
         GlobalCodeDropDown,
     },
     props: {
-        taskId: Number,
+        taskId: Boolean,
         onlyView: Boolean,
         patientId: {
             type: Number,
@@ -151,7 +151,6 @@ export default defineComponent({
             assignedTo: [],
             assignedName: [],
             taskCategory: [],
-            startDate: "",
             dueDate: "",
             entityType: "",
         });
@@ -174,7 +173,7 @@ export default defineComponent({
                             priority: taskForm.priority,
                             assignedTo: taskForm.assignedTo,
                             taskCategory: taskForm.taskCategory,
-                            startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                            startDate: timeStamp(moment()),
                             dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
                             entityType: taskForm.entityType,
                         },
@@ -182,11 +181,14 @@ export default defineComponent({
                     })
                     .then(() => {
                         closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                         if (props.onlyView) {
                             emit("clinicalDashboard")
                         } else {
 
-                            closeValue.value = false;
+                            
                             emit("closeModal", {
                                 modal: "addTask",
                                 value: false,
@@ -208,18 +210,21 @@ export default defineComponent({
                         priority: taskForm.priority,
                         assignedTo: isPatientTask ? [idPatient] : taskForm.assignedTo,
                         taskCategory: taskForm.taskCategory,
-                        startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+                        startDate: timeStamp(moment()),
                         dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
                         entityType: isPatientTask ? "patient" : taskForm.entityType,
                     })
                     .then(() => {
                         closeValue.value = true;
+                        setTimeout(()=>{
+                            closeValue.value = false;
+                        },100)
                         store.commit("checkChangeInput", false);
                         if (route.name == "PatientSummary") {
                             store.dispatch("latestTask", route.params.udid);
                         }
                         handleCancel()
-                        closeValue.value = false;
+                        
                         Object.assign(taskForm, form);
                         emit("closeModal", {
                             modal: "addTask",
@@ -361,12 +366,24 @@ export default defineComponent({
         };
 
         function changeDate() {
-            if (moment(taskForm.startDate) > moment(taskForm.dueDate)) {
+            if (moment() > moment(taskForm.dueDate)) {
                 taskForm.dueDate = ''
             }
 
         }
+         const handleGlobalChange = (data,type) =>{
+      if (type == "taskForm.taskStatus") {
+        taskForm.taskStatus = data;
+      }
+      if (type == "taskForm.priority") {
+        taskForm.priority = data;
+      }
+      if (type == "taskForm.taskCategory") {
+        taskForm.taskCategory = data;
+      }
+    }
         return {
+            handleGlobalChange,
             globalDateFormat,
             changeDate,
             taskFormFailed,

@@ -8,7 +8,7 @@
     <a-col :xl="8" :sm="12" :xs="24">
         <a-card title="Task Priority" class="common-card grapCardWrap">
             <IncompleteTasksFilter />
-            <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" />
+            <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords"/>
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -18,20 +18,20 @@
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-        <a-card title="Task Completion over" class="common-card grapCardWrap">
-            <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" />
+        <a-card title="Task Completion" class="common-card grapCardWrap">
+            <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords" :data="taskComplete"/>
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
         <a-card title="All Tasks" class="common-card grapCardWrap">
             <AllTasksFilter />
-            <ApexChart type="pie" v-if="tasks.completedAllTask" :height="275" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" />
+            <ApexChart type="pie" v-if="tasks.completedAllTask" :height="275" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords"/>
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
         <a-card title="Category View" class="common-card grapCardWrap">
             <CategoryViewFilter />
-            <ApexChart type="pie" v-if="tasks.taskCategory.premium" :height="275" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" />
+            <ApexChart type="pie" v-if="tasks.taskCategory.premium" :height="275" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" :linkTo="arrayToObjact(screensPermissions,113)?'Tasks':''" listView="list" @click="updateRecords"/>
         </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -65,7 +65,7 @@ import {
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod";
-import {  useRouter } from 'vue-router';
+import {  useRoute, useRouter } from 'vue-router';
 export default {
     components: {
         FilterCard,
@@ -123,7 +123,24 @@ export default {
                 }
             });
         }
+        const route = useRoute()
+    const updateRecords =() =>{
+        setTimeout(()=>{
 
+        
+if (route.query.filter || route.query.fromDate) {
+                
+                let filter = route.query.filter ? route.query.filter : ''
+                
+
+                let date = store.getters.otherFilters.value ? store.getters.otherFilters.value : route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                store.dispatch("tasksList", "?filter=" + filter + date + store.getters.orderTable.value.data);
+            } else {
+
+                store.dispatch("tasksList")
+            }
+            },100)
+    }
         return {
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
@@ -133,6 +150,8 @@ export default {
             toggle,
             CompletedTasksFilterCount,
             linkOpen,
+            updateRecords,
+            taskComplete:store.getters.taskComplete
         };
     },
 };

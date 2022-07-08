@@ -31,7 +31,7 @@
 
                     <!-- Dashboard View -->
                     <div class="dashboard-view" v-show="toggle && dashboardView">
-                        <TasksDashboardView v-if="arrayToObjact(screensPermissions,109)" />
+                        <TasksDashboardView v-if="arrayToObjact(screensPermissions,109) && toggle && dashboardView" />
                     </div>
 
                     <!-- List View -->
@@ -54,9 +54,9 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import TasksModal from "@/components/modals/TasksModal";
-import { ref,computed, watchEffect, onMounted, onUnmounted } from "vue";
+import { ref,computed, watchEffect, onMounted, onUnmounted, defineAsyncComponent } from "vue";
 import Button from "@/components/common/button/Button";
-import TasksDashboardView from "@/components/tasks/TasksDashboardView";
+// import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
 import {useStore} from "vuex"
 
@@ -68,7 +68,7 @@ export default {
         Sidebar,
         TasksModal,
         Button,
-        TasksDashboardView,
+        TasksDashboardView:defineAsyncComponent(()=>import('@/components/tasks/TasksDashboardView')),
         TasksListView,
 
     },
@@ -83,7 +83,7 @@ export default {
         const taskID = ref(false);
 
         const showModal = (task) => {
-            console.log('=>', task)
+            // console.log('=>', task)
             if (task.id) {
                 store.dispatch('editTask', task.id)
                 taskID.value = task.id.id
@@ -110,6 +110,7 @@ onMounted(()=>{
                 dashboardView.value = true
                 listView.value = false
                 toggle.value = true
+                
             }
         })
 

@@ -1,26 +1,27 @@
 <template>
 <a-row>
     <a-col :span="8" style="padding-bottom:15px" v-if="!selectedRowKeys?.length>0">
-    <a-row :span="24">
+    <a-row :span="24" v-if="arrayToObjact(screensPermissions, 411)">
       <a-col :span="24">
         <SearchField endPoint="cptCodes"  />
         </a-col>
-        </a-row>
+    </a-row>
     </a-col>
     <a-col :span="8" style="padding-bottom:15px" v-else>
-    <a-row :span="24">
+    <a-row :span="24" v-if="arrayToObjact(screensPermissions, 412)">
       <a-col :span="18">
-        <GlobalCodeDropDown  ref="formRef" v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+        <GlobalCodeDropDown  ref="formRef" v-model:value="status" :dataId="68" @handleGlobalChange="handleGlobalChange($event)" placeholder="Please select status" />
     </a-col>
     <a-col :span="2">
         <div class="button-left">
-            <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
+            <a-button :disabled="!status || checkStatus?.length>1" class="blueBtn" @click="submitStatus">Submit</a-button>
         </div>
     </a-col>
+        
     </a-row>
       
     </a-col>
-    <a-col :span="16">
+    <a-col :span="16" v-if="arrayToObjact(screensPermissions, 413)">
         <div class="text-right mb-24">
             <ExportToExcel @click="exportExcel('cptBilling_report','?fromDate=&toDate='+search)" />
         </div>
@@ -36,19 +37,22 @@
         </div>
     </a-col> -->
 </a-row>
+<ErrorMessage v-if="checkStatus?.length>1" name="Please select record of same status." />
 <a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     
-    <template #serviceId="{ record }">
+    <template #serviceId="{ record }" v-if="arrayToObjact(screensPermissions, 414)">
         <a><span @click="showReportData(record.id)">{{record.serviceId}}</span></a>
     </template>
-    <template #patient="{ record }">
-        <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link>
+    <template #patient="{ record }" >
+    <a @click="showPatientModal( record.patient.id)" v-if="arrayToObjact(screensPermissions, 65)">{{ record.patient.fullName }}</a>
+    <span v-else>{{record.patient.fullName }}</span>
+        <!-- <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link> -->
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
-    <template #condition="{ record }">
+    <template #condition="{ record }" v-if="arrayToObjact(screensPermissions, 414)">
         <a><span @click="showModal(record.condition)">{{record.condition[0]?.code?record.condition[0]?.code+', ...':''}}</span></a>
     </template>
     <template #cptCode="{ record }">
@@ -77,6 +81,7 @@
         </a-tooltip>
     </template> -->
 </a-table>
+<TableLoader />
 <RecordView v-model:visible="reportViewModal" />
 <ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
 </template>
@@ -90,7 +95,6 @@ import {
   computed,
   toRefs,
   reactive,
-  watchEffect,
 } from "vue";
 import { useStore } from "vuex";
 // import { EyeOutlined } from "@ant-design/icons-vue";
@@ -98,7 +102,9 @@ import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-import {exportExcel} from "@/commonMethods/commonMethod";
+import {exportExcel,showPatientModal,arrayToObjact} from "@/commonMethods/commonMethod";
+import TableLoader from "@/components/loader/TableLoader";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 const column = [
   {
     title: "#",
@@ -201,6 +207,8 @@ const column = [
 ];
 export default defineComponent({
   components: {
+    ErrorMessage,
+    TableLoader,
     // EyeOutlined,
     GlobalCodeDropDown,
     ExportToExcel,
@@ -324,13 +332,22 @@ export default defineComponent({
       store.dispatch("reportDetailList", id);
       reportViewModal.value = true;
     }
-    const onSelectChange = (selectedRowKeys) => {
+    let statusArray =[]
+    const checkStatus = ref([])
+    const onSelectChange = (selectedRowKeys,selectedRows) => {
+      statusArray = selectedRows.map((item)=>item.status.name)
+      checkStatus.value = statusArray.filter(function(item, pos) {
+        return statusArray.indexOf(item) == pos;
+      })
+      console.log('statusArray',checkStatus.value)
       if(!selectedRowKeys.length>0){
         status.value = null
       }
       state.selectedRowKeys = selectedRowKeys;
       
     };
+
+
 
     const reportStatus = computed(() => {
       return store.state.common.CPTCodeStatus;
@@ -353,7 +370,7 @@ export default defineComponent({
 
                 dateFilter+
                   filter +
-                  store.getters.searchTable.value +
+                  // store.getters.searchTable.value +
                   store.getters.orderTable.value.data
               )
               setTimeout(() => {
@@ -368,10 +385,16 @@ export default defineComponent({
        conditionViewModal.value = true
        conditionsData.value = data
      }
-     watchEffect(()=>{
-      
-     })
+
+    const handleGlobalChange = (data) =>{
+        status.value = data
+    }
+    
     return {
+      handleGlobalChange,
+      checkStatus,
+      arrayToObjact,
+      showPatientModal,
       formRef,
       exportExcel,
       conditionsData,
@@ -389,6 +412,7 @@ export default defineComponent({
       column,
       dataList,
       search: store.getters.searchTable,
+      screensPermissions:store.getters.screensPermissions
     };
   },
 });

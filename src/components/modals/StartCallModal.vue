@@ -5,7 +5,7 @@
 				<a-col :sm="24" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-							<GlobalCodeDropDown v-model:value="startCallForm.flag" :globalCode="flagsList" />
+							<ArrayDataSearch v-model:value="startCallForm.flag" :globalCode="flagsList" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
 						</a-form-item>
 					</div>
@@ -30,7 +30,7 @@
 
 <script>
 import { computed, onMounted, reactive, ref } from 'vue-demi'
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { warningSwal } from "@/commonMethods/commonMethod";
@@ -40,7 +40,7 @@ import {
 } from '@/commonMethods/commonMethod';
 export default {
 	components: {
-		GlobalCodeDropDown,
+		ArrayDataSearch,
 	},
   setup(props, { emit }) {
     const store = useStore()

@@ -2,11 +2,14 @@
 <div class="patientTable">
     <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 370px)'}">
         <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions, 405)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
+            <a @click="showPatientModal(record.patientId)">{{ text }}</a>
         </template>
          <template #escalationStaff="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
-                {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+                {{i==0?' ':','}} 
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link> -->
+                <a @click="showStaffModal(record.staffUdid)">{{ esc.staffName }}</a>
             </span>
         </template>
         <template #escalationStaff="{ record }" v-else>
@@ -16,7 +19,8 @@
         </template>
         <template #escalationAssignedBy="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span>
-                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
+                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link> -->
+                <a @click="showStaffModal(record.assignedById)">{{ record.assignedBy }}</a>
             </span>
         </template>
         <template #escalationAssignedBy="{ record }" v-else>
@@ -56,7 +60,9 @@ import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';
 import {
-  arrayToObjact
+  arrayToObjact,
+  showPatientModal,
+  showStaffModal
 } from "@/commonMethods/commonMethod";
 export default {
   name: "EscalationTable",
@@ -69,7 +75,7 @@ export default {
     
     otherParam:String,
 
-    height:String,
+    height:Number,
     islimit:Number
   },
   setup(props,{emit}) {
@@ -176,6 +182,8 @@ export default {
     };
   
     return {
+      showStaffModal,
+      showPatientModal,
       arrayToObjact,
       escalationMainList,
       loadMoredata,

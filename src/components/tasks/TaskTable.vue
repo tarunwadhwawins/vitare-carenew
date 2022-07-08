@@ -3,7 +3,8 @@
     <a-table rowKey="id" :columns="tasksListColumns" :data-source="tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
-            <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
+            <a v-if="arrayToObjact(screensPermissions,115)" @click="taskDetails(record.id)"><span>{{ text }}</span></a>
+            <span v-else> {{ text }}</span>
         </template>
         <!-- <template #assignedBy="text">
             <router-link to="coordinator-summary">{{ text.text }}</router-link>
@@ -17,18 +18,21 @@
         <template #assignedTo="{ record }">
             <span v-for="assignee,i in record.assignedTo" :key="assignee.id">
                 <br v-if="i > 0"/>
-                <router-link v-if="assignee.entityType == 'staff'" :to="{ name: 'CoordinatorSummary', params: { udid:assignee.id}}">
+                 <a v-if="assignee.entityType == 'staff'"  @click="showStaffModal( assignee.id)" >{{ assignee.name }}</a>
+                <!-- <router-link v-if="assignee.entityType == 'staff'" :to="{ name: 'CoordinatorSummary', params: { udid:assignee.id}}">
                     {{ assignee.name }}
-                </router-link>
-                <router-link v-else :to="{ name: 'PatientSummary', params: { udid:assignee.id}}">
+                </router-link> -->
+                <!-- <router-link v-else :to="{ name: 'PatientSummary', params: { udid:assignee.id}}">
                     {{ assignee.name }}
-                </router-link>
+                </router-link> -->
+                <a v-else @click="showPatientModal( assignee.id)" >{{ assignee.name }}</a>
             </span>
         </template>
         <template #assignedBy="{ record }">
-            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById}}">
+            <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById}}">
                 {{ record.assignedBy }}
-            </router-link>
+            </router-link> -->
+            <a @click="showStaffModal( record.assignedById)" >{{  record.assignedBy  }}</a>
         </template>
         <template #action="{ record }">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
@@ -65,7 +69,7 @@ import { onMounted, computed,defineAsyncComponent , ref} from "vue"
 import { useStore } from "vuex"
 import {  DeleteOutlined, EditOutlined, CalendarOutlined} from "@ant-design/icons-vue"
 import { messages } from "@/config/messages"
-import { warningSwal,  arrayToObjact} from "@/commonMethods/commonMethod"
+import { warningSwal,  arrayToObjact,showPatientModal,showStaffModal} from "@/commonMethods/commonMethod"
 import { useRoute } from 'vue-router'
 export default {
     name: "TaskTable",
@@ -115,7 +119,7 @@ export default {
                        scroller = maxScroll;
                         data = meta.tasksList;
                         store.state.tasks.taskMeta = ''
-                        console.log('filters', store.getters.orderTable.value.data)
+                        // console.log('filters', store.getters.orderTable.value.data)
                         if(!searchAll.value) {
                             store
                                 .dispatch(
@@ -229,6 +233,8 @@ export default {
 
         }
         return {
+            showStaffModal,
+            showPatientModal,
             callApiFromModal,
             screensPermissions: store.getters.screensPermissions,
             tasks,
