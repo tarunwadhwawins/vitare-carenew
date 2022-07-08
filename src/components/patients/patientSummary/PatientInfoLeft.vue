@@ -93,8 +93,8 @@
                 <PlusOutlined @click="addTaskModal();actionTrack(paramsId,295,'patient')" /><br />
             </div>
             <div v-if="latestTask != null && arrayToObjact(screensPermissions, 295)" class="thumb-desc">
-                <router-link target="_blank" :to="{ name: 'Tasks', query: {view: 'dashboard'} }" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
-                <!-- <a @click="actionTrack(paramsId,314,'patient');showTaskModal(patientDetails.id)">{{latestTask[0].title }}</a> -->
+                <!-- <router-link target="_blank" :to="{ name: 'Tasks', query: {view: 'dashboard'} }" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link> -->
+                <a @click="actionTrack(paramsId,314,'patient');showTaskModal(patientDetails.id)">{{latestTask[0].title }}</a>
             </div>
         </div>
 
@@ -690,6 +690,7 @@ export default defineComponent({
     }
     const showTaskModal=(id) =>{
       console.log(id)
+      store.dispatch('showTaskModalData',id)
       TaskModalVisible.value = true
     }
     return {

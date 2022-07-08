@@ -20,5 +20,6 @@ export default {
   taskPermissions:null,
   allTaskStatus:null,
   completeTaskRate:null,
-  taskComplete:[]
+  taskComplete:[],
+  showTaskModalData:null
 }

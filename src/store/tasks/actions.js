@@ -342,3 +342,23 @@ export const latestTask = async ({ commit }, id) => {
 			commit('failure', error.response.data);
 		});
 };
+
+
+
+export const showTaskModalData = async ({ commit }, id) => {
+	commit('loadingStatus', true);
+	await ServiceMethodService.common('get', `patient/${id}/taskAssigned`, null, null)
+		.then((response) => {
+			commit('showTaskModalData', response.data.data);
+			commit('loadingStatus', false);
+		})
+		.catch((error) => {
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+			commit('failure', error.response.data);
+			commit('loadingStatus', false);
+		});
+};

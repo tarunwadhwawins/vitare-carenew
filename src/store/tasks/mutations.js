@@ -400,7 +400,7 @@ export const latestTaskSuccess = async (state, result) => {
 	}
 };
 
-// export const taskPermissions = (state, permission) => {
-//   state.taskPermissions = permission.actionId
+export const showTaskModalData = (state, data) => {
+  state.showTaskModalData = data
 
-// }
+}
