@@ -367,12 +367,21 @@ export const addTask = async (state, result) => {
 // };
 
 export const editTask = async (state, result) => {
+	let editTaskStateArray = []
 	state.editTask = result;
 	state.editTask.taskStatusName = result.taskStatus;
 	state.editTask.priorityName = result.priority;
 	state.editTask.assignedTo.forEach((item) => {
 		state.editTask.entityType = item.entityType;
 	});
+	state.editTask.assignedTo.map((item) => {
+		editTaskStateArray.push({
+			value: item.id,
+			label: item.name
+		})
+	})
+	state.editTaskState = editTaskStateArray
+	
 	state.editTask.assignedName = state.editTask.assignedTo.map((item) => item.name);
 	state.editTask.assignedTo = state.editTask.assignedTo.map((item) => item.id);
 	state.editTask.dateDue = dateOnlyFormat(result.dueDate);
