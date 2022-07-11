@@ -139,7 +139,7 @@ export default defineComponent({
                       moment(props.timerValue, "HH:mm:ss").add(1, 'minutes').format('HH:mm') :
                       moment(props.timerValue, "HH:mm:ss").format('HH:mm');
         const timerVal = ref(moment(timer.value, "HH:mm")); */
-    const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
+    const timerVal = ref(moment());
     const cancelBtn = localStorage.getItem('cancelButton')
 
     const staffList = computed(() => {
