@@ -181,6 +181,9 @@ export default defineComponent({
                         setTimeout(()=>{
                             closeValue.value = false;
                         },100)
+                        if (route.name == "PatientSummary") {
+                            store.dispatch("showTaskModalData", route.params.udid);
+                        }
                         if (props.onlyView) {
                             emit("clinicalDashboard")
                         } else {
