@@ -48,8 +48,8 @@
             <a-col :sm="12" :xs="24" v-show="toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-                        <PatientDropDown v-if="!taskId" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
-                        <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <PatientDropDown :editDataPatient="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <!-- <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" /> -->
 
                     </a-form-item>
                 </div>
@@ -57,8 +57,8 @@
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown v-if="!taskId" mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
-                        <StaffDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <StaffDropDown :editDataStaff="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <!-- <StaffDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" /> -->
                         <!-- <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" /> -->
                     </a-form-item>
                 </div>
@@ -146,7 +146,7 @@ export default defineComponent({
             taskStatus: "",
             priority: "",
             assignedTo: [],
-            assignedName: [],
+            // assignedName: [],
             taskCategory: [],
             dueDate: "",
             entityType: "",
@@ -156,6 +156,30 @@ export default defineComponent({
         });
         const tasks = computed(() => {
             return store.state.tasks;
+        });
+
+        const editTaskState = computed(() => {
+            return store.state.tasks.editTaskState
+        })
+
+        watchEffect(() => {
+            // store.dispatch("allStaffList");
+            if (tasks.value.editTask && props.taskId) {
+                // Object.assign(taskForm, tasks.value.editTask);
+                Object.assign(taskForm, {
+                    title: tasks.value.editTask.title,
+                    description: tasks.value.editTask.description,
+                    taskStatus: tasks.value.editTask.taskStatus,
+                    priority: tasks.value.editTask.priority,
+                    assignedTo: tasks.value.editTask.assignedTo,
+                    assignedName: tasks.value.editTask.assignedName,
+                    taskCategory: tasks.value.editTask.taskCategory,
+                    dueDate: tasks.value.editTask.dueDate,
+                    entityType: tasks.value.editTask.entityType,
+                });
+                toggleTo.value = tasks.value.editTask.entityType == "staff" ? false : true;
+                taskForm.entityType = tasks.value.editTask.entityType
+            }
         });
 
         const submitForm = () => {
@@ -285,15 +309,6 @@ export default defineComponent({
             // console.log("check",taskForm)
         };
 
-        watchEffect(() => {
-            // store.dispatch("allStaffList");
-            if (tasks.value.editTask && props.taskId) {
-                Object.assign(taskForm, tasks.value.editTask);
-                toggleTo.value = tasks.value.editTask.entityType == "staff" ? false : true;
-                taskForm.entityType = tasks.value.editTask.entityType
-            }
-        });
-
         const common = computed(() => {
             return store.state.common;
         });
@@ -305,7 +320,7 @@ export default defineComponent({
         function buttonToggle() {
             toggleTo.value = !toggleTo.value;
             taskForm.assignedTo = [];
-            taskForm.assignedName = [];
+            // taskForm.assignedName = [];
         }
 
         function checkChangeInput() {
@@ -409,7 +424,8 @@ export default defineComponent({
             handleCancel,
             isPatientTask,
             closeValue,
-            moment
+            moment,
+            editTaskState,
         };
     },
 });
