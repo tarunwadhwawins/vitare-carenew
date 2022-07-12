@@ -1,13 +1,13 @@
 
 <template>
-<a-modal max-width="1140px" width="90%" title="Escalation Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="90%" :title="isEdit?'Edit Escalation Details':'Escalation Details'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps v-model:current="current">
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Escalation Info'">
-                <a-form layout="vertical" ref="formRef" :model="escalation" @finish="submitEscalationForm">
+                <a-form layout="vertical" ref="formRef" :model="escalation" @finish="submitEscalationForm" @finishFailed="onFinishFailed">
                     <a-row :gutter="24">
                         <a-col :sm="24" :xs="24" v-show="!paramId">
                             <div class="form-group">
@@ -65,7 +65,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Details'">
-                <a-form layout="vertical" ref="formRef" :model="escalationDetails" @finish="submitDetailsForm">
+                <a-form layout="vertical" ref="formRef" :model="escalationDetails" @finish="submitDetailsForm" @finishFailed="onFinishFailed">
                     <a-row :gutter="24">
                         <a-col :xl="24" :xs="24" style="padding:20px;">
                             <div class="pageTittle">
@@ -190,7 +190,7 @@
 </a-modal>
 </template>
 <script>
-import { computed,onMounted,reactive, ref } from "vue";
+import { computed,onMounted,reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import {
@@ -211,6 +211,7 @@ import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader.vue";
 import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
+
 const notesColumns = [
   {
     title: "Select All",
@@ -389,6 +390,9 @@ export default {
     DateFilter,
     ArrayDataSearch,
   },
+  props:{
+    isEdit:String
+  },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
@@ -408,6 +412,10 @@ export default {
       entityType: "patient",
     });
 
+    const editEscalationDetails = computed(()=>{
+      return store.state.escalations
+    })
+
     const escalationDetails = reactive({
       notesId: [],
       vitalId: [],
@@ -416,6 +424,13 @@ export default {
       summaryStart: "",
       summaryEnd: "",
     });
+
+    watchEffect(()=>{
+      if(props.isEdit && editEscalationDetails.value){
+        Object.assign(escalation,editEscalationDetails.value.editEscalationDetails)
+        Object.assign(escalationDetails,editEscalationDetails.value.editSecondStepper)
+      }
+    })
 
     onMounted(()=>{
       store.dispatch('flagsList')
@@ -472,7 +487,7 @@ export default {
     });
 
     function submitEscalationForm() {
-      if (addEscalation.value == null) {
+      if (addEscalation.value == null && !props.isEdit) {
         store
           .dispatch("addBasicEscalation", {
             escalationType: escalation.escalationType,
@@ -510,7 +525,7 @@ export default {
               ? escalation.referenceId
               : route.params.udid,
             entityType: "patient",
-            escalationId: addEscalation.value.id,
+            escalationId: props.isEdit?props.isEdit:addEscalation.value.id,
           })
           .then((response) => {
             if (response == true) {
@@ -569,7 +584,7 @@ export default {
         store
           .dispatch("addEscalationDetails", {
             escalationDetails: escalationDetails,
-            escalationId: addEscalation.value.id,
+            escalationId: props.isEdit?props.isEdit:addEscalation.value.id,
           })
           .then((response) => {
             if (response == true) {
@@ -648,6 +663,7 @@ export default {
         formRef.value.resetFields();
         emit("saveModal", false)
       }
+      
     };
 
     // function escalationType(e) {
@@ -831,7 +847,13 @@ let dateFormate = {
       escalation.escalationType = data
     }
 
+    const onFinishFailed=(value)=>{
+      console.log('value',value)
+    }
+
     return {
+      onFinishFailed,
+      editEscalationDetails,
       handleGlobalChange,
       showModal,
       editDataPatient,
@@ -898,6 +920,9 @@ let dateFormate = {
 </script>
 
 <style lang="scss">
+.steps-action{
+  float: right;
+}
 .dangerValue {
   padding: 5px;
   background-color: #f03131f3;

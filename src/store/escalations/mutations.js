@@ -105,6 +105,7 @@ export const escalationVitalList = (state, data) => {
 
 
 export const singleEscalationRecord = (state, data) => {
+  console.log('data',data)
   state.singleEscalationRecord = data
 
   state.singleEscalationDataArray = [{
@@ -113,10 +114,13 @@ export const singleEscalationRecord = (state, data) => {
     flagColor: data.flagColor,
     flagName: data.flagName,
     dueBy:data.dueBy?dateAndTimeFormate(data.dueBy,globalDateFormat):null,
-    escalationType:data.escalationType
+    escalationType:data.escalationType,
+    id:data.id
   }]
 
   state.escalationNots = data.escalationNotes.data.map((item)=>{
+    console.log('==>',item.note.id)
+    item.id = item.note.id
     item.date = item.note.date?dateAndTimeFormate(item.note.date,globalDateFormat):null,
     item.category = item.note.category
     item.type = item.note.type,
@@ -125,7 +129,6 @@ export const singleEscalationRecord = (state, data) => {
     item.color = item.note.color
     item.flag = item.note.flag
     item.note = item.note.note
-    
     return item
   })
 
@@ -136,6 +139,7 @@ export const singleEscalationRecord = (state, data) => {
     item.value = item.patientVital.value
     item.color = item.patientVital.color
     item.flagName = item.patientVital.flagName
+    item.id = item.patientVital.udid
     return item
   })
 
@@ -148,6 +152,7 @@ export const singleEscalationRecord = (state, data) => {
     item.highValue = item.carePlan.highValue
     item.lowValue = item.carePlan.lowValue
     item.note = item.carePlan.note
+    item.id = item.carePlan.id
     return item
   })
 
@@ -155,8 +160,61 @@ export const singleEscalationRecord = (state, data) => {
     item.createdAt = item.flag.createdAt?dateAndTimeFormate(item.flag.createdAt,globalDateFormat):null,
     item.name = item.flag.name
     item.color = item.flag.color
+    item.id = item.flag.id
     return item
   })
+
+  state.editEscalationDetails = {
+    dueBy:data.dueBy?dateAndTimeFormate(data.dueBy,globalDateFormat):null,
+    referenceId:data.patientId,
+    entityType:data.entityType,
+    escalationDescription:data.escalationDescription,
+    flagId:data.flagId,
+    escalationType:data.escalationType.data.map((item)=>{
+      return item.escalationTypeId
+    }),
+    staffIds:data.escalationStaff.data.map((item)=>{
+      return item.staffUdid
+    }),
+    
+  }
+
+  state.editSecondStepper = {
+    notesId : state.escalationNots.map((item)=>{
+      return item.id
+     }),
+   
+     vitalId : data.escalationVital.data.map((item)=>{
+       return item.id = item.patientVital.udid
+       
+     }),
+   
+     carePlan :data.escalationCarePlan.data.map((item)=>{
+       return item.id = item.carePlan.id
+       
+     }),
+   
+     flagIds :data.escalationFlag.data.map((item)=>{
+       return item.id = item.flag.id
+       
+     })
+  }
+
+  state.editEscalationPatient=[{
+    value:data.patientId,
+    label:data.patientName
+  }]
+
+  state.editEscalationStaff  = data.escalationStaff.data.map((item)=>{
+    item.fullName = item.staffName,
+    item.name = item.staffName,
+    item.label = item.staffName,
+    item.firstName = item.staffName,
+    item.value = item.staffUdid
+    return item
+  })
+
+  
 
 
 }
