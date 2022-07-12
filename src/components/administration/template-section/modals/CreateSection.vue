@@ -50,6 +50,7 @@ export default defineComponent({
     },
     props: {
         update: String,
+        sectionName: String
     },
 
     setup(props, {
@@ -67,7 +68,9 @@ export default defineComponent({
             ...questionnaireSection
         })
         watchEffect(() => {
-
+            if (props.sectionName) {
+                questionnaireSection.sectionName = props.sectionName
+            }
             if (props.update) {
 
                 if (store.getters.detailsquestionnaireSection) {
@@ -83,12 +86,24 @@ export default defineComponent({
             disabled.value = true
             store.dispatch("addQuestionnaireTemplateSection", questionnaireSection).then(() => {
                 if (store.state.common.successMsg) {
-                    emit("is-visible", {
-                        show: false,
-                        id: props.update
-                    })
+                    if (props.sectionName) {
+                        store.dispatch("allSections").then(()=>{
+   emit("is-visible", {
+                            show: false,
+                            id: store.getters.questionnaireTemplateSection.value
+                        })
+                        })
+                     
+                    } else {
+                        emit("is-visible", {
+                            show: false,
+                            id: props.update
+                        })
+                        store.dispatch("questionnaireTemplateSectionList")
+                    }
+
                     reset()
-                    store.dispatch("questionnaireTemplateSectionList")
+
                 }
             })
         }

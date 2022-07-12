@@ -77,12 +77,15 @@ export default defineComponent({
     globalCode:Array,
     mode:String,
     isColor:Boolean,
-    listHeight:Number
+    listHeight:Number,
+    responseReturn:Boolean  
   },
   setup(props, { emit }) {
  
     const filterOption = (input, globalCode) => {
-      // console.log('globalCode', globalCode,input)
+      if(props.responseReturn){
+       emit("checkReturnResponse",{value:globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0,input:input})
+      }
       return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
 

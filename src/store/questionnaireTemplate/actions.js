@@ -141,7 +141,7 @@ export const addAssiignquestionnaire = async ({
 },data) => {
  
   let url = data.temOrSection =='section' ? 'questions/'+data.id+'/assign' : API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/question'
-  await serviceMethod.common("post", url, null, data.data).then((response) => {
+  await serviceMethod.common(data.method, url, null, data.data).then((response) => {
 
     successSwal(response.data.message)
     commit('successMsg',response.data.message)

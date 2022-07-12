@@ -27,7 +27,7 @@
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
                         <a-form-item :label="$t('questionnaire.type')" name="dataTypeId" :rules="[{ required: true, message: $t('questionnaire.type') +' '+$t('global.validation') }]">
-                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType();" made="single" />
+                            <GlobalCodeDropDown v-model:value="questionnaire.dataTypeId" :dataId="58" @handleGlobalChange="handleGlobalChange($event,'questionnaire.dataTypeId')" @change="checkChangeInput(); questionType();" made="single" />
                             <ErrorMessage v-if="errorMsg" :name="errorMsg.dataTypeId?errorMsg.dataTypeId[0]:''" />
                         </a-form-item>
                     </div>
@@ -42,6 +42,7 @@
                 </a-col>
 
                 <a-col :sm="24" class="mt-25" v-if="questionnaire.dataTypeId==243 || questionnaire.dataTypeId==244">
+
                     <a-row>
 
                     </a-row>
@@ -78,7 +79,7 @@
                         <a-col :sm="4" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('questionnaire.program')">
-                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" :max-tag-count="2" :maxTagTextLength="5" />
+                                    <ArrayDataSearch v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" :max-tag-count="2" :maxTagTextLength="5" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -89,8 +90,8 @@
                                 </template>
 
                                 <div class="form-group">
-<span><label>{{(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,10)+'...' : (arrayToObjact(programList, programScores)).name}}</label></span>
-                                    <a-form-item  >
+                                    <span><label>{{(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,10)+'...' : (arrayToObjact(programList, programScores)).name}}</label></span>
+                                    <a-form-item>
                                         <a-input v-model:value="questionnaire.programScore[(lable.key+''+programScores)]" :placeholder="(arrayToObjact(programList, programScores)).name +' Score'" style="width: 100%" size="large" @change="checkChangeInput()" />
                                     </a-form-item>
                                 </div>
@@ -124,7 +125,7 @@
                 <a-col :span="24">
 
                     <div class="steps-action">
-                        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+                        <a-form-item>
                             <a-button class="modal-button" style="margin-right: 8px" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
                             <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
                             <a-button v-if="id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
@@ -144,6 +145,7 @@ import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch.vue";
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
 export default {
     name: 'Add Questionnaire',
@@ -152,7 +154,8 @@ export default {
         PlusOutlined,
         DeleteOutlined,
         GlobalCodeDropDown,
-        ErrorMessage
+        ErrorMessage,
+        ArrayDataSearch
     },
     props: {
         id: String,
@@ -226,6 +229,7 @@ export default {
             questionnaire.programId = [];
             questionnaire.programScore = [];
             questionnaire.textScore = "";
+
             if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
                 questionnaire.lable.push({
                     value: "",
@@ -284,8 +288,10 @@ export default {
                     store.dispatch("addAssiignquestionnaire", {
                         data: {
                             questionId: [store.getters.addQuestionnaire.value.id],
-                            id: props.templateId
+                            id: props.templateId,
+                            
                         },
+                        method:"post",
                         id: props.templateId,
                         temOrSection: props.temOrSection
                     }).then(() => {
@@ -391,8 +397,27 @@ export default {
                 //disabled.value= false
             }
         }
+        const handleGlobalChange = (data, type) => {
+            if (type == 'questionnaire.dataTypeId') {
+                questionnaire.dataTypeId = data
+                questionnaire.lable = [];
+                questionnaire.programScore = [];
+                questionnaire.programId = [];
+                questionnaire.programScore = [];
+                questionnaire.textScore = "";
+
+                if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
+                    questionnaire.lable.push({
+                        value: "",
+                        key: Date.now(),
+                    });
+                }
+            }
+            console.log("check", data)
+        }
         const errorMsg = store.getters.errorMsg.value
         return {
+            handleGlobalChange,
             questionnaire,
             programChange,
             size: ref("large"),
@@ -401,7 +426,7 @@ export default {
             questionType,
             addQuestionnaire,
             removeLable,
-            questionDataType: store.getters.questionDataType,
+
             formRef,
             value,
             value2,
@@ -419,3 +444,8 @@ export default {
     },
 };
 </script>
+<style lang="scss" scoped>
+.form-group label {
+    margin: 0 0 8px 0;
+}
+</style>

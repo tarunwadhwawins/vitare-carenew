@@ -126,9 +126,11 @@ export const globalCodes = (state, data) => {
             state.modules = element.globalCode;
         }
         if (element.name === 'Questionnaire Template Type') {
+            console.log("check",element.globalCode)
             state.questionnaireTemplateType = element.globalCode;
         }
         if (element.name === 'Question dataType') {
+            
             state.questionDataType = element.globalCode;
         }
         if (element.name === 'Staff Level') {

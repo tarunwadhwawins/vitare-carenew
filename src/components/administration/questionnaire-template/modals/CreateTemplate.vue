@@ -17,7 +17,7 @@
                 <div class="form-group">
                  
                     <a-form-item :label="$t('questionnaire.templateType')" name="templateTypeId" :rules="[{ required: true, message: $t('questionnaire.templateType') +' '+$t('global.validation') }]">
-                      <GlobalCodeDropDown v-if="questionnaireTemplateType" v-model:value="questionnaireTemplate.templateTypeId" :globalCode="questionnaireTemplateType" @change="checkChangeInput()"/>
+                      <GlobalCodeDropDown  v-model:value="questionnaireTemplate.templateTypeId" :dataId="57" @handleGlobalChange="handleGlobalChange($event,'questionnaireTemplate.templateTypeId')" @change="checkChangeInput()"/>
                        
                          <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateTypeId[0]:''" />
                     </a-form-item>
@@ -35,9 +35,11 @@
             <a-col :span="24">
               
                 <div class="steps-action">
-                   <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
-                    <a-button  type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
-                    <a-button  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button>
+                  <a-form-item >
+                   <a-button  class="modal-button" style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
+                    <a-button class="modal-button"  type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
+                    <a-button class="modal-button"  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button>
+                  </a-form-item>
               </div>
             </a-col>
         </a-row>
@@ -115,6 +117,7 @@ function reset(){
    store.state.patients.errorMsg = ""
     store.commit("checkChangeInput", false)
     Object.assign(questionnaireTemplate,form)
+    questionnaireTemplate.tags = []
     disabled.value= false
 }
     function closeModal() {
@@ -132,6 +135,7 @@ function reset(){
           }
         });
       } else {
+        reset()
         formRef.value.resetFields()
         disabled.value= false
       }
@@ -144,6 +148,13 @@ const errorMsg = store.getters.errorMsg.value
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput
     })
+     const handleGlobalChange = (data, type) => {
+            if (type == 'questionnaireTemplate.templateTypeId') {
+                questionnaireTemplate.templateTypeId = data
+               
+            }
+          
+        }
     return {
       questionnaireTemplate,
       addTemplate,
@@ -154,8 +165,9 @@ const errorMsg = store.getters.errorMsg.value
       formRef,
       updateTemplate,
       disabled,
-      questionnaireTemplateType:store.getters.questionnaireTemplateType,
+      
       reset,
+      handleGlobalChange
       
     };
   },

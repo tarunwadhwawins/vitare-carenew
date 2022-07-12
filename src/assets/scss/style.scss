@@ -1816,3 +1816,15 @@
         display: none!important;
     }
 }
+.modal-button {
+    margin: 5px;
+    padding: 7px 15px 5px 15px;
+    height: auto;
+    width: 80px;
+  }
+  .steps-action {
+    text-align: right;
+  }
+  .steps-action .ant-row {
+    margin: 0;
+  }

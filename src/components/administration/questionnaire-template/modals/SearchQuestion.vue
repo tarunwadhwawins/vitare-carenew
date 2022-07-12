@@ -154,7 +154,8 @@ assignQuestion.questionId.push(index.id)
             store.dispatch("addAssiignquestionnaire", {
                 data: {questionId:getUnique(assignQuestion.questionId)},
                 id: props.templaterecord.id,
-                temOrSection:props.temOrSection
+                temOrSection:props.temOrSection,
+                method:"put"
             }).then(() => {
                 if(store.state.common.successMsg){
                 if(props.temOrSection=='section'){
