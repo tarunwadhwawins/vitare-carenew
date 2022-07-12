@@ -34,7 +34,7 @@
             </router-link> -->
             <a @click="showStaffModal( record.assignedById)" >{{  record.assignedBy  }}</a>
         </template>
-        <template #action="{ record }" v-if="!dataList">
+        <template #action="{ record }" >
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
                 <template #title>
                     <span>{{ $t('global.edit') }}</span>
@@ -60,6 +60,7 @@
         </template>
     </a-table>
 </a-col>
+<Loader/>
 <TasksModal v-model:visible="taskVisibleView" @saveTaskModal="handleOk($event)" :taskId="taskID" :onlyView="onlyView" @clinicalDashboard="callApiFromModal" />
 <!-- <TaskDetails v-model:visible="taskVisibleView"  :taskId="taskID" :onlyView="onlyView"/> -->
 </template>
@@ -71,9 +72,11 @@ import {  DeleteOutlined, EditOutlined, CalendarOutlined} from "@ant-design/icon
 import { messages } from "@/config/messages"
 import { warningSwal,  arrayToObjact,showPatientModal,showStaffModal} from "@/commonMethods/commonMethod"
 import { useRoute } from 'vue-router'
+import Loader from "@/components/loader/Loader"
 export default {
     name: "TaskTable",
     components: {
+        Loader,
         DeleteOutlined,
         EditOutlined,
         CalendarOutlined,
@@ -160,6 +163,12 @@ export default {
                 check: true,
                 id: id,
             });
+              store.dispatch('editTask', {
+                id: id
+            })
+            onlyView.value = true
+            taskID.value = id
+            taskVisibleView.value = true
         };
         const taskDetails = (id) => {
             store.dispatch('editTask', {
@@ -178,6 +187,9 @@ export default {
                         store.state.tasks.tasksList = null;
                         store.dispatch("tasksList");
                     }, 2000);
+                     if (route.name == "PatientSummary") {
+                            store.dispatch("showTaskModalData", route.params.udid);
+                        }
                 }
             });
         }

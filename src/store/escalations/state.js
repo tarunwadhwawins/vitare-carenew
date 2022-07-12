@@ -14,5 +14,7 @@ export default {
   escalationVitals:null,
   escalationCarePlan:null,
   editEscalationStaff:null,
-  editEscalationPatient:null
+  editEscalationPatient:null,
+  editEscalationDetails:null,
+  editSecondStepper:null
 }

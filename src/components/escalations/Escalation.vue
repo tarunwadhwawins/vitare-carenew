@@ -26,7 +26,7 @@
                 </a-col>
                 <!-- stepper -->
                 <a-col :span="24">
-                   <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)"/>
+                   <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)" :isEdit="isEdit"/>
                 </a-col>
             </a-row>
              <EscaltionViewModal v-model:visible="escaltionViewModal"/>
@@ -117,7 +117,7 @@ export default {
       staffId: [],
     });
     const escaltionModal = ref(false)
-
+    const isEdit = ref()
     const addNoteForm = reactive({
       notes: [],
     });
@@ -163,6 +163,7 @@ export default {
         store.commit('resetEscalationCounter')
         store.state.escalations.addBasicEscalation=null
         escaltionModal.value =true
+        isEdit.value = null
     }
     
     const handleStaffChange = (val) => {
@@ -173,9 +174,13 @@ export default {
       escaltionModal.value = value
     }
 
-    const showEscalationData =(value)=>{
-      console.log('testValue',value)
-      escaltionViewModal.value = value
+    const showEscalationData =(data)=>{
+      if(data.type=='view'){
+        escaltionViewModal.value = data.value
+      }else{
+         escaltionModal.value = data.value
+         isEdit.value = data.id
+      }
     }
 
     const escalationList = computed(() => {
@@ -189,6 +194,7 @@ export default {
        store.state.escalations.escalation = ''
     })
     return {
+      isEdit,
       arrayToObjact,
       escalationList,
       columnData,

@@ -49,7 +49,8 @@
         </a-row>
         <Loader />
     </a-layout-content>
-    <EscaltionViewModal v-model:visible="escaltionViewModal" />
+    <EscaltionViewModal v-model:visible="escaltionViewModal"  />
+    <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)" :isEdit="isEdit"/>
     <TasksModal v-model:visible="visible" @saveTaskModal="handleOk($event)" :taskId="taskID" />
 </template>
 
@@ -78,7 +79,8 @@ import EscaltionTable from "@/components/common/tables/EscalationTable"
 import EscaltionViewModal from "@/components/escalations/EscalationViewModal"
 import TaskTable from "@/components/tasks/TaskTable";
 import TasksModal from "@/components/modals/TasksModal";
-  import DateFilter from "@/components/common/DateFilter.vue"
+import DateFilter from "@/components/common/DateFilter.vue"
+import EscaltionModal from "@/components/escalations/EscalationModal"
 const columnData = [{
         title: "Name",
         dataIndex: "patientName",
@@ -178,7 +180,8 @@ export default {
         EscaltionViewModal,
         TaskTable,
         TasksModal,
-        DateFilter
+        DateFilter,
+        EscaltionModal
     },
 
     setup() {
@@ -189,15 +192,21 @@ export default {
         const timeLineButton = store.getters.dashboardTimeLineButton
         const escaltionViewModal = ref(false);
         const escaltionModal = ref(false);
+        const isEdit = ref();
         const showEscalationModal = () => {
             store.commit("resetEscalationCounter");
             store.state.patients.addBasicEscalation = null;
             escaltionModal.value = true;
+            isEdit.value = null
         };
-        const showEscalationData = (value) => {
-
-            escaltionViewModal.value = value;
-        };
+         const showEscalationData =(data)=>{
+      if(data.type=='view'){
+        escaltionViewModal.value = data.value
+      }else{
+         escaltionModal.value = data.value
+         isEdit.value = data.id
+      }
+    }
  
         function apiCall(data) {
             let from = moment()
@@ -315,6 +324,7 @@ export default {
             
         })
         return {
+            isEdit,
             editTask,
             visible,
             taskID,

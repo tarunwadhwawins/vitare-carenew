@@ -1,7 +1,8 @@
 <template>
 <a-table  rowKey="id" :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :scroll="{ x: 800,y:'calc(100vh - 570px)' }" :pagination="false" @change="handleTableChange">
     <template #fullName="{ record }" v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ record.fullName }}</router-link>
+    <a @click="showPatientModal(record.id)">{{ record.fullName }}</a>
+        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ record.fullName }}</router-link> -->
     </template>
      <template #fullName="{ record }" v-else>
         <span >{{ record.firstName }}</span>
@@ -45,6 +46,7 @@ import{computed,onMounted} from "vue"
 import {DeleteOutlined,} from "@ant-design/icons-vue";
 import {
     arrayToObjact,
+    showPatientModal
 } from "@/commonMethods/commonMethod"
 import { useRoute } from 'vue-router';
 export default {
@@ -135,6 +137,7 @@ function loadMoredata() {
       }
     };
         return{
+            showPatientModal,
             arrayToObjact,
             screensPermissions:store.getters.screensPermissions,
             patients,

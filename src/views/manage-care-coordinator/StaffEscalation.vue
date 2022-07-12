@@ -33,11 +33,11 @@
                         <SearchField endPoint="escalation" />
                     </a-col>
                     <a-col :span="24" style="padding-top:20px">
-                        <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" />
+                        <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)"  />
                     </a-col>
                 </a-row>
                 <EscaltionViewModal v-model:visible="escaltionViewModal" />
-                <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)" />
+                <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)" :isEdit="isEdit"/>
             </div>
             <Loader />
         </a-layout-content>
@@ -136,6 +136,7 @@ export default {
         const route = useRoute();
         const router = useRouter()
         const escaltionModal = ref(false);
+        const isEdit = ref()
 
         const patientDetails = computed(() => {
             return store.state.patients.patientDetails;
@@ -161,16 +162,22 @@ export default {
             store.commit("resetEscalationCounter");
             store.state.escalations.addBasicEscalation = null;
             escaltionModal.value = true;
+            isEdit.value = null
         };
 
         const saveModal = (value) => {
             escaltionModal.value = value;
         };
 
-        const showEscalationData = (value) => {
-            // console.log("testValue", value);
-            escaltionViewModal.value = value;
-        };
+        
+        const showEscalationData =(data)=>{
+      if(data.type=='view'){
+        escaltionViewModal.value = data.value
+      }else{
+         escaltionModal.value = data.value
+         isEdit.value = data.id
+      }
+    }
 
         const escalationList = computed(() => {
             return store.state.escalations.escalation;
@@ -238,6 +245,7 @@ export default {
         }
 
         return {
+            isEdit,
             button,
             escalationList,
             columnData,

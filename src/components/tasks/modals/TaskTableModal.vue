@@ -55,17 +55,17 @@ const tasksListColumns = [{
             customRender: 'assignedBy'
         }
     },
-    // {
-    //     title: 'Actions',
-    //     dataIndex: 'actions',
-    //     slots: {
-    //         customRender: 'action'
-    //     }
-    // }
+    {
+        title: 'Actions',
+        dataIndex: 'actions',
+        slots: {
+            customRender: 'action'
+        }
+    }
 ];
 export default {
     components: {
-        TaskTable,
+        TaskTable
     },
 
     setup() {
