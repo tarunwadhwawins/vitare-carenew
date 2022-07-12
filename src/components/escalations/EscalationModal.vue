@@ -101,7 +101,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                            <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.notesId, onChange: onSelectChangeNotes }" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                  <template #addedBy="{ record }">
                                                     <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
                                                   </template>
@@ -123,7 +123,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="vitalId" :rules="[{ required: false, message:'Vital'+' '+$t('global.validation') }]">
-                                            <a-table rowKey="id" :row-selection="vitalSelection" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
+                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.vitalId, onChange: onSelectChangeVitals }" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
                                                 <template #color="{ record }">
                                                     <a-tooltip placement="bottom">
                                                         <template #title>
@@ -142,7 +142,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="carePlan" :rules="[{ required: false, message:'Care Plan'+' '+$t('global.validation') }]">
-                                            <a-table rowKey="id" :row-selection="carePlanSelection" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
+                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.carePlan, onChange: onSelectChangeCarePlan }" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
                                             </a-table>
                                         </a-form-item>
                                     </div>
@@ -152,7 +152,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="flagIds" :rules="[{ required: false, message:'Flag'+' '+$t('global.validation') }]">
-                                            <a-table rowKey="id" :row-selection="flagSelection" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
+                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.flagIds, onChange: onSelectChangeFlags }" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
                                                 <template #name="{ record }">
                                                     <span>{{record.flagName}}</span>
                                                 </template>
@@ -428,7 +428,10 @@ export default {
     watchEffect(()=>{
       if(props.isEdit && editEscalationDetails.value){
         Object.assign(escalation,editEscalationDetails.value.editEscalationDetails)
-        Object.assign(escalationDetails,editEscalationDetails.value.editSecondStepper)
+        Object.assign(escalationDetails.notesId,editEscalationDetails.value.editSecondStepper?.notesId)
+        Object.assign(escalationDetails.vitalId,editEscalationDetails.value.editSecondStepper?.vitalId)
+        Object.assign(escalationDetails.carePlan,editEscalationDetails.value.editSecondStepper?.carePlan)
+        Object.assign(escalationDetails.flagIds,editEscalationDetails.value.editSecondStepper?.flagIds)
       }
     })
 
@@ -437,7 +440,7 @@ export default {
     })
 
     const patientDetails = computed(() => {
-      return store.state.patients.patientDetails;
+      return store.state.patients.patientDetails; 
     });
     const globalCode = computed(() => {
       return store.state.common;
@@ -807,28 +810,46 @@ let dateFormate = {
     
     }
 
-    const noteSelection = {
-      onChange: (selectedRowKeys) => {
-        escalationDetails.notesId = selectedRowKeys;
-      },
-    };
-    const vitalSelection = {
-      onChange: (selectedRowKeys) => {
-        escalationDetails.vitalId = selectedRowKeys;
-      },
+    // const noteSelection = {
+    //   onChange: (selectedRowKeys) => {
+    //     escalationDetails.notesId = selectedRowKeys;
+    //   },
+    // };
+
+     const onSelectChangeNotes = selectedRowKeys => {
+      escalationDetails.notesId = selectedRowKeys;
     };
 
-    const carePlanSelection = {
-      onChange: (selectedRowKeys) => {
-        escalationDetails.carePlan = selectedRowKeys;
-      },
+    const onSelectChangeVitals = selectedRowKeys => {
+      escalationDetails.vitalId = selectedRowKeys;
     };
 
-    const flagSelection = {
-      onChange: (selectedRowKeys) => {
-        escalationDetails.flagIds = selectedRowKeys;
-      },
+   
+    // const vitalSelection = {
+    //   onChange: (selectedRowKeys) => {
+    //     escalationDetails.vitalId = selectedRowKeys;
+    //   },
+    // };
+
+    const onSelectChangeCarePlan = selectedRowKeys => {
+       escalationDetails.carePlan = selectedRowKeys;
     };
+
+    // const carePlanSelection = {
+    //   onChange: (selectedRowKeys) => {
+    //     escalationDetails.carePlan = selectedRowKeys;
+    //   },
+    // };
+
+    const onSelectChangeFlags = selectedRowKeys => {
+       escalationDetails.flagIds = selectedRowKeys;
+    };
+
+    // const flagSelection = {
+    //   onChange: (selectedRowKeys) => {
+    //     escalationDetails.flagIds = selectedRowKeys;
+    //   },
+    // };
 
     const editDataStaff = computed(() => {
       return store.state.escalations.editEscalationStaff;
@@ -852,6 +873,10 @@ let dateFormate = {
     }
 
     return {
+      onSelectChangeNotes,
+      onSelectChangeVitals,
+      onSelectChangeCarePlan,
+      onSelectChangeFlags,
       onFinishFailed,
       editEscalationDetails,
       handleGlobalChange,
@@ -865,10 +890,10 @@ let dateFormate = {
       handlePatientChange,
       timeline: store.getters.timeline,
       Buttons: store.getters.dashboardTimeLineButton,
-      flagSelection,
-      carePlanSelection,
-      vitalSelection,
-      noteSelection,
+      // flagSelection,
+      // carePlanSelection,
+      // vitalSelection,
+      // noteSelection,
       status,
       form,
       checkFieldsData,
