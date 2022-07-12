@@ -178,6 +178,7 @@ export default {
             units: units,
             createdType: 'Staff',
             deviceInfo: deviceInfo,
+            addType: 'Manual',
           })
         });
         vitalsData.splice(0, 1)
@@ -192,6 +193,7 @@ export default {
           units: 'mg/dl',
           createdType: 'Staff',
           deviceInfo: deviceInfo,
+          addType: 'Manual',
         }]
       }
       const data = {

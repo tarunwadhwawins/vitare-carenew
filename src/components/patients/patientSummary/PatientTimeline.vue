@@ -46,6 +46,7 @@
                             <FlagOutlined class="redIcon" v-if="timeline.type == 7" />
                             <PushpinOutlined class="greenIcon" v-if="timeline.type == 8" />
                             <MessageOutlined class="messageIcon" v-if="timeline.type == 9" />
+                            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type == 10" />
                             <!-- <InfoCircleOutlined class="messageIcon" /> -->
                         </template>
                         <div class="timelineInner">

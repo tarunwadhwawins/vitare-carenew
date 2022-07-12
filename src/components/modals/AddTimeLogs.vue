@@ -14,11 +14,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy');changedValue"  />
-                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large" :isDisabled="isDisabled">
-                            <a-select-option value="" hidden>Select Logged By</a-select-option>
-                            <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
-                        </a-select> -->
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy');changedValue()" :isDisabled="isDisabled" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -26,11 +22,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy');changedValue"  />
-                        <!-- <a-select :getPopupContainer="triggerNode => triggerNode.parentNode" @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large" :isDisabled="isDisabled">
-                            <a-select-option value="" hidden>Select Performed By</a-select-option>
-                            <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
-                        </a-select> -->
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy');changedValue" :isDisabled="isDisabled" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -46,7 +38,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker @change="changedValue"  v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%" />
+                        <a-time-picker @change="changedValue" v-model:value="addTimeLogForm.timeAmount" format="HH:mm:ss" :size="size" style="width: 100%" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -125,6 +117,9 @@ export default defineComponent({
     isAutomatic: {
       type: Boolean,
     },
+    isLeftTimeLog: {
+      type: Boolean,
+    },
     timerValue: {
       type: String,
     },
@@ -136,7 +131,7 @@ export default defineComponent({
     const dateSelect = ref(moment().add(1, "day"));
     const isValueChanged = ref(false);
     // const isTimerLog = reactive(props.isAutomatic);
-    const isDisabled = props.isAutomatic == true ? true : false;
+    const isDisabled = (props.isLeftTimeLog == true) || (props.isAutomatic == true) ? ref(true) : ref(false);
     const loggedInUserDetails = JSON.parse(localStorage.getItem("auth"));
     /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
         const timer = ref(null);
@@ -144,7 +139,7 @@ export default defineComponent({
                       moment(props.timerValue, "HH:mm:ss").add(1, 'minutes').format('HH:mm') :
                       moment(props.timerValue, "HH:mm:ss").format('HH:mm');
         const timerVal = ref(moment(timer.value, "HH:mm")); */
-    const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
+    const timerVal = ref(moment());
     const cancelBtn = localStorage.getItem('cancelButton')
 
     const staffList = computed(() => {
@@ -202,22 +197,31 @@ export default defineComponent({
       localStorage.removeItem('cancelButton')
     })
 
-    const loggedInUserId = ref(null);
-    const loggedInUserName = ref(null);
-    if (staffList.value && staffList.value != null) {
-      staffList.value.forEach((staff) => {
-        if (staff.uuid == loggedInUserDetails.user.staffUdid) {
-          loggedInUserId.value = staff.uuid;
-          loggedInUserName.value = staff.fullName;
-        }
-      });
-    }
+    const loggedInUserId = ref(loggedInUserDetails.user.staffUdid);
+    // const loggedInUserName = ref(null);
 
     watchEffect(() => {
+      // if(staffList.value && staffList.value != null) {
+      //   staffList.value.forEach((staff) => {
+      //     if (staff.uuid == loggedInUserDetails.user.staffUdid) {
+      //       alert('same')
+      //       loggedInUserId.value = staff.uuid;
+      //       loggedInUserName.value = staff.fullName;
+      //     }
+      //   });
+      // }
       if (props.isEditTimeLog == true) {
         Object.assign(addTimeLogForm, {
-          loggedBy: loggedInUserName.value != null ? loggedInUserName.value : "",
-          performedBy: loggedInUserName.value != null ? loggedInUserName.value : "",
+          loggedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
+          performedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
+          date: moment(),
+          timeAmount: timerVal.value ? timerVal.value : "",
+        });
+      }
+      if(!props.isAutomatic) {
+        Object.assign(addTimeLogForm, {
+          loggedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
+          performedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
           date: moment(),
           timeAmount: timerVal.value ? timerVal.value : "",
         });
