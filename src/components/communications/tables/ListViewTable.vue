@@ -23,7 +23,7 @@
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
           {{record.from}}
         </router-link>
-        <a @click="showPatientModal( record.fromId)" > <InfoCircleOutlined/></a>
+        <a @click="showPatientModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.from}}
@@ -34,7 +34,7 @@
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
           {{record.from}}
         </router-link>
-        <a @click="showStaffModal( record.fromId)" > <InfoCircleOutlined/></a>
+        <a @click="showStaffModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.from}}
@@ -44,11 +44,11 @@
 
     <template #to="{ record }" class="custom">
       <div v-if="record.is_receiver_patient" class="customTd">
-        <span v-if="arrayToObjact(screensPermissions,63)">
+        <span v-if="arrayToObjact(screensPermissions,63)" >
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
           {{record.to}}
         </router-link>
-         <a @click="showPatientModal( record.toId)" > <InfoCircleOutlined/></a>
+         <a @click="showPatientModal( record.toId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.to}}
@@ -59,7 +59,7 @@
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
           {{record.to}}
         </router-link>
-        <a @click="showStaffModal( record.toId)" > <InfoCircleOutlined/></a>
+        <a @click="showStaffModal( record.toId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.to}}
