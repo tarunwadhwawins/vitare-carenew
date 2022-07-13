@@ -419,15 +419,7 @@ export default {
       summaryEnd: "",
     });
 
-    watchEffect(()=>{
-      if(props.isEdit && editEscalationDetails.value){
-        Object.assign(escalation,editEscalationDetails.value.editEscalationDetails)
-        Object.assign(escalationDetails.notesId,editEscalationDetails.value.editSecondStepper?.notesId)
-        Object.assign(escalationDetails.vitalId,editEscalationDetails.value.editSecondStepper?.vitalId)
-        Object.assign(escalationDetails.carePlan,editEscalationDetails.value.editSecondStepper?.carePlan)
-        Object.assign(escalationDetails.flagIds,editEscalationDetails.value.editSecondStepper?.flagIds)
-      }
-    })
+    
 
     onMounted(()=>{
       store.dispatch('flagsList')
@@ -662,6 +654,19 @@ export default {
       }
       
     };
+
+    watchEffect(()=>{
+      if(props.isEdit && editEscalationDetails.value){
+        Object.assign(escalation,editEscalationDetails.value.editEscalationDetails)
+        Object.assign(escalationDetails.notesId,editEscalationDetails.value.editSecondStepper?.notesId)
+        Object.assign(escalationDetails.vitalId,editEscalationDetails.value.editSecondStepper?.vitalId)
+        Object.assign(escalationDetails.carePlan,editEscalationDetails.value.editSecondStepper?.carePlan)
+        Object.assign(escalationDetails.flagIds,editEscalationDetails.value.editSecondStepper?.flagIds)
+      }else{
+        Object.assign(escalation, form);
+        Object.assign(escalationDetails, formEscalationDetails);
+      }
+    })
 
     // function escalationType(e) {
     //   console.log("value", e);
