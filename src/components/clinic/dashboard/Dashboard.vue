@@ -210,6 +210,12 @@ export default {
 
     const saveModal = (value) =>{
       escaltionModal.value = value
+       store.dispatch("timeLine", {
+                    id: 122,
+                    commit: 'timelineSuccess'
+                }).then(() => {
+                    apiCall(timeLineButton.value)
+                })
     }
  
         function apiCall(data) {
