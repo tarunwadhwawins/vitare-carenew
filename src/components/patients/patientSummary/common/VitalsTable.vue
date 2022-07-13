@@ -1,6 +1,9 @@
 <template>
 
   <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
+    <template #takeTime="{record}">
+      {{ record.takeTime }}<span v-if="record.addType == 'Manual'" class="brightRedColor" style="font-size: 16px;"> *</span>
+      </template>
     <template #blood_pressure_systolic="{record}">
       <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_systolic_color }">{{ record.blood_pressure_systolic }}</span>
     </template>

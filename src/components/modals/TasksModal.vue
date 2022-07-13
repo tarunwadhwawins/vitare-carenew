@@ -163,6 +163,7 @@ export default defineComponent({
         })
 
         watchEffect(() => {
+            store.commit('editTaskState', null)
             // store.dispatch("allStaffList");
             if (tasks.value.editTask && props.taskId) {
                 // Object.assign(taskForm, tasks.value.editTask);

@@ -7,7 +7,7 @@
             
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
                
-                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="handleGlobalChange($event)" @change="onSelectOption(); checkChangeInput()" />
+                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="onSelectOption(); handleGlobalChange($event); checkChangeInput()" />
             </a-form-item>
           </div>
         </a-col>

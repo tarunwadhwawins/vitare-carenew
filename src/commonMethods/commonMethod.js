@@ -519,6 +519,7 @@ export function convertData(patientVitals) {
 			itemObject['takeOnlyTime'] = meridiemFormatFromTimestamp(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
+			itemObject['addType'] = item.addType;
 			itemObject[color] = item.color;
 			itemObject[field] = item.value;
 		});
