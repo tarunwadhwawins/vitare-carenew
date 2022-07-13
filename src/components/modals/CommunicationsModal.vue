@@ -5,7 +5,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
-                        <StaffDropDown :disabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event);checkChangeInput()" :close="closeValue" />
+                        <StaffDropDown :isDisabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event);checkChangeInput()" :close="closeValue" :editDataStaff="editTaskState" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -125,6 +125,12 @@ export default defineComponent({
         const staffData = ref([]);
         const patientData = ref([]);
         const value = ref();
+        const loggedInUserDetails = JSON.parse(localStorage.getItem("auth"));
+
+        const editTaskState = [{
+            value: loggedInUserDetails.user.staff.id,
+            label: loggedInUserDetails.user.staff.fullName,
+        }]
        
         const auth = JSON.parse(localStorage.getItem("auth"));
         const messageForm = reactive({
@@ -145,6 +151,11 @@ export default defineComponent({
             // store.dispatch("globalCodes");
             store.dispatch("allPatientsList");
             store.dispatch("allStaffList");
+            if(loggedInUserDetails != null) {
+                Object.assign(messageForm, {
+                    from: loggedInUserDetails.user.staff.id,
+                });
+            }
         });
 
         const sendMessageFailed = () => {}
@@ -277,7 +288,9 @@ export default defineComponent({
             // handlePatientSearch,
             handlePatientChange,
             closeValue,
-            checkChangeInput
+            checkChangeInput,
+            editTaskState,
+            loggedInUserDetails,
         };
     },
 });
