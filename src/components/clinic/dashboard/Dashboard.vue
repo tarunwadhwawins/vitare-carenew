@@ -207,6 +207,10 @@ export default {
          isEdit.value = data.id
       }
     }
+
+    const saveModal = (value) =>{
+      escaltionModal.value = value
+    }
  
         function apiCall(data) {
             let from = moment()
@@ -324,6 +328,7 @@ export default {
             
         })
         return {
+            saveModal,
             isEdit,
             editTask,
             visible,
