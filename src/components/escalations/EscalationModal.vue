@@ -101,15 +101,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.notesId, onChange: onSelectChangeNotes }" :columns="notesColumns" :data-source="editEscalationDetails.escalationNots" :pagination="false">
-                                                 <template #addedBy="{ record }">
-                                                    <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
-                                                  </template>
-                                                <template #color="{ record }">
-                                                    <span>{{ record.flag }}</span>
-                                                </template>
-                                            </a-table>
-                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChangeNotes }" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                            <a-table rowKey="id" :row-selection="{ selectedRowKeys: escalationDetails.notesId, onChange: onSelectChangeNotes }" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                  <template #addedBy="{ record }">
                                                     <a @click="showModal(record.addedById)">{{ record.addedBy }}</a>
                                                   </template>
@@ -819,9 +811,7 @@ let dateFormate = {
     // };
 
      const onSelectChangeNotes = selectedRowKeys => {
-      console.log('selectedRowKeys',selectedRowKeys)
       escalationDetails.notesId = selectedRowKeys;
-      editEscalationDetails.value.escalationNots.push(selectedRowKeys);
     };
 
     const onSelectChangeVitals = selectedRowKeys => {
