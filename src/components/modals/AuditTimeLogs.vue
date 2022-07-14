@@ -13,7 +13,7 @@
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :dataId="68" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.cptCodeId')" @change="checkChangeInput()" />
+                        <CptCodeAtivitiesDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId"  @handleCptCodeChange="handleCptCodeChange($event)" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -54,18 +54,21 @@ import {
   watchEffect,
   ref,
   onUnmounted,
+  onMounted,
 } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { getSeconds, warningSwal ,arrayToObjact } from "@/commonMethods/commonMethod";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 import { messages } from "../../config/messages";
 import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 export default defineComponent({
   components: {
     ModalButtons,
     GlobalCodeDropDown,
-    ArrayDataSearch
+    ArrayDataSearch,
+    CptCodeAtivitiesDropDown
   },
   props: {
     Id: String,
@@ -127,8 +130,12 @@ export default defineComponent({
       return store.state.common.allPatientsList;
     });
 
-    watchEffect(() => {
+    onMounted(()=>{
+      store.dispatch("flagsList");
       store.dispatch("activeCptCodes");
+    })
+
+    watchEffect(() => {
       disabledFlag.value = false;
       disabledCptCode.value = false;
       disabledCategory.value = false;
@@ -191,12 +198,14 @@ export default defineComponent({
       if (type == "auditTimeLog.categoryId") {
         auditTimeLog.categoryId = data;
       }
-      if (type == "auditTimeLog.cptCodeId") {
-        auditTimeLog.cptCodeId = data;
-      }
+    }
+
+    const handleCptCodeChange = (data) =>{
+      auditTimeLog.cptCodeId =data
     }
 
     return {
+      handleCptCodeChange,
       handleGlobalChange,
       disableButton,
       closeModal,
