@@ -39,7 +39,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId" :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :dataId="31" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.durationId')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :dataId="31" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.durationId'); checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
                     </a-form-item>
                 </div>
@@ -47,7 +47,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="'Time Zone'" name="timezoneId" :rules="[{ required: true, message: 'Time Zone'+' '+$t('global.validation')  }]">
-                         <TimeZoneDropDown  v-model:value="appointmentForm.timezoneId" @handleTimeZoneChange="handleTimeZoneChange($event)" @change="checkChangeInput()" :close="closeValue" />
+                         <TimeZoneDropDown  v-model:value="appointmentForm.timezoneId" @handleTimeZoneChange="handleTimeZoneChange($event); checkChangeInput()" :close="closeValue" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>
                 </div>
@@ -55,7 +55,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :dataId="1" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.typeOfVisit')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :dataId="1" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.typeOfVisit'); checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
                     </a-form-item>
                 </div>
@@ -63,7 +63,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Priority" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                        <ArrayDataSearch v-model:value="appointmentForm.flag" :globalCode="flagsList" />
+                        <ArrayDataSearch v-model:value="appointmentForm.flag" :globalCode="flagsList" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
                     </a-form-item>
                 </div>
@@ -78,7 +78,7 @@
                 </div>
             </a-col>
             <a-col :span="24">
-                    <ModalButtons @is_click="handleCancel" />
+                <FormButtons @onCancel="closeModal" />
             </a-col>
         </a-row>
     </a-form>
@@ -104,7 +104,7 @@ import {
   
 } from "../../commonMethods/commonMethod"
 import moment from 'moment';
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
 import TimeZoneDropDown from "@/components/modals/search/TimeZoneSearch.vue"
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
@@ -124,7 +124,7 @@ import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 export default {
     components: {
         ErrorMessage,
-        ModalButtons,
+        FormButtons,
         PatientDropDown,
         StaffDropDown,
         Loader,

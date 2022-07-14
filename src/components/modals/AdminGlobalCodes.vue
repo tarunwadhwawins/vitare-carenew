@@ -33,7 +33,7 @@
                 </div>
             </a-col>
             <a-col :sm="24" :span="24">
-                <ModalButtons :Id="isAdd" :disabled="formButton" @is_cancel="closeModal" @is_click="handleClear" />
+                <FormButtons @onCancel="closeModal" />
             </a-col>
         </a-row>
     </a-form>
@@ -51,7 +51,7 @@ import {
 import {
     useStore
 } from "vuex"
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import {
     warningSwal
 } from "@/commonMethods/commonMethod";
@@ -62,7 +62,7 @@ import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import Loader from "@/components/loader/Loader"
 export default {
     components: {
-        ModalButtons,
+        FormButtons,
         ArrayDataSearch,
         Loader
     },

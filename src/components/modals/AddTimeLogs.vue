@@ -46,7 +46,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.cptCode')" name="cptCode" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.cptCode" :dataId="68" @handleGlobalChange="handleGlobalChange($event,'addTimeLogForm.cptCode')" />
+                        <CptCodeAtivitiesDropDown @change="changedValue" v-model:value="addTimeLogForm.cptCode"  @handleCptCodeChange="handleCptCodeChange($event)" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -98,7 +98,7 @@ import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
-
+import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 export default defineComponent({
   components: {
     //ModalButtons,
@@ -106,6 +106,7 @@ export default defineComponent({
     Loader,
     StaffDropDown,
     ArrayDataSearch,
+    CptCodeAtivitiesDropDown
   },
   props: {
     isEditForm: {
@@ -357,12 +358,13 @@ export default defineComponent({
             if(type =='addTimeLogForm.category'){
                 addTimeLogForm.category = data
             }
-            if(type=='addTimeLogForm.cptCode'){
-                addTimeLogForm.cptCode = data
-            }
         }
+    const handleCptCodeChange = (data) =>{
+      addTimeLogForm.cptCode =data
+    }
 
     return {
+      handleCptCodeChange,
       handleGlobalChange,
       globalDateFormat,
       size: ref("large"),

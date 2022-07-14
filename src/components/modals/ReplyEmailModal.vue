@@ -19,7 +19,8 @@
 				</a-col>
 				<a-col :span="24">
 					<div class="steps-action">
-						<a-button class="modal-button" @click="handleClear()">{{$t('global.clear')}}</a-button>
+						<!-- <a-button class="modal-button" @click="handleClear()">{{$t('global.clear')}}</a-button> -->
+						<a-button class="modal-button" @click="closeModal" >Cancel</a-button>
 						<a-button class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
 					</div>
 				</a-col>

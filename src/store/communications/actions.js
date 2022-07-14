@@ -21,9 +21,13 @@ export const callPlanned = async ({ commit },from) => {
 }
 
 export const addCommunication = async ({ commit }, data) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("post", API_ENDPOINTS['addCommunication'], null, data).then((response) => {
-		commit('addCommunicationSuccess', response.data.data);
-		successSwal(response.data.message)
+		commit('addCommunication', response.data.data);
+		commit('loadingStatus', false)
+		if(data.entityType == 'staff') {
+			successSwal(response.data.message)
+		}
 	})
 	.catch((error) => {
 		if (error.response) {
@@ -36,6 +40,7 @@ export const addCommunication = async ({ commit }, data) => {
 		}
 		commit('failure', error.response.data);
 		// errorSwal(error.response.data.message)
+		commit('loadingStatus', false)
 	})
 }
 
@@ -302,5 +307,27 @@ export const replyCommunication = async ({ commit }, data) => {
 		}
 		commit('failure', error.response.data);
 		// errorSwal(error.response.data.message)
+	})
+}
+
+export const timeApproval = async ({ commit }, data) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("post", API_ENDPOINTS['timeApproval'], null, data).then((response) => {
+		successSwal(response.data.message)
+		commit('loadingStatus', false)
+	})
+	.catch((error) => {
+		if (error.response) {
+			if (error.response.status == 401) {
+				//AuthService.logout();
+			}
+			errorLogWithDeviceInfo(error.response);
+		}
+		else {
+			errorLogWithDeviceInfo(error);
+		}
+		commit('failure', error.response.data);
+		// errorSwal(error.response.data.message)
+		commit('loadingStatus', false)
 	})
 }

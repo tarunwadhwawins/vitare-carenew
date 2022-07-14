@@ -107,7 +107,8 @@ export default {
     patientTimelineMeta:null,
     fetchFromBitrixInsurance:null,
     visiblePatientDetailsModal:false,
-    patientUdid:null
+    patientUdid:null,
+    patientReferenceId:null,
 
 
 }

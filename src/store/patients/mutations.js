@@ -1259,3 +1259,7 @@ export const closePatientDetailsModal = (state) => {
 export const patientUdid = (state,data) => {
   state.patientUdid = data
 }
+
+export const patientReferenceId = (state, data) => {
+  state.patientReferenceId = data
+}
