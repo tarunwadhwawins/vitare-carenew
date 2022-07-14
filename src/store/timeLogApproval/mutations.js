@@ -24,7 +24,7 @@ export const timeLogApprovalList = async (state, data) => {
       },
     },
     {
-      title: "Message Type",
+      title: "Type",
       dataIndex: "type",
     },
 

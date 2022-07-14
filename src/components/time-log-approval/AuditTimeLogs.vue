@@ -1,11 +1,11 @@
 
 <template>
-<a-modal width="1000px" title="Edit Timelog Approval" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
+<a-modal width="1000px" title="Timelog Approval" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="auditTimeLog" name="auditTimeLog" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
         <a-row :gutter="24">
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item label="Message Type" name="typeId" :rules="[{ required: true, message: 'Message Type'+' '+$t('global.validation')  }]">
+                    <a-form-item label="Type" name="typeId" :rules="[{ required: true, message: 'Type'+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown  v-model:value="auditTimeLog.typeId" size="large" :dataId="45" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.typeId'); checkChangeInput()" disabled/>
                     </a-form-item>
                 </div>
