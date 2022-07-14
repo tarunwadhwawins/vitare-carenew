@@ -85,7 +85,7 @@ const columnData = [{
         title: "Name",
         dataIndex: "patientName",
         sorter: true,
-        width: '18%',
+        width: '19%',
         slots: {
             customRender: "patientName",
         },
@@ -104,14 +104,14 @@ const columnData = [{
     {
         title: "Due Date",
         dataIndex: "dueBy",
-        width: '17%',
+        width: '20%',
         sorter: true,
     },
     {
         title: "Assigned By",
         dataIndex: "assignedBy",
         sorter: true,
-        width: '20%',
+        width: '23%',
         slots: {
             customRender: "escalationAssignedBy",
         }
@@ -206,6 +206,16 @@ export default {
          escaltionModal.value = data.value
          isEdit.value = data.id
       }
+    }
+
+    const saveModal = (value) =>{
+      escaltionModal.value = value
+       store.dispatch("timeLine", {
+                    id: 122,
+                    commit: 'timelineSuccess'
+                }).then(() => {
+                    apiCall(timeLineButton.value)
+                })
     }
  
         function apiCall(data) {
@@ -324,6 +334,7 @@ export default {
             
         })
         return {
+            saveModal,
             isEdit,
             editTask,
             visible,

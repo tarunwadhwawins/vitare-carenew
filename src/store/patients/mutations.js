@@ -918,6 +918,7 @@ export const patientVitals = (state, vitals) => {
         deviceType: vital.deviceType,
         value: vital.value,
         color: vital.color,
+        addType: vital.addType,
       })
       if (!timeArray.includes(vital.takeTime)) {
         timeArray.push(vital.takeTime);

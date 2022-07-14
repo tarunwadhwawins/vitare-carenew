@@ -177,6 +177,9 @@ img.reportFlag {
 .red-color {
 	color: $red-color;
 }
+.brightRedColor {
+	color: #ff0000;
+}
 /*----*/
 
 .form-group {
@@ -532,4 +535,9 @@ span.address-text {
 
 .ant-select-dropdown{
     top:40px !important;
+}
+.nameInfoIcon{
+	margin: 0 0 0 8px;
+    display: inline-flex;
+    font-size: 15px;
 }

@@ -4,7 +4,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-                    <GlobalCodeDropDown @change="handleInventory($event); onChange()" v-model:value="device.deviceType" :dataId="22" @handleGlobalChange="handleGlobalChange($event)"/>
+                    <GlobalCodeDropDown v-model:value="device.deviceType" :dataId="22" @handleGlobalChange="handleGlobalChange($event); handleInventory($event); onChange()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
             </div>

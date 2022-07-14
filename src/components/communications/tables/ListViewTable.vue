@@ -20,10 +20,10 @@
     <template #from="{ record }" class="custom" >
       <div v-if="record.is_sender_patient" class="customTd">
         <span v-if="arrayToObjact(screensPermissions,63)">
-        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
+        <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
           {{record.from}}
-        </router-link> -->
-        <a @click="showPatientModal( record.fromId)" >{{ record.from }}</a>
+        </router-link>
+        <a @click="showPatientModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.from}}
@@ -31,10 +31,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
           {{record.from}}
-        </router-link> -->
-        <a @click="showStaffModal( record.fromId)" >{{ record.from }}</a>
+        </router-link>
+        <a @click="showStaffModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.from}}
@@ -44,11 +44,11 @@
 
     <template #to="{ record }" class="custom">
       <div v-if="record.is_receiver_patient" class="customTd">
-        <span v-if="arrayToObjact(screensPermissions,63)">
-        <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
+        <span v-if="arrayToObjact(screensPermissions,63)" >
+        <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link> -->
-         <a @click="showPatientModal( record.toId)" >{{ record.to }}</a>
+        </router-link>
+         <a @click="showPatientModal( record.toId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.to}}
@@ -56,10 +56,10 @@
       </div>
       <div v-else>
         <span v-if="arrayToObjact(screensPermissions,38)">
-        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
           {{record.to}}
-        </router-link> -->
-        <a @click="showStaffModal( record.toId)" >{{ record.to }}</a>
+        </router-link>
+        <a @click="showStaffModal( record.toId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </span>
         <span v-else>
           {{record.to}}
@@ -175,6 +175,7 @@ import {
   PhoneOutlined,
   MailOutlined,
   AlertOutlined,
+  InfoCircleOutlined
 } from "@ant-design/icons-vue";
 import { useRoute } from 'vue-router';
 export default {
@@ -189,6 +190,7 @@ export default {
     CommunicationView,
     //Chat,
     ChatWithPatientInformation,
+    InfoCircleOutlined
   },
   props: {},
   setup() {
