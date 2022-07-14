@@ -61,7 +61,8 @@ let notificationAudio = new Audio(require("@/assets/media/Notification.mp3"))
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
-//  if(router.currentRoute.value.name!='Communications'){
+  let isChatOpened = localStorage.getItem('isChatOpened')
+ if(!isChatOpened) {
     // console.log('notifications',notificationCouter++)
     notificationCouter++
     let counter = notificationCouter
@@ -206,7 +207,7 @@ onMessage(messaging, (payload) => {
         })
     }
    }
-//  }
+ }
   // ...
 });
 
