@@ -220,7 +220,7 @@ props:{
         }
 
         const rejectButton = ()=>{
-            warningSwal(messages.modalWarning).then((response) => {
+            warningSwal('Are you sure you want to reject ?').then((response) => {
           if (response == true) {
             // 
           } else {
