@@ -42,7 +42,7 @@
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <ModalButtons @is_cancel="closeModal" :Id="isAdd"/>
+          <FormButtons @onCancel="closeModal"/>
         </a-col>
       </a-row>
       <Loader />
@@ -52,7 +52,7 @@
 <script>
 import { ref, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex"
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import Loader from "@/components/loader/Loader"
 // import AutoComplete from "@/components/common/input/AutoComplete";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
@@ -65,7 +65,7 @@ import {
 } from "../../config/messages";
 export default {
   components: {
-    ModalButtons,
+    FormButtons,
     // AutoComplete,
     Loader,
     GlobalCodeDropDown,

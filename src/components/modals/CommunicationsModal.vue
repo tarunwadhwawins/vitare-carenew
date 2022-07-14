@@ -111,7 +111,7 @@ import {
     messages
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
-import { timeStamp } from "../../commonMethods/commonMethod";
+import { getSeconds } from "../../commonMethods/commonMethod";
 import Loader from "@/components/loader/Loader";
 export default defineComponent({
     components: {
@@ -245,7 +245,7 @@ export default defineComponent({
                     store.dispatch("timeApproval", {
                         staff: messageForm.from,
                         patient: messageForm.referenceId,
-                        time: timeStamp(formattedElapsedTime),
+                        time: getSeconds(formattedElapsedTime),
                         type: messageForm.messageTypeId,
                         status: approvalStatus.value,
                         entityType: messageForm.entityType,

@@ -63,6 +63,7 @@ import {
 import Loader from "@/components/loader/Loader"
 import moment from "moment"
 import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
+import { useRoute } from 'vue-router'
 
 export default {
     components: {
@@ -84,6 +85,9 @@ export default {
     },
     setup(props) {
         const store = useStore()
+        const route = useRoute()
+        route.params.from = ''
+        route.params.typeId = ''
         const formValue = reactive({
             msgSend: ''
         })

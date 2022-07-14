@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.type')" name="deviceTypeId" :rules="[{required: true,message: $t('global.type') + ' ' + $t('global.validation'),},]">
                        
-                        <GlobalCodeDropDown v-model:value="thresholdForm.deviceTypeId" :dataId="22" @handleGlobalChange="handleGlobalChange($event)" :disabled="threshodId ? true : false" @change="handleDevice(); checkChangeInput();" />
+                        <GlobalCodeDropDown v-model:value="thresholdForm.deviceTypeId" :dataId="22" @handleGlobalChange="handleGlobalChange($event); handleDevice(); checkChangeInput();" :disabled="threshodId ? true : false" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType ? errorMsg.deviceType[0] : ''" />
                     </a-form-item>
                 </div>
@@ -48,7 +48,7 @@
         <a-row :gutter="24">
             <a-col :span="24">
                 <div class="steps-action">
-                    <ModalButtons @is_cancel="closeModal" @is_click="handleCancel" :disabled="formButton" :Id="threshodId" />
+                    <FormButtons @onCancel="closeModal" />
                 </div>
             </a-col>
         </a-row>
@@ -63,7 +63,7 @@ import {
     computed,
     watchEffect
 } from "vue";
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import ErrorMessage from "../common/messages/ErrorMessage";
 import {
     useStore
@@ -86,7 +86,7 @@ const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 export default {
     components: {
         ErrorMessage,
-        ModalButtons,
+        FormButtons,
         Loader,
         GlobalCodeDropDown,
     },
