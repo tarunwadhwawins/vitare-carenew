@@ -16,7 +16,7 @@
                 <a-col :sm="12" :xs="24">
                     <div class="form-group">
                         <a-form-item label="Question Type" name="questionType" :rules="[{ required: true, message: 'Question Type' +' '+$t('global.validation') }]">
-                            <a-select ref="select" v-model:value="questionnaire.questionType" style="width: 100%" size="large" placeholder="Select Question Type" :getPopupContainer="triggerNode => triggerNode.parentNode">
+                            <a-select ref="select" v-model:value="questionnaire.questionType" style="width: 100%" size="large" placeholder="Select Question Type" :getPopupContainer="triggerNode => triggerNode.parentNode" @change="checkChangeInput()">
                                 <a-select-option value="Test">Test</a-select-option>
                                 <a-select-option value="Survey">Survey</a-select-option>
                             </a-select>
@@ -126,7 +126,7 @@
 
                     <div class="steps-action">
                         <a-form-item>
-                            <a-button class="modal-button" style="margin-right: 8px" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
+                            <a-button class="modal-button" style="margin-right: 8px" @click="closeModal()" html-type="reset">{{$t('global.cancel')}}</a-button>
                             <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
                             <a-button v-if="id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
                         </a-form-item>
@@ -395,7 +395,10 @@ export default {
                 });
             } else {
                 formRef.value.resetFields();
-                //disabled.value= false
+                emit("is-visible", {
+                    show: false,
+                    id: props.id
+                })
             }
         }
         const handleGlobalChange = (data, type) => {

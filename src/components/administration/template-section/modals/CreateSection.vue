@@ -24,7 +24,7 @@
             </a-col>
             <a-col :span="24">
                 <div class="steps-action">
-                    <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
+                    <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="closeModal()">{{$t('global.cancel')}}</a-button>
                     <a-button type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
                     <a-button type="primary" html-type="submit" v-else>{{$t('global.update')}}</a-button>
                 </div>
@@ -132,6 +132,10 @@ export default defineComponent({
 
         function closeModal() {
             if (checkFieldsData.value) {
+                 emit("is-visible", {
+                            show: true,
+                            id: props.update
+                        })
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         emit("is-visible", {
@@ -149,6 +153,10 @@ export default defineComponent({
                 });
             } else {
                 formRef.value.resetFields();
+                 emit("is-visible", {
+                            show: false,
+                            id: props.update
+                        })
             }
         }
 

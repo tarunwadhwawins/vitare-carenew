@@ -16,7 +16,7 @@
 <script>
 import QuestionnaireForm from "@/components/questionnaireForm/QuestionnaireForm.vue"
 import Header from "@/components/layout/header/Header";
-import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
+import Sidebar from "@/components/layout/sidebar/Sidebar";
 export default {
     name: "Questionnaire Form",
     components: {

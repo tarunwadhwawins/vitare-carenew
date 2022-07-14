@@ -29,6 +29,7 @@
                 </div>
             </a-col>
             <a-col :span="24" class="text-right" v-if="questionnaireList.length>0">
+                <a-button style="margin-right: 8px" html-type="reset"  @click="closeModal">{{$t('global.cancel')}}</a-button>
                 <a-button class="btn primaryBtn" type="primary" html-type="submit">Assign Questions</a-button>
             </a-col>
 
@@ -187,6 +188,7 @@ assignQuestion.questionId.push(index.id)
 
         function closeModal() {
             if (checkFieldsData.value) {
+                 emit("is-visible-exist", true)
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         store.state.common.successMsg = ''
@@ -200,7 +202,7 @@ assignQuestion.questionId.push(index.id)
             } else {
                 store.commit("checkChangeInput", false)
                 store.state.common.successMsg = ''
-                //disabled.value= false
+                 emit("is-visible-exist", false)
             }
         }
          function getUnique(array){

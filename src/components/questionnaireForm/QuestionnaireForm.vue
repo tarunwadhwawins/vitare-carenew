@@ -4,7 +4,7 @@
         <a-row>
             <a-col :span="24">
                 <h2 class="pageTittle">
-                    Questionnaire Response
+                   Questionnaire Response
                     
                 </h2>
             </a-col>

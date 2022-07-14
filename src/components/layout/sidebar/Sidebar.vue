@@ -58,7 +58,7 @@
             </router-link>
             <router-link to="/questionnaireResponse" v-if="arrayToObjact(screensPermissions, 332)">
                 <a-menu-item>
-                    <ReadOutlined /><span class="menuItem">Questionnaire Form</span>
+                    <ReadOutlined /><span class="menuItem">Questionnaire Response</span>
                 </a-menu-item>
             </router-link>
 

@@ -51,15 +51,16 @@
             <a class="icons">
                 <router-link :to="{ name: 'QuestionnaireResponse', params: { udid:record.id?record.questionnaireTempleteId:'eyrer8758458958495'  }}" >
                 
-                <EyeOutlined  /></router-link></a>
+                <EyeTwoTone  @click="userNameSet(record)" /></router-link></a>
         </a-tooltip>
-        <!-- <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom">
             <template #title>
-                <span>Delete</span>
+                <span>View Score</span>
             </template>
-            <a class="icons" @click="deleteModal(record.id)">
-                <DeleteOutlined /></a>
-        </a-tooltip> -->
+            <a class="icons" @click="getResponse(record.questionnaireTempleteId)">
+                
+                <FundViewOutlined  /></a>
+        </a-tooltip>
     </template>
     <template #active="key">
         <a-switch v-model:checked="checked[key.record.key]" />
@@ -67,18 +68,29 @@
 </a-table>
 <Loader />
 
- <a-modal width="70%" v-model:visible="visibleModal" title="New Template Url" :maskClosable="false" centered   :footer="false">
-           <span>{{templateId}} </span>
+ <a-modal width="70%" v-model:visible="visibleModal" title="Response Score" :maskClosable="false" centered   :footer="false">
+           <a-table v-if="scoreData" rowKey="id" :columns="columns2" :data-source="scoreData" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
+    </a-table>
     </a-modal>
 </template>
 
 <script>
-import {EyeOutlined} from "@ant-design/icons-vue"
+import {EyeTwoTone ,FundViewOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 
 import { onMounted , ref } from "vue"
+const columns2 = [{
+        title: "Programs",
+        dataIndex: "program",
 
+    },
+    {
+        title: "Score",
+        dataIndex: "score",
+    },
+    
+];
 const columns = [{
         title: "Questionnaire Template",
         dataIndex: "templateName",
@@ -88,12 +100,24 @@ const columns = [{
         },
     },
     {
-        title: "User Name",
+        title: "Fiiled By",
         dataIndex: "userName",
         slots: {
             customRender: "userName",
         },
     },
+      {
+        title: "Status",
+        dataIndex: "status",
+        
+    },
+      
+      {
+        title: "Filled Date",
+        dataIndex: "createdAt",
+        
+    },
+    
     {
         title: "Type",
         dataIndex: "templateType",
@@ -110,8 +134,9 @@ const columns = [{
 export default {
     emits:["edit"],
     components: {
-        EyeOutlined,
+        EyeTwoTone ,
         Loader,
+        FundViewOutlined,
         
     },
     props: {},
@@ -124,6 +149,7 @@ export default {
         let record = []
         let scroller = ""
         onMounted(() => {
+           
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight;
@@ -188,12 +214,17 @@ export default {
         const templateId = ref(false)
      const  getResponse =(id) =>{
         visibleModal.value = true
-      templateId.value = id  
+       store.dispatch("scoreCount", id)
      }
    
         const showSection = (e) =>{
     
 visible.value = e.show
+}
+function userNameSet(e){
+    localStorage.setItem("responseusername", JSON.stringify(e.userName));
+    
+    
 }
         return {
             visibleModal,
@@ -205,6 +236,9 @@ visible.value = e.show
             visible,
            templateId,
             showSection,
+            columns2,
+            scoreData: store.getters.scoreCount,
+userNameSet
             
             
         };

@@ -27,7 +27,9 @@
                     <div class="form-group questionnairTag">
                       
                         <a-form-item :label="$t('questionnaire.tags')" name="tags" >
-                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
+                        <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%"  @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode" >
+
+<a-select-option v-for="item,index in questionnaireTemplate.tags" :key="index" :value="item">{{item}}</a-select-option>
                         </a-select>
                         </a-form-item>
                     </div>
@@ -37,7 +39,7 @@
               
                 <div class="steps-action">
                   <a-form-item >
-                   <a-button  class="modal-button" style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
+                   <a-button  class="modal-button" style="margin-right: 8px" html-type="reset" v-if="!update" @click="closeModal">{{$t('global.cancel')}}</a-button>
                     <a-button class="modal-button"  type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
                     <a-button class="modal-button"  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button>
                   </a-form-item>
@@ -174,6 +176,7 @@ function reset(){
         reset()
         formRef.value.resetFields()
         disabled.value= false
+        emit("is-visible", {show:false,id:props.update})
       }
     }
 
@@ -191,7 +194,22 @@ const errorMsg = store.getters.errorMsg.value
             }
           
         }
+         const options = ref([]);
+        const handleChange = value => {
+          options.value = []
+          questionnaireTemplate.tags.map((item)=>{
+ options.value.push({
+            value: item,
+      label: item,
+          })
+          })
+         
+      console.log(`selected ${value}`);
+    };
+       
     return {
+      handleChange,
+      options,
       questionnaireTemplate,
       addTemplate,
       closeModal,

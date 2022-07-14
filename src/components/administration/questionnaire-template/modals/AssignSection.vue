@@ -14,18 +14,20 @@
             </a-col>  -->
 
             <a-col :md="20" :sm="24" :xs="24" class="mb-24">
-                <a-input @keypress="selectedSection($event,'search')" size="large" placeholder="Search..." id="conditionBox" />
+                <a-input @change="selectedSection($event,'search')" size="large" placeholder="Search..." id="conditionBox" />
             </a-col>
              <a-col :span="4">
                 <div class="">
+                    
                     <a-button class="btn primaryBtn" v-if="addSectionButton" @click="showModal({show:true,id:''})">Create New Section</a-button>
                 </div>
 
             </a-col>
             <a-col :md="20" :sm="20" :xs="20">
                 <div class="form-group conditionsCheckboxs">
-                    <a-form-item name="sectionId" :rules="[{ required: true, message: $t('questionnaire.sectionName')+' '+$t('global.validation') }]">
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.sectionId[0]:''" />
+                    <a-form-item name="sectionId" :rules="[{ required: false, message: $t('questionnaire.sectionName')+' '+$t('global.validation') }]">
+                        
+                        <ErrorMessage v-if="errorMsg" :name="errorMsg.sectionId?errorMsg.sectionId[0]:''" />
                         <!-- Selected -->
 
                         <p v-if="selectedSectionList && selectedSectionList.length > 0">
@@ -47,8 +49,8 @@
            
             <a-col :span="24">
 
-                <div class="steps-action">
-                    <a-button style="margin-right: 8px" html-type="reset"  @click="reset()">{{$t('global.clear')}}</a-button>
+                <div class="steps-action" v-if="section.sectionId.length>0">
+                    <a-button style="margin-right: 8px" html-type="reset"  @click="closeModal">{{$t('global.cancel')}}</a-button>
                     <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
                     <!-- <a-button  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button> -->
                 </div>
@@ -140,8 +142,10 @@ const visible = ref(false)
         const chooseSection = (event,isTrue,checkedValue) => {
             const value = checkedValue ? event: event.target.value
             const checked = checkedValue ? checkedValue : event.target.checked
+            
             if (isTrue && checked) {
-                store.state.patients.errorMsg
+                store.state.common.errorMsg = ''
+                store.state.patients.errorMsg = ''
                 unSelectedSectionList.value.filter(function (sectionRecord) {
                     if (value == sectionRecord.id) {
                         const indexOfObject = unSelectedSectionList.value.findIndex(object => {
@@ -187,7 +191,7 @@ function setSectionId(event){
   
    visible.value = event.show
    selectedSection(event.id.sectionName,'notSearch')
-   console.log("event",event.id.sectionName)
+   
 
 }
         const disabled = ref(false)
@@ -200,7 +204,7 @@ function setSectionId(event){
 
         })
         const assignSection = () => {
-
+if(section.sectionId.length>0){
             //disabled.value= true
             store.dispatch("sectionAssignToTemplate", {
                 id: detailsQuestionnaireTemplate.value.id,
@@ -218,6 +222,7 @@ function setSectionId(event){
                     disabled.value = false
                 }
             })
+}
         }
         const addSectionButton = ref(false)
         const sectionName = ref('')
@@ -269,13 +274,17 @@ function setSectionId(event){
             } else {
                 formRef.value.resetFields()
                 disabled.value = false
+                emit("is-visible", {
+                    show: false,
+                    id: detailsQuestionnaireTemplate.id
+                })
             }
         }
 
         function checkChangeInput() {
             store.commit("checkChangeInput", true);
         }
-        const errorMsg = store.getters.errorMsg.value
+        const errorMsg = store.getters.errorMsg
         const checkFieldsData = computed(() => {
             return store.state.common.checkChangeInput
         })

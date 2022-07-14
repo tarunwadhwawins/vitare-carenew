@@ -39,13 +39,13 @@
             <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" >
                     <SendOutlined  /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
             </template>
             <a class="icons">
                 <CopyOutlined @click="clone(record.id)"/></a>
-        </a-tooltip>
+        </a-tooltip> -->
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Delete</span>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {DeleteOutlined,EditOutlined,SettingTwoTone,SendOutlined,DiffTwoTone,CopyOutlined} from "@ant-design/icons-vue"
+import {DeleteOutlined,EditOutlined,SettingTwoTone,SendOutlined,DiffTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -96,7 +96,7 @@ export default {
     components: {
         DeleteOutlined,
         EditOutlined,
-        CopyOutlined,
+       // CopyOutlined,
         Loader,
         SettingTwoTone,
         SendOutlined,

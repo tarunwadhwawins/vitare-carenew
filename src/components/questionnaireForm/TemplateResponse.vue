@@ -1,6 +1,13 @@
 <template>
 <div class="common-bg">
-    <h2 class="pageTittle">{{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}</h2>
+    <h2 class="pageTittle">
+        {{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}
+        <router-link to="/questionnaireResponse" class="b-inline ml-10">
+            <a-button class="btn">Back</a-button>
+        </router-link>
+    </h2>
+    <div class="templateType"> <div>User Type  : <span> Staff</span></div><div>Staff Name : <span> {{userName}}</span></div><div>Template Type : <span> {{detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateType : ''}}</span></div> </div>
+
 
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
         <div class="template" v-for="questionList in detailsQuestionnaireTemplate.questionnaireQuestion" :key="questionList.id">
@@ -140,6 +147,7 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const route = useRoute();
+        const userName = JSON.parse(localStorage.getItem("responseusername"));
         const questionnaireTemplate = reactive({
             templateText: [],
             radioOption: [],
@@ -149,7 +157,7 @@ export default defineComponent({
         const show = ref(false)
         onMounted(() => {
             store.dispatch("detailsQuestionnaireTemplate", udid);
-            store.dispatch("templateDetailsList", udid);
+           
         });
         const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
         const ansTemplate = () => {
@@ -225,7 +233,7 @@ data.push(newRescord);
 
             })
         };
-        const templateDetailsList = store.getters.templateDetailsList;
+        
         watchEffect(() => {
        
             detailsQuestionnaireTemplate.value ?
@@ -276,12 +284,13 @@ data.push(newRescord);
             udid,
             questionnaireTemplate,
             detailsQuestionnaireTemplate,
-            templateDetailsList,
+            
             ansTemplate,
             value: ref("1"),
             show,
             columns,
-            data: store.getters.scoreCount
+            data: store.getters.scoreCount,
+            userName
         };
     },
 });
@@ -290,6 +299,22 @@ data.push(newRescord);
 <style lang="scss" scoped>
 .pageTittle {
   text-align: center;
+  background: #e3e3e3;
+  padding: 15px 0;
+  margin: 0;
+  a {
+    position: absolute;
+    right: 10px;
+  }
+}
+.templateType {
+    font-size: 18px;
+    padding: 10px 0;
+    color: #000;
+    text-transform: capitalize;
+    span {
+            font-weight: 600;
+    }
 }
 .template {
     margin: 15px 0 0;

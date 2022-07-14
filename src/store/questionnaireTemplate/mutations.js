@@ -1,3 +1,8 @@
+import {
+	
+	globalDateTimeFormat,
+	dateAndTimeFormate
+  } from '@/commonMethods/commonMethod';
 export const questionnaire = async (state, data) => {
 	state.questionnaireTemplateList = data.data;
 	state.questionnaireTemplateMeta = data.meta.pagination;
@@ -22,5 +27,8 @@ export const scoreCount = async (state, data) => {
 	state.scoreCount = data;
 };
 export const questionnaireResponse = async (state, data) => {
-	state.questionnaireResponse = data.data;
+	state.questionnaireResponse = data.data.map((item) => {
+		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateTimeFormat);
+		return item;
+	});
 };

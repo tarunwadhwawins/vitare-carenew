@@ -14,27 +14,27 @@
             <router-link :to="{ name: 'QuestionSectionDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
                     <SettingTwoTone /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" @click="editModal(record.id)">
                 <EditOutlined /></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom">
+        </a-tooltip> -->
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
             </template>
             <a class="icons">
                 <CopyOutlined /></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom">
+        </a-tooltip> -->
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Delete</span>
             </template>
             <a class="icons" @click="deleteModal(record.id)">
                 <DeleteOutlined /></a>
-        </a-tooltip>
+        </a-tooltip> -->
     </template>
     <template #active="key">
         <a-switch v-model:checked="checked[key.record.key]" />
@@ -43,7 +43,7 @@
 <Loader/>
 </template>
 <script>
-import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone} from "@ant-design/icons-vue"
+import {SettingTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -70,9 +70,9 @@ const columns = [{
 export default {
     emits: ["edit"],
     components: {
-        DeleteOutlined,
-        EditOutlined,
-        CopyOutlined,
+        //DeleteOutlined,
+        //EditOutlined,
+        //CopyOutlined,
         Loader,
         SettingTwoTone
     },

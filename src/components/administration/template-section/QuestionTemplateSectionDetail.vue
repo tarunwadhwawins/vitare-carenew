@@ -1,7 +1,7 @@
 <template>
 <div class="common-bg">
     <div class="questionnaireMain">
-        <a-row :gutter="24">
+        <!-- <a-row :gutter="24">
             <a-col :span="24">
                 <h2 class="pageTittle">
 
@@ -16,7 +16,27 @@
                         </router-link>
                     </div>
                 </h2>
+            </a-col> -->
+            <a-row :gutter="24">
+            <a-col :span="24" >
+                <h2 class="pageTittle">
+
+                    <span class="title">{{ templateDetailsList ? templateDetailsList.sectionName : ''}}</span>
+                    <div class="commonBtn">
+                        <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Question</a-button>
+                        <!-- <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Section</a-button> -->
+                        
+                        <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
+                            <PlusOutlined />
+                        </a-button>
+                        <router-link to="/questionnaire-template" class="b-inline ml-10">
+                            <a-button class="btn primaryBtn">Back</a-button>
+                        </router-link>
+                    </div>
+                </h2>
             </a-col>
+        </a-row>
+        <a-row>
             <a-col :span="24" v-if="templateDetailsList">
                
                 <Question v-if="templateDetailsList" :question="templateDetailsList" :edit="false" temOrSection="section" type="multipale"/>
@@ -109,3 +129,41 @@ export default defineComponent({
     },
 });
 </script>
+
+<style lang="scss" scoped>
+.healthTemplateBox {
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #e3e3e3;
+    margin: 0 0 20px;
+
+    h4 {
+        margin: 0 0 10px;
+    }
+}
+.pageTittle {
+    display: flex;
+    align-items: center;
+    span.title {
+        display: inline-block;
+        width: 40%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .commonBtn {
+        position: initial;
+        width: 60%;
+        display: inline-flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        .ant-btn {
+            display: inline-flex;
+            .anticon {
+                margin-top: 1px;
+            }
+        }
+    }
+}
+</style>
