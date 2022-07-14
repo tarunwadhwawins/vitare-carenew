@@ -967,6 +967,10 @@
         background-color: #fff;
         padding: 15px 10px;
         border-radius: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px 0;
         .ant-checkbox-wrapper {
             border: 2px solid $gray-color-300;
             border-radius: 5px;
