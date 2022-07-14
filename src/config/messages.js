@@ -1,6 +1,7 @@
 export const messages={
     //alert messages
     patientlogMessage:'Are you sure you want to cancel? No time will be recorded for this Patient.',
+    timerMessage:'Are you sure you want to change the patient? Your time will be lost for this Patient.',
     access:"You don't have access",
     permissionsError:'You don’t have permission! Contact your Admin',
     resetPassword:'You want to reset password.',

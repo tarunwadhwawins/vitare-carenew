@@ -141,6 +141,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Removal Reason') {
             state.removalReason = element.globalCode;
         }
+        if (element.name === 'Time Approval Status') {
+            state.timeApprovalStatus = element.globalCode;
+        }
         
     });
 

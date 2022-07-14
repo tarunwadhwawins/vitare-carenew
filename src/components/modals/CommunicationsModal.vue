@@ -1,6 +1,15 @@
 <template>
 <a-modal width="1000px" title="Communications" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
-    <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed">
+    <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed" autocomplete="off">
+        <a-row :gutter="24">
+            <a-col v-if="toggleTo" :xl="24" :lg="24">
+                <div class="form-group">
+                    <div class="timer">
+                        <h3>{{$t('patientSummary.currentSession')}} : {{ formattedElapsedTime }}</h3>
+                    </div>
+                </div>
+            </a-col>
+        </a-row>
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
@@ -12,10 +21,10 @@
             <a-col :sm="12" :xs="24" @click="referenceId">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
-                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo; checkChangeInput()">
+                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo; checkChangeInput('entityType')">
                             <span class="btn-content">{{ $t('communications.communicationsModal.patient') }}</span>
                         </div>
-                        <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo; checkChangeInput()">
+                        <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo; checkChangeInput('entityType')">
                             <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
                         </div>
                         <a-input type="hidden" id="entityType" v-model="messageForm.entityType" :value="toggleTo ? 'patient' : 'staff'" />
@@ -26,7 +35,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.patient')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.patient')+' '+$t('global.validation')  }]">
 
-                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event);checkChangeInput()" :close="closeValue" />
+                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event);checkChangeInput('patient')" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -81,9 +90,10 @@
                 </div>
             </a-col>
             <a-col :span="24">
-                <ModalButtons name="communication" @is_click="handleCancel"/>
+                <FormButtons @onCancel="closeModal"/>
             </a-col>
         </a-row>
+        <Loader />
     </a-form>
 </a-modal>
 </template>
@@ -96,12 +106,12 @@ import {
     computed,
     onMounted,
     defineComponent,
-    defineAsyncComponent
+    defineAsyncComponent,
 } from "vue";
 import {
     useStore
 } from "vuex";
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import {
     arrayToObjact,
     warningSwal
@@ -110,9 +120,12 @@ import {
     messages
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import { timeStamp } from "../../commonMethods/commonMethod";
+import Loader from "@/components/loader/Loader";
 export default defineComponent({
     components: {
-        ModalButtons,
+        Loader,
+        FormButtons,
         GlobalCodeDropDown,
         PatientDropDown: defineAsyncComponent(() => import("@/components/modals/search/PatientDropdownSearch.vue")),
         StaffDropDown: defineAsyncComponent(() => import("@/components/modals/search/StaffDropdownSearch.vue"))
@@ -195,30 +208,114 @@ export default defineComponent({
         const form = reactive({
             ...messageForm
         });
+
+        // Countdown Timer
+        const elapsedTime = ref(0)
+        const timer = ref(undefined)
+        
+        const formattedElapsedTime = computed(() => {
+            const date = new Date(null);
+            date.setSeconds(elapsedTime.value / 1000);
+            const utc = date.toUTCString();
+            return utc.substr(utc.indexOf(":") - 2, 8);
+        })
+
+        function startTimer() {
+            timer.value = setInterval(() => {
+                elapsedTime.value += 1000;
+            }, 1000);
+        }
+
+        const stopTimer = () => {
+            clearInterval(timer.value);
+            elapsedTime.value = 0
+        };
+
+        const addCommunication = computed(() => {
+            return store.state.communications.addCommunication
+        })
+
+        const timeApprovalStatus = computed(() => {
+            return store.state.common.timeApprovalStatus
+        })
+
         const sendMessage = () => {
             closeValue.value = true
             messageForm.entityType = document.getElementById("entityType").value;
             store.getters.communicationRecord.value.communicationsList = "";
             store.dispatch("addCommunication", messageForm).then(() => {
+                if(messageForm.entityType == 'patient') {
+                    const approvalStatus = ref(null)
+                    timeApprovalStatus.value.map((item) => {
+                        if(item.name == 'Pending') {
+                            approvalStatus.value = item.id
+                        }
+                    })
+                    store.dispatch("timeApproval", {
+                        staff: messageForm.from,
+                        patient: messageForm.referenceId,
+                        time: timeStamp(formattedElapsedTime),
+                        type: messageForm.messageTypeId,
+                        status: approvalStatus.value,
+                        entityType: messageForm.entityType,
+                        referenceId: addCommunication.value.id,
+                    })
+                }
                 store.dispatch("communicationsList");
                 store.dispatch("communicationTypes");
                 closeValue.value = false
                 store.commit('checkChangeInput', false)
+                emit("is-visible", false);
+                formRef.value.resetFields();
+                Object.assign(messageForm, form);
+                store.commit('patientReferenceId', null)
+                clearInterval(timer.value);
+                stopTimer()
             });
-
-            emit("is-visible", false);
-            formRef.value.resetFields();
-            Object.assign(messageForm, form);
         };
 
         const handleCancel = () => {
-          store.commit('checkChangeInput', false)
+
+            store.commit('checkChangeInput', false)
             formRef.value.resetFields();
             Object.assign(messageForm, form);
+            store.commit('patientReferenceId', null)
         };
 
-        function checkChangeInput() {
+        const patientReferenceId = computed(() => {
+            return store.state.patients.patientReferenceId
+        })
+        function checkChangeInput(value) {
             store.commit('checkChangeInput', true)
+            if(value == "entityType") {
+                store.commit('patientReferenceId', null)
+                if(!toggleTo.value) {
+                    clearInterval(timer.value);
+                    stopTimer()
+                }
+            }
+            if(value == "patient") {
+                clearInterval(timer.value);
+                if(value == "patient" && patientReferenceId.value != null) {
+                    warningSwal(messages.timerMessage).then((response) => {
+                        if (response == true) {
+                            store.commit('patientReferenceId', messageForm.referenceId)
+                            stopTimer()
+                            startTimer()
+                        }
+                        else {
+                            startTimer()
+                            store.commit('patientReferenceId', patientReferenceId.value)
+                            messageForm.referenceId = patientReferenceId.value
+                            // Show Previous Patient here
+                        }
+                    });
+                }
+                else {
+                    startTimer()
+                    store.commit('patientReferenceId', messageForm.referenceId)
+                }
+            }
         }
 
         function closeModal() {
@@ -233,13 +330,19 @@ export default defineComponent({
                         store.commit('checkChangeInput', false)
                         handleCancel();
                         emit("is-visible", false);
-                    } else {
+                        stopTimer()
+                        store.commit('patientReferenceId', null)
+                    }
+                    else {
                         emit("is-visible", true);
                     }
                 });
-            }else{
+            }
+            else {
                 formRef.value.resetFields();
                 emit("is-visible", false)
+                stopTimer()
+                store.commit('patientReferenceId', null)
             }
         }
         const patientChange = (value) => {
@@ -289,6 +392,7 @@ export default defineComponent({
             handlePatientChange,
             closeValue,
             checkChangeInput,
+            formattedElapsedTime,
             editTaskState,
             loggedInUserDetails,
         };
