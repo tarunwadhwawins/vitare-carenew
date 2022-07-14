@@ -6,7 +6,7 @@
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.category')" name="categoryId" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="disabledCategory" v-model:value="auditTimeLog.categoryId" size="large" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.categoryId')"   @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="disabledCategory" v-model:value="auditTimeLog.categoryId" size="large" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.categoryId'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>

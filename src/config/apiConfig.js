@@ -46,6 +46,7 @@ export const API_ENDPOINTS = {
     communicationsView:"communication/messages",
     callStatus:"call/status",
     CallPlanned:"call/staff",
+    timeApproval:"timeApproval",
 
     //conversation
     conversation:'conversation',

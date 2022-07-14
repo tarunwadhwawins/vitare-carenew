@@ -167,7 +167,7 @@ export const callDetails = async (state, data) => {
   })
 }
 
-export const addCommunicationSuccess = async (state, addCommunication) => {
+export const addCommunication = async (state, addCommunication) => {
   state.addCommunication = addCommunication;
 }
 export const patientsListSuccess = async (state, patients) => {

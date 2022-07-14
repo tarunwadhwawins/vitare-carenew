@@ -47,6 +47,7 @@ export default {
     getNotificationsList:null,
     filter:null,
     removalReason:[],
+    timeApprovalStatus:null,
     apiCounter:0,
     // phone msaking objects
     bindProps:{
