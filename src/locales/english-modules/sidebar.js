@@ -9,6 +9,7 @@ const sidebar = {
   auditTimeLog: 'Audit Time Log',
   administration: 'Administration',
   inventory: 'Inventory',
+  auditTimeLogApproval:'Audit Timelog Approval '
 }
 
 

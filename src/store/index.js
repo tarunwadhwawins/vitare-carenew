@@ -16,6 +16,7 @@ import { notes } from "./notes/index"
 import { thresholds } from "./thresholds/index"
 import { timeLogs } from "./timeLogs/index"
 import { timeLogReport } from "./timeLogReport/index"
+import { timeLogApproval } from "./timeLogApproval/index"
 import { careTeam } from "./careTeam/index"
 import { programs } from "./programs/index"
 import { cptCodes } from "./cptCodes/index"
@@ -65,7 +66,8 @@ export default createStore({
     clinicalDashboard,
     referral,
     escalations,
-    reports
+    reports,
+    timeLogApproval
   },
   plugins: [ createPersistedState({
     reducer(state) {

@@ -43,6 +43,7 @@
                 <a-menu-item>
                     <BarChartOutlined /><span class="menuItem">{{$t('sidebar.tasks')}}</span></a-menu-item>
             </router-link>
+             
             <router-link to="/thresholds" v-if="arrayToObjact(screensPermissions, 329)">
                 <a-menu-item>
                     <ProjectOutlined /><span class="menuItem">{{$t('sidebar.generalParameters')}}</span></a-menu-item>
@@ -50,6 +51,10 @@
             <router-link to="/time-log-report" v-if="arrayToObjact(screensPermissions, 332)">
                 <a-menu-item>
                     <FieldTimeOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/time-log-approval" v-if="arrayToObjact(screensPermissions, 332)">
+                <a-menu-item>
+                    <FieldTimeOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLogApproval')}}</span></a-menu-item>
             </router-link>
             <router-link to="/time-tracking-report" v-if="arrayToObjact(screensPermissions, 411)">
                 <a-menu-item>

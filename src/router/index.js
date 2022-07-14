@@ -106,6 +106,13 @@ const routes = [
   },
 
   {
+    path: '/time-log-approval',
+    name: 'TimeLogApproval',
+    component: () => import('../components/time-log-approval/TimeLogApproval'),   
+    meta: { authAdmin: true }
+  },
+
+  {
     path: '/notifications',
     name: 'Notifications',
     component: () => import('@/components/notifications/Notifications'),
