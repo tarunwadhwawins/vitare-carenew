@@ -6,14 +6,14 @@
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.category')" name="categoryId" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="disabledCategory" v-model:value="auditTimeLog.categoryId" size="large" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.categoryId')"   @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="disabledCategory" v-model:value="auditTimeLog.categoryId" size="large" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.categoryId'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :dataId="68" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.cptCodeId')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :dataId="68" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.cptCodeId'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>

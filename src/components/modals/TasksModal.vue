@@ -20,14 +20,14 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :dataId="5" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskStatus')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :dataId="5" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskStatus'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown v-model:value="taskForm.priority" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'taskForm.priority')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="taskForm.priority" :dataId="7" @handleGlobalChange="handleGlobalChange($event,'taskForm.priority'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -35,10 +35,10 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
-                    <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
+                    <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle(); checkChangeInput()">
                             <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
                         </div>
-                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
+                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle(); checkChangeInput()">
                             <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
                         </div>
                         <a-input type="hidden" id="entityType" :value="toggleTo ? taskForm.entityType= 'patient' : taskForm.entityType = 'staff'" />
@@ -48,7 +48,7 @@
             <a-col :sm="12" :xs="24" v-show="toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-                        <PatientDropDown :editDataPatient="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <PatientDropDown :editDataPatient="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event); checkChangeInput()" :close="closeValue" />
                         <!-- <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" /> -->
 
                     </a-form-item>
@@ -57,7 +57,7 @@
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown :editDataStaff="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <StaffDropDown :editDataStaff="editTaskState" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event); checkChangeInput()" :close="closeValue" />
                         <!-- <StaffDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" /> -->
                         <!-- <PatientDropDown v-else mode="multiple" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" /> -->
                     </a-form-item>
@@ -66,7 +66,7 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :dataId="6" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskCategory')" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :dataId="6" @handleGlobalChange="handleGlobalChange($event,'taskForm.taskCategory'); checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -85,13 +85,13 @@
                 </div>
             </a-col>
             <a-col :span="24">
-                <ModalButtons :Id="taskId" @is_click="handleCancel" @is_cancel="closeModal" />
+                <FormButtons @onCancel="closeModal" />
             </a-col>
             <!-- <a-col :span="24" v-if="onlyView">
-                <ModalButtons :Id="taskId" @is_click="handleCancel" />
+                <FormButtons :Id="taskId" @is_click="handleCancel" />
             </a-col>
             <a-col :span="24" v-else>
-                <ModalButtons :Id="taskId" @is_click="handleCancel" />
+                <FormButtons :Id="taskId" @is_click="handleCancel" />
             </a-col> -->
         </a-row>
     </a-form>
@@ -102,7 +102,7 @@
 <script>
 import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex";
-import ModalButtons from "@/components/common/button/ModalButtons";
+import FormButtons from "@/components/common/button/FormButtons";
 import { timeStamp, warningSwal, endTimeAdd, globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
@@ -113,7 +113,7 @@ import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default defineComponent({
     components: {
-        ModalButtons,
+        FormButtons,
         Loader,
         PatientDropDown,
         StaffDropDown,
