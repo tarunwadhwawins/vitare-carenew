@@ -13,7 +13,7 @@
                             <Option :optionList="item" v-else/>
                             <template #extra>
                                  <EditOutlined @click="showModal1" v-if="edit"/> 
-                                <DeleteOutlined /></template>
+                                <DeleteOutlined v-if="edit"/></template>
                         </a-collapse-panel>
 
                     </a-collapse>
@@ -25,7 +25,7 @@
                             <Option :optionList="item" v-else/>
                             <template #extra>
                                  <EditOutlined @click="showModal1" v-if="edit"/> 
-                                <DeleteOutlined /></template>
+                                <DeleteOutlined v-if="edit"/></template>
                         </a-collapse-panel>
 
                     </a-collapse>

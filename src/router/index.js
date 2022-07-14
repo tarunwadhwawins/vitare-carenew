@@ -326,12 +326,17 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
-    path: '/template-response/:udid',
+    path: '/template-view/:udid',
     name: 'TemplateResponse',
     component: () => import( '@/views/template-response/TemplateResponse'),
     meta: { authAdmin: true }
   },
-  
+  {
+    path: '/questionnaire-response/:udid',
+    name: 'QuestionnaireResponse',
+    component: () => import( '@/views/questionnaire-response/TemplateResponse'),
+    meta: { authAdmin: true }
+  },
   {
     path: '/resources',
     name: 'Resources',
@@ -345,6 +350,13 @@ const routes = [
     component: () => import('@/views/workflow-setup/WorkFlowSetup'),
     meta: { authAdmin: true }
   }, 
+  {
+    path: '/questionnaireResponse',
+    name: 'Questionnaire Response',
+    component: () => import('@/views/questionnaireForm/QuestionnaireForm'),
+    meta: { authAdmin: true }
+  }, 
+
 
   {
     path: '/workflow-details/:udid',

@@ -25,6 +25,7 @@
             </a-col>
              <a-col :span="24">
                     <div class="form-group questionnairTag">
+                      
                         <a-form-item :label="$t('questionnaire.tags')" name="tags" >
                         <a-select ref="select" v-model:value="questionnaireTemplate.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" :placeholder="$t('questionnaire.selectTags')" :getPopupContainer="triggerNode => triggerNode.parentNode">
                         </a-select>
@@ -67,6 +68,7 @@ export default defineComponent({
   },
   props: {
     update: String,
+    cloneId:String
   },
 
   setup(props, { emit }) {
@@ -80,13 +82,14 @@ export default defineComponent({
     });
     const disabled= ref(false)
     const form = reactive({...questionnaireTemplate})
+    const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
     watchEffect(()=>{
       
       if(props.update){
         
-        if(store.getters.detailsQuestionnaireTemplate){
+        if(detailsQuestionnaireTemplate.value){
         
-        Object.assign(questionnaireTemplate,store.getters.detailsQuestionnaireTemplate.value)
+        Object.assign(questionnaireTemplate,detailsQuestionnaireTemplate.value)
 
         }else{
           Object.assign(questionnaireTemplate,form)
@@ -97,6 +100,39 @@ export default defineComponent({
       disabled.value= true
       store.dispatch("addQuestionnaireTemplate", questionnaireTemplate).then(()=>{
         if(store.state.common.successMsg){
+          if(props.cloneId){
+            alert("")
+            detailsQuestionnaireTemplate.value ?
+                detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
+                    
+                     if (element.entityType != 'question') {
+                      store.dispatch("sectionAssignToTemplate", {
+                id: store.getters.questionnaireTemplateSection.value.id,
+                sectionId: [element.questionnaireSection.id],
+                method:"post",
+                showPopup:false
+            })
+                       
+                     }else{
+                       store.dispatch("addAssiignquestionnaire", {
+                        data: {
+                            questionId: [element.question.id],
+                            id: store.getters.questionnaireTemplateSection.value.id,
+                            
+                        },
+                        method:"post",
+                        id: store.getters.questionnaireTemplateSection.value.id,
+                        temOrSection:"template",
+                        showPopup:false
+                    })
+                          
+          
+                          
+                     }
+                }) : ''
+            
+            
+          }
           emit("is-visible", {show:false,id:props.update})
           reset()
           store.dispatch("questionnaireTemplateList")

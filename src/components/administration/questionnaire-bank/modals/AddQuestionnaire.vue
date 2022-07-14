@@ -291,6 +291,7 @@ export default {
                             id: props.templateId,
                             
                         },
+                        showPopup:false,
                         method:"post",
                         id: props.templateId,
                         temOrSection: props.temOrSection

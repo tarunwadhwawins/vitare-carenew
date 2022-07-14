@@ -142,8 +142,9 @@ export const addAssiignquestionnaire = async ({
  
   let url = data.temOrSection =='section' ? 'questions/'+data.id+'/assign' : API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/question'
   await serviceMethod.common(data.method, url, null, data.data).then((response) => {
-
+ if(data.showPopup){
     successSwal(response.data.message)
+  }
     commit('successMsg',response.data.message)
     
   }).catch((error) => {
@@ -211,10 +212,12 @@ export const scoreCount = async ({
 export const sectionAssignToTemplate = async ({
   commit
 },data) => {
-  console.log("data",data)
-  await serviceMethod.common("post", 'questionnaireSection/'+data.id+'/assign', null, data).then((response) => {
-
+  
+  await serviceMethod.common(data.method, 'questionnaireSection/'+data.id+'/assign', null, data).then((response) => {
+  if(data.showPopup){
     successSwal(response.data.message)
+  }
+    
     commit('successMsg',response.data.message)
     
   }).catch((error) => {
@@ -227,6 +230,31 @@ export const sectionAssignToTemplate = async ({
       commit('errorMsg',error.response.data.message)
     }
     
+    
+    
+  })
+}
+
+//questionnaire Form Response
+export const questionnaireResponse = async ({
+  commit
+},page) => {
+  let link = page ? 'user/questionnaire/template'+page+'&entityType=247' : 'user/questionnaire/template?rentityType=247'
+  commit('loadingStatus', true)
+  await serviceMethod.common('get', link, null, null).then((response) => {
+  
+    commit('questionnaireResponse',response.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg',error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg',error.response.data.message)
+    }
+    commit('loadingStatus', false)
     
     
   })

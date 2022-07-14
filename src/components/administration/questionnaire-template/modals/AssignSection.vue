@@ -204,7 +204,9 @@ function setSectionId(event){
             //disabled.value= true
             store.dispatch("sectionAssignToTemplate", {
                 id: detailsQuestionnaireTemplate.value.id,
-                sectionId: [...section.sectionId]
+                sectionId: [...section.sectionId],
+                method:"put",
+                showPopup:true
             }).then(() => {
                 if (store.state.common.successMsg) {
                     emit("is-visible", {

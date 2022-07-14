@@ -2,12 +2,12 @@
 <a-modal width="100%" :title="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="assignQuestion" layout="vertical" @finish="addAssignQuestion" >
         <a-row>
-            <a-col :span="16">
+            <a-col :span="20">
                 <SearchField endPoint="question" />
             </a-col>
 
-            <a-col :span="8">
-                <div class="text-right mt-28">
+            <a-col :span="4">
+                <div class="">
                   
                     <a-button @click="showModal({show:true,id:''})" class="btn primaryBtn ml-10">Add New Question</a-button>
                 </div>
@@ -155,7 +155,8 @@ assignQuestion.questionId.push(index.id)
                 data: {questionId:getUnique(assignQuestion.questionId)},
                 id: props.templaterecord.id,
                 temOrSection:props.temOrSection,
-                method:"put"
+                method:"put",
+                showPopup:true
             }).then(() => {
                 if(store.state.common.successMsg){
                 if(props.temOrSection=='section'){

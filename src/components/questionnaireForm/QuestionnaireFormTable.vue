@@ -1,81 +1,97 @@
 <template>
 <a-table rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
-    <template #templateName="text">
-        <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:text.record.id?text.record.id:'eyrer8758458958495'  }}">
+    <template #userName="text">
+        <router-link v-if="entity=='Patient'" :to="{ name: 'PatientSummary', params: { udid:text.record.userId?text.record.userId:'eyrer8758458958495'  }}">
             {{
                             text.text
                           }}</router-link>
+                          <router-link v-else :to="{ name: 'CoordinatorSummary', params: { udid:text.record.userId?text.record.userId:'eyrer8758458958495'  }}">
+            {{
+                            text.text
+                          }}</router-link>
+
     </template>
     <template #actions="{record}">
         
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Assign Section</span>
             </template>
             <a class="icons">
              
                     <DiffTwoTone @click="assignSection(record.id)"/></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom">
+        </a-tooltip> -->
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Setting</span>
             </template>
             <a class="icons">
             <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
                     <SettingTwoTone /></router-link></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom">
+        </a-tooltip> -->
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" >
                 <EditOutlined @click="editModal(record.id)"/></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom">
+        </a-tooltip> -->
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
             </template>
             <a class="icons">
-            <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" >
-                    <SendOutlined  /></router-link></a>
-        </a-tooltip>
+            
+                    <SendOutlined  @click="getResponse(record.id)"/></a>
+        </a-tooltip> -->
         <a-tooltip placement="bottom">
             <template #title>
-                <span>Clone</span>
+                <span>Response View</span>
             </template>
             <a class="icons">
-                <CopyOutlined @click="clone(record.id)"/></a>
+                <router-link :to="{ name: 'QuestionnaireResponse', params: { udid:record.id?record.questionnaireTempleteId:'eyrer8758458958495'  }}" >
+                
+                <EyeOutlined  /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Delete</span>
             </template>
             <a class="icons" @click="deleteModal(record.id)">
                 <DeleteOutlined /></a>
-        </a-tooltip>
+        </a-tooltip> -->
     </template>
     <template #active="key">
         <a-switch v-model:checked="checked[key.record.key]" />
     </template>
 </a-table>
 <Loader />
-<AssignSection v-if="visible" v-model:visible="visible"  @is-visible="showSection($event)" :update="true"/>
+
+ <a-modal width="70%" v-model:visible="visibleModal" title="New Template Url" :maskClosable="false" centered   :footer="false">
+           <span>{{templateId}} </span>
+    </a-modal>
 </template>
 
 <script>
-import {DeleteOutlined,EditOutlined,SettingTwoTone,SendOutlined,DiffTwoTone,CopyOutlined} from "@ant-design/icons-vue"
+import {EyeOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
-import {messages} from "@/config/messages";
-import {warningSwal} from "@/commonMethods/commonMethod";
+
 import { onMounted , ref } from "vue"
-import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
+
 const columns = [{
         title: "Questionnaire Template",
         dataIndex: "templateName",
 
         slots: {
             customRender: "templateName",
+        },
+    },
+    {
+        title: "User Name",
+        dataIndex: "userName",
+        slots: {
+            customRender: "userName",
         },
     },
     {
@@ -94,29 +110,16 @@ const columns = [{
 export default {
     emits:["edit"],
     components: {
-        DeleteOutlined,
-        EditOutlined,
-        CopyOutlined,
+        EyeOutlined,
         Loader,
-        SettingTwoTone,
-        SendOutlined,
-        DiffTwoTone,
-        AssignSection
+        
     },
     props: {},
-    setup(props, {
-        emit
-    }) {
+    setup() {
         const store = useStore();
-        const editModal = (id) => {
-           store.dispatch("detailsQuestionnaireTemplate", id)
-            emit("edit", {
-                show: true,
-                id: id
-            });
-        };
+      
         const visible = ref(false)
-        const data = store.getters.questionnaireTemplateList
+        const data = store.getters.questionnaireResponse
         const meta = store.getters.questionnaireTemplateMeta
         let record = []
         let scroller = ""
@@ -131,7 +134,7 @@ export default {
                         scroller = maxScroll;
                         meta.value = ""
                         record = data.value
-                        store.dispatch("questionnaireTemplateList", "?page=" + current_page + store.getters.searchTable.value +
+                        store.dispatch("questionnaireResponse", "?page=" + current_page + store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         });
@@ -152,25 +155,9 @@ export default {
                 tableContent.scrollTo(0, scroller);
             }, 50)
         }
-  function assignSection(id){
-   
-    store.dispatch('detailsQuestionnaireTemplate', id)
-     visible.value = true
-           
-  }
+  
 
-        function deleteModal(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    var index = data.value.findIndex(function (o) {
-                        return o.id === id;
-                    })
-                    store.dispatch('deleteQuestionnaireTemplate', id)
-                    data.value.splice(index, 1)
-                }
-            })
-
-        }
+       
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == "ascend" ? "ASC" : "DESC";
@@ -182,7 +169,7 @@ export default {
                     filters: filters,
                 });
                 store.dispatch(
-                    "questionnaireTemplateList",
+                    "questionnaireResponse",
                     "?page=" + store.getters.searchTable.value + orderParam
                 );
             } else {
@@ -190,32 +177,35 @@ export default {
                     data: "&orderField=&orderBy=",
                 });
                 store.dispatch(
-                    "questionnaireTemplateList",
+                    "questionnaireResponse",
                     "?page=" +
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
                 )
             }
         }
-     
-        const clone = (id) =>{
-            store.dispatch('detailsQuestionnaireTemplate', id)
-emit('clone',id)
-        }
+        const visibleModal = ref(false)
+        const templateId = ref(false)
+     const  getResponse =(id) =>{
+        visibleModal.value = true
+      templateId.value = id  
+     }
+   
         const showSection = (e) =>{
     
 visible.value = e.show
 }
         return {
+            visibleModal,
             columns,
             data,
-            editModal,
-            deleteModal,
+            getResponse,
+           
             handleTableChange,
             visible,
-            assignSection,
+           templateId,
             showSection,
-            clone,
+            
             
         };
     },

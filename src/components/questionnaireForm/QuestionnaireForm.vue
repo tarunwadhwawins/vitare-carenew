@@ -4,17 +4,15 @@
         <a-row>
             <a-col :span="24">
                 <h2 class="pageTittle">
-                    Questionnaire Template
-                    <div class="commonBtn">
-                        <a-button class="btn primaryBtn" @click="showModal({show:true,id:''})">Create New Template</a-button>
-                    </div>
+                    Questionnaire Response
+                    
                 </h2>
             </a-col>
             <a-col :span="12">
                 <SearchField endPoint="questionnaire" class="mb-24" />
             </a-col>
             <a-col :span="24">
-                <QuestionnaireTemplateTable @edit="showModal($event)" @clone="clone($event)"/>
+                <QuestionnaireFormTable />
 
             </a-col>
         </a-row>
@@ -26,14 +24,14 @@
 </template>
 <script>
 import CreateTemplate from "@/components/administration/questionnaire-template/modals/CreateTemplate";
-import QuestionnaireTemplateTable from "@/components/administration/questionnaire-template/QuestionnaireTemplateTable";
+import QuestionnaireFormTable from "@/components/questionnaireForm/QuestionnaireFormTable";
 import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 export default {
   components: {
     CreateTemplate,
-    QuestionnaireTemplateTable,
+    QuestionnaireFormTable,
     SearchField,
   },
   setup() {
@@ -58,7 +56,7 @@ export default {
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
-      store.dispatch("questionnaireTemplateList");
+      store.dispatch("questionnaireResponse");
     });
 
     onUnmounted(() => {

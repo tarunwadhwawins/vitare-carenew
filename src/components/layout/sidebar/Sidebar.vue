@@ -56,6 +56,11 @@
                     <ReadOutlined /><span class="menuItem">{{$t('sidebar.reports')}}</span>
                 </a-menu-item>
             </router-link>
+            <router-link to="/questionnaireResponse" v-if="arrayToObjact(screensPermissions, 332)">
+                <a-menu-item>
+                    <ReadOutlined /><span class="menuItem">Questionnaire Form</span>
+                </a-menu-item>
+            </router-link>
 
             <router-link v-if="linkTo" :to="linkTo">
                 <a-menu-item>

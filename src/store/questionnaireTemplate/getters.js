@@ -29,3 +29,10 @@ export const scoreCount = (state) => {
     return state.scoreCount
   })
 }
+export const questionnaireResponse = (state) => {
+  return computed(() => {
+    return state.questionnaireResponse
+  })
+}
+
+
