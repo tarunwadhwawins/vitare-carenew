@@ -2,15 +2,6 @@
 <a-modal width="1000px" title="Communications" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed" autocomplete="off">
         <a-row :gutter="24">
-            <a-col v-if="toggleTo" :xl="24" :lg="24">
-                <div class="form-group">
-                    <div class="timer">
-                        <h3>{{$t('patientSummary.currentSession')}} : {{ formattedElapsedTime }}</h3>
-                    </div>
-                </div>
-            </a-col>
-        </a-row>
-        <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
