@@ -226,9 +226,9 @@ export default defineComponent({
             return store.state.communications.addCommunication
         })
 
-        const timeApprovalStatus = computed(() => {
-            return store.state.common.timeApprovalStatus
-        })
+        // const timeApprovalStatus = computed(() => {
+        //     return store.state.common.timeApprovalStatus
+        // })
 
         const sendMessage = () => {
             closeValue.value = true
@@ -237,17 +237,17 @@ export default defineComponent({
             store.dispatch("addCommunication", messageForm).then(() => {
                 if(messageForm.entityType == 'patient') {
                     const approvalStatus = ref(null)
-                    timeApprovalStatus.value.map((item) => {
-                        if(item.name == 'Pending') {
-                            approvalStatus.value = item.id
-                        }
-                    })
+                    // timeApprovalStatus.value.map((item) => {
+                    //     if(item.name == 'Pending') {
+                    //         approvalStatus.value = item.id
+                    //     }
+                    // })
                     store.dispatch("timeApproval", {
                         staff: messageForm.from,
                         patient: messageForm.referenceId,
                         time: getSeconds(formattedElapsedTime.value),
                         type: messageForm.messageTypeId,
-                        status: approvalStatus.value,
+                        status: approvalStatus.value != null ? approvalStatus.value : 328,
                         entityType: messageForm.entityType,
                         referenceId: addCommunication.value.id,
                     })
