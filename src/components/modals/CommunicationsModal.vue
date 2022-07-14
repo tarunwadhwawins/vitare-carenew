@@ -245,7 +245,7 @@ export default defineComponent({
                     store.dispatch("timeApproval", {
                         staff: messageForm.from,
                         patient: messageForm.referenceId,
-                        time: getSeconds(formattedElapsedTime),
+                        time: getSeconds(formattedElapsedTime.value),
                         type: messageForm.messageTypeId,
                         status: approvalStatus.value,
                         entityType: messageForm.entityType,
