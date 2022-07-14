@@ -61,7 +61,8 @@ let notificationAudio = new Audio(require("@/assets/media/Notification.mp3"))
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
-//  if(router.currentRoute.value.name!='Communications'){
+  let isChatOpened = localStorage.getItem('isChatOpened')
+ if(!isChatOpened) {
     // console.log('notifications',notificationCouter++)
     notificationCouter++
     let counter = notificationCouter
@@ -117,7 +118,7 @@ onMessage(messaging, (payload) => {
         notificationAudio.play()
         multiUserCounter++ // flag counter for multiple user checking
         notification.open({
-            message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
+            message: <div><h2>{`${payload.notification.title}`}</h2></div>,
             description: <div> {'You have received new message from patients'} </div>,
             btn: [
                 h(Button, {
@@ -163,7 +164,7 @@ onMessage(messaging, (payload) => {
     }else if(!multiUserCounter){
         notificationAudio.play()
         notification.open({
-            message: <div><h2>{`${payload.notification.title} (${counter})`}</h2></div>,
+            message: <div><h2>{`${payload.notification.title}`}</h2></div>,
             description: <div> {`${payload.notification.body}`} </div>,
             btn: [
                 h(Button, {
@@ -206,7 +207,7 @@ onMessage(messaging, (payload) => {
         })
     }
    }
-//  }
+ }
   // ...
 });
 

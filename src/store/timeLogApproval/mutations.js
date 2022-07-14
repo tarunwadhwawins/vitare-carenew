@@ -37,7 +37,7 @@ export const timeLogApprovalList = async (state, data) => {
       title: "Time (MM:SS)",
       dataIndex: "time",
       sorter:true,
-      align: 'right'
+      // align: 'right'
     },
   
     // {

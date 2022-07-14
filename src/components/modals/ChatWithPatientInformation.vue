@@ -88,6 +88,7 @@ export default {
         const route = useRoute()
         route.params.from = ''
         route.params.typeId = ''
+        localStorage.setItem('isChatOpened', true)
         const formValue = reactive({
             msgSend: ''
         })
@@ -260,6 +261,7 @@ export default {
         }
 
         function closeModal() {
+            localStorage.removeItem('isChatOpened')
             store.state.communications.conversationList = []
             clearInterval(interval);
             addPinModalVisible.value = false
