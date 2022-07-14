@@ -48,15 +48,15 @@
                     </a-row>
                     <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
 
-                        <a-col :span="1" v-if="questionnaire.questionType == 'Test'">
-                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label>
+                        <a-col :span="2" v-if="questionnaire.questionType == 'Test'">
+                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label><br>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
                             </a-radio-group>
                         </a-col>
-                        <a-col :span="1">
-                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</label>
+                        <a-col :span="2">
+                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</label><br>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" v-if="questionnaire.dataTypeId==244" @change="checkboxChangeDefault($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value2">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChangeDefault($event)"></a-radio>
@@ -76,7 +76,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="4" :xs="24">
+                        <a-col :sm="5" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('questionnaire.program')">
                                     <ArrayDataSearch v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" :max-tag-count="2" :maxTagTextLength="5" />

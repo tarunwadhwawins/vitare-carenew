@@ -24,13 +24,13 @@
             <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
                     <SettingTwoTone /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" >
                 <EditOutlined @click="editModal(record.id)"/></a>
-        </a-tooltip>
+        </a-tooltip> -->
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {DeleteOutlined,EditOutlined,SettingTwoTone,SendOutlined,DiffTwoTone} from "@ant-design/icons-vue"
+import {DeleteOutlined,SettingTwoTone,SendOutlined,DiffTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -95,7 +95,7 @@ export default {
     emits:["edit"],
     components: {
         DeleteOutlined,
-        EditOutlined,
+        //EditOutlined,
        // CopyOutlined,
         Loader,
         SettingTwoTone,

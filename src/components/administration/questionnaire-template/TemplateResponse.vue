@@ -111,7 +111,7 @@
         </div>
         <a-col :span="24" v-if="detailsQuestionnaireTemplate">
 
-            <div class="steps-action">
+            <div class="steps-action mt-28">
                 <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
 
                     <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
@@ -129,8 +129,9 @@
 import { defineComponent, ref, onMounted, reactive, watchEffect } from "vue";
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
-import router from '@/router';
+import { useRoute,useRouter } from "vue-router";
+
+
 export default defineComponent({
     name: "Question Template Details",
     components: {
@@ -139,6 +140,7 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const route = useRoute();
+         const router = useRouter()
         const userName = JSON.parse(localStorage.getItem("auth"));
         const questionnaireTemplate = reactive({
             templateText: [],
@@ -221,7 +223,11 @@ export default defineComponent({
                 data: data,
                 id: udid
             }).then(() => {
-                router.go("/questionnaireResponse")
+               
+                router.push({
+                        path: "/questionnaireResponse",
+                        
+                    })
 
             })
         };
