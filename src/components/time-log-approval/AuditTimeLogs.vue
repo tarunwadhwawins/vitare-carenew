@@ -3,6 +3,13 @@
 <a-modal width="1000px" title="Timelog Approval" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="auditTimeLog" name="auditTimeLog" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
         <a-row :gutter="24">
+        <a-col :sm="24" :md="12" :xs="24">
+                <div class="form-group">
+                    <a-form-item :label="$t('timeLogs.category')" name="categoryId" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
+                        <GlobalCodeDropDown  v-model:value="auditTimeLog.categoryId" size="large" :dataId="27" @handleGlobalChange="handleGlobalChange($event,'auditTimeLog.categoryId'); checkChangeInput()" />
+                    </a-form-item>
+                </div>
+            </a-col>
             <a-col :sm="24" :md="12" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Type" name="typeId" :rules="[{ required: true, message: 'Type'+' '+$t('global.validation')  }]">
@@ -28,11 +35,11 @@
             <a-col :sm="24" :md="12" :xs="24" >
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker v-model:value="auditTimeLog.timeAmount" disabled format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" @change="checkChangeInput()" />
+                        <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :sm="24" :md="12" :xs="24">
+            <a-col :sm="24" :md="24" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogReport.note')" name="note" :rules="[{ required: true, message: $t('timeLogReport.note')+' '+$t('global.validation') }]">
                         <a-textarea v-model:value="auditTimeLog.note" allow-clear @change="checkChangeInput()" />
@@ -44,7 +51,9 @@
             </a-col>
         </a-row>
     </a-form>
+    <Loader />
 </a-modal>
+
 </template>
 <script>
 import {
@@ -63,12 +72,14 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 import { messages } from "@/config/messages";
 // import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
+import Loader from "@/components/loader/Loader"
 export default defineComponent({
   components: {
     ModalButtons,
     GlobalCodeDropDown,
     // ArrayDataSearch,
-    CptCodeAtivitiesDropDown
+    CptCodeAtivitiesDropDown,
+    Loader
   },
   props: {
     Id: String,
@@ -87,6 +98,7 @@ export default defineComponent({
       note: "",
       noteId: "",
       cptCodeId: "",
+      categoryId:"",
       typeId: "",
     });
 
@@ -99,28 +111,25 @@ export default defineComponent({
     });
 
     const updateAuditTime = () => {
-      emit("saveAuditTimeLog", false)
-      // store
-      //   .dispatch("updateAuditTimeLog", {
-      //     data: {
-      //       timeAmount: getSeconds(auditTimeLog.timeAmount),
-      //       flag: auditTimeLog.flag,
-      //       note: auditTimeLog.note,
-      //       noteId: auditTimeLog.noteId,
-      //       cptCode: auditTimeLog.cptCodeId,
-      //       category: auditTimeLog.typeId,
-      //     },
-      //     id: props.Id,
-      //   })
-      //   .then(() => {
-      //     store.getters.timeLogReports.value.timeLogReportList = "";
-      //     store.dispatch(
-      //       "timeLogReportList",
-      //       store.getters.auditTimeLogFilterDates.value
-      //     );
-      //     emit("saveAuditTimeLog");
-      //     disableButton.value = true;
-      //   });
+      store
+        .dispatch("updateAuditTimeLogApproval", {
+          data: {
+            timeAmount: getSeconds(auditTimeLog.timeAmount),
+            flag: auditTimeLog.flag,
+            note: auditTimeLog.note,
+            noteId: auditTimeLog.noteId,
+            cptCode: auditTimeLog.cptCodeId,
+            category: auditTimeLog.categoryId,
+            status:329
+          },
+          id: props.Id,
+        })
+        .then(() => {
+          store.getters.timeLogReports.value.timeLogReportList = "";
+           store.dispatch("timeLogApprovalList");
+          emit("saveAuditTimeLog");
+          disableButton.value = true;
+        });
     };
 
     const staffList = computed(() => {
@@ -198,6 +207,9 @@ export default defineComponent({
     const handleGlobalChange = (data,type) =>{
       if (type == "auditTimeLog.typeId") {
         auditTimeLog.typeId = data;
+      }
+      if(type == 'auditTimeLog.categoryId'){
+        auditTimeLog.categoryId = data
       }
     }
 

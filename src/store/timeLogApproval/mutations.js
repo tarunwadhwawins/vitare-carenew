@@ -1,20 +1,13 @@
-import { secondsToTime } from '../../commonMethods/commonMethod';
+import { secondsToTime,secondsToMenutes } from '@/commonMethods/commonMethod';
 
 export const timelineReport = (state, data) => {
 
   state.timelineReport = data
 }
-export const timeLogApprovalList = async (state, data) => {
+export const timeApproval = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportColumns = [
-    {
-      title: "Care Coordinator",
-      dataIndex: "performedBy",
-      sorter: true,
-      slots: {
-        customRender: "staff",
-      },
-    },
+    
     {
       title: "Patient",
       dataIndex: "patient",
@@ -23,9 +16,18 @@ export const timeLogApprovalList = async (state, data) => {
         customRender: "patient",
       },
     },
+    // {
+    //   title: "Care Coordinator",
+    //   dataIndex: "performedBy",
+    //   sorter: true,
+    //   slots: {
+    //     customRender: "staff",
+    //   },
+    // },
     {
       title: "Type",
       dataIndex: "type",
+      sorter: true,
     },
 
     // {
@@ -61,10 +63,10 @@ export const timeLogApprovalList = async (state, data) => {
     },
   ];
   
-  state.timeLogReportList = data.data.map(item => {
+  state.timeApproval = data.data.map(item => {
     // item.timeAmount = secondsToTime(item.time)
     // item.billingAmount = item.billingAmount ?'$ ' + item.billingAmount :''
-    item.time = secondsToTime(item.time)
+    item.time = secondsToMenutes(item.time)
     return item
   })
     

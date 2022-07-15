@@ -640,6 +640,10 @@ export function secondsToTime(secs) {
 	}
 	return hours + ':' + minutes + ':' + seconds;
 }
+
+export function secondsToMenutes(secs) {
+	return ('0'+Math.floor(secs / 60)).slice(-2)+':'+('0'+Math.floor(secs % 60)).slice(-2); 
+}
 export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
 export const disableHours = []

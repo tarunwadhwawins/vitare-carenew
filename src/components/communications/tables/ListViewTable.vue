@@ -409,8 +409,9 @@ export default {
     };
 
     const handleOk = (value) => {
-      visible.value = false;
+      visible.value = value ? value : false;
       visibleGmail.value = value ? value : false;
+      chatWithPatientInfoVisible.value = value ? value : false;
     };
 
     return {

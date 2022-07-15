@@ -1,5 +1,5 @@
 export default {
-  timeLogReportList: null,
+  timeApproval: null,
   timeLogReportColumns:null,
   editAuditTimeLogApproval:null,
   timeLogeMeta:null,

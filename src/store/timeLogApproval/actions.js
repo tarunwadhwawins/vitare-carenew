@@ -7,7 +7,7 @@ export const timeLogApprovalList = async ({ commit }, page) => {
 	commit('loadingTableStatus', true)
 	let link = page ? "timeApproval" + page : "timeApproval"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('timeLogApprovalList', response.data);
+		commit('timeApproval', response.data);
 		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		if (error.response) {
@@ -62,8 +62,33 @@ export const reportExport = async ({ commit }, data) => {
 }
 
 export const editAuditTimeLogApproval = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", `timeApproval/${id}`, null, null).then((response) => {
 		commit('editAuditTimeLogApproval', response.data.data);
+		commit('loadingStatus', false)
+	}).catch((error) => {
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+		if (error.response.status === 422) {
+			commit('errorMsg', error.response.data)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 500) {
+			// errorSwal(error.response.data.message)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 401) {
+			commit('loadingStatus', false)
+		}
+		commit('loadingStatus', false)
+	})
+}
+
+export const updateAuditTimeLogApproval = async ({ commit }, data) => {
+	await ServiceMethodService.common("put", `timeApproval/${data.id}`, null, data.data).then((response) => {
+		// commit('updateTimeLog', response.data.data);
+		successSwal(response.data.message)
 	}).catch((error) => {
 		if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -82,10 +107,12 @@ export const editAuditTimeLogApproval = async ({ commit }, id) => {
 	})
 }
 
-export const updateAuditTimeLog = async ({ commit }, data) => {
-	await ServiceMethodService.common("put", `timeLog/${data.id}`, null, data.data).then((response) => {
+export const rejectApproval = async ({ commit }, data) => {
+	commit('loadingTableStatus', true)
+	await ServiceMethodService.common("put", `timeApproval/${data.id}`, null, data.data).then((response) => {
 		// commit('updateTimeLog', response.data.data);
 		successSwal(response.data.message)
+		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -101,6 +128,7 @@ export const updateAuditTimeLog = async ({ commit }, data) => {
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)
 		}
+		commit('loadingTableStatus', false)
 	})
 }
 

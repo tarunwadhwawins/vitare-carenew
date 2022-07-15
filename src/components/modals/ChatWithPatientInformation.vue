@@ -1,5 +1,16 @@
 <template>
 <a-modal width="95%" title="Messages" centered :maskClosable="false" @cancel="closeModal()" class="chatModal" :footer="false">
+    <a-row :gutter="24">
+        <a-col :xl="24" :lg="24">
+            <div class="timer">
+                <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
+                <a-button v-if="showStartTimer && !showPauseTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
+                <a-button v-if="showPauseTimer" class="primaryBtn" @click="pauseTimer">{{$t('patientSummary.pauseTimer')}}</a-button>
+                <a-button v-if="showResumeTimer && !showStartTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.resumeTimer')}}</a-button>
+                <a-button v-if="!showStartTimer" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
+            </div>
+        </a-col>
+    </a-row>
     <div class="common-bg">
         <div class="videoWrapper chatBox2">
             <div class="leftWrapper" id="videoDiv">
@@ -57,13 +68,16 @@ import {
 } from "vuex"
 import {
     dateFormat,
-
+    actionTrack,
     enCodeString,
+    getSeconds,
 } from "@/commonMethods/commonMethod"
 import Loader from "@/components/loader/Loader"
 import moment from "moment"
 import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
 import { useRoute } from 'vue-router'
+// import { warningSwal } from '../../commonMethods/commonMethod'
+// import { messages } from '../../config/messages'
 
 export default {
     components: {
@@ -83,7 +97,7 @@ export default {
             type: Number
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
         const store = useStore()
         const route = useRoute()
         route.params.from = ''
@@ -107,6 +121,75 @@ export default {
         const tabvalue = reactive({
             tab: [],
         });
+        const showStartTimer = computed(() => {
+            return store.state.common.showStartTimer
+        });
+        const showPauseTimer = computed(() => {
+            return store.state.common.showPauseTimer
+        });
+        const showResumeTimer = computed(() => {
+            return store.state.common.showResumeTimer
+        });
+
+        const patient = ref(null)
+        if (communications.is_sender_patient) {
+            patient.value = communications.fromId
+        }
+        else if (communications.is_receiver_patient) {
+            patient.value = communications.toId
+        }
+
+        const pendingApprovalStatus = computed(() => {
+            return store.state.common.pendingApprovalStatus
+        })        
+
+        const appMessage = computed(() => {
+            return store.state.common.appMessage
+        })  
+
+        // Countdown Timer Start and Stop
+        const elapsedTime = ref(0)
+        const timer = ref(undefined)
+        
+        const formattedElapsedTime = computed(() => {
+            const date = new Date(null);
+            date.setSeconds(elapsedTime.value / 1000);
+            const utc = date.toUTCString();
+            return utc.substr(utc.indexOf(":") - 2, 8);
+        })
+
+        function startTimer() {
+            timer.value = setInterval(() => {
+                elapsedTime.value += 1000;
+            }, 1000);
+            store.commit('showPauseTimer', true);
+            store.commit('showStartTimer', false);
+            store.commit('showResumeTimer', false);
+        }
+
+        const stopTimer = () => {
+            store.dispatch("timeApproval", {
+                staff: auth.user.staffUdid,
+                patient: patient.value,
+                time: getSeconds(formattedElapsedTime.value),
+                type: appMessage.value,
+                status: pendingApprovalStatus.value,
+                entityType: 'communication',
+                referenceId: communicationId,
+            }).then(() => {
+                clearInterval(timer.value);
+                elapsedTime.value = 0
+                store.commit('showStartTimer', true);
+                store.commit('showPauseTimer', false);
+                store.commit('showResumeTimer', false);
+            })
+        };
+
+        const pauseTimer = () => {
+            store.commit('showResumeTimer', true);
+            store.commit('showPauseTimer', false);
+            clearInterval(timer.value);
+        };
 
         const showNotesModal = () => {
             store.commit('loadingStatus', true)
@@ -266,9 +349,48 @@ export default {
             clearInterval(interval);
             addPinModalVisible.value = false
             localStorage.removeItem('patientUdid')
+            if(!showStartTimer.value) {
+                store.dispatch("timeApproval", {
+                    staff: auth.user.staffUdid,
+                    patient: patient.value,
+                    time: getSeconds(formattedElapsedTime.value),
+                    type: appMessage.value,
+                    status: pendingApprovalStatus.value,
+                    entityType: 'communication',
+                    referenceId: communicationId,
+                }).then(() => {
+                    emit('is-visible', false)
+                })
+            }
+            
+            /* emit('is-visible', true)
+            clearInterval(timer.value);
+            warningSwal(messages.timerMessage).then((response) => {
+                if (response == true) {
+                    emit('is-visible', false)
+                    store.commit('showStartTimer', false);
+                    store.commit('showPauseTimer', true);
+                    store.commit('showResumeTimer', false);
+                    stopTimer()
+                }
+                else {
+                    emit('is-visible', true)
+                    if(!showResumeTimer.value && !showStartTimer.value) {
+                        startTimer()
+                    }
+                    localStorage.removeItem('isChatOpened')
+                    store.state.communications.conversationList = []
+                    clearInterval(interval);
+                    localStorage.removeItem('patientUdid')
+                }
+            }); */
         }
 
         onMounted(() => {
+            console.log('Start Timer', showStartTimer.value)
+            if(!showStartTimer.value) {
+                startTimer()
+            }
             store.commit('loadingStatus', false)
             setTimeout(() => {
                 store.commit('loadingStatus', false)
@@ -303,6 +425,11 @@ export default {
         })
 
         onUnmounted(() => {
+            console.log('Stop Timer')
+            store.commit('showStartTimer', false);
+            store.commit('showPauseTimer', true);
+            store.commit('showResumeTimer', false);
+            // stopTimer()
             clearInterval(interval)
         })
 
@@ -358,6 +485,14 @@ export default {
             reverseRecord,
             communicationId,
             isDisabled,
+            formattedElapsedTime,
+            actionTrack,
+            startTimer,
+            stopTimer,
+            pauseTimer,
+            showStartTimer,
+            showPauseTimer,
+            showResumeTimer,
         };
     },
 };
@@ -400,5 +535,16 @@ span.dragImg {
 
 .messageBox {
     position: sticky;
+}
+.float-right {
+    position: relative;
+    top: -30px;
+    float: right;
+    right: 50px;
+}
+.timer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 </style>

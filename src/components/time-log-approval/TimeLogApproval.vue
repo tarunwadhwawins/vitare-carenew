@@ -12,7 +12,7 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">{{'Audit Timelog Approval'}}
 
-                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineReport" />
+                                <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineReport" /> -->
                             </h2>
                         </a-col>
                     </a-row>
@@ -53,7 +53,7 @@
                     </a-row>
                     <a-row>
                         <a-col :span="12">
-                            <SearchField endPoint="timeLog" v-if="arrayToObjact(screensPermissions, 65)" mode="tags" />
+                            <SearchField endPoint="timeApproval" v-if="arrayToObjact(screensPermissions, 65)"  />
                         </a-col>
                         <a-col :span="12">
                             <div class="text-right mb-24">
@@ -76,7 +76,7 @@
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-import DateFilter from "@/components/common/DateFilter.vue";
+// import DateFilter from "@/components/common/DateFilter.vue";
 import {
   exportExcel,
   arrayToObjact,
@@ -89,13 +89,14 @@ import TimeLogApprovalTable from "./TimeLogApprovalTable";
 import moment from "moment";
 import SearchField from "@/components/common/input/SearchField";
 import { useRoute, useRouter } from "vue-router";
+
 export default {
   components: {
     Header,
     Sidebar,
     TimeLogApprovalTable,
     ExportToExcel,
-    DateFilter,
+    // DateFilter,
     SearchField,
   },
   setup() {
