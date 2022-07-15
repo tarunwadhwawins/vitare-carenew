@@ -21,7 +21,7 @@
                 <img class="reportFlag" src="../../assets/images/flag-orange.svg" alt="image" /></span>
             <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
         </template>
-        <template #actions="{record}">
+        <template #actions="{record}" >
             <!-- <a-tooltip placement="bottom" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
@@ -33,8 +33,10 @@
                 <template #title>
                     <span>{{ $t("common.view") }}</span>
                 </template> -->
+                <div v-if="record?.statusId==328">
                  <a-button class="modal-button handleClear" type="primary" html-type="submit"  @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
                   <a-button @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
+                </div>
                 <!-- <a class="icons">
                     <EyeOutlined />
                 </a>

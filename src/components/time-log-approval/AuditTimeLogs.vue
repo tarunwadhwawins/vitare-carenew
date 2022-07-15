@@ -116,7 +116,7 @@ export default defineComponent({
             noteId: auditTimeLog.noteId,
             cptCode: auditTimeLog.cptCodeId,
             category: auditTimeLog.categoryId,
-            status:229
+            status:329
           },
           id: props.Id,
         })
