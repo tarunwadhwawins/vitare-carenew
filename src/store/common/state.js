@@ -74,5 +74,6 @@ export default {
     showStartTimer:false,
     showPauseTimer:true,
     showResumeTimer:false,
+    loadingTimelineStatus:false,
 
 }

@@ -281,3 +281,7 @@ export const showPauseTimer = (state, data) => {
 export const showResumeTimer = (state, data) => {
     state.showResumeTimer = data
 }
+
+export const loadingTimelineStatus = (state, data) => {
+  state.loadingTimelineStatus = data
+}

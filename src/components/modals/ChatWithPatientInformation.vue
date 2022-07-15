@@ -174,7 +174,7 @@ export default {
                 time: getSeconds(formattedElapsedTime.value),
                 type: appMessage.value,
                 status: pendingApprovalStatus.value,
-                entityType: 'patient',
+                entityType: 'communication',
                 referenceId: communicationId,
             }).then(() => {
                 clearInterval(timer.value);
@@ -356,7 +356,7 @@ export default {
                     time: getSeconds(formattedElapsedTime.value),
                     type: appMessage.value,
                     status: pendingApprovalStatus.value,
-                    entityType: 'patient',
+                    entityType: 'communication',
                     referenceId: communicationId,
                 }).then(() => {
                     emit('is-visible', false)
@@ -541,5 +541,10 @@ span.dragImg {
     top: -30px;
     float: right;
     right: 50px;
+}
+.timer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 </style>

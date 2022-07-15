@@ -1138,14 +1138,11 @@ export const emergencyContact = async ({
   })
 }
 
-export const patientTimeline = async ({
-  commit
-}, data) => {
- let page = data.page? '?type=' + data.type + '&page='+data.page :'?type=' + data.type
- commit('loadingTableStatus', true)
+export const patientTimeline = async ({ commit }, data) => {
+  let page = data.page? '?type=' + data.type + '&page='+data.page :'?type=' + data.type
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + '/' + data.id + '/timeLine' + page, null, null).then((response) => {
     commit('patientTimelineSuccess', response.data);
-    commit('loadingTableStatus', false)
+    commit('loadingTimelineStatus', false)
   }).catch((error) => {
     if (error.response) {
       errorLogWithDeviceInfo(error.response);
@@ -1153,7 +1150,6 @@ export const patientTimeline = async ({
       errorLogWithDeviceInfo(error);
     }
     // errorSwal(error.response.data.message)
-    commit('loadingTableStatus', false)
   })
 }
 

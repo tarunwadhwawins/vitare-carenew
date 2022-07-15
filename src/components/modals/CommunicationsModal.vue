@@ -248,7 +248,7 @@ export default defineComponent({
                         time: getSeconds(formattedElapsedTime.value),
                         type: messageForm.messageTypeId,
                         status: pendingApprovalStatus.value,
-                        entityType: messageForm.entityType,
+                        entityType: 'communication',
                         referenceId: addCommunication.value.id,
                     })
                 }

@@ -27,7 +27,6 @@
     </div>
 
     <a-timeline class="defaultTimeline" style="height: calc(100vh - 330px)">
-        <!-- <TableLoader /> -->
         <div v-if="
           patientTimeline &&
           patientTimeline != null &&
@@ -100,8 +99,9 @@
                 </template>
             </a-checkbox-group>
         </div>
-        <div v-else class="noData">No Data</div>
-    </a-timeline>
+        <div v-else class="noData">
+        No Data</div>
+    </a-timeline><TimelineLoader />
 </div>
 <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="pId" @closeModal="handleOk" :flags="flagsRecord" title="update"/>
 </template>
@@ -131,7 +131,7 @@ import {
 } from "vue-demi";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-// import TableLoader from "@/components/loader/TableLoader";
+import TimelineLoader from "@/components/loader/TimelineLoader";
 import moment from "moment";
 export default {
     components: {
@@ -146,7 +146,7 @@ export default {
         // InfoCircleOutlined,
         FlagOutlined,
         CloseCircleOutlined,
-        // TableLoader,
+        TimelineLoader,
         //CheckCircleOutlined,
         PatientFlagsModal: defineAsyncComponent(() =>
             import("@/components/modals/PatientFlagsModal")
@@ -200,6 +200,7 @@ export default {
         let data = [];
         let scroller = "";
         onMounted(() => {
+            store.commit('loadingTimelineStatus', true)
             if (route.name == "PatientSummary") {
 
                 store.dispatch("timeLineType").then(() => {
@@ -425,10 +426,9 @@ p.timeline-float.timeline-title {
 }
 
 .close {
-    position: relative;
-    float: right;
-    top: -4px;
-    left: -20px;
+    position: absolute;
+    top: 18px;
+    right: 25px;
 }
 
 .noData.ant-timeline-item-last {
