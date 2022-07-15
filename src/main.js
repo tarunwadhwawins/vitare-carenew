@@ -55,6 +55,7 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
     // ...
 });
 
+
 let notificationCouter =null
 let multiUserCounter = null
 let notificationAudio = new Audio(require("@/assets/media/Notification.mp3"))
@@ -217,6 +218,15 @@ onMessage(messaging, (payload) => {
 // video call config
 if (store.state.authentication.loggedInUser) {
     store.getters.videoCall;
+}
+
+if (Notification.permission === 'denied') {
+    notification.open({
+        message: <div><h3>{'Notification Settings'}</h3></div>,
+        description: 'Please enable your notification.',
+        duration: 30,
+        placement: 'bottomRight'
+    }) 
 }
 
 

@@ -31,8 +31,8 @@
             <template #title>
                 <span>{{'Assigned to '+ record.fullName }}</span>
             </template>
-            <!-- <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link> -->
-            <a v-if="record.patientId"  @click="showPatientModal(record.patientId )" >{{ record.isAvailable }}</a>
+            <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link>
+            <a v-if="record.patientId"  @click="showPatientModal(record.patientId )" class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </a-tooltip>
         <a-tooltip v-else>
            <span>{{ record.isAvailable }}</span>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { DeleteOutlined, EditOutlined,InfoCircleOutlined } from "@ant-design/icons-vue";
 import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
 import { warningSwal, arrayToObjact,showPatientModal } from "@/commonMethods/commonMethod";
@@ -55,6 +55,7 @@ export default {
     DeleteOutlined,
     EditOutlined,
     Loader,
+    InfoCircleOutlined
   },
   setup(props, { emit }) {
     const store = useStore();
