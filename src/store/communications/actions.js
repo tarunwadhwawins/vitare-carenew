@@ -312,8 +312,8 @@ export const replyCommunication = async ({ commit }, data) => {
 
 export const timeApproval = async ({ commit }, data) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("post", API_ENDPOINTS['timeApproval'], null, data).then((response) => {
-		successSwal(response.data.message)
+	await ServiceMethodService.common("post", API_ENDPOINTS['timeApproval'], null, data).then(() => {
+		// successSwal(response.data.message)
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

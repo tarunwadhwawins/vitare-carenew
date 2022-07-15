@@ -32,6 +32,11 @@ export const globalCodes = (state, data) => {
         }
         if (element.name === 'Message Type') {
             state.messageType = element.globalCode;
+            element.globalCode.map(item => {
+                if(item.name == 'App Message') {
+                    state.appMessage = item.id
+                }
+            })
         }
         // if (element.name === 'Language') {
         //     //Arrangd english(2) and spanish(12) default top language
@@ -143,6 +148,11 @@ export const globalCodes = (state, data) => {
         }
         if (element.name === 'Time Approval Status') {
             state.timeApprovalStatus = element.globalCode;
+            state.pendingApprovalStatus = element.globalCode.map(item => {
+                if(item.name == 'Pending') {
+                    return item.id
+                }
+            })
         }
         
     });
@@ -262,3 +272,12 @@ export const checkChangeInput = (state, data) => {
     
   }
   
+export const showStartTimer = (state, data) => {
+    state.showStartTimer = data
+}
+export const showPauseTimer = (state, data) => {
+    state.showPauseTimer = data
+}
+export const showResumeTimer = (state, data) => {
+    state.showResumeTimer = data
+}
