@@ -3,13 +3,13 @@
     <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
           
-        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link> -->
-             <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staffId)" >{{ record.staff }}</a>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link>
+             <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staffId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             <span v-else >{{record.staff}}</span>
         </template>
         <template #patient="{record}">
-         <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patientId)" >{{record.patient }}</a>
-             <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link> -->
+             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link>
+                <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patientId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             <span v-else :title="messages.access">{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
@@ -58,7 +58,8 @@ import {
 import {
     // DeleteOutlined,
     EditOutlined,
-    EyeOutlined
+    EyeOutlined,
+    InfoCircleOutlined
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "../modals/AuditTimeLogs";
 import ViewTimeLogTable from "./ViewTimeLogTable"
@@ -89,6 +90,7 @@ export default {
         TableLoader,
         AuditTimeLog,
         ViewTimeLogTable,
+        InfoCircleOutlined,
         // Flags,
     },
 props:{

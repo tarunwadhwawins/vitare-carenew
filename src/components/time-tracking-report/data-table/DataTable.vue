@@ -44,9 +44,9 @@
         <a><span @click="showReportData(record.id)">{{record.serviceId}}</span></a>
     </template>
     <template #patient="{ record }" >
-    <a @click="showPatientModal( record.patient.id)" v-if="arrayToObjact(screensPermissions, 65)">{{ record.patient.fullName }}</a>
+    <router-link v-if="arrayToObjact(screensPermissions, 65) && record.patient.id " :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link>
+    <a @click="showPatientModal( record.patient.id)" v-if="arrayToObjact(screensPermissions, 65)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
     <span v-else>{{record.patient.fullName }}</span>
-        <!-- <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.fullName }}</router-link> -->
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
@@ -97,7 +97,7 @@ import {
   reactive,
 } from "vue";
 import { useStore } from "vuex";
-// import { EyeOutlined } from "@ant-design/icons-vue";
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import SearchField from "@/components/common/input/SearchField";
@@ -209,7 +209,7 @@ export default defineComponent({
   components: {
     ErrorMessage,
     TableLoader,
-    // EyeOutlined,
+    InfoCircleOutlined,
     GlobalCodeDropDown,
     ExportToExcel,
     SearchField,

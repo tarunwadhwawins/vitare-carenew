@@ -3,8 +3,8 @@
 
 <a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :scroll="{ y:'calc(100vh - 470px)'}" :pagination="false" @change="handleTableChange">
         <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions,407)">
-            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
-          <a @click="showPatientModal( record.patientId)" v-if="arrayToObjact(screensPermissions, 65)">{{ text }}</a>
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+          <a @click="showPatientModal( record.patientId)" v-if="arrayToObjact(screensPermissions, 65)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
           <span v-else>{{text}}</span>
         </template> 
         <template #patientName="{ text }" v-else>
@@ -16,7 +16,7 @@
 </template>
 <script>
 import { ref, onMounted ,} from "vue";
-//import { EditOutlined } from "@ant-design/icons-vue";
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
 
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
@@ -29,7 +29,7 @@ import { useRoute } from 'vue-router';
 export default {
   components: {
   
-    //EditOutlined,
+    InfoCircleOutlined,
     TableLoader,
   },
   props: {},
