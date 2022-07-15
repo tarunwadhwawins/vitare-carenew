@@ -200,7 +200,7 @@ export default {
         let data = [];
         let scroller = "";
         onMounted(() => {
-            store.commit('loadingTimelineStatus', true)
+            // store.commit('loadingTimelineStatus', true)
             if (route.name == "PatientSummary") {
 
                 store.dispatch("timeLineType").then(() => {
