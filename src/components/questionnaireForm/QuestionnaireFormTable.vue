@@ -1,4 +1,5 @@
 <template>
+
 <a-table rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
     <template #userName="text">
         <router-link v-if="entity=='Patient'" :to="{ name: 'PatientSummary', params: { udid:text.record.userId?text.record.userId:'eyrer8758458958495'  }}">
@@ -57,32 +58,35 @@
                 
                 <EyeTwoTone  @click="userNameSet(record)" /></router-link></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>View Score</span>
             </template>
             <a class="icons" @click="getResponse(record.questionnaireTempleteId)">
                 
                 <FundViewOutlined  /></a>
-        </a-tooltip>
+        </a-tooltip> -->
     </template>
     <template #active="key">
         <a-switch v-model:checked="checked[key.record.key]" />
     </template>
 </a-table>
+<CommonLoader v-if="data.length==0"/>
 <Loader />
 
  <a-modal width="70%" v-model:visible="visibleModal" title="Response Score" :maskClosable="false" centered   :footer="false">
            <a-table v-if="scoreData" rowKey="id" :columns="columns2" :data-source="scoreData" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
+            
     </a-table>
+    <CommonLoader v-else/>
     </a-modal>
 </template>
 
 <script>
-import {EyeTwoTone ,FundViewOutlined} from "@ant-design/icons-vue"
+import {EyeTwoTone } from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
-
+import CommonLoader from "@/components/loader/CommonLoader";
 import { onMounted , ref } from "vue"
 const columns2 = [{
         title: "Programs",
@@ -147,7 +151,7 @@ export default {
     components: {
         EyeTwoTone ,
         Loader,
-        FundViewOutlined,
+        CommonLoader
         
     },
     props: {},

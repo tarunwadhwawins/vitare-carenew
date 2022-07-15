@@ -29,7 +29,7 @@
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
                             <PlusOutlined />
                         </a-button>
-                        <router-link to="/questionnaire-template" class="b-inline ml-10">
+                        <router-link to="/template-section" class="b-inline ml-10">
                             <a-button class="btn primaryBtn">Back</a-button>
                         </router-link>
                     </div>

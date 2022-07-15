@@ -66,7 +66,7 @@
                     <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
                     <div class="templateInner">
                         <div v-if="record.question.dataTypeId==243">
-                            <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[record.question.id]">
+                            <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[questionList.questionnaireSection.id+''+record.question.id]">
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
                                     <div class="questionOutput">
                                         <div>{{index+1}}.</div>
@@ -79,7 +79,7 @@
                             </a-radio-group>
                         </div>
                         <div v-else-if="record.question.dataTypeId==244">
-                            <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[record.question.id]">
+                            <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[questionList.questionnaireSection.id+''+record.question.id]">
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
                                     <div class="questionOutput">
                                         <div>{{index+1}}.</div>
@@ -163,26 +163,26 @@ export default defineComponent({
                     let newRescord = "";
                     if (element.entityType != 'question') {
                         element.questionnaireSection.questionSection.map((records) => {
-
+console.log("check",questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id])
                             if (records.question.dataTypeId == 244) {
                                 newRescord = {
                                     question: records.question.id,
                                     dataType: records.question.dataTypeId,
-                                    answer: questionnaireTemplate.checkBoxOption[records.question.id] ? questionnaireTemplate.checkBoxOption[records.question.id] : '',
+                                    answer: questionnaireTemplate.checkBoxOption[element.questionnaireSection.id+''+records.question.id] ? questionnaireTemplate.checkBoxOption[element.questionnaireSection.id+''+records.question.id] : [],
                                     sectionId: element.questionnaireSection.id,
                                 };
                             } else if (records.question.dataTypeId == 243) {
                                 newRescord = {
                                     question: records.question.id,
                                     dataType: records.question.dataTypeId,
-                                    answer: questionnaireTemplate.radioOption[records.question.id] ? questionnaireTemplate.radioOption[records.question.id] : '',
+                                    answer: questionnaireTemplate.radioOption[element.questionnaireSection.id+''+records.question.id] ? questionnaireTemplate.radioOption[element.questionnaireSection.id+''+records.question.id] : '',
                                     sectionId: element.questionnaireSection.id,
                                 };
                             } else {
                                 newRescord = {
                                     question: records.question.id,
                                     dataType: records.question.dataTypeId,
-                                    answer: questionnaireTemplate.templateText.length > 0 ? questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id] : '',
+                                    answer: questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id] ? questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id] : '',
                                     sectionId: element.questionnaireSection.id,
                                 };
                             }

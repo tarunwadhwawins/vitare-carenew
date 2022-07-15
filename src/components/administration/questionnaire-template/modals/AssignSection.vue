@@ -51,7 +51,7 @@
 
                 <div class="steps-action" v-if="section.sectionId.length>0">
                     <a-button style="margin-right: 8px" html-type="reset"  @click="closeModal">{{$t('global.cancel')}}</a-button>
-                    <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+                    <a-button type="primary" html-type="submit">Assign</a-button>
                     <!-- <a-button  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button> -->
                 </div>
             </a-col>

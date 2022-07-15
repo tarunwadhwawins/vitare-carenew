@@ -67,7 +67,7 @@
                     <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
                     <div class="templateInner">
                         <div v-if="record.question.dataTypeId==243">
-                            <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[record.question.id]" disabled>
+                            <a-radio-group v-if="record.answer" v-model:value="questionnaireTemplate.radioOption[record.question.id]" disabled>
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
                                     <div class="questionOutput" v-if="record.answer==options.id">
                                         <!-- <div>{{index+1}}.</div> -->
@@ -80,7 +80,7 @@
                             </a-radio-group>
                         </div>
                         <div v-else-if="record.question.dataTypeId==244">
-                            <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[record.question.id]" disabled>
+                            <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[record.question.id]" disabled v-if="record.answer">
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
                                     <div class="questionOutput" v-if="record.answer==options.id">
                                         <!-- <div>{{index+1}}.</div> -->
@@ -94,7 +94,7 @@
                             </a-checkbox-group>
                         </div>
                         <div v-else>
-                            <a-col :span="24">
+                            <a-col :span="24" v-if="record.answer">
 
                                 <div class="form-group">
                                     <a-form-item >
@@ -179,7 +179,7 @@ store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.valu
 
                     if (element.entityType != 'question') {
                         
-                        questionnaireResponseDetails.value.clientQuestionResponse[element.questionnaireSection.sectionName].map((records) => {
+                      questionnaireResponseDetails.value?   questionnaireResponseDetails.value.clientQuestionResponse[element.questionnaireSection.sectionName].map((records) => {
 
                             if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
                                 let checkBox = [];
@@ -196,7 +196,7 @@ store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.valu
                                     questionnaireTemplate.checkBoxOption[records.question.id] = checkBox;
                                 }
                             }
-                        })
+                        }) : ''
                     }
 
                 }) :
