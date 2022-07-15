@@ -3,14 +3,14 @@
 
     <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 370px)'}">
         <template #patientName="{ text, record }" v-if="arrayToObjact(screensPermissions, 405)">
-            <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link> -->
-            <a @click="showPatientModal(record.patientId)">{{ text }}</a>
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+            <a @click="showPatientModal(record.patientId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </template>
         <template #escalationStaff="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id">
                 {{i==0?' ':','}}
-                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link> -->
-                <a @click="showStaffModal(record.staffUdid)">{{ esc.staffName }}</a>
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+                <a @click="showStaffModal(record.staffUdid)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             </span>
         </template>
         <template #escalationStaff="{ record }" v-else>
@@ -20,8 +20,8 @@
         </template>
         <template #escalationAssignedBy="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span>
-                <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link> -->
-                <a @click="showStaffModal(record.assignedById)">{{ record.assignedBy }}</a>
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
+                <a @click="showStaffModal(record.assignedById)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             </span>
         </template>
         <template #escalationAssignedBy="{ record }" v-else>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { EyeOutlined, EditOutlined, StopOutlined } from "@ant-design/icons-vue";
+import { EyeOutlined, EditOutlined, StopOutlined,InfoCircleOutlined } from "@ant-design/icons-vue";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
@@ -87,6 +87,7 @@ export default {
     EditOutlined,
     StopOutlined,
     Flags,
+    InfoCircleOutlined
   },
   props: {
     columnData: Array,

@@ -5,10 +5,10 @@
     :data-source="dataRecord"
     :pagination="pagination">
     <template #patient="{record}" v-if="arrayToObjact(screensPermissions,63)">
-      <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
+      <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
         {{ record.patient }}
-      </router-link> -->
-      <a @click="showPatientModal( record.patientUdid)" v-if="arrayToObjact(screensPermissions, 65)">{{ record.patient }}</a>
+      </router-link>
+      <a @click="showPatientModal( record.patientUdid)" v-if="arrayToObjact(screensPermissions, 65)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
       <span v-else>{{record.patient}}</span>
     </template>
     <template #patient="{record}" v-else>
@@ -26,7 +26,11 @@
 import {enCodeString,arrayToObjact,showPatientModal} from "@/commonMethods/commonMethod";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
 export default {
+  components:{
+    InfoCircleOutlined
+  },
 props:["colomnsRecord","dataRecord","pagination"],
   setup() {
     const store =useStore()

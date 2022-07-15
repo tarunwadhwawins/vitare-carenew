@@ -18,21 +18,21 @@
         <template #assignedTo="{ record }">
             <span v-for="assignee,i in record.assignedTo" :key="assignee.id">
                 <br v-if="i > 0"/>
-                 <a v-if="assignee.entityType == 'staff'"  @click="showStaffModal( assignee.id)" >{{ assignee.name }}</a>
-                <!-- <router-link v-if="assignee.entityType == 'staff'" :to="{ name: 'CoordinatorSummary', params: { udid:assignee.id}}">
+                <router-link v-if="assignee.entityType == 'staff'" :to="{ name: 'CoordinatorSummary', params: { udid:assignee.id}}">
                     {{ assignee.name }}
-                </router-link> -->
-                <!-- <router-link v-else :to="{ name: 'PatientSummary', params: { udid:assignee.id}}">
+                </router-link>
+                <router-link v-else :to="{ name: 'PatientSummary', params: { udid:assignee.id}}">
                     {{ assignee.name }}
-                </router-link> -->
-                <a v-else @click="showPatientModal( assignee.id)" >{{ assignee.name }}</a>
+                </router-link>
+                 <a v-if="assignee.entityType == 'staff'"  @click="showStaffModal( assignee.id)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
+                 <a v-else @click="showPatientModal( assignee.id)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
             </span>
         </template>
         <template #assignedBy="{ record }">
-            <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById}}">
+            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById}}">
                 {{ record.assignedBy }}
-            </router-link> -->
-            <a @click="showStaffModal( record.assignedById)" >{{  record.assignedBy  }}</a>
+            </router-link>
+            <a @click="showStaffModal( record.assignedById)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
         </template>
         <template #action="{ record }" >
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
@@ -68,7 +68,7 @@
 <script>
 import { onMounted, computed,defineAsyncComponent , ref} from "vue"
 import { useStore } from "vuex"
-import {  DeleteOutlined, EditOutlined, CalendarOutlined} from "@ant-design/icons-vue"
+import {  DeleteOutlined, EditOutlined, CalendarOutlined,InfoCircleOutlined} from "@ant-design/icons-vue"
 import { messages } from "@/config/messages"
 import { warningSwal,  arrayToObjact,showPatientModal,showStaffModal} from "@/commonMethods/commonMethod"
 import { useRoute } from 'vue-router'
@@ -76,6 +76,7 @@ import Loader from "@/components/loader/Loader"
 export default {
     name: "TaskTable",
     components: {
+        InfoCircleOutlined,
         Loader,
         DeleteOutlined,
         EditOutlined,

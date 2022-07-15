@@ -6,10 +6,10 @@ const sidebar = {
   tasks: 'Tasks',
   reports: 'Billing',
   generalParameters: 'General Parameters',
-  auditTimeLog: 'Audit Time Log',
+  auditTimeLog: 'Audit Timelog',
   administration: 'Administration',
   inventory: 'Inventory',
-  auditTimeLogApproval:'Audit Timelog Approval '
+  auditTimeLogApproval:'Timelog Approval '
 }
 
 

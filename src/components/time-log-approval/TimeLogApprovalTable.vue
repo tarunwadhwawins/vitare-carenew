@@ -3,13 +3,13 @@
     <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
           
-        <!-- <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link> -->
-             <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staff.id)" >{{ record.staff.fullName }}</a>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff.fullName}}</router-link>
+             <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staff.id)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             <span v-else >{{record.staff}}</span>
         </template>
         <template #patient="{record}">
-         <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patient.id)" >{{record.patient.fullName }}</a>
-             <!-- <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link> -->
+             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient.fullName}}</router-link>
+         <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patient.id)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
             <span v-else :title="messages.access">{{record.patient.fullName}}</span>
         </template>
         <template #flags="{ record }">
@@ -61,6 +61,7 @@ import {
     // DeleteOutlined,
     // EditOutlined,
     // EyeOutlined
+    InfoCircleOutlined
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "./AuditTimeLogs.vue";
 import ViewTimeLogTable from "./ViewTimeLogTable"
@@ -85,6 +86,7 @@ import { useRoute } from 'vue-router';
 
 export default {
     components: {
+        InfoCircleOutlined,
         // DeleteOutlined,
         // EyeOutlined,
         // EditOutlined,
