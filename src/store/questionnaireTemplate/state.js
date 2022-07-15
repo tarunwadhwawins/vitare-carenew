@@ -5,7 +5,8 @@ export default{
     questionnaireTemplateMeta:null,
     templateDetailsList:[],
     scoreCount:null,
-    questionnaireResponse:[]
+    questionnaireResponse:[],
+    questionnaireResponseDetails:null
    
 
 }

@@ -259,3 +259,26 @@ export const questionnaireResponse = async ({
     
   })
 }
+export const questionnaireResponseDetails = async ({
+  commit
+},id) => {
+  
+  commit('loadingStatus', true)
+  await serviceMethod.common('get', 'user/questionnaire/template', id, null).then((response) => {
+  
+    commit('questionnaireResponseDetails',response.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg',error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg',error.response.data.message)
+    }
+    commit('loadingStatus', false)
+    
+    
+  })
+}

@@ -34,5 +34,10 @@ export const questionnaireResponse = (state) => {
     return state.questionnaireResponse
   })
 }
+export const questionnaireResponseDetails = (state) => {
+  return computed(() => {
+    return state.questionnaireResponseDetails
+  })
+}
 
 

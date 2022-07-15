@@ -11,6 +11,9 @@
                           }}</router-link>
 
     </template>
+     <template #score="{ record }" >
+        <a><span @click="getResponse(record.questionnaireTemplateId)">score...</span></a>
+    </template>
     <template #actions="{record}">
         
         <!-- <a-tooltip placement="bottom">
@@ -44,12 +47,13 @@
             
                     <SendOutlined  @click="getResponse(record.id)"/></a>
         </a-tooltip> -->
+       
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Response View</span>
             </template>
             <a class="icons">
-                <router-link :to="{ name: 'QuestionnaireResponse', params: { udid:record.id?record.questionnaireTempleteId:'eyrer8758458958495'  }}" >
+                <router-link :to="{ name: 'QuestionnaireResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" >
                 
                 <EyeTwoTone  @click="userNameSet(record)" /></router-link></a>
         </a-tooltip>
@@ -110,6 +114,13 @@ const columns = [{
         title: "Status",
         dataIndex: "status",
         
+    },
+    {
+        title: "Score",
+        dataIndex: "templateName",
+        slots: {
+            customRender: "score",
+        },
     },
       
       {

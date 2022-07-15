@@ -1,7 +1,8 @@
 import {
 	
 	globalDateTimeFormat,
-	dateAndTimeFormate
+	dateAndTimeFormate,
+	
   } from '@/commonMethods/commonMethod';
 export const questionnaire = async (state, data) => {
 	state.questionnaireTemplateList = data.data;
@@ -31,4 +32,17 @@ export const questionnaireResponse = async (state, data) => {
 		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateTimeFormat);
 		return item;
 	});
+};
+export const questionnaireResponseDetails = async (state, data) => {
+	state.questionnaireResponseDetails = data.data  
+	if(data.data){
+		state.questionnaireResponseDetails.clientQuestionResponse = state.questionnaireResponseDetails.clientQuestionResponse.reduce((acc, d) => {
+			if (Object.keys(acc).includes(d.sectionName)) return acc;
+		
+			acc[d.sectionName] = state.questionnaireResponseDetails.clientQuestionResponse.filter(g => g.sectionName === d.sectionName); 
+			return acc;
+		}, {})
+	}
+
+	
 };

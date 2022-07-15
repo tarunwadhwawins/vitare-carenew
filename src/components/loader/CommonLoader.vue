@@ -4,7 +4,7 @@
             <div class="loaderInner"></div>
         </div>
     </div>
-    </template>
+</template>
     
     <script>
     
