@@ -53,7 +53,7 @@
                     </a-row>
                     <a-row>
                         <a-col :span="12">
-                            <SearchField endPoint="timeLog" v-if="arrayToObjact(screensPermissions, 65)" mode="tags" />
+                            <SearchField endPoint="timeApproval" v-if="arrayToObjact(screensPermissions, 65)"  />
                         </a-col>
                         <a-col :span="12">
                             <div class="text-right mb-24">
@@ -89,6 +89,7 @@ import TimeLogApprovalTable from "./TimeLogApprovalTable";
 import moment from "moment";
 import SearchField from "@/components/common/input/SearchField";
 import { useRoute, useRouter } from "vue-router";
+
 export default {
   components: {
     Header,

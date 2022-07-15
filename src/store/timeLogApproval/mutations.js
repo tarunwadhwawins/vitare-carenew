@@ -4,14 +4,14 @@ export const timelineReport = (state, data) => {
 
   state.timelineReport = data
 }
-export const timeLogApprovalList = async (state, data) => {
+export const timeApproval = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportColumns = [
     
     {
       title: "Patient",
       dataIndex: "patient",
-      // sorter: true,
+      sorter: true,
       slots: {
         customRender: "patient",
       },
@@ -27,6 +27,7 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Type",
       dataIndex: "type",
+      sorter: true,
     },
 
     // {
@@ -37,7 +38,7 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Time (MM:SS)",
       dataIndex: "time",
-      // sorter:true,
+      sorter:true,
       // align: 'right'
     },
   
@@ -50,7 +51,7 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Status",
       dataIndex: "status",
-      // sorter:true
+      sorter:true
     },
     
     {
@@ -62,7 +63,7 @@ export const timeLogApprovalList = async (state, data) => {
     },
   ];
   
-  state.timeLogReportList = data.data.map(item => {
+  state.timeApproval = data.data.map(item => {
     // item.timeAmount = secondsToTime(item.time)
     // item.billingAmount = item.billingAmount ?'$ ' + item.billingAmount :''
     item.time = secondsToMenutes(item.time)

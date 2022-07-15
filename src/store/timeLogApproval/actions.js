@@ -7,7 +7,7 @@ export const timeLogApprovalList = async ({ commit }, page) => {
 	commit('loadingTableStatus', true)
 	let link = page ? "timeApproval" + page : "timeApproval"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('timeLogApprovalList', response.data);
+		commit('timeApproval', response.data);
 		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		if (error.response) {
@@ -62,8 +62,10 @@ export const reportExport = async ({ commit }, data) => {
 }
 
 export const editAuditTimeLogApproval = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", `timeApproval/${id}`, null, null).then((response) => {
 		commit('editAuditTimeLogApproval', response.data.data);
+		commit('loadingStatus', false)
 	}).catch((error) => {
 		if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -79,6 +81,7 @@ export const editAuditTimeLogApproval = async ({ commit }, id) => {
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)
 		}
+		commit('loadingStatus', false)
 	})
 }
 

@@ -51,7 +51,9 @@
             </a-col>
         </a-row>
     </a-form>
+    <Loader />
 </a-modal>
+
 </template>
 <script>
 import {
@@ -70,12 +72,14 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 import { messages } from "@/config/messages";
 // import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
+import Loader from "@/components/loader/Loader"
 export default defineComponent({
   components: {
     ModalButtons,
     GlobalCodeDropDown,
     // ArrayDataSearch,
-    CptCodeAtivitiesDropDown
+    CptCodeAtivitiesDropDown,
+    Loader
   },
   props: {
     Id: String,

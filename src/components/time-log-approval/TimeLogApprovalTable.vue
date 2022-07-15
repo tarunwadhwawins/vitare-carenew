@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeApproval"  @change="handleTableChange">
         <template #staff="{record}">
           
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff.fullName}}</router-link>
