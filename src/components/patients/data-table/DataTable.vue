@@ -3,7 +3,7 @@
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1600,y:'calc(100vh - 516px)' }" :pagination="false" @change="handleTableChange">
         <template #fullName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
-             <a @click="showPatientModal( record.id)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
+             <!-- <a @click="showPatientModal( record.id)"  class="nameInfoIcon"> <InfoCircleOutlined/></a> -->
         </template>
         <!-- <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
@@ -54,7 +54,7 @@
 import {
   WarningOutlined,
   DeleteOutlined,
-  InfoCircleOutlined,
+//   InfoCircleOutlined,
 //   KeyOutlined,
 } from "@ant-design/icons-vue";
 import { messages } from "@/config/messages";
@@ -72,7 +72,7 @@ import { useRoute } from "vue-router";
 export default defineComponent({
   name: "DataTable",
   components: {
-    InfoCircleOutlined,
+    // InfoCircleOutlined,
     WarningOutlined,
     DeleteOutlined,
     // KeyOutlined,

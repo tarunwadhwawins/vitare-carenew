@@ -2,7 +2,7 @@
 <a-table rowKey="id" :data-source="meta.staffs" :scroll="{ x: 1020,y:'calc(100vh - 470px)'}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
-        <a @click="showStaffModal( record.uuid)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
+        <!-- <a @click="showStaffModal( record.uuid)"  class="nameInfoIcon"> <InfoCircleOutlined/></a> -->
     </template>
    
     <template #name="{text}" v-else>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { WarningOutlined,DeleteOutlined,InfoCircleOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined,DeleteOutlined, } from "@ant-design/icons-vue";
 import {
   dateFormat,
   arrayToObjact,
@@ -67,7 +67,7 @@ import KeyIcon from "@/components/common/KeyIcon";
 export default defineComponent({
     name: "DataTable",
     components: {
-        InfoCircleOutlined,
+        // InfoCircleOutlined,
         KeyIcon,
         WarningOutlined,
         DeleteOutlined,

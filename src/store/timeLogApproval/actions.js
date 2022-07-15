@@ -105,9 +105,11 @@ export const updateAuditTimeLogApproval = async ({ commit }, data) => {
 }
 
 export const rejectApproval = async ({ commit }, data) => {
+	commit('loadingTableStatus', true)
 	await ServiceMethodService.common("put", `timeApproval/${data.id}`, null, data.data).then((response) => {
 		// commit('updateTimeLog', response.data.data);
 		successSwal(response.data.message)
+		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -123,6 +125,7 @@ export const rejectApproval = async ({ commit }, data) => {
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)
 		}
+		commit('loadingTableStatus', false)
 	})
 }
 
