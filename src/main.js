@@ -222,8 +222,8 @@ if (store.state.authentication.loggedInUser) {
 
 if (Notification.permission === 'denied') {
     notification.open({
-        message: <div><h3>{'Notification Settings'}</h3></div>,
-        description: 'Please enable your notification.',
+        message: <div><h3>{'Notification blocked'}</h3></div>,
+        description: 'Please enable notification for website.',
         duration: 30,
         placement: 'bottomRight'
     }) 
