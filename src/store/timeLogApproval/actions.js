@@ -82,8 +82,30 @@ export const editAuditTimeLogApproval = async ({ commit }, id) => {
 	})
 }
 
-export const updateAuditTimeLog = async ({ commit }, data) => {
-	await ServiceMethodService.common("put", `timeLog/${data.id}`, null, data.data).then((response) => {
+export const updateAuditTimeLogApproval = async ({ commit }, data) => {
+	await ServiceMethodService.common("put", `timeApproval/${data.id}`, null, data.data).then((response) => {
+		// commit('updateTimeLog', response.data.data);
+		successSwal(response.data.message)
+	}).catch((error) => {
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+		if (error.response.status === 422) {
+			commit('errorMsg', error.response.data)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 500) {
+			// errorSwal(error.response.data.message)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 401) {
+			commit('loadingStatus', false)
+		}
+	})
+}
+
+export const rejectApproval = async ({ commit }, data) => {
+	await ServiceMethodService.common("put", `timeApproval/${data.id}`, null, data.data).then((response) => {
 		// commit('updateTimeLog', response.data.data);
 		successSwal(response.data.message)
 	}).catch((error) => {

@@ -34,7 +34,7 @@
                     <span>{{ $t("common.view") }}</span>
                 </template> -->
                  <a-button class="modal-button handleClear" type="primary" html-type="submit"  @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
-                  <a-button @click="rejectButton()" class="modal-button">Reject</a-button>
+                  <a-button @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
                 <!-- <a class="icons">
                     <EyeOutlined />
                 </a>
@@ -221,10 +221,19 @@ props:{
             }
         }
 
-        const rejectButton = ()=>{
+        const rejectButton = (id)=>{
             warningSwal('Are you sure you want to reject ?').then((response) => {
           if (response == true) {
-            // 
+            store
+        .dispatch("rejectApproval", {
+          data: {
+            status:330
+          },
+          id: id,
+        })
+        .then(() => {
+            store.dispatch("timeLogApprovalList");
+        });
           } else {
             // emit("saveAuditTimeLog", true);
             // disableButton.value = false;
