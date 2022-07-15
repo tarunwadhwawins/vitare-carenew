@@ -33,9 +33,9 @@
                 <template #title>
                     <span>{{ $t("common.view") }}</span>
                 </template> -->
-                <div v-if="record?.statusId==328">
-                 <a-button class="modal-button handleClear" type="primary" html-type="submit"  @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
-                  <a-button @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
+                <div >
+                 <a-button  :disabled="record?.statusId==329 || record?.statusId==330" class="modal-button handleClear" type="primary" html-type="submit"  @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
+                  <a-button :disabled="record?.statusId==329 || record?.statusId==330" @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
                 </div>
                 <!-- <a class="icons">
                     <EyeOutlined />

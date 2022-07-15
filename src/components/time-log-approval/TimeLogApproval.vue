@@ -12,7 +12,7 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">{{'Audit Timelog Approval'}}
 
-                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineReport" />
+                                <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineReport" /> -->
                             </h2>
                         </a-col>
                     </a-row>
@@ -76,7 +76,7 @@
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-import DateFilter from "@/components/common/DateFilter.vue";
+// import DateFilter from "@/components/common/DateFilter.vue";
 import {
   exportExcel,
   arrayToObjact,
@@ -95,7 +95,7 @@ export default {
     Sidebar,
     TimeLogApprovalTable,
     ExportToExcel,
-    DateFilter,
+    // DateFilter,
     SearchField,
   },
   setup() {

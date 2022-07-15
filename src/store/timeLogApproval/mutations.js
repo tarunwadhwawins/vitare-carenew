@@ -11,19 +11,19 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Patient",
       dataIndex: "patient",
-      sorter: true,
+      // sorter: true,
       slots: {
         customRender: "patient",
       },
     },
-    {
-      title: "Care Coordinator",
-      dataIndex: "performedBy",
-      sorter: true,
-      slots: {
-        customRender: "staff",
-      },
-    },
+    // {
+    //   title: "Care Coordinator",
+    //   dataIndex: "performedBy",
+    //   sorter: true,
+    //   slots: {
+    //     customRender: "staff",
+    //   },
+    // },
     {
       title: "Type",
       dataIndex: "type",
@@ -37,7 +37,7 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Time (MM:SS)",
       dataIndex: "time",
-      sorter:true,
+      // sorter:true,
       // align: 'right'
     },
   
@@ -50,7 +50,7 @@ export const timeLogApprovalList = async (state, data) => {
     {
       title: "Status",
       dataIndex: "status",
-      sorter:true
+      // sorter:true
     },
     
     {
