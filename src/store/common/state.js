@@ -70,6 +70,10 @@ export default {
     taskType:null,
     taskStatus: [],
     otherFilters:null,
-    CPTCodeStatus:null
+    CPTCodeStatus:null,
+    showStartTimer:false,
+    showPauseTimer:true,
+    showResumeTimer:false,
+    loadingTimelineStatus:false,
 
 }

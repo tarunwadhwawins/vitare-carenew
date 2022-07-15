@@ -6,6 +6,8 @@ const patientSummary = {
     patientVitals:'Patient Vitals',
     currentSession:'Current Session',
     stopTimer:'Stop Timer',
+    pauseTimer:'Pause Timer',
+    resumeTimer:'Resume Timer',
     startTimer:'Start Timer',
     notifications:'Notifications',
     visits:'Visits',
