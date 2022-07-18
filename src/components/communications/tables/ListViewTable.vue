@@ -120,7 +120,7 @@
         <template #title>
           <span>{{ record.type }}</span>
         </template>
-        <a class="icons" v-if="record.type == 'SMS'">
+        <a class="icons" v-if="record.type == 'SMS'" @click="showSms(record.id)">
           <MessageOutlined />
         </a>
       </a-tooltip>
@@ -167,7 +167,6 @@
   <!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
   <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
-
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
@@ -422,7 +421,13 @@ export default {
       chatWithPatientInfoVisible.value = value ? value : false;
     };
 
+    const showSms = (id) =>{
+      console.log('id',id)
+      store.dispatch('showSmsData',id)
+    }
+
     return {
+      showSms,
       showPatientModal,
       showStaffModal,
       screensPermissions:store.getters.screensPermissions,

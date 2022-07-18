@@ -13,7 +13,7 @@
     <a-col :sm="24" :xs="24" v-if="selectedRow?.length>0">
       <ErrorMessage v-if="checkMsgTypeStatus?.length>1 || checkPatientStatus?.length>1" name="Please select same type of patient and type." />
     </a-col>
-    <a-col :sm="24" :xs="24" class="table-row">
+    <a-col :sm="24" :xs="24" class="table-row" v-if="meta">
         <a-table rowKey="id" :row-selection="rowSelection" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeApproval" @change="handleTableChange">
             <template #staff="{record}">
                 <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff.fullName}}</router-link>

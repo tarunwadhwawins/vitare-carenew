@@ -331,3 +331,20 @@ export const timeApproval = async ({ commit }, data) => {
 		commit('loadingStatus', false)
 	})
 }
+
+
+export const showSmsData = async ({ commit }, id) => {
+	await ServiceMethodService.common("get", `communication/messages/${id}`, null, null).then((response) => {
+		commit('showSmsData', response.data.data)
+	}).catch((error) => {
+		if(error.response) {
+			errorLogWithDeviceInfo(error.response);
+		} else {
+			errorLogWithDeviceInfo(error);
+		}
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
