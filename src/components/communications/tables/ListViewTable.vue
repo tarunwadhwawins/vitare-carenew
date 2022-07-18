@@ -120,6 +120,14 @@
         <template #title>
           <span>{{ record.type }}</span>
         </template>
+        <a class="icons" v-if="record.type == 'SMS'">
+          <MessageOutlined />
+        </a>
+      </a-tooltip>
+      <a-tooltip placement="right">
+        <template #title>
+          <span>{{ record.type }}</span>
+        </template>
         <a class="icons" v-if="record.type == 'Reminder'">
           <AlertOutlined />
         </a>
