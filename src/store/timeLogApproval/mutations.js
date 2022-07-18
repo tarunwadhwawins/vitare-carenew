@@ -54,19 +54,21 @@ export const timeApproval = async (state, data) => {
       sorter:true
     },
     
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      slots: {
-        customRender: "actions",
-      },
-    },
+    // {
+    //   title: "Actions",
+    //   dataIndex: "actions",
+    //   slots: {
+    //     customRender: "actions",
+    //   },
+    // },
   ];
   
   state.timeApproval = data.data.map(item => {
     // item.timeAmount = secondsToTime(item.time)
     // item.billingAmount = item.billingAmount ?'$ ' + item.billingAmount :''
+    item.timeAmount = item.time
     item.time = secondsToMenutes(item.time)
+    
     return item
   })
     
