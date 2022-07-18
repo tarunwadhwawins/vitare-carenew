@@ -34,7 +34,8 @@ export const questionnaireResponse = async (state, data) => {
 	});
 };
 export const questionnaireResponseDetails = async (state, data) => {
-	state.questionnaireResponseDetails = data.data  
+	state.questionnaireResponseDetails = data.data 
+	state.questionnaireResponseDetails.createdAt = dateAndTimeFormate(data.data.createdAt,globalDateTimeFormat);
 	if(data.data){
 		state.questionnaireResponseDetails.clientQuestionResponse = state.questionnaireResponseDetails.clientQuestionResponse.reduce((acc, d) => {
 			if (Object.keys(acc).includes(d.sectionName)) return acc;

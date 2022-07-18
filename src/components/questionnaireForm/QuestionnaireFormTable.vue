@@ -74,12 +74,8 @@
 <CommonLoader v-if="data.length==0"/>
 <Loader />
 
- <a-modal width="70%" v-model:visible="visibleModal" title="Response Score" :maskClosable="false" centered   :footer="false">
-           <a-table v-if="scoreData" rowKey="id" :columns="columns2" :data-source="scoreData" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
-            
-    </a-table>
-    <CommonLoader v-else/>
-    </a-modal>
+ 
+ <Score v-model:visible="visibleModal" title="Response Score" />
 </template>
 
 <script>
@@ -87,6 +83,7 @@ import {EyeTwoTone } from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import CommonLoader from "@/components/loader/CommonLoader";
+import Score from "@/components/questionnaireForm/modals/ScoreModal"
 import { onMounted , ref } from "vue"
 const columns2 = [{
         title: "Programs",
@@ -151,7 +148,8 @@ export default {
     components: {
         EyeTwoTone ,
         Loader,
-        CommonLoader
+        CommonLoader,
+        Score
         
     },
     props: {},

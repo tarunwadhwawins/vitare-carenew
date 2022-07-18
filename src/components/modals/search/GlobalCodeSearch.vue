@@ -1,4 +1,4 @@
-<template>{{id}}
+<template>
   <a-select
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
@@ -17,6 +17,7 @@
     @search="handleGlobalSearch"
     @change="handleGlobalChange"
     size="large"
+    :disabled="disabled"
   >
     <template v-if="loadingStatus" #notFoundContent>
       <a-spin size="small" />
@@ -38,7 +39,8 @@ export default defineComponent({
     editDataGlobal:Array,
     placeholder:String,
     listHeight:Number,
-    dataId:Number
+    dataId:Number,
+    disabled:Boolean
   },
 
   setup(props, context) {
@@ -59,7 +61,11 @@ export default defineComponent({
         );
         store.commit("checkChangeInput", false);
       }
-       props.editDataGlobal?globalData.value = props.editDataGlobal:globalData.value
+        
+props.editDataGlobal.length>0 ?globalData.value =props.editDataGlobal:globalData.value
+      
+         
+       
     });
     onMounted(() => {
       Services.singleDropdownSearch(
@@ -70,6 +76,7 @@ export default defineComponent({
     });
 
     const handleGlobalSearch = (val) => {
+     
       store.commit("dropdownLoadingStatus", true);
       globalData.value = [];
       Services.singleDropdownSearch(
@@ -80,6 +87,7 @@ export default defineComponent({
     };
 
     const handleGlobalChange = (val) => {
+    
       context.emit("handleGlobalChange", val);
     };
 

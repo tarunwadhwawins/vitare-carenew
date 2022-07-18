@@ -24,13 +24,13 @@
             <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
                     <SettingTwoTone /></router-link></a>
         </a-tooltip>
-        <!-- <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" >
                 <EditOutlined @click="editModal(record.id)"/></a>
-        </a-tooltip> -->
+        </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
@@ -39,13 +39,13 @@
             <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" >
                     <SendOutlined  /></router-link></a>
         </a-tooltip>
-        <!-- <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
             </template>
             <a class="icons">
                 <CopyOutlined @click="clone(record.id)"/></a>
-        </a-tooltip> -->
+        </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Delete</span>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {DeleteOutlined,SettingTwoTone,SendOutlined,DiffTwoTone} from "@ant-design/icons-vue"
+import {DeleteOutlined,SettingTwoTone,SendOutlined,DiffTwoTone,CopyOutlined,EditOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -96,12 +96,13 @@ export default {
     components: {
         DeleteOutlined,
         //EditOutlined,
-       // CopyOutlined,
+        CopyOutlined,
         Loader,
         SettingTwoTone,
         SendOutlined,
         DiffTwoTone,
-        AssignSection
+        AssignSection,
+        EditOutlined
     },
     props: {},
     setup(props, {

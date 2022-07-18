@@ -6,9 +6,15 @@
             <a-button class="btn">Back</a-button>
         </router-link>
     </h2>
+    <a-row>
+    <a-col :span=12>
     <div class="templateType"> <div>User Type  : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.entity :''}}</span></div><div>Staff Name : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.userName :''}}</span></div><div>Template Type : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.templateType : ''}}</span></div> </div>
-
-
+    </a-col>
+    <a-col :span="12">
+       
+<div class="templateType right"> <div>Status  : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.status :''}}</span></div><div>Filled Date : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.createdAt :''}}</span></div> <div>Score : <a><span @click="getResponse" :title="data ? data[0].program:''"> {{data ? data[0].program.substring(0,10)+'...':''}}</span></a></div></div>
+    </a-col>
+    </a-row>
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
         
         <div class="template" v-for="questionList in detailsQuestionnaireTemplate.questionnaireQuestion" :key="questionList.id">
@@ -118,6 +124,7 @@
     <TableLoader />
 </div>
 <CommonLoader v-else/>
+ <Score v-model:visible="visibleModal" title="Response Score" />
 </template>
 
 <script>
@@ -126,6 +133,7 @@ import TableLoader from "@/components/loader/TableLoader";
 import CommonLoader from "@/components/loader/CommonLoader";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import Score from "@/components/questionnaireForm/modals/ScoreModal"
 const columns = [{
         title: "Programs",
         dataIndex: "program",
@@ -147,7 +155,8 @@ export default defineComponent({
     name: "Question Template Details",
     components: {
         TableLoader,
-        CommonLoader
+        CommonLoader,
+        Score
     },
     setup() {
         const store = useStore();
@@ -160,11 +169,13 @@ export default defineComponent({
         });
         const udid = route.params.udid;
         const show = ref(false)
+       const  visibleModal = ref(false)
       const questionnaireResponseDetails = store.getters.questionnaireResponseDetails
         onMounted(() => {
             
             store.dispatch("questionnaireResponseDetails", udid).then(()=>{
 store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.value.questionnaireTemplateId)
+store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTemplateId)
             })
            
         });
@@ -202,6 +213,11 @@ store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.valu
                 }) :
                 "";
         });
+          const  getResponse =() =>{
+        visibleModal.value = true
+       
+     }
+
 
         return {
             udid,
@@ -214,7 +230,9 @@ store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.valu
             columns,
             data: store.getters.scoreCount,
             userName,
-            questionnaireResponseDetails
+            questionnaireResponseDetails,
+            getResponse,
+            visibleModal
         };
     },
 });
@@ -257,5 +275,8 @@ store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.valu
       }
     }
   
+}
+.right{
+    text-align: right;
 }
 </style>

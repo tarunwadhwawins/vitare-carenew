@@ -41,9 +41,11 @@ export default {
     const checked = ref([false]);
     const visible2 = ref(false);
     const update = ref('');
+    const templateId = ref('')
     const showModal = (e) => {
       update.value = e.id;
       visible2.value = e.show;
+      templateId.value = ''
     };
     const templatEdit = (e) => {
       update.value = e.id;
@@ -69,7 +71,7 @@ export default {
       store.state.patients.errorMsg = "";
       store.state.common.successMsg = "";
     });
-    const templateId = ref('')
+    
  const clone = (event) =>{
 templateId.value = event
 visible2.value = true;
