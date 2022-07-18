@@ -148,9 +148,9 @@ export const globalCodes = (state, data) => {
         }
         if (element.name === 'Time Approval Status') {
             state.timeApprovalStatus = element.globalCode;
-            state.pendingApprovalStatus = element.globalCode.map(item => {
+            element.globalCode.map(item => {
                 if(item.name == 'Pending') {
-                    return item.id
+                    state.pendingApprovalStatus = item.id
                 }
             })
         }

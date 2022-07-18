@@ -957,17 +957,19 @@ export const patientVitals = (state, vitals) => {
     // else {
     state.bloodPressureColumns = [
       {
-        title: "Date Recorded",
+        title: "Time & Date Vitals Taken",
         dataIndex: "takeTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
         },
+        width: '25%',
       },
       {
         title: "Systolic",
         dataIndex: "blood_pressure_systolic",
         key: "blood_pressure_systolic",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_systolic",
         },
@@ -976,6 +978,7 @@ export const patientVitals = (state, vitals) => {
         title: "Diastolic",
         dataIndex: "blood_pressure_diastolic",
         key: "blood_pressure_diastolic",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_diastolic",
         },
@@ -984,6 +987,7 @@ export const patientVitals = (state, vitals) => {
         title: "BPM",
         dataIndex: "blood_pressure_bpm",
         key: "blood_pressure_bpm",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_bpm",
         },
@@ -996,7 +1000,7 @@ export const patientVitals = (state, vitals) => {
     // else {
     state.bloodOxygenColumns = [
       {
-        title: "Date Recorded",
+        title: "Time & Date Vitals Taken",
         dataIndex: "takeTime",
         key: "takeTime",
         slots: {
@@ -1027,7 +1031,7 @@ export const patientVitals = (state, vitals) => {
     // else {
     state.bloodGlucoseColumns = [
       {
-        title: "Date Recorded",
+        title: "Time & Date Vitals Taken",
         dataIndex: "takeTime",
         key: "takeTime",
         slots: {

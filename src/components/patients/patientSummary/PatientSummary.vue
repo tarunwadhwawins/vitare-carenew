@@ -166,9 +166,9 @@ export default {
           store.dispatch("program", patientUdid);
           store.commit("loadingTableStatus",true)
           loader.value = true
-          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 99, filter: dateFilter })
-          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 100, filter: dateFilter });
-          store.dispatch('patientVitals', { patientId: route.params.udid, deviceType: 101, filter: dateFilter });
+          store.dispatch("patientVitals", { patientId: route.params.udid, deviceType: 99, filter: dateFilter })
+          store.dispatch("patientVitals", { patientId: route.params.udid, deviceType: 100, filter: dateFilter });
+          store.dispatch("patientVitals", { patientId: route.params.udid, deviceType: 101, filter: dateFilter });
           store.dispatch('devices', route.params.udid)
           store.dispatch('activeCptCodes')
           store.dispatch('allPatientsList')
