@@ -963,12 +963,13 @@ export const patientVitals = (state, vitals) => {
         slots: {
           customRender: "takeTime",
         },
-        width: '30%',
+        width: '25%',
       },
       {
         title: "Systolic",
         dataIndex: "blood_pressure_systolic",
         key: "blood_pressure_systolic",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_systolic",
         },
@@ -977,6 +978,7 @@ export const patientVitals = (state, vitals) => {
         title: "Diastolic",
         dataIndex: "blood_pressure_diastolic",
         key: "blood_pressure_diastolic",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_diastolic",
         },
@@ -985,6 +987,7 @@ export const patientVitals = (state, vitals) => {
         title: "BPM",
         dataIndex: "blood_pressure_bpm",
         key: "blood_pressure_bpm",
+        width: '25%',
         slots: {
           customRender: "blood_pressure_bpm",
         },
