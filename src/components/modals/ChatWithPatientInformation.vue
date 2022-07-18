@@ -1,6 +1,6 @@
 <template>
 <a-modal width="95%" title="Messages" centered :maskClosable="false" @cancel="closeModal()" class="chatModal" :footer="false">
-    <a-row :gutter="24">
+    <a-row :gutter="24" v-if="routeName != 'PatientSummary'">
         <a-col :xl="24" :lg="24">
             <div class="timer">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
@@ -118,6 +118,7 @@ export default {
         const communicationId = props.conversationId ? reactive(props.conversationId) : props.communication.id
         const isCommunicationWithPatient = ref(false)
         const conversationList = ref([])
+        const routeName = route.name
         const tabvalue = reactive({
             tab: [],
         });
@@ -168,21 +169,23 @@ export default {
         }
 
         const stopTimer = () => {
-            store.dispatch("timeApproval", {
-                staff: auth.user.staffUdid,
-                patient: patient.value,
-                time: getSeconds(formattedElapsedTime.value),
-                type: appMessage.value,
-                status: pendingApprovalStatus.value,
-                entityType: 'communication',
-                referenceId: communicationId,
-            }).then(() => {
-                clearInterval(timer.value);
-                elapsedTime.value = 0
-                store.commit('showStartTimer', true);
-                store.commit('showPauseTimer', false);
-                store.commit('showResumeTimer', false);
-            })
+            if(routeName != 'PatientSummary') {
+                store.dispatch("timeApproval", {
+                    staff: auth.user.staffUdid,
+                    patient: patient.value,
+                    time: getSeconds(formattedElapsedTime.value),
+                    type: appMessage.value,
+                    status: pendingApprovalStatus.value,
+                    entityType: 'communication',
+                    referenceId: communicationId,
+                }).then(() => {
+                    clearInterval(timer.value);
+                    elapsedTime.value = 0
+                    store.commit('showStartTimer', true);
+                    store.commit('showPauseTimer', false);
+                    store.commit('showResumeTimer', false);
+                })
+            }
         };
 
         const pauseTimer = () => {
@@ -349,7 +352,7 @@ export default {
             clearInterval(interval);
             addPinModalVisible.value = false
             localStorage.removeItem('patientUdid')
-            if(!showStartTimer.value) {
+            if(!showStartTimer.value && routeName != 'PatientSummary') {
                 store.dispatch("timeApproval", {
                     staff: auth.user.staffUdid,
                     patient: patient.value,
@@ -388,7 +391,7 @@ export default {
 
         onMounted(() => {
             console.log('Start Timer', showStartTimer.value)
-            if(!showStartTimer.value) {
+            if(!showStartTimer.value && routeName != 'PatientSummary') {
                 startTimer()
             }
             store.commit('loadingStatus', false)
@@ -493,6 +496,7 @@ export default {
             showStartTimer,
             showPauseTimer,
             showResumeTimer,
+            routeName,
         };
     },
 };

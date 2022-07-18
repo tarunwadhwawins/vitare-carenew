@@ -583,7 +583,7 @@ export function createDynamicColumns(patientVitals) {
 		tableName: '',
 		columns: [
 			{
-				title: 'Date Recorded',
+				title: 'Time & Date Vitals Taken',
 				dataIndex: 'takeTime',
 				key: 'takeTime',
 				slots: {
