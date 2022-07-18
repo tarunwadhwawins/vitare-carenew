@@ -963,6 +963,7 @@ export const patientVitals = (state, vitals) => {
         slots: {
           customRender: "takeTime",
         },
+        width: '30%',
       },
       {
         title: "Systolic",

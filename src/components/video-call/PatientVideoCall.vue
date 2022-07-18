@@ -305,14 +305,17 @@ export default {
         store.dispatch("patientVitals", {
           patientId: getVideoDetails.value.patientDetailed.id,
           deviceType: 99,
+          filter: ""
         });
         store.dispatch("patientVitals", {
           patientId: getVideoDetails.value.patientDetailed.id,
           deviceType: 100,
+          filter: ""
         });
         store.dispatch("patientVitals", {
           patientId: getVideoDetails.value.patientDetailed.id,
           deviceType: 101,
+          filter: ""
         });
         store.dispatch("devices", getVideoDetails.value.patientDetailed.id);
       } else if (acceptVideoCallDetails.value != null) {
@@ -320,14 +323,17 @@ export default {
         store.dispatch("patientVitals", {
           patientId: acceptVideoCallDetails.value.patient.id,
           deviceType: 99,
+          filter: ""
         });
         store.dispatch("patientVitals", {
           patientId: acceptVideoCallDetails.value.patient.id,
           deviceType: 100,
+          filter: ""
         });
         store.dispatch("patientVitals", {
           patientId: acceptVideoCallDetails.value.patient.id,
           deviceType: 101,
+          filter: ""
         });
         store.dispatch("devices", acceptVideoCallDetails.value.patient.id);
       }
