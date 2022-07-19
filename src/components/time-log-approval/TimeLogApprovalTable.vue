@@ -292,7 +292,7 @@ export default {
         return msgTypeArray.indexOf(item) == pos;
       })
       if(checkMsgTypeStatus.value?.length>0 && checkPatientStatus.value?.length>0){
-        selectedRow.value = selectedRowKeys
+        // selectedRow.value = selectedRowKeys
         auditTimeLog.typeId = selectedRows[0].typeId
         //  selectedRows.map(item=>{
         //   auditTimeLog.timeAmount = auditTimeLog.timeAmount + item.timeAmount
@@ -302,8 +302,8 @@ export default {
         (previousValue, currentValue) => previousValue + currentValue,
         );
       }
-      // console.log('msgTypeArray',auditTimeLog.timeAmount)
-        return  selectedRow.value 
+      console.log('msgTypeArray',auditTimeLog.timeAmount)
+        return  selectedRow.value = selectedRowKeys
       },
       getCheckboxProps: (record) => ({
         disabled: record.status === "Approved" || record.status === "Rejected",
