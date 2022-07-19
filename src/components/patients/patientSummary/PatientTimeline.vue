@@ -51,7 +51,7 @@
                         <div class="timelineInner">
                             <div class="timelineHeader">
                                 <div class="title">
-                                    <h4>{{ timeline.heading }}</h4>
+                                    <h4>{{ timeline.heading }}:</h4>
                                     <span class="time">{{
                       moment(dateFormat(timeline.createdAt)).format(
                         "DD-MM-YYYY"

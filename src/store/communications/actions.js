@@ -311,10 +311,10 @@ export const replyCommunication = async ({ commit }, data) => {
 }
 
 export const timeApproval = async ({ commit }, data) => {
-	commit('loadingStatus', true)
-	await ServiceMethodService.common("post", API_ENDPOINTS['timeApproval'], null, data).then(() => {
-		// successSwal(response.data.message)
-		commit('loadingStatus', false)
+	await ServiceMethodService.common("post", API_ENDPOINTS['timeApproval'], null, data).then((response) => {
+		if(data.isAutomatic) {
+			localStorage.setItem('timeApprovalId', response.data.data.id)
+		}
 	})
 	.catch((error) => {
 		if (error.response) {
@@ -327,8 +327,26 @@ export const timeApproval = async ({ commit }, data) => {
 			errorLogWithDeviceInfo(error);
 		}
 		commit('failure', error.response.data);
-		// errorSwal(error.response.data.message)
-		commit('loadingStatus', false)
+	})
+}
+
+export const updateTimeApproval = async ({ commit }, data) => {
+	await ServiceMethodService.common("put", API_ENDPOINTS['timeApproval'], data.timeApprovalId, data.data).then((response) => {
+		if(data.isAutomatic) {
+			localStorage.setItem('timeApprovalId', response.data.data.id)
+		}
+	})
+	.catch((error) => {
+		if (error.response) {
+			if(error.response.status == 401) {
+				//AuthService.logout();
+			}
+			errorLogWithDeviceInfo(error.response);
+		}
+		else {
+			errorLogWithDeviceInfo(error);
+		}
+		commit('failure', error.response.data);
 	})
 }
 

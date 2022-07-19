@@ -183,7 +183,7 @@
         <Documents :paramId="paramsId" :idPatient="patientDetails.id" entity="patient" @document="addDocumentsModal($event)" />
     </a-modal>
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
-    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isLeftTimeLog="true" :isAutomatic="isAutomatic" @closeModal="addTimeLogsClose($event)" />
+    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" @closeModal="addTimeLogsClose($event)" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="[]" title="add" />
     <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" />
@@ -322,7 +322,6 @@ export default defineComponent({
     const visibleTaskModal =ref(false)
     const TaskModalVisible = ref(false)
     const appointmentShowVisible = ref(false);
-    const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
     const isPhysicianEdit = ref(false);
     const criticalNotesDetailVisible = ref(false);
@@ -351,8 +350,6 @@ export default defineComponent({
     const addEmergencyContactModalVisible = ref(false);
     const isEmergencyContactEdit = ref(false);
     const emergencyContactsModalVisible = ref(false);
-    const isAutomatic = ref(false);
-    const isLeftTimeLog = ref(false);
     const staffType = ref(0);
     const title = ref(null);
     const referralView = ref(false);
@@ -462,7 +459,6 @@ export default defineComponent({
         //addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value =
           modal == "documentDetails" ? value : false;
-        addTimeLogsVisible.value = modal == "addTimeLog" ? value : false;
         flagsModalVisible.value = modal == "addFlag" ? value : false;
         criticalNotesDetailVisible.value =
           modal == "criticalNotesDetails" ? value : false;
@@ -499,7 +495,6 @@ export default defineComponent({
         patientsModalVisible.value = false;
         addDocumentVisible.value = false;
         documentDetailVisible.value = false;
-        addTimeLogsVisible.value = false;
         criticalNotesDetailVisible.value = false;
         familyMembersModalVisible.value = false;
         // physiciansModalVisible.value = false;
@@ -630,16 +625,10 @@ export default defineComponent({
     // }
 
     const addTimelogModal = () => {
-      isLeftTimeLog.value = true;
       addTimeLogsVisible.value = true;
-      isEditTimeLog.value = false;
-      isAutomatic.value = true;
     };
-    const addTimeLogsClose = (event) => {
-      addTimeLogsVisible.value = event.value;
-      isEditTimeLog.value = false;
-      isAutomatic.value = false;
-      isLeftTimeLog.value = false;
+    const addTimeLogsClose = (value) => {
+      addTimeLogsVisible.value = value;
     };
 
     const showTimelogModal = () => {
@@ -660,7 +649,6 @@ export default defineComponent({
 
     const timeLogDetails = ref(null);
     const editTimeLog = (value) => {
-      isEditTimeLog.value = true;
       timeLogDetails.value = value;
     };
 
@@ -781,7 +769,6 @@ export default defineComponent({
       timeLogDetails,
       isPhysicianEdit,
       isFamilyMemberEdit,
-      isEditTimeLog,
 
       latestFlag,
       latestAppointment,
@@ -819,7 +806,6 @@ export default defineComponent({
       flagTimeLineButton,
       appointmentShowVisible,
       appointmentShow,
-      isLeftTimeLog,
     };
   },
 });
