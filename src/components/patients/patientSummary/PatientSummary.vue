@@ -332,24 +332,48 @@ export default {
         isEditTimeLog.value = true;
         clearInterval(timer.value);
         elapsedTime.value = 0;
-        store.dispatch("timeApproval", {
-          staff: authUser.user.staffUdid,
-          patient: route.params.udid,
-          time: seconds,
-          type: appMessage.value,
-          status: pendingApprovalStatus.value,
-          entityType: 'patient',
-          referenceId: route.params.udid,
-          isAutomatic: false
-        }).then(() => {
-          if(cancelButton.value) {
-            router.push({
-              path: cancelButton.value
-            });
-            localStorage.removeItem('cancelButton')
-            store.commit("loadingTableStatus", false)
+
+        const timeApprovalId =  localStorage.getItem('timeApprovalId')
+        if((timeApprovalId && timeApprovalId != null)) {
+          const data = {
+            time: seconds,
+            isAutomatic: false,
           }
-        })
+          store.dispatch("updateTimeApproval", {
+            timeApprovalId: timeApprovalId,
+            data: data
+          }).then(() => {
+            if(cancelButton.value) {
+              router.push({
+                path: cancelButton.value
+              });
+              localStorage.removeItem('cancelButton')
+            }
+            localStorage.removeItem('timeApprovalId')
+            store.commit("loadingTableStatus", false)
+          })
+        }
+        else {
+          store.dispatch("timeApproval", {
+            staff: authUser.user.staffUdid,
+            patient: route.params.udid,
+            time: seconds,
+            type: appMessage.value,
+            status: pendingApprovalStatus.value,
+            entityType: 'patient',
+            referenceId: route.params.udid,
+            isAutomatic: false
+          }).then(() => {
+            if(cancelButton.value) {
+              router.push({
+                path: cancelButton.value
+              });
+              localStorage.removeItem('cancelButton')
+            }
+            localStorage.removeItem('timeApprovalId')
+            store.commit("loadingTableStatus", false)
+          })
+        }
       }
     };
 
