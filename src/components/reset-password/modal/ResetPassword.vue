@@ -2,6 +2,9 @@
 <a-modal max-width="1140px" width="50%" :title="'Reset Password'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-form :scrollToFirstError="true" ref="formRef" name="basic"  autocomplete="off" :model="resetPasswordForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
+        <a-col :sm="24" :xs="24">
+          <ErrorMessage v-if="errorMsg?.password[0]" :name="errorMsg.password ? errorMsg.password[0] : ''" />
+        </a-col>
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.newPassword')" name="password" :rules="[{ required: true, message: 'Password'+' '+$t('global.validation')  }]">
@@ -13,7 +16,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.confirmPassword')" name="confirmPassword" :rules="[{ required: true, message: $t('global.confirmPassword')+' '+$t('global.validation')  }]">
                         <a-input-password @change="checkChangeInput()" v-model:value="resetPasswordForm.confirmPassword" size="large" placeholder="Confirm New Password" />
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.confirmPassword ? errorMsg.confirmPassword[0] : ''" />
+                        <ErrorMessage v-if="errorMsg?.confirmPassword[0]" :name="errorMsg.confirmPassword ? errorMsg.confirmPassword[0] : ''" />
                         <ErrorMessage v-if="confirmPasswordError" :name="confirmPasswordError ? confirmPasswordError : ''" />
                     </a-form-item>
                 </div>
@@ -92,6 +95,8 @@ export default {
     
     function checkChangeInput() {
       store.commit("checkChangeInput", true);
+      store.state.password.errorMsg = null
+      confirmPasswordError.value = null
     }
 
     const checkFieldsData = computed(() => {

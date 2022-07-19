@@ -276,8 +276,8 @@ export const staffPasswordReset = async ({commit}, data) => {
 				errorLogWithDeviceInfo(error);
 			}
     if (error.response.status === 422) {
-      // commit('errorMsg', error.response.data)
-      errorSwal(error.response.data.password[0])
+      commit('errorMsg', error.response.data)
+      // errorSwal(error.response.data.password[0])
     } else if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
