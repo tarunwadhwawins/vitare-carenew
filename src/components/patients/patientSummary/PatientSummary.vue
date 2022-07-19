@@ -67,9 +67,7 @@
         <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && conversation" :communication="conversation" :conversationId="conversationId" :idPatient="receiverId" />
       </a-layout>
     </a-layout>
-
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
-    <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
+    
     <VideoCallVue  v-if="videoModal && conferenceId" v-model:visible="videoModal" :conferenceId ="conferenceId"/>
   </div>
 </template>
@@ -83,8 +81,7 @@ import CarePlanView from "@/components/patients/patientSummary/views/CarePlanVie
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
 import Escalation from "@/components/escalations/Escalation"
-import TableLoader from "@/components/loader/TableLoader"; 
-import AddTimeLogModal from "@/components/modals/AddTimeLogs";
+import TableLoader from "@/components/loader/TableLoader";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 // import StartCallModal from "@/components/modals/StartCallModal";
 // import VideoCallVue from "../../video-call/videoCall.vue";
@@ -105,7 +102,7 @@ function clearEvent(event){
         event.returnValue = '';
       
     }
-    const stoptimervisible = ref(false);
+    
 export default {
   components: {
     Header,
@@ -117,14 +114,13 @@ export default {
     PatientVitalsView,
     TableLoader,
     Escalation,
-    AddTimeLogModal,
     CriticalNotes,
     ChatWithPatientInformation,
     // StartCallModal,
     VideoCallVue:defineAsyncComponent(()=>import('@/components/video-call/PatientVideoCall.vue'))
   },
   setup() {
-    localStorage.removeItem('timeLogId')
+    localStorage.removeItem('timeApprovalId')
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
@@ -139,11 +135,19 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const chatWithPatientInfoVisible = ref(false);
-    const cancelButton = ref(localStorage.getItem('cancelButton'))
     const videoModal = ref(false)
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
+    const auth = JSON.parse(localStorage.getItem("auth"))
+
+    const appMessage = computed(() => {
+      return store.state.common.appMessage
+    })
+
+    const pendingApprovalStatus = computed(() => {
+      return store.state.common.pendingApprovalStatus
+    })
     
     const iconLoading = ref(false)
     const onClose = (e) => {
@@ -196,7 +200,6 @@ export default {
           if(!showStartTimer.value && route.params.globalSearch) {
             elapsedTime.value = 0;
             store.commit('showStartTimer', true);
-            stoptimervisible.value = false;
             clearInterval(timer.value);
             startTimer()
           }
@@ -256,6 +259,7 @@ export default {
     const timerValue = ref(30000)
     
     onMounted(() => {
+      localStorage.removeItem('cancelButton')
       store.dispatch('patientDetails', route.params.udid).then(() => {
         if(!showStartTimer.value) {
           startTimer()
@@ -288,43 +292,28 @@ export default {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
           const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-          const timeLogId =  localStorage.getItem('timeLogId')
-          if((timeLogId && timeLogId != null)) {
+          const timeApprovalId =  localStorage.getItem('timeApprovalId')
+          if((timeApprovalId && timeApprovalId != null)) {
             const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
+              time: newFormattedElapsedTime,
               isAutomatic: true,
             }
-            store.dispatch('updatePatientTimeLog', {
-              timeLogId: timeLogId,
-              patientUdid: patientUdid,
+            store.dispatch("updateTimeApproval", {
+              timeApprovalId: timeApprovalId,
               data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
+            })
           }
           else {
-            const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
-              isAutomatic: true,
-            }
-            store.dispatch('addTimeLog', {
-              id: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
+            store.dispatch("timeApproval", {
+              staff: auth.user.staffUdid,
+              patient: route.params.udid,
+              time: newFormattedElapsedTime,
+              type: appMessage.value,
+              status: pendingApprovalStatus.value,
+              entityType: 'patient',
+              referenceId: route.params.udid,
+              isAutomatic: true
+            })
           }
         }
       }, 1000);
@@ -333,16 +322,38 @@ export default {
       store.commit('showResumeTimer', false);
     }
 
-    const isAutomatic = ref(false);
-
     const stopTimer = () => {
-      clearInterval(timer.value);
-      stoptimervisible.value = true;
-      isAutomatic.value = true;
-      isEditTimeLog.value = true;
-      store.commit('showStartTimer', true);
-      store.commit('showPauseTimer', false);
-      store.commit('showResumeTimer', false);
+      const seconds = getSeconds(formattedElapsedTime.value)
+      const cancelButton = ref(localStorage.getItem('cancelButton'))
+      if(cancelButton.value != null) {
+        store.commit("loadingTableStatus", true)
+      }
+      if(!showStartTimer.value) {
+        store.commit('showStartTimer', true);
+        store.commit('showPauseTimer', false);
+        store.commit('showResumeTimer', false);
+        isEditTimeLog.value = true;
+        clearInterval(timer.value);
+        elapsedTime.value = 0;
+        store.dispatch("timeApproval", {
+          staff: auth.user.staffUdid,
+          patient: route.params.udid,
+          time: seconds,
+          type: appMessage.value,
+          status: pendingApprovalStatus.value,
+          entityType: 'patient',
+          referenceId: route.params.udid,
+          isAutomatic: false
+        }).then(() => {
+          if(cancelButton.value) {
+            router.push({
+              path: cancelButton.value
+            });
+            localStorage.removeItem('cancelButton')
+            store.commit("loadingTableStatus", false)
+          }
+        })
+      }
     };
 
     const pauseTimer = () => {
@@ -356,14 +367,12 @@ export default {
         if(link==true&& cancelBtn != null) {
           elapsedTime.value = 0;
           store.commit('showStartTimer', true);
-          stoptimervisible.value = false;
           clearInterval(timer.value);
           router.push({
             path: cancelBtn
           });
         }
         else {
-          stoptimervisible.value = false;
           if(!showPauseTimer.value) {
             startTimer()
           }
@@ -375,12 +384,10 @@ export default {
           startTimer()
         }
         store.commit('showStartTimer', false);
-        stoptimervisible.value = false;
       }
       else if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
         store.commit('showStartTimer', true);
-        stoptimervisible.value = false;
         clearInterval(timer.value);
         if(cancelBtn != null) {
           router.push({
@@ -407,7 +414,7 @@ export default {
       store.commit('showResumeTimer', false);
       store.state.patients.tabvalue = []
       clearInterval(timer.value);
-      localStorage.removeItem('timeLogId')
+      localStorage.removeItem('timeApprovalId')
       window.removeEventListener('beforeunload', clearEvent); 
       store.state.patients.patientDetails = ''
       store.state.patients.patientDocuments = ''
@@ -486,7 +493,6 @@ export default {
       actionTrack,
       stopTimer,
       formattedElapsedTime,
-      isAutomatic,
       isEditTimeLog,
       startTimer,
       handleOkcustom,
@@ -501,7 +507,6 @@ export default {
       timelogsvisible,
       bloodoxygenvisible,
       bloodglucosevisible,
-      stoptimervisible,
       patientCriticalNotes,
       chatWithPatientInfoVisible,
       conversation,
@@ -510,7 +515,6 @@ export default {
       receiverId,
 
       handleClose,
-      cancelButton,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
@@ -535,21 +539,15 @@ export default {
   },
 
   beforeRouteLeave (to, from, next) {
-  localStorage.setItem('cancelButton', to.fullPath)
-  // cancelButton.value = to.fullPath
-
-  //  if(to.path!='/logout'&&to.path!='/'){
-      var button= document.getElementById("timer")
-     if(button){
-       button.click()
-     }else{
-       next()
-     }
-  //  }else{
-  //     window.removeEventListener('beforeunload', clearEvent);
-  //      next()
-  //    }
+    localStorage.setItem('cancelButton', to.fullPath)
+    var button= document.getElementById("timer")
+    if(button) {
+      button.click()
     }
+    else {
+      next()
+    }
+  }
   
 };
 </script>
