@@ -38,7 +38,8 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker @change="changedValue" v-model:value="addTimeLogForm.timeAmount" format="HH:mm:ss" :size="size" style="width: 100%" />
+                        <a-input v-if="timerVal != null" v-model:value="addTimeLogForm.timeAmount" :size="size" style="width: 100%" :disabled="isDisabled" />
+                        <a-time-picker v-else @change="changedValue" v-model:value="addTimeLogForm.timeAmount" format="HH:mm:ss" :size="size" style="width: 100%" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -140,7 +141,7 @@ export default defineComponent({
                       moment(props.timerValue, "HH:mm:ss").add(1, 'minutes').format('HH:mm') :
                       moment(props.timerValue, "HH:mm:ss").format('HH:mm');
         const timerVal = ref(moment(timer.value, "HH:mm")); */
-    const timerVal = ref(moment());
+    const timerVal = props.timerValue ? props.timerValue : null;
     const cancelBtn = localStorage.getItem('cancelButton')
 
     const staffList = computed(() => {
@@ -216,7 +217,7 @@ export default defineComponent({
           loggedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
           performedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
           date: moment(),
-          timeAmount: timerVal.value ? timerVal.value : "",
+          timeAmount: timerVal != null ? timerVal : null,
         });
       }
       if(!props.isAutomatic) {
@@ -224,7 +225,7 @@ export default defineComponent({
           loggedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
           performedBy: loggedInUserDetails.user.staff.fullName != null ? loggedInUserDetails.user.staff.fullName : "",
           date: moment(),
-          timeAmount: timerVal.value ? timerVal.value : "",
+          timeAmount: timerVal != null ? timerVal : null,
         });
       }
     });
@@ -277,9 +278,7 @@ export default defineComponent({
       // }
       // else {
       const timeLogId = localStorage.getItem("timeLogId");
-      const timeAmount = getSeconds(
-        moment(addTimeLogForm.timeAmount).format("HH:mm:ss")
-      );
+      const timeAmount = getSeconds(addTimeLogForm.timeAmount);
       if (timeLogId && timeLogId != null && props.isAutomatic == true) {
         const data = {
           category: addTimeLogForm.category,
@@ -383,6 +382,7 @@ export default defineComponent({
       dateSelect,
       cancelButton,
       handleStaffChange,
+      timerVal,
     };
   },
 });

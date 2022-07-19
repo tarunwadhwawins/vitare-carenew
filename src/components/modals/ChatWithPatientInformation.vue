@@ -547,6 +547,7 @@ span.dragImg {
     right: 50px;
 }
 .timer {
+    font-size: 13px !important;
     display: flex;
     align-items: center;
     gap: 20px;
