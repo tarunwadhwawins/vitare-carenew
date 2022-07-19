@@ -71,7 +71,7 @@ class ServiceMethodService {
             else {
 
                 return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() }).catch((error) => {
-                    if (error.response.status === 401) {
+                    if (error.response && error.response.status === 401) {
                         this.removeStorage()
                         store.commit('errorMsg', error.response.data)
                        
