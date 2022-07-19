@@ -75,6 +75,7 @@ export default {
  const clone = (event) =>{
 templateId.value = event
 visible2.value = true;
+update.value = ''
  }
     return {
       checked,

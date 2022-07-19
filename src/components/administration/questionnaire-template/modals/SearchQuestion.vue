@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="80%" :title="temOrSection=='section' ? templaterecord.sectionName : templaterecord.templateName" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="assignQuestion" layout="vertical" @finish="addAssignQuestion" >
         <a-row>
             <a-col :span="20">
@@ -28,9 +28,9 @@
                     </a-collapse>
                 </div>
             </a-col>
-            <a-col :span="24" class="text-right" v-if="questionnaireList.length>0">
-                <a-button style="margin-right: 8px" html-type="reset"  @click="closeModal">{{$t('global.cancel')}}</a-button>
-                <a-button class="btn primaryBtn" type="primary" html-type="submit">Assign Questions</a-button>
+            <a-col :span="24">
+             <FormButtons v-if="questionnaireList.length>0" @onCancel="closeModal" :submitButton="$t('global.assign')"/>
+            
             </a-col>
 
         </a-row>
@@ -49,6 +49,7 @@ import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import SearchField from "@/components/common/input/SearchField"
 import Option from "@/components/administration/questionnaire-bank/common/Options"
+import FormButtons from "@/components/common/button/FormButtons"
 export default defineComponent({
     emits: ["is-visible-exist"],
     components: {
@@ -56,6 +57,7 @@ export default defineComponent({
         AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
         SearchField,
         Option,
+        FormButtons
         
 
     },

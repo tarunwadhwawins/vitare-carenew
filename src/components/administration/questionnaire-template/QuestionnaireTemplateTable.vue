@@ -7,44 +7,55 @@
                           }}</router-link>
     </template>
     <template #actions="{record}">
-        
+
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Assign Section</span>
             </template>
             <a class="icons">
-             
-                    <DiffTwoTone @click="assignSection(record.id)"/></a>
+
+                <DiffTwoTone @click="assignSection(record.id)" /></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Setting</span>
             </template>
             <a class="icons">
-            <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
-                    <SettingTwoTone /></router-link></a>
+                <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
+                    <SettingTwoTone />
+                </router-link>
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="bottom">
+            <template #title>
+                <span>Assign To User</span>
+            </template>
+            <a class="icons">
+                <DiffTwoTone @click="assignToUser({id:record.id,show:true})" /></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
-            <a class="icons" >
-                <EditOutlined @click="editModal(record.id)"/></a>
+            <a class="icons">
+                <EditOutlined @click="editModal(record.id)" /></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
             </template>
             <a class="icons">
-            <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" >
-                    <SendOutlined  /></router-link></a>
+                <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
+                    <SendOutlined />
+                </router-link>
+            </a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
             </template>
             <a class="icons">
-                <CopyOutlined @click="clone(record.id)"/></a>
+                <CopyOutlined @click="clone(record.id)" /></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
@@ -59,7 +70,8 @@
     </template>
 </a-table>
 <Loader />
-<AssignSection v-if="visible" v-model:visible="visible"  @is-visible="showSection($event)" :update="true"/>
+<AssignSection v-if="visible" v-model:visible="visible" @is-visible="showSection($event)" :update="true" />
+<AssignToUser v-if="assignToUserVisible" v-model:visible="assignToUserVisible" @is-visible="assignToUser($event)" :tempId="assignToUserId" />
 </template>
 
 <script>
@@ -70,6 +82,7 @@ import {messages} from "@/config/messages";
 import {warningSwal} from "@/commonMethods/commonMethod";
 import { onMounted , ref } from "vue"
 import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
+import AssignToUser from "@/components/administration/questionnaire-template/modals/AssignToUser"
 const columns = [{
         title: "Questionnaire Template",
         dataIndex: "templateName",
@@ -92,7 +105,7 @@ const columns = [{
 ];
 
 export default {
-    emits:["edit"],
+    emits: ["edit"],
     components: {
         DeleteOutlined,
         //EditOutlined,
@@ -102,15 +115,17 @@ export default {
         SendOutlined,
         DiffTwoTone,
         AssignSection,
-        EditOutlined
+        EditOutlined,
+        AssignToUser
     },
     props: {},
     setup(props, {
         emit
     }) {
         const store = useStore();
+        const assignToUserId = ref('')
         const editModal = (id) => {
-           store.dispatch("detailsQuestionnaireTemplate", id)
+            store.dispatch("detailsQuestionnaireTemplate", id)
             emit("edit", {
                 show: true,
                 id: id
@@ -153,12 +168,13 @@ export default {
                 tableContent.scrollTo(0, scroller);
             }, 50)
         }
-  function assignSection(id){
-   
-    store.dispatch('detailsQuestionnaireTemplate', id)
-     visible.value = true
-           
-  }
+
+        function assignSection(id) {
+
+            store.dispatch('detailsQuestionnaireTemplate', id)
+            visible.value = true
+
+        }
 
         function deleteModal(id) {
             warningSwal(messages.deleteWarning).then((response) => {
@@ -198,16 +214,27 @@ export default {
                 )
             }
         }
-     
-        const clone = (id) =>{
+
+        const clone = (id) => {
             store.dispatch('detailsQuestionnaireTemplate', id)
-emit('clone',id)
+            emit('clone', id)
         }
-        const showSection = (e) =>{
-    
-visible.value = e.show
-}
+        const showSection = (e) => {
+
+            visible.value = e.show
+        }
+        const assignToUserVisible = ref(false)
+        
+        const assignToUser = (id) => {
+            assignToUserId.value = id.id
+ 
+assignToUserVisible.value = id.show
+   
+            
+        }
+
         return {
+            assignToUserId,
             columns,
             data,
             editModal,
@@ -217,7 +244,10 @@ visible.value = e.show
             assignSection,
             showSection,
             clone,
+            assignToUser,
             
+            assignToUserVisible,
+
         };
     },
 };

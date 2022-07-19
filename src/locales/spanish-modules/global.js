@@ -54,7 +54,8 @@ const global = {
   endDate:'Fecha final',
   download:'Descargar',
   save:'Ahorrar',
-  clear:'Clara'
+  clear:'Clara',
+  assign:'Asignar'
 
 }
 

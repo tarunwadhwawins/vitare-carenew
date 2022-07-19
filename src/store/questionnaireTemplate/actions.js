@@ -51,7 +51,7 @@ export const detailsQuestionnaireTemplate = async ({
   await serviceMethod.common("get", API_ENDPOINTS['questionnaireTemplate'], id, null).then((response) => {
 
     commit('detailsQuestionnaireTemplate', response.data.data);
-    commit('loadingTableStatus', false)
+    
   }).catch((error) => {
     errorLogWithDeviceInfo(error)
     if (error.response.status === 422) {
@@ -267,6 +267,31 @@ export const questionnaireResponseDetails = async ({
   await serviceMethod.common('get', 'user/questionnaire/template', id, null).then((response) => {
   
     commit('questionnaireResponseDetails',response.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg',error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg',error.response.data.message)
+    }
+    commit('loadingStatus', false)
+    
+    
+  })
+}
+
+export const assignToUser = async ({
+  commit
+},data) => {
+  
+  commit('loadingStatus', true)
+  await serviceMethod.common('post', 'assign/questionnaire/template', null, data).then((response) => {
+  
+    successSwal(response.data.message)
+    commit('successMsg',response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error)

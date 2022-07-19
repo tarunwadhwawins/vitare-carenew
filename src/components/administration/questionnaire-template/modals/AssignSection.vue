@@ -1,24 +1,15 @@
 <template>
-<a-modal width="100%" :title="detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName:''" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="80%" :title="detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName:''" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="section" layout="vertical" @finish="assignSection">
         <a-row :gutter="16">
-            <!-- <a-col :span="16">
-                <div class="form-group">
-                 
-                    <a-form-item :label="$t('questionnaire.sectionName')" name="sectionId" :rules="[{ required: true, message: $t('questionnaire.sectionName') +' '+$t('global.validation') }]">
-                      <ArrayDataSearch v-if="sectionType" v-model:value="section.sectionId" :globalCode="sectionType" @change="checkChangeInput()" mode="multiple" :responseReturn="true" @checkReturnResponse="sectionSelect($event)"/>
-                       
-                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.sectionId[0]:''" />
-                    </a-form-item>
-                </div>
-            </a-col>  -->
+           
 
             <a-col :md="20" :sm="24" :xs="24" class="mb-24">
                 <a-input @change="selectedSection($event,'search')" size="large" placeholder="Search..." id="conditionBox" />
             </a-col>
-             <a-col :span="4">
+            <a-col :span="4">
                 <div class="">
-                    
+
                     <a-button class="btn primaryBtn" v-if="addSectionButton" @click="showModal({show:true,id:''})">Create New Section</a-button>
                 </div>
 
@@ -26,7 +17,7 @@
             <a-col :md="20" :sm="20" :xs="20">
                 <div class="form-group conditionsCheckboxs">
                     <a-form-item name="sectionId" :rules="[{ required: false, message: $t('questionnaire.sectionName')+' '+$t('global.validation') }]">
-                        
+
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.sectionId?errorMsg.sectionId[0]:''" />
                         <!-- Selected -->
 
@@ -46,14 +37,9 @@
                 </div>
             </a-col>
 
-           
             <a-col :span="24">
+                <FormButtons v-if="section.sectionId.length>0" @onCancel="closeModal" :submitButton="$t('global.assign')" />
 
-                <div class="steps-action" v-if="section.sectionId.length>0">
-                    <a-button style="margin-right: 8px" html-type="reset"  @click="closeModal">{{$t('global.cancel')}}</a-button>
-                    <a-button type="primary" html-type="submit">Assign</a-button>
-                    <!-- <a-button  type="primary" html-type="submit" v-else >{{$t('global.update')}}</a-button> -->
-                </div>
             </a-col>
         </a-row>
         <TableLoader />
@@ -71,13 +57,15 @@ import { messages } from "@/config/messages";
 import TableLoader from "@/components/loader/TableLoader"
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
 import CreateSection from "@/components/administration/template-section/modals/CreateSection"
+import FormButtons from "@/components/common/button/FormButtons"
 export default defineComponent({
     emits: ["is-visible"],
     components: {
         TableLoader,
         //ArrayDataSearch,
         ErrorMessage,
-        CreateSection
+        CreateSection,
+        FormButtons
     },
     props: {
         udid: String,
@@ -89,7 +77,7 @@ export default defineComponent({
     }) {
         const store = useStore();
         const formRef = ref();
-const visible = ref(false)
+        const visible = ref(false)
         const section = reactive({
 
             sectionId: [],
@@ -100,38 +88,37 @@ const visible = ref(false)
         const isValueChanged = ref(false)
         const unSelectedSectionList = ref([])
         const selectedSectionList = ref([])
-            onMounted(() => {
-            
+        onMounted(() => {
+
             store.dispatch("allSections").then(() => {
-                 selectedSection('','notsearch')
+                selectedSection('', 'notsearch')
                 if (detailsQuestionnaireTemplate.value) {
                     detailsQuestionnaireTemplate.value.questionnaireQuestion.map((item) => {
                         if (item.entityType == 'questionnaireSection') {
-                                 
-                            chooseSection(item.questionnaireSection.id, true,true)
-                          
-                
+
+                            chooseSection(item.questionnaireSection.id, true, true)
+
                         }
                     })
                 }
-                
+
             })
 
         })
-        const selectedSection = (event,search) => {
-         
+        const selectedSection = (event, search) => {
+
             isValueChanged.value = true;
-            const searchedValue =search=='search'? event.target.value : event
+            const searchedValue = search == 'search' ? event.target.value : event
             unSelectedSectionList.value = []
             sectionType.value.map(function (sectionRecord) {
-              if (sectionRecord.name.toLowerCase().includes(searchedValue.toLowerCase()) == false) {
-                
-                addSectionButton.value = true
-                sectionName.value = searchedValue
-            } else {
-                addSectionButton.value = false
-                sectionName.value = ''
-            }
+                if (sectionRecord.name.toLowerCase().includes(searchedValue.toLowerCase()) == false) {
+
+                    addSectionButton.value = true
+                    sectionName.value = searchedValue
+                } else {
+                    addSectionButton.value = false
+                    sectionName.value = ''
+                }
                 if (sectionRecord.name.toLowerCase().includes(searchedValue.toLowerCase())) {
                     if (!selectedSectionList.value.includes(sectionRecord) && !unSelectedSectionList.value.includes(sectionRecord)) {
                         unSelectedSectionList.value.push(sectionRecord)
@@ -139,10 +126,10 @@ const visible = ref(false)
                 }
             });
         }
-        const chooseSection = (event,isTrue,checkedValue) => {
-            const value = checkedValue ? event: event.target.value
+        const chooseSection = (event, isTrue, checkedValue) => {
+            const value = checkedValue ? event : event.target.value
             const checked = checkedValue ? checkedValue : event.target.checked
-            
+
             if (isTrue && checked) {
                 store.state.common.errorMsg = ''
                 store.state.patients.errorMsg = ''
@@ -153,7 +140,7 @@ const visible = ref(false)
                         });
                         unSelectedSectionList.value.splice(indexOfObject, 1);
                         if (!selectedSectionList.value.includes(sectionRecord)) {
-                            
+
                             selectedSectionList.value.push(sectionRecord)
                             if (!section.unselectedsectionId.includes(value)) {
                                 section.unselectedsectionId.push(value)
@@ -167,19 +154,19 @@ const visible = ref(false)
                     return value != val;
                 });
                 selectedSectionList.value.filter(function (sectionRecord) {
-                    
+
                     if (value == sectionRecord.id) {
-                        
+
                         const indexOfObject = selectedSectionList.value.findIndex(object => {
                             return object.id === sectionRecord.id;
                         });
                         selectedSectionList.value.splice(indexOfObject, 1)
-                        section.unselectedsectionId.splice(section.unselectedsectionId.findIndex(function(i){
-    return i === value;
-}), 1);
-                        
+                        section.unselectedsectionId.splice(section.unselectedsectionId.findIndex(function (i) {
+                            return i === value;
+                        }), 1);
+
                         //
-                       
+
                         if (!unSelectedSectionList.value.includes(sectionRecord)) {
                             unSelectedSectionList.value.push(sectionRecord)
                         }
@@ -187,42 +174,42 @@ const visible = ref(false)
                 })
             }
         }
-function setSectionId(event){
-  
-   visible.value = event.show
-   selectedSection(event.id.sectionName,'notSearch')
-   
 
-}
+        function setSectionId(event) {
+
+            visible.value = event.show
+            selectedSection(event.id.sectionName, 'notSearch')
+
+        }
         const disabled = ref(false)
         const form = reactive({
             ...section
         })
         const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
-    
+
         watchEffect(() => {
 
         })
         const assignSection = () => {
-if(section.sectionId.length>0){
-            //disabled.value= true
-            store.dispatch("sectionAssignToTemplate", {
-                id: detailsQuestionnaireTemplate.value.id,
-                sectionId: [...section.sectionId],
-                method:"put",
-                showPopup:true
-            }).then(() => {
-                if (store.state.common.successMsg) {
-                    emit("is-visible", {
-                        show: false,
-                        id: props.update
-                    })
-                    reset()
-                    store.dispatch("detailsQuestionnaireTemplate", detailsQuestionnaireTemplate.value.id)
-                    disabled.value = false
-                }
-            })
-}
+            if (section.sectionId.length > 0) {
+                //disabled.value= true
+                store.dispatch("sectionAssignToTemplate", {
+                    id: detailsQuestionnaireTemplate.value.id,
+                    sectionId: [...section.sectionId],
+                    method: "put",
+                    showPopup: true
+                }).then(() => {
+                    if (store.state.common.successMsg) {
+                        emit("is-visible", {
+                            show: false,
+                            id: props.update
+                        })
+                        reset()
+                        store.dispatch("detailsQuestionnaireTemplate", detailsQuestionnaireTemplate.value.id)
+                        disabled.value = false
+                    }
+                })
+            }
         }
         const addSectionButton = ref(false)
         const sectionName = ref('')
@@ -288,7 +275,7 @@ if(section.sectionId.length>0){
         const checkFieldsData = computed(() => {
             return store.state.common.checkChangeInput
         })
-        
+
         const showModal = (e) => {
             visible.value = e.show
         }

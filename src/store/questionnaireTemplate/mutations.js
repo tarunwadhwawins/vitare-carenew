@@ -4,6 +4,7 @@ import {
 	dateAndTimeFormate,
 	
   } from '@/commonMethods/commonMethod';
+  import store from "@/store/index"
 export const questionnaire = async (state, data) => {
 	state.questionnaireTemplateList = data.data;
 	state.questionnaireTemplateMeta = data.meta.pagination;
@@ -19,6 +20,14 @@ export const detailsQuestionnaireTemplate = async (state, data) => {
 	});
 	data.tags = tags;
 	state.detailsQuestionnaireTemplate = data;
+	state.detailsQuestionnaireTemplate.editdata = [{
+		label: state.detailsQuestionnaireTemplate.templateType,
+		value: state.detailsQuestionnaireTemplate.templateTypeId
+	}]
+	setTimeout(() => {
+		store.commit('loadingTableStatus', false)
+	}, 1000);
+	
 };
 export const templateDetailsList = async (state, data) => {
 

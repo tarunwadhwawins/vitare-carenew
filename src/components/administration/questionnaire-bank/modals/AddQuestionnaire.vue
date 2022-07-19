@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="name ? $t('questionnaire.addQuestionnaire') +'('+name+')':$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="80%" :title="name ? $t('questionnaire.addQuestionnaire') +'('+name+')':$t('questionnaire.addQuestionnaire')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire">
 
         <div class="questionnaireMain">
@@ -123,14 +123,8 @@
                 </a-col>
 
                 <a-col :span="24">
-
-                    <div class="steps-action">
-                        <a-form-item>
-                            <a-button class="modal-button" style="margin-right: 8px" @click="closeModal()" html-type="reset">{{$t('global.cancel')}}</a-button>
-                            <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-                            <a-button v-if="id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
-                        </a-form-item>
-                    </div>
+          <FormButtons @onCancel="closeModal" :submitButton="update ? $t('global.update') : $t('global.save')"/>
+                   
                 </a-col>
             </a-row>
         </div>
@@ -147,6 +141,7 @@ import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch.vue";
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
+import FormButtons from "@/components/common/button/FormButtons"
 export default {
     name: 'Add Questionnaire',
     emits: ["is-visible"],
@@ -155,13 +150,15 @@ export default {
         DeleteOutlined,
         GlobalCodeDropDown,
         ErrorMessage,
-        ArrayDataSearch
+        ArrayDataSearch,
+        FormButtons
     },
     props: {
         id: String,
         templateId: String,
         temOrSection: String,
-        name: String
+        name: String,
+        update: String,
     },
     setup(props, {
         emit

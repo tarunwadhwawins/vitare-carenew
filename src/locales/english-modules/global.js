@@ -3,6 +3,7 @@ const global = {
   inactive:'Inactive',
   update:'Update',
   cancel: 'Cancel',
+  assign:'Assign',
   ok: 'Ok',
   validation:'is required.',
   validValidation:'Please enter valid',

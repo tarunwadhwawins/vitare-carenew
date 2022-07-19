@@ -7,6 +7,7 @@
 
                     <span class="title">{{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}</span>
                     <div class="commonBtn">
+                        <a-button class="btn primaryBtn ml-10 buttonWtIcon" v-if="detailsQuestionnaireTemplate" @click="assignToUser({id:detailsQuestionnaireTemplate.id,show:true})">Template Assign  To User</a-button>
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Question</a-button>
                         <!-- <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showModal2(true)">Search Section</a-button> -->
                         <a-button class="btn primaryBtn ml-10 buttonWtIcon" @click="showSection({show:true,id:detailsQuestionnaireTemplate.id})">Assign Section
@@ -45,7 +46,7 @@
     <AssignSection v-if="sectionVisible" v-model:visible="sectionVisible" @is-visible="showSection($event)" :update="true" />
     <SearchQuestion v-if="visible1" v-model:visible="visible1" :templaterecord="detailsQuestionnaireTemplate" @is-visible-exist="showModal2($event)" temOrSection="template" />
     <!---->
-
+<AssignToUser v-if="assignToUserVisible" v-model:visible="assignToUserVisible" @is-visible="assignToUser($event)" :tempId="assignToUserId" />
 </div>
 <TableLoader />
 </template>
@@ -57,6 +58,7 @@
   import Question from "@/components/administration/questionnaire-bank/common/Question"
   import TableLoader from "@/components/loader/TableLoader"
   import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
+  import AssignToUser from "@/components/administration/questionnaire-template/modals/AssignToUser"
   import { useStore  } from "vuex"
   import { useRoute  } from 'vue-router'
 export default defineComponent({
@@ -68,13 +70,15 @@ export default defineComponent({
         PlusOutlined,
         Question,
         TableLoader,
-        AssignSection
+        AssignSection,
+        AssignToUser
     },
     setup() {
         const store = useStore()
         const route = useRoute()
+        const assignToUserId = ref('')
         const udid = route.params.udid
-
+const assignToUserVisible = ref(false)
         const visible2 = ref(false)
         const id = ref("");
         const showModal = (e) => {
@@ -111,6 +115,13 @@ export default defineComponent({
                 data: '&orderField=&orderBy='
             })
         })
+        
+          const assignToUser = (id) => {
+            
+            assignToUserId.value = id.id
+          
+            assignToUserVisible.value = id.show
+        }
         return {
 
             visible2,
@@ -124,7 +135,10 @@ export default defineComponent({
             value: ref(1),
             value2: ref(1),
             showSection,
-            sectionVisible
+            sectionVisible,
+            assignToUserVisible,
+            assignToUser,
+            assignToUserId
         };
     },
 });

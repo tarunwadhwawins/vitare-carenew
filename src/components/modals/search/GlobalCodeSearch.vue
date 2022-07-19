@@ -1,4 +1,5 @@
 <template>
+
   <a-select
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
@@ -62,7 +63,7 @@ export default defineComponent({
         store.commit("checkChangeInput", false);
       }
         
-props.editDataGlobal.length>0 ?globalData.value =props.editDataGlobal:globalData.value
+props.editDataGlobal ?globalData.value =props.editDataGlobal:globalData.value
       
          
        

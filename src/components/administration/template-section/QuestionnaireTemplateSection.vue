@@ -11,7 +11,7 @@
                 </h2>
             </a-col>
             <a-col :span="12">
-                <SearchField endPoint="questionnaire" class="mb-24" />
+                <SearchField endPoint="questionnaireSection" class="mb-24" />
             </a-col>
             <a-col :span="24">
                 <SectionTable @edit="showModal($event)" />

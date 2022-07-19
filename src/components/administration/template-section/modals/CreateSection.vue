@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="update ? $t('questionnaire.editSection') : $t('questionnaire.createSection')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="80%" :title="update ? $t('questionnaire.editSection') : $t('questionnaire.createSection')" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaireSection" layout="vertical" @finish="update ? updateSection() : addSection()" @finishFailed="onFinishFailed">
         <a-row :gutter="16">
             <a-col :span="12">
@@ -23,11 +23,8 @@
 
             </a-col>
             <a-col :span="24">
-                <div class="steps-action">
-                    <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="closeModal()">{{$t('global.cancel')}}</a-button>
-                    <a-button type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
-                    <a-button type="primary" html-type="submit" v-else>{{$t('global.update')}}</a-button>
-                </div>
+                <FormButtons @onCancel="closeModal" :submitButton="update ? $t('global.update') : $t('global.save')"/>
+                
             </a-col>
         </a-row>
         <TableLoader />
@@ -43,10 +40,12 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import TableLoader from "@/components/loader/TableLoader"
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
+import FormButtons from "@/components/common/button/FormButtons"
 export default defineComponent({
     components: {
         TableLoader,
-        ErrorMessage
+        ErrorMessage,
+        FormButtons
     },
     props: {
         update: String,

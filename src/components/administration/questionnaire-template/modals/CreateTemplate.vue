@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="80%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="update ? updateTemplate() : addTemplate()">
         <a-row :gutter="16">
             <a-col :span="12">
@@ -17,7 +17,7 @@
                 <div class="form-group">
 
                     <a-form-item :label="$t('questionnaire.templateType')" name="templateTypeId" :rules="[{ required: true, message: $t('questionnaire.templateType') +' '+$t('global.validation') }]">
-                        <GlobalCodeDropDown v-model:value="questionnaireTemplate.templateTypeId" :dataId="57" @handleGlobalChange="handleGlobalChange($event,'questionnaireTemplate.templateTypeId')" @change="checkChangeInput()" :disabled="cloneId ? true : false" :editDataGlobal="cloneId ? dataGlobal : []" :close="oneTimeRefresh"/>
+                        <GlobalCodeDropDown v-model:value="questionnaireTemplate.templateTypeId" :dataId="57" @handleGlobalChange="handleGlobalChange($event,'questionnaireTemplate.templateTypeId')" @change="checkChangeInput()" :disabled="cloneId ? true : false" :editDataGlobal="dataGlobal" :close="oneTimeRefresh" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateTypeId[0]:''" />
                     </a-form-item>
                 </div>
@@ -35,14 +35,8 @@
 
             </a-col>
             <a-col :span="24">
+                <FormButtons @onCancel="closeModal" :submitButton="update ? $t('global.update') : $t('global.save')" :disabled="disabled"/>
 
-                <div class="steps-action">
-                    <a-form-item>
-                        <a-button class="modal-button" style="margin-right: 8px" html-type="reset" v-if="!update" @click="closeModal">{{$t('global.cancel')}}</a-button>
-                        <a-button class="modal-button" type="primary" html-type="submit" :disabled="disabled" v-if="!update">{{$t('global.save')}}</a-button>
-                        <a-button class="modal-button" type="primary" html-type="submit" v-else>{{$t('global.update')}}</a-button>
-                    </a-form-item>
-                </div>
             </a-col>
         </a-row>
         <TableLoader />
@@ -59,12 +53,14 @@ import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import TableLoader from "@/components/loader/TableLoader"
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
+import FormButtons from "@/components/common/button/FormButtons"
 export default defineComponent({
     emits: ["is-visible"],
     components: {
         TableLoader,
         GlobalCodeDropDown,
-        ErrorMessage
+        ErrorMessage,
+        FormButtons
     },
     props: {
         update: String,
@@ -76,7 +72,7 @@ export default defineComponent({
     }) {
         const store = useStore();
         const formRef = ref();
-      const  oneTimeRefresh = ref(false)
+        const oneTimeRefresh = ref(false)
         const questionnaireTemplate = reactive({
             templateName: "",
             templateTypeId: "",
@@ -89,34 +85,34 @@ export default defineComponent({
         const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
         const dataGlobal = ref([])
         watchEffect(() => {
-      if(props.cloneId && detailsQuestionnaireTemplate.value){
-
-        dataGlobal.value.push({
-          label:detailsQuestionnaireTemplate.value.templateType,
-          value: detailsQuestionnaireTemplate.value.templateTypeId
-        })
-        questionnaireTemplate.templateTypeId = detailsQuestionnaireTemplate.value.templateType
-         
-      }
             if (props.update) {
 
                 if (detailsQuestionnaireTemplate.value) {
 
                     Object.assign(questionnaireTemplate, detailsQuestionnaireTemplate.value)
 
+                    ///dataGlobal.value = detailsQuestionnaireTemplate.value.editdata
+
                 } else {
                     Object.assign(questionnaireTemplate, form)
                 }
             }
+            if (props.cloneId && detailsQuestionnaireTemplate.value) {
+
+                dataGlobal.value = detailsQuestionnaireTemplate.value.editdata
+                questionnaireTemplate.templateTypeId = detailsQuestionnaireTemplate.value.templateType
+
+            } 
+
         })
         const addTemplate = () => {
             disabled.value = true
-            
+
             store.dispatch("addQuestionnaireTemplate", questionnaireTemplate).then(() => {
                 if (store.state.common.successMsg) {
-                 
+
                     if (props.cloneId) {
-                        
+
                         detailsQuestionnaireTemplate.value ?
                             detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
 
@@ -152,10 +148,10 @@ export default defineComponent({
                     reset()
                     store.dispatch("questionnaireTemplateList")
                     disabled.value = false
-                     oneTimeRefresh.value = true
-            setTimeout(()=>{
-              oneTimeRefresh.value = false
-            },100)
+                    oneTimeRefresh.value = true
+                    setTimeout(() => {
+                        oneTimeRefresh.value = false
+                    }, 100)
                 }
             })
         }
@@ -183,9 +179,9 @@ export default defineComponent({
             disabled.value = false
             store.state.questionnaireTemplate.detailsQuestionnaireTemplate = []
             oneTimeRefresh.value = true
-            setTimeout(()=>{
-              oneTimeRefresh.value = false
-            },100)
+            setTimeout(() => {
+                oneTimeRefresh.value = false
+            }, 100)
 
         }
 
@@ -231,6 +227,7 @@ export default defineComponent({
             return store.state.common.checkChangeInput
         })
         const handleGlobalChange = (data, type) => {
+            
             if (type == 'questionnaireTemplate.templateTypeId') {
                 questionnaireTemplate.templateTypeId = data
 
@@ -262,7 +259,7 @@ export default defineComponent({
             formRef,
             updateTemplate,
             disabled,
-oneTimeRefresh,
+            oneTimeRefresh,
             reset,
             handleGlobalChange,
             dataGlobal
