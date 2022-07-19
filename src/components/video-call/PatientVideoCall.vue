@@ -419,6 +419,7 @@ export default {
 
 <style lang="scss">
 .timer {
+  font-size: 13px !important;
   float: right;
 }
 

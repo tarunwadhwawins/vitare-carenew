@@ -34,8 +34,10 @@
               <!-- <div class="timer" @click="actionTrack(paramsId,288,'patient')" v-if="arrayToObjact(screensPermissions, 288)"> -->
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
-                <a-button v-if="startOn" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
-                <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
+                <a-button v-if="showStartTimer && !showPauseTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
+                <a-button v-if="showPauseTimer" class="primaryBtn" @click="pauseTimer">{{$t('patientSummary.pauseTimer')}}</a-button>
+                <a-button v-if="showResumeTimer && !showStartTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.resumeTimer')}}</a-button>
+                <a-button v-if="!showStartTimer" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
 
@@ -142,13 +144,21 @@ export default {
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
-    const startOn = computed(() => {
-      return store.state.patients.startOn
-    });
+    
     const iconLoading = ref(false)
     const onClose = (e) => {
       console.log(e, "I was closed.");
     };
+
+    const showStartTimer = computed(() => {
+        return store.state.common.showStartTimer
+    });
+    const showPauseTimer = computed(() => {
+        return store.state.common.showPauseTimer
+    });
+    const showResumeTimer = computed(() => {
+        return store.state.common.showResumeTimer
+    });
 
     const patientDetails = computed(()=>{
       return store.state.patients.patientDetails
@@ -183,9 +193,9 @@ export default {
             store.commit("loadingTableStatus",false)
             loader.value = false
           })
-          if(!startOn.value && route.params.globalSearch) {
+          if(!showStartTimer.value && route.params.globalSearch) {
             elapsedTime.value = 0;
-            store.commit('startOn', true);
+            store.commit('showStartTimer', true);
             stoptimervisible.value = false;
             clearInterval(timer.value);
             startTimer()
@@ -247,7 +257,7 @@ export default {
     
     onMounted(() => {
       store.dispatch('patientDetails', route.params.udid).then(() => {
-        if(!startOn.value) {
+        if(!showStartTimer.value) {
           startTimer()
         }
       })
@@ -318,7 +328,9 @@ export default {
           }
         }
       }, 1000);
-      store.commit('startOn', false);
+      store.commit('showPauseTimer', true);
+      store.commit('showStartTimer', false);
+      store.commit('showResumeTimer', false);
     }
 
     const isAutomatic = ref(false);
@@ -328,13 +340,22 @@ export default {
       stoptimervisible.value = true;
       isAutomatic.value = true;
       isEditTimeLog.value = true;
+      store.commit('showStartTimer', true);
+      store.commit('showPauseTimer', false);
+      store.commit('showResumeTimer', false);
+    };
+
+    const pauseTimer = () => {
+        store.commit('showResumeTimer', true);
+        store.commit('showPauseTimer', false);
+        clearInterval(timer.value);
     };
   
     const handleClose = ({link=null,modal, value, cancelBtn}) => {
       if(modal == 'cancelButton') {
         if(link==true&& cancelBtn != null) {
           elapsedTime.value = 0;
-          store.commit('startOn', true);
+          store.commit('showStartTimer', true);
           stoptimervisible.value = false;
           clearInterval(timer.value);
           router.push({
@@ -343,18 +364,22 @@ export default {
         }
         else {
           stoptimervisible.value = false;
-          startTimer()
-          store.commit('startOn', false);
+          if(!showPauseTimer.value) {
+            startTimer()
+          }
+          store.commit('showStartTimer', false);
         }
       }
       else if(modal == 'closeTimeLogModal') {
-        startTimer()
-        store.commit('startOn', false);
+        if(!showPauseTimer.value) {
+          startTimer()
+        }
+        store.commit('showStartTimer', false);
         stoptimervisible.value = false;
       }
       else if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
-        store.commit('startOn', true);
+        store.commit('showStartTimer', true);
         stoptimervisible.value = false;
         clearInterval(timer.value);
         if(cancelBtn != null) {
@@ -364,8 +389,10 @@ export default {
         }
       }
       if(value == undefined) {
-        startTimer()
-        store.commit('startOn', false);
+        if(!showPauseTimer.value) {
+          startTimer()
+        }
+        store.commit('showStartTimer', false);
       }
     };
     
@@ -375,6 +402,9 @@ export default {
 
 
     onUnmounted(() => {
+      store.commit('showStartTimer', false);
+      store.commit('showPauseTimer', true);
+      store.commit('showResumeTimer', false);
       store.state.patients.tabvalue = []
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
@@ -391,7 +421,6 @@ export default {
       store.state.patients.timeLineType = ''
       store.state.patients.latestVital = []
       store.state.patients.latestCriticalNote = []
-
     })
 
     const conferenceId = computed(() => {
@@ -406,7 +435,7 @@ export default {
     const form = reactive({ ...startCallForm })
 
     const startCall = () => {
-      store.commit('startOn', true);
+      store.commit('showStartTimer', true);
       iconLoading.value = true
       videoModal.value = true
       store.commit('loadingStatus', true)
@@ -494,9 +523,12 @@ export default {
       onClose,
       button,
       showButton,
-      startOn,
       loader,
-      iconLoading
+      iconLoading,
+      showStartTimer,
+      showPauseTimer,
+      showResumeTimer,
+      pauseTimer,
     };
 
     
@@ -524,6 +556,7 @@ export default {
 
 <style lang="scss">
 .timer {
+  font-size: 13px !important;
   display: flex;
   align-items: center;
   justify-content: flex-end;
