@@ -73,11 +73,11 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Device Type') {
             state.deviceType = element.globalCode;
         }
-        if (element.name === 'Timeline') {
-            state.timeline = element.globalCode.sort(function(a, b) { 
-                return a.id - b.id 
-              });
-        }
+        // if (element.name === 'Timeline') {
+        //     state.timeline = element.globalCode.sort(function(a, b) { 
+        //         return a.id - b.id 
+        //       });
+        // }
         if (element.name === 'Network') {
             state.network = element.globalCode;
         }
@@ -157,6 +157,11 @@ export const globalCodes = (state, data) => {
         
     });
 
+}
+
+
+export const dateFilterTimeline = (state, data) => {
+    state.timeline = data
 }
 
 export const successMsg = (state, data) => {
