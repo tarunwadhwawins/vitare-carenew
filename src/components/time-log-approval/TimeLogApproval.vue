@@ -62,7 +62,7 @@
                         </a-col>
                     </a-row>
 
-                    <a-row>
+                    <a-row v-if="meta">
                         <TimeLogApprovalTable @scrolller="scrolller" v-if="arrayToObjact(screensPermissions, 332)" />
                     </a-row>
                 </div>
@@ -287,7 +287,9 @@ export default {
           "&page="
       );
     }
+    const meta = store.getters.timeLogApproval;
     return {
+      meta,
       arrayToObjact,
       screensPermissions: store.getters.screensPermissions,
       exportExcel,
