@@ -23,8 +23,8 @@
 
             </a-col>
             <a-col :span="24">
-                <FormButtons @onCancel="closeModal" :submitButton="update ? $t('global.update') : $t('global.save')"/>
-                
+                <FormButtons @onCancel="closeModal" :submitButton="update ? $t('global.update') : $t('global.save')" />
+
             </a-col>
         </a-row>
         <TableLoader />
@@ -72,9 +72,9 @@ export default defineComponent({
             }
             if (props.update) {
 
-                if (store.getters.detailsquestionnaireSection) {
-
-                    Object.assign(questionnaireSection, store.getters.detailsquestionnaireSection.value)
+                if (store.getters.sectionDetailsList) {
+                    console.log("check", store.getters.sectionDetailsList.value)
+                    Object.assign(questionnaireSection, store.getters.sectionDetailsList.value)
 
                 } else {
                     Object.assign(questionnaireSection, form)
@@ -86,13 +86,13 @@ export default defineComponent({
             store.dispatch("addQuestionnaireTemplateSection", questionnaireSection).then(() => {
                 if (store.state.common.successMsg) {
                     if (props.sectionName) {
-                        store.dispatch("allSections").then(()=>{
-   emit("is-visible", {
-                            show: false,
-                            id: store.getters.questionnaireTemplateSection.value
+                        store.dispatch("allSections").then(() => {
+                            emit("is-visible", {
+                                show: false,
+                                id: store.getters.questionnaireTemplateSection.value
+                            })
                         })
-                        })
-                     
+
                     } else {
                         emit("is-visible", {
                             show: false,
@@ -107,7 +107,7 @@ export default defineComponent({
             })
         }
         const updateSection = () => {
-            store.dispatch("updatequestionnaireSection", {
+            store.dispatch("updateQuestionnaireTemplateSection", {
                 data: questionnaireSection,
                 id: props.update
             }).then(() => {
@@ -131,10 +131,10 @@ export default defineComponent({
 
         function closeModal() {
             if (checkFieldsData.value) {
-                 emit("is-visible", {
-                            show: true,
-                            id: props.update
-                        })
+                emit("is-visible", {
+                    show: true,
+                    id: props.update
+                })
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         emit("is-visible", {
@@ -152,10 +152,10 @@ export default defineComponent({
                 });
             } else {
                 formRef.value.resetFields();
-                 emit("is-visible", {
-                            show: false,
-                            id: props.update
-                        })
+                emit("is-visible", {
+                    show: false,
+                    id: props.update
+                })
             }
         }
 

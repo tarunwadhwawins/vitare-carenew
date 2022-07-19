@@ -5,15 +5,15 @@ export const questionnaireSection = async (state, data) => {
 export const questionnaireTemplateSection = async (state, data) => {
 	state.questionnaireTemplateSection = data;
 };
-// export const detailsQuestionnaireTemplate = async (state, data) => {
-// 	let tags = [];
+export const detailsQuestionnaireSection = async (state, data) => {
+	let tags = [];
 
-// 	data.tags.map((record) => {
-// 		tags.push(record.tag);
-// 	});
-// 	data.tags = tags;
-// 	state.detailsQuestionnaireTemplate = data;
-// };
+	data.tags.map((record) => {
+		tags.push(record.tag);
+	});
+	data.tags = tags;
+	state.detailsQuestionnaireSection = data;
+};
 export const sectionDetailsList = async (state, data) => {
 	console.log("check",data)
 	state.sectionDetailsList = data.data;

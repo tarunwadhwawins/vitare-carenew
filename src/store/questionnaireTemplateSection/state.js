@@ -5,6 +5,7 @@ export default{
     questionnaireSectionMeta:null,
     sectionDetailsList:[],
     allSections:[],
+    detailsQuestionnaireSection:null
  
 
 }

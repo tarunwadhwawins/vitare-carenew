@@ -14,13 +14,13 @@
             <router-link :to="{ name: 'QuestionSectionDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
                     <SettingTwoTone /></router-link></a>
         </a-tooltip>
-        <!-- <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" @click="editModal(record.id)">
                 <EditOutlined /></a>
-        </a-tooltip> -->
+        </a-tooltip>
         <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
@@ -43,7 +43,7 @@
 <Loader/>
 </template>
 <script>
-import {SettingTwoTone} from "@ant-design/icons-vue"
+import {SettingTwoTone,EditOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -71,7 +71,7 @@ export default {
     emits: ["edit"],
     components: {
         //DeleteOutlined,
-        //EditOutlined,
+        EditOutlined,
         //CopyOutlined,
         Loader,
         SettingTwoTone
@@ -82,7 +82,7 @@ export default {
     }) {
         const store = useStore();
         const editModal = (id) => {
-            store.dispatch('detailsQuestionnaireTemplate',id)
+            store.dispatch('templateSectionDetailsList',id)
             emit("edit",{show:true,id:id});
         };
         const data = store.getters.questionnaireSection

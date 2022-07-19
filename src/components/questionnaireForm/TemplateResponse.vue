@@ -73,11 +73,12 @@
                     <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
                     <div class="templateInner">
                         <div v-if="record.question.dataTypeId==243">
+                            
                             <a-radio-group v-if="record.answer" v-model:value="questionnaireTemplate.radioOption[record.question.id]" disabled>
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
                                     <div class="questionOutput" v-if="record.answer==options.id">
                                         <!-- <div>{{index+1}}.</div> -->
-                                        <a-radio v-model:value="options.id" checked></a-radio>
+                                        <a-radio v-model:value="questionnaireTemplate.radioOption[record.question.id]" checked></a-radio>
                                         <div class="ml-10 ">
                                             <p>{{ options.option }}</p>
                                         </div>
@@ -88,9 +89,10 @@
                         <div v-else-if="record.question.dataTypeId==244">
                             <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[record.question.id]" disabled v-if="record.answer">
                                 <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
-                                    <div class="questionOutput" v-if="record.answer==options.id">
+                                    
+                                    <div class="questionOutput" v-if="options.id">
                                         <!-- <div>{{index+1}}.</div> -->
-                                        <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
+                                        <a-checkbox class="ml-10 " v-model:checked="options.id" v-model:value="options.id">
                                         </a-checkbox>
                                         <div class="ml-10 ">
                                             <p>{{ options.option }}</p>
@@ -195,14 +197,16 @@ store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTem
                             if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
                                 let checkBox = [];
                                 records.question.options.forEach((item) => {
-                                    if (records.question.dataTypeId == 243 && records.answer==item.id) {
-                                        questionnaireTemplate.radioOption[records.question.id] = item.id;
+                                    console.log("check",item)
+                                    if (records.question.dataTypeId == 243) {
+                                        questionnaireTemplate.radioOption[records.question.id] = true;
                                     }
-                                    if (records.answer==item.id && records.question.dataTypeId == 244) {
+                                    if ( records.question.dataTypeId == 244) {
                                        
                                         checkBox.push(item.id);
                                     }
                                 });
+                                console.log("check",questionnaireTemplate.radioOption)
                                 if (checkBox.length > 0) {
                                     questionnaireTemplate.checkBoxOption[records.question.id] = checkBox;
                                 }

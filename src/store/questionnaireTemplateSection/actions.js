@@ -70,7 +70,7 @@ export const detailsQuestionnaireTemplateSection = async ({
 export const updateQuestionnaireTemplateSection = async ({
   commit
 },data) => {
-  await serviceMethod.common("put", API_ENDPOINTS['questionnaireTemplate'], data.id, data.data).then((response) => {
+  await serviceMethod.common("put", API_ENDPOINTS['questionnaireTemplateSection'], data.id, data.data).then((response) => {
     successSwal(response.data.message)
     commit('successMsg',response.data.message)
    
@@ -94,7 +94,7 @@ export const deleteQuestionnaireTemplateSection = async ({
   commit
 },id) => {
 
-  await serviceMethod.common("delete", API_ENDPOINTS['questionnaireTemplate'], id, null).then((response) => {
+  await serviceMethod.common("delete", API_ENDPOINTS['questionnaireTemplateSection'], id, null).then((response) => {
     successSwal(response.data.message)
     commit('successMsg',response.data.message)
   }).catch((error) => {
@@ -113,6 +113,7 @@ export const deleteQuestionnaireTemplateSection = async ({
 
 
 }
+//assign question to section
 export const templateSectionDetailsList = async ({
   commit
 },id) => {
