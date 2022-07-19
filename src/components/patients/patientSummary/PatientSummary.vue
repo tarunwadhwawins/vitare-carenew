@@ -90,7 +90,6 @@ import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, defineAsy
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
-  timeStamp,
   getSeconds,
   actionTrack,
   enCodeString,
@@ -126,7 +125,6 @@ export default {
     const router = useRouter();
     const patientUdid = route.params.udid
     const authUser =  JSON.parse(localStorage.getItem('auth'))
-    const loggedInUserId =  authUser.user.staffUdid
     const notevisible = ref(false);
     const devicevisible = ref(false);
     const documentvisible = ref(false);
@@ -139,7 +137,6 @@ export default {
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
-    const auth = JSON.parse(localStorage.getItem("auth"))
 
     const appMessage = computed(() => {
       return store.state.common.appMessage
@@ -305,7 +302,7 @@ export default {
           }
           else {
             store.dispatch("timeApproval", {
-              staff: auth.user.staffUdid,
+              staff: authUser.user.staffUdid,
               patient: route.params.udid,
               time: newFormattedElapsedTime,
               type: appMessage.value,
@@ -336,7 +333,7 @@ export default {
         clearInterval(timer.value);
         elapsedTime.value = 0;
         store.dispatch("timeApproval", {
-          staff: auth.user.staffUdid,
+          staff: authUser.user.staffUdid,
           patient: route.params.udid,
           time: seconds,
           type: appMessage.value,
