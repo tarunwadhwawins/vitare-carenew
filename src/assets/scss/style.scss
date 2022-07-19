@@ -972,10 +972,14 @@
         flex-wrap: wrap;
         gap: 10px 0;
         .ant-checkbox-wrapper {
-            border: 2px solid $gray-color-300;
+            border: 1px solid $gray-color-300;
             border-radius: 5px;
-            padding: 5px;
-            font-size: 13px;
+            padding: 5px 0;
+            font-size: 12px;
+            margin-left: 5px;
+            &:first-child {
+                margin-left: 0;
+            }
             @media (max-width: 1365px) {
                 font-size: 10px;
             }
@@ -998,7 +1002,7 @@
         }
     }
     .ant-timeline {
-        padding: 40px 20px 0;
+        padding: 15px 20px 0;
         overflow: auto;
         &.defaultTimeline {
             // max-height: calc(100vh - 280px);
@@ -1692,7 +1696,7 @@
     margin: 0 10px 0 0 !important;
     width: 80px;
     &:last-child {
-        margin: 0!important;
+        margin: 0 !important;
     }
 }
 .noData .ant-timeline-item-tail {
@@ -1725,4 +1729,24 @@
 }
 .overflow-wrap {
     overflow-wrap: anywhere;
+}
+
+.vitalTable {
+    table {
+        .ant-table-tbody {
+            tr {
+                td {
+                    border-bottom: 1px solid #cdcdcd !important;
+                    span.vitalValue {
+                        display: inline-block;
+                        height: 40px;
+                        width: 40px;
+                        text-align: center;
+                        line-height: 40px;
+                        border: 2px solid;
+                    }
+                }
+            }
+        }
+    }
 }

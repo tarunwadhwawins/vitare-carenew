@@ -556,7 +556,7 @@ export default {
 
 <style lang="scss">
 .timer {
-  font-size: 13px !important;
+  font-size: 12px !important;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -565,6 +565,13 @@ export default {
   }
   h3 {
     margin: 0 10px 0 0;
+  }
+  .primaryBtn {
+    font-size: 12px;
+    padding: 6px 10px;
+    &:first-of-type{
+      margin-right: 5px;
+    }
   }
 }
 .blueBtn {
