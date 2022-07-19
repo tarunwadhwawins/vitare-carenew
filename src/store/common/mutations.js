@@ -73,11 +73,11 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Device Type') {
             state.deviceType = element.globalCode;
         }
-        if (element.name === 'Timeline') {
-            state.timeline = element.globalCode.sort(function(a, b) { 
-                return a.id - b.id 
-              });
-        }
+        // if (element.name === 'Timeline') {
+        //     state.timeline = element.globalCode.sort(function(a, b) { 
+        //         return a.id - b.id 
+        //       });
+        // }
         if (element.name === 'Network') {
             state.network = element.globalCode;
         }
@@ -148,15 +148,20 @@ export const globalCodes = (state, data) => {
         }
         if (element.name === 'Time Approval Status') {
             state.timeApprovalStatus = element.globalCode;
-            state.pendingApprovalStatus = element.globalCode.map(item => {
+            element.globalCode.map(item => {
                 if(item.name == 'Pending') {
-                    return item.id
+                    state.pendingApprovalStatus = item.id
                 }
             })
         }
         
     });
 
+}
+
+
+export const dateFilterTimeline = (state, data) => {
+    state.timeline = data
 }
 
 export const successMsg = (state, data) => {

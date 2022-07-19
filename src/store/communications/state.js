@@ -19,4 +19,5 @@ export default {
   conversationWithPatient:null,
   conversationsList:null,
   callDetails:null,
+  showSmsData:null
 }

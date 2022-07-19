@@ -28,14 +28,17 @@ export default {
       store.dispatch("patientVitals", {
         patientId: patientUdid,
         deviceType: 99,
+        filter: "",
       });
       store.dispatch("patientVitals", {
         patientId: patientUdid,
         deviceType: 100,
+        filter: "",
       });
       store.dispatch("patientVitals", {
         patientId: patientUdid,
         deviceType: 101,
+        filter: "",
       });
       emit('onClick')
     };

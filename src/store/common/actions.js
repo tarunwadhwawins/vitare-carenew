@@ -23,6 +23,22 @@ export const globalCodes = async ({commit}) => {
   })
 }
 
+export const dateFilter = async ({commit},id) => {
+  await serviceMethod.common("get", `globalCode?orderField=priority&globalCodeCategoryId=${id}`, null, null).then((response) => {
+    commit('dateFilterTimeline', response.data.data);
+  }).catch((error) => {
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    if (error.response.status == 401) {
+      //AuthService.logout();
+    }
+    commit('failure', error.response.data);
+  })
+}
+
 export const vitalFieldsList = async ({ commit }, deviceId) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['field'], deviceId, null).then((response) => {
@@ -260,8 +276,8 @@ export const staffPasswordReset = async ({commit}, data) => {
 				errorLogWithDeviceInfo(error);
 			}
     if (error.response.status === 422) {
-      // commit('errorMsg', error.response.data)
-      errorSwal(error.response.data.password[0])
+      commit('errorMsg', error.response.data)
+      // errorSwal(error.response.data.password[0])
     } else if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {

@@ -67,7 +67,7 @@ import {
 } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { getSeconds, warningSwal ,arrayToObjact } from "@/commonMethods/commonMethod";
+import { getSeconds, warningSwal ,arrayToObjact,secondsToTime } from "@/commonMethods/commonMethod";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 import { messages } from "@/config/messages";
@@ -82,7 +82,8 @@ export default defineComponent({
     Loader
   },
   props: {
-    Id: String,
+    Id: Array,
+    editData:String
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -120,9 +121,10 @@ export default defineComponent({
             noteId: auditTimeLog.noteId,
             cptCode: auditTimeLog.cptCodeId,
             category: auditTimeLog.categoryId,
-            status:329
+            status:329,
+            id:props.Id
           },
-          id: props.Id,
+          // id: props.Id,
         })
         .then(() => {
           store.getters.timeLogReports.value.timeLogReportList = "";
@@ -150,18 +152,23 @@ export default defineComponent({
       disabledCptCode.value = false;
       disabledMessageType.value = false;
       if (props.Id) {
-        if (timeLogReports.value) {
-          if (timeLogReports.value.flag != "") {
-            disabledFlag.value = true;
-          }
-          if (timeLogReports.value.cptCodeId != "") {
-            disabledCptCode.value = true;
-          }
-          if (timeLogReports.value.typeId != "") {
-            disabledMessageType.value = true;
-          }
+        // if (timeLogReports.value) {
+        //   if (timeLogReports.value.flag != "") {
+        //     disabledFlag.value = true;
+        //   }
+        //   if (timeLogReports.value.cptCodeId != "") {
+        //     disabledCptCode.value = true;
+        //   }
+        //   if (timeLogReports.value.typeId != "") {
+        //     disabledMessageType.value = true;
+        //   }
+        // }
+        let temp = {
+          timeAmount:secondsToTime(props.editData.timeAmount),
+          typeId:props.editData.typeId
         }
-        Object.assign(auditTimeLog, timeLogReports.value);
+        console.log(temp)
+        Object.assign(auditTimeLog, temp);
       }
     });
 
@@ -218,6 +225,7 @@ export default defineComponent({
     }
 
     return {
+      secondsToTime,
       handleCptCodeChange,
       handleGlobalChange,
       disableButton,

@@ -201,9 +201,9 @@ export default {
       }
 
       store.dispatch('addVital', { patientId, data }).then(() => {
-        store.dispatch('patientVitals', {patientId: patientId, deviceType: 99});
-        store.dispatch('patientVitals', {patientId: patientId, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: patientId, deviceType: 101});
+        store.dispatch("patientVitals", {patientId: patientId, deviceType: 99, filter: ""});
+        store.dispatch("patientVitals", {patientId: patientId, deviceType: 100, filter: ""});
+        store.dispatch("patientVitals", {patientId: patientId, deviceType: 101, filter: ""});
         store.dispatch('patientTimeline', {id:patientId, type:''});
         formRef.value.resetFields()
         Object.assign(addVitalForm, form)

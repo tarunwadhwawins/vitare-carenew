@@ -1,62 +1,74 @@
-<template>
-<a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeApproval" @change="handleTableChange">
-        <template #staff="{record}">
 
-            <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff.fullName}}</router-link>
-            <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staff.id)" class="nameInfoIcon">
-                <InfoCircleOutlined /></a>
-            <span v-else>{{record.staff}}</span>
-        </template>
-        <template #patient="{record}">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient.fullName}}</router-link>
-            <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patient.id)" class="nameInfoIcon">
-                <InfoCircleOutlined /></a>
-            <span v-else :title="messages.access">{{record.patient.fullName}}</span>
-        </template>
-        <template #flags="{ record }">
-            <!-- <Flags :flag="record.flagColor" :data="record" /> -->
-            <span>{{record.flagName}}</span>
-        </template>
-        <template #flag="{ text }">
-            <span>
-                <img class="reportFlag" src="../../assets/images/flag-orange.svg" alt="image" /></span>
-            <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
-        </template>
-        <template #actions="{record}">
-            <!-- <a-tooltip placement="bottom" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">
+<template>
+
+    <a-col :sm="3" :xs="24" v-if="selectedRow?.length>0">
+        <h3>{{'Actions:'}}</h3>
+    </a-col>
+    <a-col :sm="2" :xs="24" v-if="selectedRow?.length>0">
+        <a-button :disabled="checkMsgTypeStatus?.length>1 || checkPatientStatus?.length>1"  class="modal-button handleClear" type="primary" html-type="submit" @click="editTimeLog(selectedRow)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
+    </a-col>
+    <a-col :sm="1" :xs="24" v-if="selectedRow?.length>0">
+        <a-button :disabled="checkMsgTypeStatus?.length>1 || checkPatientStatus?.length>1"  @click="rejectButton(selectedRow)" class="modal-button">Reject</a-button>
+    </a-col>
+    <a-col :sm="24" :xs="24" v-if="selectedRow?.length>0">
+      <ErrorMessage v-if="checkMsgTypeStatus?.length>1 || checkPatientStatus?.length>1" name="Please select same type of patient and type." />
+    </a-col>
+    <a-col :sm="24" :xs="24" class="table-row" v-if="meta">
+        <a-table rowKey="id" :row-selection="rowSelection" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 370px)'}" :data-source="meta.timeApproval" @change="handleTableChange">
+            <template #staff="{record}">
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff.id  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff.fullName}}</router-link>
+                <a v-if="arrayToObjact(screensPermissions,38)" @click="showStaffModal( record.staff.id)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+                <span v-else>{{record.staff}}</span>
+            </template>
+            <template #patient="{record}">
+                <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient.fullName}}</router-link>
+                <a v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true" @click="showPatientModal( record.patient.id)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+                <span v-else :title="messages.access">{{record.patient.fullName}}</span>
+            </template>
+            <template #flags="{ record }">
+                <!-- <Flags :flag="record.flagColor" :data="record" /> -->
+                <span>{{record.flagName}}</span>
+            </template>
+            <template #flag="{ text }">
+                <span>
+                    <img class="reportFlag" src="../../assets/images/flag-orange.svg" alt="image" /></span>
+                <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
+            </template>
+            <template #actions>
+                <!-- <a-tooltip placement="bottom" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
                 <a class="icons">
                     <EditOutlined /></a>
             </a-tooltip> -->
-            <!-- <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
+                <!-- <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
                 <template #title>
                     <span>{{ $t("common.view") }}</span>
                 </template> -->
-            <div>
-                <a-button :disabled="record?.statusId==329 || record?.statusId==330" class="modal-button handleClear" type="primary" html-type="submit" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
-                <a-button :disabled="record?.statusId==329 || record?.statusId==330" @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
-            </div>
-            <!-- <a class="icons">
+                <!-- <div>
+                    <a-button :disabled="record?.statusId==329 || record?.statusId==330" class="modal-button handleClear" type="primary" html-type="submit" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">{{'Approve'}}</a-button>
+                    <a-button :disabled="record?.statusId==329 || record?.statusId==330" @click="rejectButton(record.id)" class="modal-button">Reject</a-button>
+                </div> -->
+                <!-- <a class="icons">
                     <EyeOutlined />
                 </a>
             </a-tooltip> -->
-        </template>
-        <template #active="key">
-            <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,334)" />
-        </template>
-    </a-table>
-    <TableLoader />
+            </template>
+            <template #active="key">
+                <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,334)" />
+            </template>
+        </a-table>
+        <TableLoader />
 
-    <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
-</a-col>
-<ViewTimeLogTable v-if="viewReport" v-model:visible="viewReport" :id="auditId" />
+        <AuditTimeLog v-if="visible" v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="selectedRow" :editData="auditTimeLog" />
+    </a-col>
+<!-- <ViewTimeLogTable v-if="viewReport" v-model:visible="viewReport" :id="Id"  /> -->
 </template>
-
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed,reactive } from "vue";
 import {
   // DeleteOutlined,
   // EditOutlined,
@@ -64,7 +76,7 @@ import {
   InfoCircleOutlined,
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "./AuditTimeLogs.vue";
-import ViewTimeLogTable from "./ViewTimeLogTable";
+// import ViewTimeLogTable from "./ViewTimeLogTable";
 // import { messages } from "@/config/messages";
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
@@ -75,7 +87,7 @@ import {
   showStaffModal,
   showPatientModal,
 } from "@/commonMethods/commonMethod";
-
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 // import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 
@@ -87,7 +99,8 @@ export default {
     // EditOutlined,
     TableLoader,
     AuditTimeLog,
-    ViewTimeLogTable,
+    // ViewTimeLogTable,
+    ErrorMessage
     // Flags,
   },
   props: {},
@@ -96,22 +109,29 @@ export default {
     const visible = ref(false);
     const viewReport = ref(false);
     const Id = ref();
+    const auditTimeLog = reactive({
+      timeAmount: "",
+      typeId: "",
+    });
+    const selectedRow = ref([])
     const handleOk = (event) => {
+      console.log('event',event)
       visible.value = event;
       emit("scrolller");
+      selectedRow.value = null
     };
     const route = useRoute();
     const editTimeLog = (id) => {
       console.log(id);
       store.commit("errorMsg", null);
-      store.dispatch("editAuditTimeLogApproval", id);
+      // store.dispatch("editAuditTimeLogApproval", id);
       visible.value = true;
       Id.value = id;
     };
     const auditId = ref("");
 
     function viewTimeLog(id) {
-      store.dispatch("timeLogView", id);
+      // store.dispatch("timeLogView", id);
       viewReport.value = true;
       auditId.value = id;
     }
@@ -235,11 +255,13 @@ export default {
             .dispatch("rejectApproval", {
               data: {
                 status: 330,
+                id:id
               },
-              id: id,
+              // id: id,
             })
             .then(() => {
               store.dispatch("timeLogApprovalList");
+              selectedRow.value = null
             });
         } else {
           // emit("saveAuditTimeLog", true);
@@ -248,7 +270,55 @@ export default {
       });
     };
 
+    // const onSelectChange = (selectedRowKeys,row) => {
+    //   // if(row.status=='Approved'){
+    //     selectedRow.value = selectedRowKeys;
+    //     console.log('selectedRowKeys',row)
+    //   // }
+    // };
+
+    let patientArray =[]
+    const checkPatientStatus = ref([])
+    let msgTypeArray =[]
+    const checkMsgTypeStatus = ref([])
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+      patientArray = selectedRows.map((item)=>item.patient.fullName)
+      checkPatientStatus.value = patientArray.filter(function(item, pos) {
+        return patientArray.indexOf(item) == pos;
+      })
+      msgTypeArray = selectedRows.map((item)=>item.type)
+      checkMsgTypeStatus.value = msgTypeArray.filter(function(item, pos) {
+        return msgTypeArray.indexOf(item) == pos;
+      })
+      if(checkMsgTypeStatus.value?.length>0 && checkPatientStatus.value?.length>0){
+        // selectedRow.value = selectedRowKeys
+        auditTimeLog.typeId = selectedRows[0].typeId
+        //  selectedRows.map(item=>{
+        //   auditTimeLog.timeAmount = auditTimeLog.timeAmount + item.timeAmount
+        // })
+        let time = selectedRows.map((item)=>item.timeAmount)
+        auditTimeLog.timeAmount=time.reduce(
+        (previousValue, currentValue) => previousValue + currentValue,
+        );
+      }
+      console.log('msgTypeArray',auditTimeLog.timeAmount)
+        return  selectedRow.value = selectedRowKeys
+      },
+      getCheckboxProps: (record) => ({
+        disabled: record.status === "Approved" || record.status === "Rejected",
+        // Column configuration not to be checked
+        name: record.status,
+      }),
+    };
+
     return {
+      auditTimeLog,
+      checkMsgTypeStatus,
+      checkPatientStatus,
+      selectedRow,
+      rowSelection,
+      // onSelectChange,
       rejectButton,
       showPatientModal,
       showStaffModal,
@@ -276,5 +346,8 @@ export default {
 <style scoped>
 .handleClear {
   margin-right: 10px;
+}
+.table-row{
+  padding-top: 15px;
 }
 </style>

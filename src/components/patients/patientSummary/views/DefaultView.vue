@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24">
+    <a-row :gutter="10">
       <a-col :xl="8" :lg="24">
         <PatientInfoLeft/>
       </a-col>

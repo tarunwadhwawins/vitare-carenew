@@ -66,7 +66,7 @@
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :span="24">
+            <a-col :span="24" v-if="messageForm.messageTypeId==105">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject" :rules="[{ required: true, message: $t('communications.communicationsModal.subject')+' '+$t('global.validation')  }]">
                         <a-input v-model:value="messageForm.subject" size="large" @change="checkChangeInput()" />
@@ -162,7 +162,9 @@ export default defineComponent({
             }
         });
 
-        const sendMessageFailed = () => {}
+        const sendMessageFailed = (value) => {
+            console.log('value',value)
+        }
 
         onMounted(() => {
 
@@ -233,6 +235,12 @@ export default defineComponent({
         const sendMessage = () => {
             closeValue.value = true
             messageForm.entityType = document.getElementById("entityType").value;
+            if(messageForm.messageTypeId==102){
+                messageForm.subject ='App Message'
+            }
+            if(messageForm.messageTypeId==327){
+                messageForm.subject ='SMS'
+            }
             store.getters.communicationRecord.value.communicationsList = "";
             store.dispatch("addCommunication", messageForm).then(() => {
                 if(messageForm.entityType == 'patient') {

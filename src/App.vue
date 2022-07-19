@@ -68,6 +68,7 @@ export default {
       if (refreshToken.value != null) {
         if (refreshToken.value > date.getTime()) {
           store.dispatch("globalCodes");
+          store.dispatch("dateFilter",46);
           store.dispatch("permissions");
           store.dispatch("escalationStaus")
           store.dispatch("appointmentConference");
