@@ -253,3 +253,8 @@ export const communicationsView = async (state, data) => {
 export const conversationWithPatient = async (state, data) => {
   state.conversationWithPatient = data;
 }
+
+
+export const showSmsData = async (state, data) => {
+  state.showSmsData = data;
+}

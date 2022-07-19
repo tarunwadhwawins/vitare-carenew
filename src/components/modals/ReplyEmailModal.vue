@@ -10,6 +10,14 @@
 		</div> -->
 		<a-form ref="formRef" :model="replyForm" layout="vertical" @finish="submitForm">
 			<a-row>
+				<a-col :sm="3" >
+					<div class="form-group">
+						<label><b>Message : </b></label>
+					</div>
+				</a-col>
+				<a-col :sm="20">
+						<label>{{gmailData.message}}</label>
+				</a-col>
 				<a-col :span="24">
 					<div class="form-group">
 						<a-form-item :label="$t('communications.communicationsModal.reply')" name="message" :rules="[{ required: true, message: $t('communications.communicationsModal.message')+' '+$t('global.validation')  }]">

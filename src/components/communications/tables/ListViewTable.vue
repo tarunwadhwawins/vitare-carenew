@@ -1,12 +1,11 @@
 <template>
-  <a-alert class="mb-24" message="Patients are highlighted" type="error" />
-
-  <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900,y:'calc(100vh - 370px)'}"  :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
+<a-alert class="mb-24" message="Patients are highlighted" type="error"></a-alert>
+<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900,y:'calc(100vh - 370px)'}" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold' : ''" @change="handleTableChange">
 
     <template #expandedRowRender="{ record }">
-      <p>{{ record.message }}</p>
+        <p>{{ record.message }}</p>
     </template>
-    
+
     <!-- <template #expandable="{ record }">
       <div v-if="record.type == 'SMS'">
         <div v-if="!isExpand && (recordId == record.id)" @click="clickExpandable(record.id, record.message)" role="button" tabindex="0" class="ant-table-row-expand-icon ant-table-row-expanded" aria-label="Expand row"></div>
@@ -17,164 +16,176 @@
       </div>
     </template> -->
 
-    <template #from="{ record }" class="custom" >
-      <div v-if="record.is_sender_patient" class="customTd">
-        <span v-if="arrayToObjact(screensPermissions,63)">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
-          {{record.from}}
-        </router-link>
-        <a @click="showPatientModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
-        </span>
-        <span v-else>
-          {{record.from}}
-        </span>
-      </div>
-      <div v-else>
-        <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
-          {{record.from}}
-        </router-link>
-        <a @click="showStaffModal( record.fromId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
-        </span>
-        <span v-else>
-          {{record.from}}
-        </span>
-      </div>
+    <template #from="{ record }" class="custom">
+        <div v-if="record.is_sender_patient" class="customTd">
+            <span v-if="arrayToObjact(screensPermissions,63)">
+                <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }">
+                    {{record.from}}
+                </router-link>
+                <a @click="showPatientModal( record.fromId)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+            </span>
+            <span v-else>
+                {{record.from}}
+            </span>
+        </div>
+        <div v-else>
+            <span v-if="arrayToObjact(screensPermissions,38)">
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+                    {{record.from}}
+                </router-link>
+                <a @click="showStaffModal( record.fromId)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+            </span>
+            <span v-else>
+                {{record.from}}
+            </span>
+        </div>
     </template>
 
     <template #to="{ record }" class="custom">
-      <div v-if="record.is_receiver_patient" class="customTd">
-        <span v-if="arrayToObjact(screensPermissions,63)" >
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
-          {{record.to}}
-        </router-link>
-         <a @click="showPatientModal( record.toId)"  class="nameInfoIcon"> <InfoCircleOutlined/></a>
-        </span>
-        <span v-else>
-          {{record.to}}
-        </span>
-      </div>
-      <div v-else>
-        <span v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
-          {{record.to}}
-        </router-link>
-        <a @click="showStaffModal( record.toId)" class="nameInfoIcon"> <InfoCircleOutlined/></a>
-        </span>
-        <span v-else>
-          {{record.to}}
-        </span>
-      </div>
+        <div v-if="record.is_receiver_patient" class="customTd">
+            <span v-if="arrayToObjact(screensPermissions,63)">
+                <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
+                    {{record.to}}
+                </router-link>
+                <a @click="showPatientModal( record.toId)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+            </span>
+            <span v-else>
+                {{record.to}}
+            </span>
+        </div>
+        <div v-else>
+            <span v-if="arrayToObjact(screensPermissions,38)">
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
+                    {{record.to}}
+                </router-link>
+                <a @click="showStaffModal( record.toId)" class="nameInfoIcon">
+                    <InfoCircleOutlined /></a>
+            </span>
+            <span v-else>
+                {{record.to}}
+            </span>
+        </div>
     </template>
 
     <template #resend>
-      <a-tooltip placement="bottom">
-        <template #title>
-          <span>{{ $t("communications.message") }}</span>
-        </template>
-        <a class="icons"><EyeOutlined /></a>
-      </a-tooltip>
+        <a-tooltip placement="bottom">
+            <template #title>
+                <span>{{ $t("communications.message") }}</span>
+            </template>
+            <a class="icons">
+                <EyeOutlined /></a>
+        </a-tooltip>
     </template>
 
     <template #priority="{ record }">
-      <a-tooltip placement="right">
-        <template #title>{{ $t("common.urgent") }}</template>
-        <span class="circleBox" style="background-color: #ff6061" v-if="record.priority == 'Urgent'"></span>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>{{ $t("common.medium") }}</template>
-        <span class="circleBox" style="background-color: #ffa800" v-if="record.priority == 'Medium'"></span>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>{{ $t("common.normal") }}</template>
-        <span class="circleBox" style="background-color: #008000" v-if="record.priority == 'Normal'"></span>
-      </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>{{ $t("common.urgent") }}</template>
+            <span class="circleBox" style="background-color: #ff6061" v-if="record.priority == 'Urgent'"></span>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>{{ $t("common.medium") }}</template>
+            <span class="circleBox" style="background-color: #ffa800" v-if="record.priority == 'Medium'"></span>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>{{ $t("common.normal") }}</template>
+            <span class="circleBox" style="background-color: #008000" v-if="record.priority == 'Normal'"></span>
+        </a-tooltip>
     </template>
 
     <template #type="{ record }">
-      <a-tooltip placement="right">
-        <template #title>
-          <span>{{ record.type }}</span>
-        </template>
-        <a class="icons" v-if="record.type == 'App Message'">
-          <CommentOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>
-          <span>{{ record.type }}</span>
-        </template>
-        <a class="icons" v-if="record.type == 'App Call'">
-          <PhoneOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>
-          <span>{{ record.type }}</span>
-        </template>
-        <a class="icons" v-if="record.type == 'Email'">
-          <MailOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>
-          <span>{{ record.type }}</span>
-        </template>
-        <a class="icons" v-if="record.type == 'SMS'" @click="showSms(record.id)">
-          <MessageOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="right">
-        <template #title>
-          <span>{{ record.type }}</span>
-        </template>
-        <a class="icons" v-if="record.type == 'Reminder'">
-          <AlertOutlined />
-        </a>
-      </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>
+                <span>{{ record.type }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'App Message'">
+                <CommentOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>
+                <span>{{ record.type }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'App Call'">
+                <PhoneOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>
+                <span>{{ record.type }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'Email'">
+                <MailOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>
+                <span>{{ record.type }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'SMS'" @click="showSms(record.id)">
+                <MessageOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="right">
+            <template #title>
+                <span>{{ record.type }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'Reminder'">
+                <AlertOutlined />
+            </a>
+        </a-tooltip>
     </template>
 
     <template #action="{record}" v-if="arrayToObjact(screensPermissions,109)">
-      <a-tooltip placement="bottom" v-if="record.type == 'App Message'">
-        <template #title>
-          <span>{{ $t("common.reply") }}</span>
-        </template>
-        <a class="icons" @click="showModal(record, $event)">
-          <MessageOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="bottom" v-else-if="record.type == 'Email'">
-        <template #title>
-          <span>{{ $t("common.reply") }}</span>
-        </template>
-        <a class="icons" @click="showModal(record, $event)">
-          <MessageOutlined />
-        </a>
-      </a-tooltip>
-      <a-tooltip placement="bottom" v-else>
-        <template #title>
-          <span>{{ $t("common.view") }}</span>
-        </template>
-        <a class="icons" @click="viewData(record)">
-          <EyeOutlined />
-        </a>
-      </a-tooltip>
+        <a-tooltip placement="bottom" v-if="record.type == 'App Message'">
+            <template #title>
+                <span>{{ $t("common.reply") }}</span>
+            </template>
+            <a class="icons" @click="showModal(record, $event)">
+                <MessageOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-else-if="record.type == 'Email'">
+            <template #title>
+                <span>{{ $t("common.reply") }}</span>
+            </template>
+            <a class="icons" @click="showModal(record, $event)">
+                <MessageOutlined />
+            </a>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-else>
+            <template #title>
+                <span>{{ $t("common.view") }}</span>
+            </template>
+            <a class="icons" @click="viewData(record)">
+                <EyeOutlined />
+            </a>
+        </a-tooltip>
     </template>
 
-  </a-table>
-  <ReplyEmailModal v-model:visible="visibleGmail" @is-visible="handleOk" :communication="communicationId" />
-  <CommunicationView v-model:visible="visibleCommunication" v-if="visibleCommunication" />
-  <!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
-  <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+</a-table>
+<SmsDetails v-model:visible="visibleSmsDetails"/>
+<ReplyEmailModal v-model:visible="visibleGmail" @is-visible="handleOk" :communication="communicationId" />
+<CommunicationView v-model:visible="visibleCommunication" v-if="visibleCommunication" />
+<!-- <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" /> -->
+<ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
+
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 //import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
-import {  arrayToObjact,showStaffModal,showPatientModal } from "@/commonMethods/commonMethod";
-import ReplyEmailModal from '@/components/modals/ReplyEmailModal'
-import CommunicationView from '@/components/modals/CommunicationView'
+import {
+  arrayToObjact,
+  showStaffModal,
+  showPatientModal,
+} from "@/commonMethods/commonMethod";
+import ReplyEmailModal from "@/components/modals/ReplyEmailModal";
+import CommunicationView from "@/components/modals/CommunicationView";
+import SmsDetails from "../modal/SmsDetails"
 import {
   EyeOutlined,
   MessageOutlined,
@@ -182,9 +193,9 @@ import {
   PhoneOutlined,
   MailOutlined,
   AlertOutlined,
-  InfoCircleOutlined
+  InfoCircleOutlined,
 } from "@ant-design/icons-vue";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 export default {
   components: {
     EyeOutlined,
@@ -197,16 +208,17 @@ export default {
     CommunicationView,
     //Chat,
     ChatWithPatientInformation,
-    InfoCircleOutlined
+    InfoCircleOutlined,
+    SmsDetails
   },
   props: {},
   setup() {
     const communicationColumns = [
       /* {
-        slots: {
-          customRender: "expandable",
-        },
-      }, */
+              slots: {
+                customRender: "expandable",
+              },
+            }, */
       {
         title: "From",
         dataIndex: "from",
@@ -269,63 +281,67 @@ export default {
       },
     ];
     const store = useStore();
-    const route = useRoute()
-    const visibleGmail = ref(false)
-    const visibleCommunication = ref(false)
+    const route = useRoute();
+    const visibleGmail = ref(false);
+    const visibleCommunication = ref(false);
     const communicationId = ref(null);
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
     const visible = ref(false);
     const chatWithPatientInfoVisible = ref(false);
+    const visibleSmsDetails = ref(false)
     /* const isExpand = ref(false)
-    const recordId = ref(null) */
+        const recordId = ref(null) */
 
-   
     let data = [];
 
     /* const clickExpandable = (id, message) => {
-      recordId.value = id
-      if(isExpand.value == true) {
-        document.getElementsByClassName('ant-table-tbody').insertAdjacentHTML(`
-        <tr class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
-          <p>`+message+`</p>
-        </tr>
-        `)
-        isExpand.value = false
-      }
-      else {
-        isExpand.value = true
-      }
-    } */
+          recordId.value = id
+          if(isExpand.value == true) {
+            document.getElementsByClassName('ant-table-tbody').insertAdjacentHTML(`
+            <tr class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
+              <p>`+message+`</p>
+            </tr>
+            `)
+            isExpand.value = false
+          }
+          else {
+            isExpand.value = true
+          }
+        } */
 
     watchEffect(() => {
-      if(meta.communicationsList) {
-        meta.communicationsList.forEach(element => {
-          if(route.params.typeId == element.id) {
-            communicationId.value = element
+      if (meta.communicationsList) {
+        meta.communicationsList.forEach((element) => {
+          if (route.params.typeId == element.id) {
+            communicationId.value = element;
           }
         });
       }
-      if(route.params.from == 'push' && communicationId.value != null) {
-        
-        if(communicationId.value.is_receiver_patient || communicationId.value.is_sender_patient) {
+      if (route.params.from == "push" && communicationId.value != null) {
+        if (
+          communicationId.value.is_receiver_patient ||
+          communicationId.value.is_sender_patient
+        ) {
           chatWithPatientInfoVisible.value = true;
           visible.value = false;
-        }
-        else if(!communicationId.value.is_receiver_patient && !communicationId.value.is_sender_patient) {
+        } else if (
+          !communicationId.value.is_receiver_patient &&
+          !communicationId.value.is_sender_patient
+        ) {
           visible.value = true;
           chatWithPatientInfoVisible.value = false;
         }
       }
-    })
+    });
 
     let scroller = "";
-        onMounted(() => {
-            var tableContent = document.querySelector(".ant-table-body");
-            tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
-                if (currentScroll >= maxScroll) {
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
           let current_page = meta.communicationMeta.current_page + 1;
 
           if (current_page <= meta.communicationMeta.total_pages) {
@@ -356,9 +372,9 @@ export default {
         data.push(element);
       });
       meta.communicationsList = data;
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller);
-            }, 50);
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
     }
     const handleTableChange = (pag, filters, sorter) => {
       if (sorter.order) {
@@ -387,32 +403,32 @@ export default {
       }
     };
     const showModal = (e, event) => {
-      if(e.type == 'App Message') {
-        store.commit('loadingStatus', true)
+      if (e.type == "App Message") {
+        store.commit("loadingStatus", true);
         setTimeout(() => {
-          if(e.is_receiver_patient || e.is_sender_patient) {
+          if (e.is_receiver_patient || e.is_sender_patient) {
             chatWithPatientInfoVisible.value = true;
-          }
-          else {
+          } else {
             visible.value = true;
           }
-          store.commit('loadingStatus', false)
+          store.commit("loadingStatus", false);
           communicationId.value = e;
-          event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
-        }, 3000)
-      }
-      else {
+          event.target.parentElement.parentElement.parentElement.parentElement.classList.remove(
+            "bold"
+          );
+        }, 3000);
+      } else {
         communicationId.value = e;
-        store.dispatch('communicationsView', e.id).then(() => {
+        store.dispatch("communicationsView", e.id).then(() => {
           visibleGmail.value = true;
-        })
+        });
       }
-    }
+    };
 
     const viewData = (e) => {
-      store.dispatch('callDetails', e.id).then(() => {
+      store.dispatch("callDetails", e.id).then(() => {
         visibleCommunication.value = true;
-      })
+      });
     };
 
     const handleOk = (value) => {
@@ -421,16 +437,18 @@ export default {
       chatWithPatientInfoVisible.value = value ? value : false;
     };
 
-    const showSms = (id) =>{
-      console.log('id',id)
-      store.dispatch('showSmsData',id)
-    }
+    const showSms = (id) => {
+      console.log("id", id);
+      store.dispatch("showSmsData", id);
+      visibleSmsDetails.value =true
+    };
 
     return {
+      visibleSmsDetails,
       showSms,
       showPatientModal,
       showStaffModal,
-      screensPermissions:store.getters.screensPermissions,
+      screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       communicationColumns,
       meta,
@@ -439,15 +457,15 @@ export default {
       handleOk,
       communicationId,
       auth,
-     
+
       handleTableChange,
       viewData,
       visibleGmail,
       visibleCommunication,
       chatWithPatientInfoVisible,
       /* clickExpandable,
-      isExpand,
-      recordId, */
+            isExpand,
+            recordId, */
     };
   },
 };
@@ -466,7 +484,13 @@ export default {
   color: red;
 }
 
-.ant-table-wrapper .ant-table .ant-table-content .ant-table-body .ant-table-tbody tr td {
+.ant-table-wrapper
+  .ant-table
+  .ant-table-content
+  .ant-table-body
+  .ant-table-tbody
+  tr
+  td {
   white-space: normal !important;
 }
 </style>
