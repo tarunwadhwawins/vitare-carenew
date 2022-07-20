@@ -70,20 +70,12 @@
                             </div>
                             
                             <div v-if="(timeline.type == 4 || timeline.type == 10) && timeline.entity.data" class="timelineBody">
-                                <div v-if="timeline.entity.data.addType == 'Manual'" class="content">
-                                    <p class="timeline-float timeline-title">
-                                        <span>{{timeline.title }}</span><strong>{{ ' '+timeline.entity.data.addType }}</strong>
-                                        <span v-if="timeline.entity.data.vitalField == 'Sleep'">
-                                            <span v-if="moment(dateFormat(timeline.entity.data.startTime)) == moment(dateFormat(timeline.entity.data.endTime))">,&nbsp;Vitals Taken: {{ ' '+moment(dateFormat(timeline.entity.data.takeTime)).format("MMM DD, yyyy hh:mm A") }}</span>
-                                            <span v-else>,&nbsp;Vitals Time: {{ ' '+moment(dateFormat(timeline.entity.data.startTime)).format("MMM DD, yyyy hh:mm A")+' - '+moment(dateFormat(timeline.entity.data.endTime)).format("MMM DD, yyyy hh:mm A") }}</span>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div v-else class="content">
-                                    <p class="timeline-float timeline-title">
-                                        <span v-html="timeline.title"></span>
-                                    </p>
-                                </div>
+                                <p class="timeline-float timeline-title">
+                                    <span>{{timeline.title }}</span>
+                                    <span v-if="timeline.entity.data.deviceType != 'Manual' && timeline.entity.data.addType == 'Manual'"><strong>{{ ' '+timeline.entity.data.addType }}</strong>,&nbsp;</span>
+                                    <span v-if="timeline.entity.data.startTime == timeline.entity.data.endTime">&nbsp;Vitals Taken: {{ ' '+moment(dateFormat(timeline.entity.data.takeTime)).format("MMM DD, yyyy hh:mm A") }}</span>
+                                    <span v-else>&nbsp;Vitals Time: {{ ' '+moment(dateFormat(timeline.entity.data.startTime)).format("MMM DD, yyyy hh:mm A")+' - '+moment(dateFormat(timeline.entity.data.endTime)).format("MMM DD, yyyy hh:mm A") }}</span>
+                                </p>
                             </div>
                             <div v-else class="timelineBody">
                                 <div class="content">

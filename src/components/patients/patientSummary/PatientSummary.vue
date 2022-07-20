@@ -35,7 +35,7 @@
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="showStartTimer && !showPauseTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
-                <a-button v-if="showPauseTimer" class="primaryBtn" @click="pauseTimer">{{$t('patientSummary.pauseTimer')}}</a-button>
+                <a-button v-if="!showResumeTimer && showPauseTimer" class="primaryBtn" @click="pauseTimer">{{$t('patientSummary.pauseTimer')}}</a-button>
                 <a-button v-if="showResumeTimer && !showStartTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.resumeTimer')}}</a-button>
                 <a-button v-if="!showStartTimer" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
@@ -64,7 +64,7 @@
             </a-col>
           </a-row>
         </a-layout-content>
-        <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && conversation" :communication="conversation" :conversationId="conversationId" :idPatient="receiverId" />
+        <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && conversation" :communication="conversation" :conversationId="conversationId" :idPatient="receiverId" :timer="formattedElapsedTime" @pauseTimer="pauseTimer" @stopTimer="stopTimer" @startTimer="startTimer" />
       </a-layout>
     </a-layout>
     
@@ -378,9 +378,9 @@ export default {
     };
 
     const pauseTimer = () => {
-        store.commit('showResumeTimer', true);
-        store.commit('showPauseTimer', false);
-        clearInterval(timer.value);
+      store.commit('showResumeTimer', true);
+      store.commit('showPauseTimer', false);
+      clearInterval(timer.value);
     };
   
     const handleClose = ({link=null,modal, value, cancelBtn}) => {
