@@ -1,6 +1,6 @@
 <template>
 <a-modal width="95%" title="Messages" centered :maskClosable="false" @cancel="closeModal()" class="chatModal" :footer="false">
-    <a-row :gutter="24" v-if="routeName != 'PatientSummary'">
+    <a-row :gutter="24">
         <a-col :xl="24" :lg="24">
             <div class="timer">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
@@ -96,6 +96,9 @@ export default {
         idPatient: {
             type: Number
         },
+        timer: {
+            type: String
+        },
     },
     setup(props, { emit }) {
         const store = useStore()
@@ -156,10 +159,11 @@ export default {
             const date = new Date(null);
             date.setSeconds(elapsedTime.value / 1000);
             const utc = date.toUTCString();
-            return utc.substr(utc.indexOf(":") - 2, 8);
+            return props.timer ? props.timer : utc.substr(utc.indexOf(":") - 2, 8);
         })
 
         function startTimer() {
+            emit('startTimer')
             timer.value = setInterval(() => {
                 elapsedTime.value += 1000;
             }, 1000);
@@ -169,6 +173,7 @@ export default {
         }
 
         const stopTimer = () => {
+            emit('stopTimer')
             if(routeName != 'PatientSummary') {
                 store.dispatch("timeApproval", {
                     staff: auth.user.staffUdid,
@@ -189,6 +194,7 @@ export default {
         };
 
         const pauseTimer = () => {
+            emit('pauseTimer')
             store.commit('showResumeTimer', true);
             store.commit('showPauseTimer', false);
             clearInterval(timer.value);
@@ -365,28 +371,6 @@ export default {
                     emit('is-visible', false)
                 })
             }
-            
-            /* emit('is-visible', true)
-            clearInterval(timer.value);
-            warningSwal(messages.timerMessage).then((response) => {
-                if (response == true) {
-                    emit('is-visible', false)
-                    store.commit('showStartTimer', false);
-                    store.commit('showPauseTimer', true);
-                    store.commit('showResumeTimer', false);
-                    stopTimer()
-                }
-                else {
-                    emit('is-visible', true)
-                    if(!showResumeTimer.value && !showStartTimer.value) {
-                        startTimer()
-                    }
-                    localStorage.removeItem('isChatOpened')
-                    store.state.communications.conversationList = []
-                    clearInterval(interval);
-                    localStorage.removeItem('patientUdid')
-                }
-            }); */
         }
 
         onMounted(() => {
@@ -428,12 +412,13 @@ export default {
         })
 
         onUnmounted(() => {
-            console.log('Stop Timer')
-            store.commit('showStartTimer', false);
-            store.commit('showPauseTimer', true);
-            store.commit('showResumeTimer', false);
-            // stopTimer()
-            clearInterval(interval)
+            if(route.name != 'PatientSummary') {
+                store.commit('showStartTimer', false);
+                store.commit('showPauseTimer', true);
+                store.commit('showResumeTimer', false);
+                // stopTimer()
+                clearInterval(interval)
+            }
         })
 
         const flagsList = computed(() => {

@@ -5,7 +5,7 @@ const patientSummary = {
     carePlan:'Care Plan',
     patientVitals:'Patient Vitals',
     currentSession:'Current Session',
-    stopTimer:'Stop Timer',
+    stopTimer:'Submit',
     pauseTimer:'Pause Timer',
     resumeTimer:'Resume Timer',
     startTimer:'Start Timer',
