@@ -931,25 +931,35 @@ export const patientVitals = (state, vitals) => {
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
     // console.log('vitals.length', patientGraphData)
-
-    vitalsArray.forEach(vital => {
-      switch (vital.deviceType) {
-        case 'Blood Pressure':
-          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
-          state.bloodPressureGraph = patientGraphData;
-          break;
-        case 'Oximeter':
-          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
-          state.bloodOxygenGraph = patientGraphData;
-          break;
-        case 'Glucose':
-          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
-          state.bloodGlucoseGraph = patientGraphData;
-          break;
-        default:
-          break;
-      }
-    });
+    
+    if(vitalsArray.length > 0) {
+      vitalsArray.forEach(vital => {
+        switch (vital.deviceType) {
+          case 'Blood Pressure':
+            state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
+            state.bloodPressureGraph = patientGraphData;
+            break;
+          case 'Oximeter':
+            state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
+            state.bloodOxygenGraph = patientGraphData;
+            break;
+          case 'Glucose':
+            state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
+            state.bloodGlucoseGraph = patientGraphData;
+            break;
+          default:
+            break;
+        }
+      });
+    }
+    else {
+      state.bloodPressure = null
+      // state.bloodPressureGraph = null
+      state.bloodOxygen = null
+      // state.bloodOxygenGraph = null
+      state.bloodGlucose = null
+      // state.bloodGlucoseGraph = null
+    }
 
     // const dynamicColumns = createDynamicColumns(vitalsArray)
     // if(dynamicColumns.tableName === 'Blood Pressure') {

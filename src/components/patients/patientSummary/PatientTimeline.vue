@@ -27,11 +27,7 @@
     </div>
 
     <a-timeline class="defaultTimeline" style="height: calc(100vh - 330px)">
-        <div v-if="
-          patientTimeline &&
-          patientTimeline != null &&
-          patientTimeline.length > 0
-        ">
+        <div v-if="patientTimeline && patientTimeline != null && patientTimeline.length > 0">
             <a-checkbox-group v-model:value="value1" style="width: 100%" @change="onChangeCheckBox">
                 <template v-for="timeline in patientTimeline" :key="timeline.id">
                     <a-timeline-item color="blue">
@@ -53,54 +49,48 @@
                                 <div class="title">
                                     <h4>{{ timeline.heading }}:</h4>
                                     <span class="time">{{
-                      moment(dateFormat(timeline.createdAt)).format(
-                        "DD-MM-YYYY"
-                      ) === moment().format("DD-MM-YYYY")
-                        ? moment(dateFormat(timeline.createdAt)).format(
-                            "hh:mm A"
-                          )
-                        : moment(dateFormat(timeline.createdAt)).format(
-                            "MMM DD,yyyy hh:mm A"
-                          )
-                    }}</span>
+                                        moment(dateFormat(timeline.createdAt)).format("DD-MM-YYYY") === moment().format("DD-MM-YYYY")
+                                        ? moment(dateFormat(timeline.createdAt)).format("hh:mm A")
+                                        : moment(dateFormat(timeline.createdAt)).format("MMM DD, yyyy hh:mm A")
+                                    }}</span>
                                 </div>
 
                                 <a-checkbox v-model:value="timeline.entity.data.id" v-if="timeline.type == 7 && timeline.entity.data && timeline.entity.data.isDelete==0" @click="checkBox"></a-checkbox>
                                
                                 <div class="title" v-else-if="timeline.type == 7 && timeline.entity.data">
-                                
-                                  <router-link :to="{ name: 'CoordinatorSummary', params: { udid:timeline.entity.data.deletedById  }}">{{timeline.entity.data.deletedBy+' ' }} </router-link>{{' &nbsp;' +$t('common.clearFlag') }}
-                                 
-                                 
-                                  {{
-                      moment(dateFormat(timeline.entity.data.deletedAt)).format(
-                        "DD-MM-YYYY"
-                      ) === moment().format("DD-MM-YYYY")
-                        ? ' ' +moment(dateFormat(timeline.entity.data.deletedAt)).format(
-                            "hh:mm A"
-                          )
-                        : ' ' +moment(dateFormat(timeline.entity.data.deletedAt)).format(
-                            "MMM DD,yyyy hh:mm A"
-                          )
-                    }}
-                                {{ timeline.entity.data.reason? ' ' + $t('common.for') +' '+timeline.entity.data.reason  :'' }}  
+                                    <router-link :to="{ name: 'CoordinatorSummary', params: { udid:timeline.entity.data.deletedById  }}">{{timeline.entity.data.deletedBy+' ' }} </router-link>{{' &nbsp;' +$t('common.clearFlag') }}
+                                    {{
+                                        moment(dateFormat(timeline.entity.data.deletedAt)).format("DD-MM-YYYY") === moment().format("DD-MM-YYYY")
+                                        ? ' ' +moment(dateFormat(timeline.entity.data.deletedAt)).format("hh:mm A")
+                                        : ' ' +moment(dateFormat(timeline.entity.data.deletedAt)).format("MMM DD, yyyy hh:mm A")
+                                    }}
+                                    {{ timeline.entity.data.reason? ' ' + $t('common.for') +' '+timeline.entity.data.reason  :'' }}  
                                 </div>
                             
                             </div>
-                            <div class="timelineBody">
+                            
+                            <div v-if="(timeline.type == 4 || timeline.type == 10) && timeline.entity.data" class="timelineBody">
+                                <p class="timeline-float timeline-title">
+                                    <span>{{timeline.title }}</span>
+                                    <span v-if="timeline.entity.data.deviceType != 'Manual' && timeline.entity.data.addType == 'Manual'"><strong>{{ ' '+timeline.entity.data.addType }}</strong>,&nbsp;</span>
+                                    <span v-if="timeline.entity.data.startTime == timeline.entity.data.endTime">&nbsp;Vitals Taken: {{ ' '+moment(dateFormat(timeline.entity.data.takeTime)).format("MMM DD, yyyy hh:mm A") }}</span>
+                                    <span v-else>&nbsp;Vitals Time: {{ ' '+moment(dateFormat(timeline.entity.data.startTime)).format("MMM DD, yyyy hh:mm A")+' - '+moment(dateFormat(timeline.entity.data.endTime)).format("MMM DD, yyyy hh:mm A") }}</span>
+                                </p>
+                            </div>
+                            <div v-else class="timelineBody">
                                 <div class="content">
                                     <p class="timeline-float timeline-title">
                                         <span v-html="timeline.title"></span>
                                     </p>
                                 </div>
                             </div>
+                            
                         </div>
                     </a-timeline-item>
                 </template>
             </a-checkbox-group>
         </div>
-        <div v-else class="noData">
-        No Data</div>
+        <div v-else class="noData"> No Data</div>
     </a-timeline><TimelineLoader />
 </div>
 <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="pId" @closeModal="handleOk" :flags="flagsRecord" title="update"/>

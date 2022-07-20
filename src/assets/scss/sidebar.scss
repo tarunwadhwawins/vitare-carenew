@@ -26,23 +26,29 @@ body.test {
                             .ant-menu {
                                 a {
                                     .ant-menu-item {
-                                        text-align: right;
-                                        transition: all 0.5s !important;
-                                        .menuItem {
-                                            display: none;
+                                        @media (min-width: 1200px) {
+                                            text-align: right;
                                             transition: all 0.5s !important;
                                         }
+                                        .menuItem {
+                                            @media (min-width: 1200px) {
+                                                display: none;
+                                                transition: all 0.5s !important;
+                                            }
+                                        }
                                     }
-                                } 
-                            } 
-                        } 
-                    } 
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
         .ant-layout-has-sider {
-            padding-left: 45px !important;
-            transition: all 0.5s !important;
+            @media (min-width: 1200px) {
+                padding-left: 45px !important;
+                transition: all 0.5s !important;
+            }
         }
     }
 }
@@ -72,7 +78,7 @@ body.test {
                             }
                             &.router-link-active {
                                 .ant-menu-item {
-                                    background-color: #f0f2f5!important;
+                                    background-color: #f0f2f5 !important;
                                 }
                             }
                         }
@@ -83,7 +89,6 @@ body.test {
     }
 }
 
-
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: transparent!important;
+    background-color: transparent !important;
 }
