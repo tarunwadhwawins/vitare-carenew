@@ -169,11 +169,6 @@ export default {
         sorter: true,
       },
       {
-        title: "Serial Number",
-        dataIndex: "serialNumber",
-        sorter: true,
-      },
-      {
         title: "Active/Inactive",
         dataIndex: "isActive",
 

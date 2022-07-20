@@ -20,20 +20,28 @@
             
           </div>
         </a-col>
+
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.macAddress')" name="macAddress" :rules="[{ required: true, message: $t('inventory.macAddress')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('global.macAddress')+'/'+$t('global.serialNumber')" name="to">
+              <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle(); checkChangeInput()">
+                <span class="btn-content">{{ $t('global.macAddress') }}</span>
+              </div>
+              <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle(); checkChangeInput()">
+                <span class="btn-content">{{ $t('global.serialNumber') }}</span>
+              </div>
+            </a-form-item>
+          </div>
+        </a-col>
+
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="!toggleTo ? $t('inventory.macAddress') : $t('inventory.serialNumber')" name="macAddress" :rules="[{ required: true, message: $t('inventory.macAddress')+' '+$t('global.validation')  }]">
               <a-input v-model:value="inventoryForm.macAddress" size="large" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: false, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="inventoryForm.serialNumber" size="large" @change="checkChangeInput()"/>
-            </a-form-item>
-          </div>
-        </a-col>
+        
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.activeStatus')" name="isActive">
@@ -80,7 +88,11 @@ export default {
     const store = useStore()
     const checked = ref([false]);
     const formRef = ref()
-   
+    const toggleTo = ref(false);
+
+    function buttonToggle() {
+      toggleTo.value = !toggleTo.value;
+    }
 
     const inventory = computed(() => {
       return store.state.inventory;
@@ -118,11 +130,6 @@ export default {
       store.dispatch('deviceModalsList', inventoryForm.deviceType)
     };
     
-   
-    
-
-   
-
     const submitForm = () => {
       if(props.isAdd) {
 				//Object.assign(inventoryForm, form)
@@ -191,7 +198,28 @@ export default {
       checkFieldsData,
 			checkChangeInput,
       formRef,
+      buttonToggle,
+      toggleTo,
     };
   },
 };
 </script>
+
+<style>
+.ant-modal-footer {
+    display: none;
+}
+
+.toggleButton {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 6px 16px;
+    display: inline-block;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.toggleButton.active {
+    background-color: #777;
+    color: #fff;
+}
+</style>

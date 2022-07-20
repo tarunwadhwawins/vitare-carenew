@@ -309,10 +309,6 @@ export const devices = (state, data) => {
       dataIndex: "macAddress",
     },
     {
-      title: "Serial No",
-      dataIndex: "serialNumber",
-    },
-    {
       title: "Active/Inactive",
       dataIndex: "active",
       slots: {

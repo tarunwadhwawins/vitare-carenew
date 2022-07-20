@@ -208,7 +208,6 @@ class ServiceMethodService {
                                     label: label,
                                     modelNumber: item.modelNumber,
                                     macAddress: item.macAddress,
-                                    serialNumber: item.serialNumber,
                                 });
                             }
                             else {
