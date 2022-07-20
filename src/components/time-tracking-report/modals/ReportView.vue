@@ -117,11 +117,6 @@ export default defineComponent({
         dataIndex: "macAddress",
       },
       {
-        title: "Serial No",
-        dataIndex: "serialNumber",
-        sorter: true,
-      },
-      {
         title: "Issue Date",
         dataIndex: "issueDate",
       },

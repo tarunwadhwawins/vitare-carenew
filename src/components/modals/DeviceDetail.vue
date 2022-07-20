@@ -80,10 +80,6 @@ export default defineComponent({
         dataIndex: "macAddress",
       },
       {
-        title: "Serial No",
-        dataIndex: "serialNumber",
-      },
-      {
         title: "Action",
         dataIndex: "action",
         slots: {

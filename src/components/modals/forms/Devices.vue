@@ -38,16 +38,6 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
-            <div class="form-group">
-                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
-                    <div >
-                        <a-input size="large" @change="onChange()" v-model:value="device.serialNumber"  disabled />
-                    </div>
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
-                </a-form-item>
-            </div>
-        </a-col>
     
     </a-row>
     <a-row :gutter="24" class="mb-24">
@@ -104,7 +94,6 @@ export default defineComponent({
       inventory: "",
       deviceType: "",
       modelNumber: "",
-      serialNumber: "",
       macAddress: "",
       // deviceTime: "",
       // serverTime: "",
@@ -192,7 +181,6 @@ export default defineComponent({
       store.dispatch("inventoryList", { isAvailable: 1, deviceType: id });
       device.inventory = null;
       device.modelNumber = null,
-      device.serialNumber =null,
       device.macAddress = null
     }
     // const deviceFailed = () => {
@@ -202,7 +190,6 @@ export default defineComponent({
     function handleChange(id) {
       let temp = arrayToObjact(patients.value.inventoryList,id)
       device.modelNumber = temp.modelNumber,
-      device.serialNumber =temp.serialNumber,
       device.macAddress = temp.macAddress
     }
 

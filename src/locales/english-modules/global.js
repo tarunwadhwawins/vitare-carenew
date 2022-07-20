@@ -85,7 +85,9 @@ const global = {
   careCoodinator:'Care Coordinator',
   staff:'Staff',
   startCall:'Start Call',
-  placeOfService: 'Place of Service'
+  placeOfService: 'Place of Service',
+  macAddress: 'MAC Address',
+  serialNumber: 'Serial Number',
 }
 
 

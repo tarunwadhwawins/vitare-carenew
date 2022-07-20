@@ -2,7 +2,7 @@ const inventory = {
   deviceType: 'Device Type',
   modelNumber: 'Model Number',
   serialNumber: 'Serial Number',
-  macAddress: 'Mac Address',
+  macAddress: 'MAC Address',
   activeStatus: 'Active/Inactive',
 }
 
