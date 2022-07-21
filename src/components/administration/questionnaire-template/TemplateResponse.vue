@@ -2,10 +2,10 @@
 <div class="common-bg">
     <h2 class="pageTittle">{{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}</h2>
     <div class="templateType">
-        <div>User Type : <span> Staff</span></div>
-        <div>Staff Name : <span> {{userName.user.name}}</span></div>
+        <div>User Type : <span> {{templateId  ? usertype : 'Staff'}}</span></div>
+        <div>Staff Name : <span> {{templateId ? user.name : ''}}</span></div>
         <div>Template Type : <span> {{detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateType : ''}}</span></div>
-        
+
     </div>
 
     <!-- <router-link to="/questionnaire-template" class="b-inline ml-10">
@@ -109,7 +109,7 @@
             </div>
 
         </div>
-        <a-col :span="24" v-if="detailsQuestionnaireTemplate">
+        <a-col :span="24" v-if="detailsQuestionnaireTemplate && (user.id==userName.user.staffUdid || user.id==userName.user.udid)">
 
             <div class="steps-action mt-28">
                 <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -130,30 +130,46 @@ import { defineComponent, ref, onMounted, reactive, watchEffect } from "vue";
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
 import { useRoute,useRouter } from "vue-router";
-
-
 export default defineComponent({
+    emits: ["is-visible"],
     name: "Question Template Details",
     components: {
         TableLoader,
     },
-
-    setup() {
+    props: {
+        templateId: String,
+        clientResponse: Boolean,
+        user:Object,
+        userType:String,
+    },
+    setup(props, {
+        emit
+    }) {
         const store = useStore();
         const route = useRoute();
-         const router = useRouter()
+        const router = useRouter()
         const userName = JSON.parse(localStorage.getItem("auth"));
         const questionnaireTemplate = reactive({
             templateText: [],
             radioOption: [],
             checkBoxOption: [],
         });
-        const udid = route.params.udid;
-        
+
+        const udid = props.templateId ? props.templateId : route.params.udid
+
         const show = ref(false)
+        const questionnaireResponseDetails = store.getters.questionnaireResponseDetails
         onMounted(() => {
-            store.dispatch("detailsQuestionnaireTemplate", udid);
-            store.dispatch("templateDetailsList", udid);
+            if (props.clientResponse) {
+                store.dispatch("questionnaireResponseDetails", udid).then(() => {
+                    store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.value.questionnaireTemplateId)
+                    //store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTemplateId)
+                })
+            } else {
+                store.dispatch("detailsQuestionnaireTemplate", udid);
+                store.dispatch("templateDetailsList", udid);
+            }
+           
         });
         const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
         const ansTemplate = () => {
@@ -165,19 +181,19 @@ export default defineComponent({
                     let newRescord = "";
                     if (element.entityType != 'question') {
                         element.questionnaireSection.questionSection.map((records) => {
-console.log("check",questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id])
+                            console.log("check", questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id])
                             if (records.question.dataTypeId == 244) {
                                 newRescord = {
                                     question: records.question.id,
                                     dataType: records.question.dataTypeId,
-                                    answer: questionnaireTemplate.checkBoxOption[element.questionnaireSection.id+''+records.question.id] ? questionnaireTemplate.checkBoxOption[element.questionnaireSection.id+''+records.question.id] : [],
+                                    answer: questionnaireTemplate.checkBoxOption[element.questionnaireSection.id + '' + records.question.id] ? questionnaireTemplate.checkBoxOption[element.questionnaireSection.id + '' + records.question.id] : [],
                                     sectionId: element.questionnaireSection.id,
                                 };
                             } else if (records.question.dataTypeId == 243) {
                                 newRescord = {
                                     question: records.question.id,
                                     dataType: records.question.dataTypeId,
-                                    answer: questionnaireTemplate.radioOption[element.questionnaireSection.id+''+records.question.id] ? questionnaireTemplate.radioOption[element.questionnaireSection.id+''+records.question.id] : '',
+                                    answer: questionnaireTemplate.radioOption[element.questionnaireSection.id + '' + records.question.id] ? questionnaireTemplate.radioOption[element.questionnaireSection.id + '' + records.question.id] : '',
                                     sectionId: element.questionnaireSection.id,
                                 };
                             } else {
@@ -225,11 +241,18 @@ console.log("check",questionnaireTemplate.templateText[element.questionnaireSect
                 data: data,
                 id: udid
             }).then(() => {
-               
-                router.push({
-                        path: "/questionnaireResponse",
-                        
+                if (props.templateId) {
+
+                    emit("is-visible", {
+                        show: false,
+                        id: ''
                     })
+                } else {
+                    router.push({
+                        path: "/questionnaireResponse",
+
+                    })
+                }
 
             })
         };
@@ -289,7 +312,8 @@ console.log("check",questionnaireTemplate.templateText[element.questionnaireSect
             value: ref("1"),
             show,
 
-            userName
+            userName,
+            questionnaireResponseDetails
         };
     },
 });

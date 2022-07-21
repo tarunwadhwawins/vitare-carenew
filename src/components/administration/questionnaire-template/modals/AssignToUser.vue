@@ -89,7 +89,7 @@ store.dispatch("detailsQuestionnaireTemplate", props.tempId)
 
                 })
             }) : ''
-            userAssign.staffId.length > 0 ? userAssign.patientsId.map((item) => {
+            userAssign.staffId.length > 0 ? userAssign.staffId.map((item) => {
                 data.push({
                     "questionnaireTemplateId": props.tempId,
                     "entityType": 246,

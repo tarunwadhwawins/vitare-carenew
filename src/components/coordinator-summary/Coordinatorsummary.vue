@@ -155,7 +155,7 @@
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
-                                 <a-tab-pane key="7" tab="Feedback">
+                                 <a-tab-pane key="7" tab="Questionnaire Response">
                                     
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">

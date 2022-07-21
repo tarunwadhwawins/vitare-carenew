@@ -8,29 +8,24 @@
     </template>
     <template #actions="{record}">
 
-       
-        
-        
-        
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
             </template>
-            <a class="icons" >
-               
-                    <SendOutlined @click="showQuestionnaireForm(record.questionnaireTemplateId)"/>
-               
+            <a class="icons">
+
+                <SendOutlined @click="showQuestionnaireForm(record)" />
+
             </a>
         </a-tooltip>
-        
-       
+
     </template>
-    
+
 </a-table>
 <Loader />
-<a-modal width="70%" v-model:visible="visible" title="Questionnaire" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
-<TemplateResponse v-if="visible == true" :templateId="templateId" />
-    </a-modal>
+<a-modal width="80%" v-model:visible="visible" title="Questionnaire" :maskClosable="false" centered @cancel="closeModal()" :footer="false">
+    <TemplateResponse v-if="visible == true" :templateId="templateId" :clientResponse="clientResponse" @is-visible="emitFunction($event)" :user="userName" :userType="userType"/>
+</a-modal>
 </template>
 
 <script>
@@ -40,8 +35,7 @@ import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
 import {warningSwal} from "@/commonMethods/commonMethod";
 import TemplateResponse from "@/components/administration/questionnaire-template/TemplateResponse";
-import { onMounted , ref , computed } from "vue"
-
+import { onMounted , ref , computed, onUnmounted } from "vue"
 const columns = [{
         title: "Questionnaire Template",
         dataIndex: "templateName",
@@ -53,6 +47,11 @@ const columns = [{
     {
         title: "Type",
         dataIndex: "templateType",
+    },
+      {
+        title: "Status",
+        dataIndex: "status",
+        
     },
     {
         title: "Actions",
@@ -78,6 +77,8 @@ export default {
         const templateId = ref('')
         const data = store.getters.assignAllTemplates
         const meta = store.getters.questionnaireTemplateMeta
+        const userName = ref('')
+        const userType = ref('')
         let record = []
         let scroller = ""
         onMounted(() => {
@@ -113,9 +114,6 @@ export default {
             }, 50)
         }
 
-        
-
-       
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == "ascend" ? "ASC" : "DESC";
@@ -143,41 +141,57 @@ export default {
             }
         }
 
-      
-        const showQuestionnaireForm =(id)=>{
+        const clientResponse = ref('')
+        const showQuestionnaireForm = (id) => {
+            userName.value = {name:id.userName,id:id.userId}
+            userType.value = id.userType
+            if (id.clientQuestionnaireTemplateId) {
+                templateId.value = id.clientQuestionnaireTemplateId
+                clientResponse.value = true
+            } else {
+                templateId.value = id.questionnaireTemplateId
+                clientResponse.value = false
+            }
+
             visible.value = true
-            templateId.value = id
 
         }
-        const checkFieldsData = computed(()=>{
-      return store.state.common.checkChangeInput;
-    })
-         function closeModal() {
-      if(checkFieldsData.value){
-         visible.value = true
-      warningSwal(messages.modalWarning).then((response) => {
-        if (response == true) {
-         
-          
-           store.commit('clearStaffFormValidation',true)
-          store.commit('checkChangeInput',false)
-           
-          
-         
-        } else {
-          store.commit('clearStaffFormValidation',false)
-          
-              visible.value  =true
-          
-        }
-      });
-      }else{
-         visible.value = false
-          store.commit('clearStaffFormValidation',true)
-      }    
-        
-    }
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        })
 
+        function closeModal() {
+            if (checkFieldsData.value) {
+                visible.value = true
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+
+                        store.commit('clearStaffFormValidation', true)
+                        store.commit('checkChangeInput', false)
+
+                    } else {
+                        store.commit('clearStaffFormValidation', false)
+
+                        visible.value = true
+
+                    }
+                });
+            } else {
+                visible.value = false
+                store.commit('clearStaffFormValidation', true)
+            }
+
+        }
+        const emitFunction = (event) => {
+
+             visible.value = event.show
+        }
+        onUnmounted(()=>{
+            store.state.questionnaireTemplate.questionnaireResponseDetails = null
+            store.state.questionnaireTemplate.detailsQuestionnaireTemplate = null
+            store.state.questionnaireTemplate.templateDetailsList = []
+
+        })
         return {
 
             columns,
@@ -185,7 +199,12 @@ export default {
             handleTableChange,
             visible,
             showQuestionnaireForm,
-            closeModal
+            closeModal,
+            templateId,
+            clientResponse,
+            emitFunction,
+            userName,
+            userType
         };
     },
 };
