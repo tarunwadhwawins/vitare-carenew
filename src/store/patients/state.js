@@ -109,6 +109,7 @@ export default {
     visiblePatientDetailsModal:false,
     patientUdid:null,
     patientReferenceId:null,
+    filteredVitals:false,
 
 
 }

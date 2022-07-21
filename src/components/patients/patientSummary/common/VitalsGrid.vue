@@ -29,7 +29,7 @@ import {
 import VitalsTable from "@/components/patients/patientSummary/common/VitalsTable";
 import ApexChart from "@/components/common/charts/ApexChart";
 import DateFilter from "@/components/common/DateFilter"
-import { onMounted, watchEffect } from 'vue-demi';
+import { computed, onMounted, watchEffect } from 'vue-demi';
 import { useStore } from 'vuex';
 import { dayWeekMonthdate } from '../../../../commonMethods/commonMethod';
 import { useRoute } from 'vue-router';
@@ -77,6 +77,10 @@ export default {
     const showModal = () => {
       emit('showModal')
     }
+
+    const filteredVitals = computed(() => {
+      return store.state.patients.filteredVitals
+    })
     
     const bloodOxygenTimeline = store.getters.bloodOxygenTimeline
     const bloodGlucoseTimeline = store.getters.bloodGlucoseTimeline
@@ -120,7 +124,7 @@ export default {
 
     watchEffect(() => {
       setInterval(() => {
-        if(route.name == 'PatientSummary') {
+        if(route.name == 'PatientSummary' && !filteredVitals.value) {
           getVitals()
         }
       }, 30000)
@@ -162,6 +166,7 @@ export default {
     }
 
     function showButton(deviceId) {
+      store.commit('filteredVitals', true)
       if(deviceId == 99) {
         apiCall(bloodPressureTimeline.value, deviceId)
       }

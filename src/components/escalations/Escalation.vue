@@ -1,10 +1,5 @@
 <template>
 <div>
-    <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-            <PatientInfoTop :patientDetails="patientDetails" />
-        </a-col>
-    </a-row>
     <a-layout-content>
         <div class="common-bg">
             <a-row>
@@ -38,7 +33,6 @@
 </template>
 
 <script>
-import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { computed, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -96,7 +90,6 @@ const columnData = [
 
 export default {
   components: {
-    PatientInfoTop,
     EscaltionTable,
     EscaltionModal,
     Loader,

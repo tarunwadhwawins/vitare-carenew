@@ -91,7 +91,7 @@
             </a-checkbox-group>
         </div>
         <div v-else class="noData"> No Data</div>
-    </a-timeline><TimelineLoader />
+    </a-timeline>
 </div>
 <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="pId" @closeModal="handleOk" :flags="flagsRecord" title="update"/>
 </template>
@@ -121,7 +121,6 @@ import {
 } from "vue-demi";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
-import TimelineLoader from "@/components/loader/TimelineLoader";
 import moment from "moment";
 export default {
     components: {
@@ -136,7 +135,6 @@ export default {
         // InfoCircleOutlined,
         FlagOutlined,
         CloseCircleOutlined,
-        TimelineLoader,
         //CheckCircleOutlined,
         PatientFlagsModal: defineAsyncComponent(() =>
             import("@/components/modals/PatientFlagsModal")
@@ -190,7 +188,6 @@ export default {
         let data = [];
         let scroller = "";
         onMounted(() => {
-            // store.commit('loadingTimelineStatus', true)
             if (route.name == "PatientSummary") {
 
                 store.dispatch("timeLineType").then(() => {
