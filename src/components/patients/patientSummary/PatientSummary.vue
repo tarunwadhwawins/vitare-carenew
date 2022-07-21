@@ -22,16 +22,14 @@
             <a-col :xl="8" :lg="14">
               <div class="pageTittle patientSummaryFilters">
                 <div class="filter">
-                  <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
-                  <a-button @click="showButton(2) ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
-                  <a-button @click="showButton(3) ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
-                  <a-button @click="showButton(4) ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
-                  <a-button @click="showButton(5) ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
+                  <a-button @click="showButton(1) ; actionTrack(paramsId,285,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
+                  <a-button @click="showButton(2) ; actionTrack(paramsId,286,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
+                  <a-button @click="showButton(3) ; actionTrack(paramsId,287,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
+                  <a-button @click="showButton(4) ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
                 </div>
               </div>
             </a-col>
             <a-col :xl="7" :lg="6">
-              <!-- <div class="timer" @click="actionTrack(paramsId,288,'patient')" v-if="arrayToObjact(screensPermissions, 288)"> -->
                 <div class="timer" @click="actionTrack(paramsId,288,'patient')" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="showStartTimer && !showPauseTimer" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
@@ -45,21 +43,9 @@
               <CriticalNotes v-if="patientCriticalNotes && patientCriticalNotes.length > 0" />
             </a-col>
             <a-col :sm="24" :xs="24">
-              <div v-if="button == 1">
-                <DefaultView/>
-              </div>
-              <div v-if="button == 2">
-                <TimelineView/>
+              <div>
+                <PatientSummaryContent :patientId="paramsId" :buttonId="button"/>
                 <TableLoader />
-              </div>
-              <div v-if="button == 3">
-                <CarePlanView/>
-              </div>
-              <div v-if="button == 4">
-                <PatientVitalsView/>
-              </div>
-              <div v-if="button == 5">
-                <Escalation :patientId="paramsId"/>
               </div>
             </a-col>
           </a-row>
@@ -75,16 +61,9 @@
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
-import DefaultView from "@/components/patients/patientSummary/views/DefaultView";
-import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
-import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
-import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
+import PatientSummaryContent from "@/components/patients/patientSummary/views/PatientSummaryContent";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-import Escalation from "@/components/escalations/Escalation"
-import TableLoader from "@/components/loader/TableLoader";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
-// import StartCallModal from "@/components/modals/StartCallModal";
-// import VideoCallVue from "../../video-call/videoCall.vue";
 import dayjs from "dayjs"; 
 import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, defineAsyncComponent} from "vue";
 import { useStore } from 'vuex';
@@ -98,24 +77,16 @@ import {
 import moment from 'moment';
 const value = ref(dayjs("12:08", "HH:mm"));
 function clearEvent(event){
-        event.returnValue = '';
-      
-    }
+  event.returnValue = '';
+}
     
 export default {
   components: {
     Header,
     Sidebar,
-    // TimeTracker,
-    DefaultView,
-    TimelineView,
-    CarePlanView,
-    PatientVitalsView,
-    TableLoader,
-    Escalation,
+    PatientSummaryContent,
     CriticalNotes,
     ChatWithPatientInformation,
-    // StartCallModal,
     VideoCallVue:defineAsyncComponent(()=>import('@/components/video-call/PatientVideoCall.vue'))
   },
   setup() {
@@ -135,7 +106,6 @@ export default {
     const chatWithPatientInfoVisible = ref(false);
     const videoModal = ref(false)
     const isEditTimeLog = ref(false);
-    // const startCallModalVisible = ref(false);
     const loader= ref(true)
 
     const appMessage = computed(() => {
@@ -152,13 +122,13 @@ export default {
     };
 
     const showStartTimer = computed(() => {
-        return store.state.common.showStartTimer
+      return store.state.common.showStartTimer
     });
     const showPauseTimer = computed(() => {
-        return store.state.common.showPauseTimer
+      return store.state.common.showPauseTimer
     });
     const showResumeTimer = computed(() => {
-        return store.state.common.showResumeTimer
+      return store.state.common.showResumeTimer
     });
 
     const patientDetails = computed(()=>{
@@ -205,11 +175,7 @@ export default {
       }
     })
 
-    // const startCall = () => {
-    //   startCallModalVisible.value = true
-    // }
-
-     function videoCall() {
+    function videoCall() {
       store.dispatch("appointmentCalls",{patientId:patientUdid})
     }
 
@@ -220,6 +186,7 @@ export default {
       console.log(e);
       custom.value = false;
     };
+
     const next = () => {
       current.value++;
     };
@@ -238,11 +205,9 @@ export default {
     const button = ref(1);
 
     function showButton(value) {
-      // console.log("value",value)
       button.value = value;
     }
     
-
     // Countdown Timer
     const elapsedTime = ref(0)
     const timer = ref(undefined)
@@ -262,7 +227,6 @@ export default {
           startTimer()
         }
       })
-      // store.dispatch("appointmentCalls",{patientId:patientUdid})
       if(route.name == 'PatientSummary') {
         store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
@@ -467,13 +431,13 @@ export default {
       iconLoading.value = true
       videoModal.value = true
       store.commit('loadingStatus', true)
-      store.dispatch("appointmentCalls", startCallForm).then((response)=>{
+      store.dispatch("appointmentCalls", startCallForm).then(() => {
         iconLoading.value = false
-        if(response==true && conferenceId.value){
-          // store.commit('loadingStatus', false)
-          // let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
-          // window.location.href = redirect.href;
-        }
+        // if(response==true && conferenceId.value) {
+        //   store.commit('loadingStatus', false)
+        //   let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
+        //   window.location.href = redirect.href;
+        // }
       })
 
       
@@ -492,7 +456,6 @@ export default {
     const sendMessage = () => {
       conversationId.value = conversationWithPatient.value.id
       store.dispatch("conversation", conversationId.value).then(() => {
-        // console.log("conversation", conversation.value)
         chatWithPatientInfoVisible.value = true
       })
     }
@@ -554,9 +517,7 @@ export default {
       showPauseTimer,
       showResumeTimer,
       pauseTimer,
-    };
-
-    
+    };  
   },
 
   beforeRouteLeave (to, from, next) {

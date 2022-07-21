@@ -1,5 +1,5 @@
 <template>
-  <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlansList" :pagination="false" @change="onChange" >
+  <a-table rowKey="id" :columns="carePlanColumns" :data-source="carePlansList" :pagination="false" @change="onChange">
     <template #frequency="{record}">
       <span>{{ record.frequency }} / {{ record.frequencyType }}</span>
     </template>

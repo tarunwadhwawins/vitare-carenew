@@ -374,6 +374,7 @@ img.reportFlag {
 	padding: 15px;
 	border-radius: 5px;
 	background-color: #fff;
+	max-height: calc(100vh - 100px);
 }
 
 .roles {

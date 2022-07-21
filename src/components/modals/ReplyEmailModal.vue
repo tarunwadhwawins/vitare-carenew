@@ -1,38 +1,35 @@
 <template>
 	<a-modal width="50%" v-if="gmailData" :title="'Subject: '+ gmailData.subject" centered class="chatModal" :footer="false" @cancel="closeModal()" :maskClosable="false">
-		<!-- <div :level="5">
-			<div class="chatWrapper right">
-				<div class="message">
-					{{ gmailData ?  gmailData.message : '' }}
-				</div>
-				<div class="time" >{{ gmailData.message }}</div>
-			</div>
-		</div> -->
 		<a-form ref="formRef" :model="replyForm" layout="vertical" @finish="submitForm">
-			<a-row>
-				<a-col :sm="3" >
-					<div class="form-group">
-						<label><b>Message : </b></label>
-					</div>
-				</a-col>
-				<a-col :sm="20">
-						<label>{{gmailData.message}}</label>
-				</a-col>
-				<a-col :span="24">
-					<div class="form-group">
-						<a-form-item :label="$t('communications.communicationsModal.reply')" name="message" :rules="[{ required: true, message: $t('communications.communicationsModal.message')+' '+$t('global.validation')  }]">
-							<a-textarea v-model:value="replyForm.message" allow-clear @change="checkChangeInput()" />
-						</a-form-item>
-					</div>
-				</a-col>
-				<a-col :span="24">
-					<div class="steps-action">
-						<!-- <a-button class="modal-button" @click="handleClear()">{{$t('global.clear')}}</a-button> -->
-						<a-button class="modal-button" @click="closeModal" >Cancel</a-button>
-						<a-button class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
-					</div>
-				</a-col>
-			</a-row>
+			<div class="messageBox">
+				<a-row>
+					<a-col :sm="20">
+						<p class="msgTitle"><strong>Message:</strong></p>
+						<p class="sender">{{ gmailData.sender }}</p>
+						<p class="message">{{ gmailData.message }}</p>
+						<!-- <p class="time">Jul 21, 2022, 10:46 AM</p> -->
+					</a-col>
+				</a-row>
+			</div>
+			<div class="replyBox">
+				<a-row>
+					<a-col :span="24">
+						<div class="form-group">
+							<a-form-item :label="$t('communications.communicationsModal.reply')" name="message" :rules="[{ required: true, message: $t('communications.communicationsModal.message')+' '+$t('global.validation')  }]">
+								<a-textarea v-model:value="replyForm.message" allow-clear @change="checkChangeInput()" />
+							</a-form-item>
+						</div>
+					</a-col>
+				</a-row>
+				<a-row>
+					<a-col :span="24">
+						<div class="steps-action">
+							<a-button class="modal-button" @click="closeModal" >Cancel</a-button>
+							<a-button class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
+						</div>
+					</a-col>
+				</a-row>
+			</div>
 		</a-form>
 	</a-modal>
 </template>
@@ -147,5 +144,22 @@ export default {
 		color: #999;
 		padding: 3px 0 0 0px;
 	}
+}
+.replyBox { padding: 30px 0px; }
+.messageBox { padding: 10px 30px; background: #f0f8ff; }
+.msgTitle { padding-bottom: 5px }
+p.sender {
+	font-size: 16px;
+	color: #838383;
+}
+p.message {
+	padding-left: 10px;
+	padding-top: 5px;
+}
+p.time {
+	font-size: 13px;
+	color: #838383;
+	padding-left: 10px;
+	padding-top: 5px;
 }
 </style>

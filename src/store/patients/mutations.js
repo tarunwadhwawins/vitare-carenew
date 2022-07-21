@@ -310,10 +310,6 @@ export const devices = (state, data) => {
       dataIndex: "macAddress",
     },
     {
-      title: "Serial No",
-      dataIndex: "serialNumber",
-    },
-    {
       title: "Active/Inactive",
       dataIndex: "active",
       slots: {
@@ -1276,4 +1272,8 @@ export const patientUdid = (state,data) => {
 
 export const patientReferenceId = (state, data) => {
   state.patientReferenceId = data
+}
+
+export const filteredVitals = (state, data) => {
+  state.filteredVitals = data
 }

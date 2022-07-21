@@ -39,16 +39,6 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="12" :sm="12" :xs="24">
-          <div class="form-group">
-            <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
-              <div >
-                <a-input @change="changedValue" size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
-              </div>
-              <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
-            </a-form-item>
-          </div>
-        </a-col>
         <a-col :sm="24" :span="24">
           <ModalButtons @is_click="handleCancel"/>
         </a-col>
@@ -94,7 +84,6 @@ export default defineComponent({
       inventory: "",
       deviceType: "",
       modelNumber: "",
-      serialNumber: "",
       macAddress: "",
     });
 
@@ -112,7 +101,6 @@ export default defineComponent({
           inventory: inventoryForm.inventory,
           deviceType: inventoryForm.deviceType,
           modelNumber: inventoryForm.modelNumber,
-          serialNumber: inventoryForm.serialNumber,
           macAddress: inventoryForm.macAddress,
         },
         id: route.params.udid,
@@ -199,7 +187,6 @@ export default defineComponent({
         );
         inventoryForm.inventory = null;
         inventoryForm.modelNumber = null,
-        inventoryForm.serialNumber =null,
         inventoryForm.macAddress = null
         store.commit('errorMsg', null)
         isValueChanged.value = true;
@@ -215,7 +202,6 @@ export default defineComponent({
         // console.log('element element', element)
         if(element.value == id) {
           inventoryForm.modelNumber = element.modelNumber,
-          inventoryForm.serialNumber = element.serialNumber,
           inventoryForm.macAddress = element.macAddress
         }
       });
