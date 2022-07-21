@@ -164,7 +164,7 @@ export default {
         sorter: true,
       },
       {
-        title: "Mac Address",
+        title: "Mac Address/Serial Number",
         dataIndex: "macAddress",
         sorter: true,
       },
