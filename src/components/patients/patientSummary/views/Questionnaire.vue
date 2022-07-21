@@ -1,62 +1,54 @@
 <template>
 <div>
+    
+    <a-row :gutter="24">
+        <a-col :sm="24" :xs="24">
+            <PatientInfoTop :patientDetails="patientDetails" />
+        </a-col>
+    </a-row>
     <div class="common-bg">
         <a-row>
             <a-col :span="24">
                 <h2 class="pageTittle">
                     Questionnaire Template
-                    <div class="commonBtn">
-                        <a-button class="btn primaryBtn" @click="showModal({show:true,id:''})">Create New Template</a-button>
-                    </div>
+                    
                 </h2>
             </a-col>
             <a-col :span="12">
-                <SearchField endPoint="questionnaire" class="mb-24" />
+                <SearchField endPoint="questionnaire"  class="mb-24" />
             </a-col>
             <a-col :span="24">
-                <QuestionnaireTemplateTable @edit="showModal($event)" @clone="clone($event)" :colomns="columns" endPoint="questionnaireTemplateList"/>
+                <QuestionnaireTemplateTable @edit="showModal($event)" @clone="clone($event)"/>
 
             </a-col>
         </a-row>
     </div>
 </div>
 <!--modals-->
-<CreateTemplate v-model:visible="visible2" :update="update" @is-visible="showModal($event)" :cloneId="templateId"/>
+
 <!---->
 </template>
 <script>
-import CreateTemplate from "@/components/administration/questionnaire-template/modals/CreateTemplate";
-import QuestionnaireTemplateTable from "@/components/administration/questionnaire-template/QuestionnaireTemplateTable";
+
+
+import QuestionnaireTemplateTable from "@/components/patients/patientSummary/views/QuestionnaireTable"
 import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
-const columns = [{
-        title: "Questionnaire Template",
-        dataIndex: "templateName",
-
-        slots: {
-            customRender: "templateName",
-        },
-    },
-    {
-        title: "Type",
-        dataIndex: "templateType",
-    },
-    {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-            customRender: "actions",
-        },
-    },
-];
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 export default {
   components: {
-    CreateTemplate,
+    
     QuestionnaireTemplateTable,
     SearchField,
+    PatientInfoTop
   },
-  setup() {
+  props:{
+    patientDetails:Object,
+    entityType:Number,
+    userId:String,
+  },
+  setup(props) {
     const store = useStore();
     const checked = ref([false]);
     const visible2 = ref(false);
@@ -80,7 +72,7 @@ export default {
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
-      store.dispatch("questionnaireTemplateList");
+      store.dispatch("assignAllTemplates",{id:props.userId,entityType:props.entityType});
     });
 
     onUnmounted(() => {
@@ -105,8 +97,7 @@ update.value = ''
       handleChange2,
       update,
       clone,
-      templateId,
-      columns
+      templateId
     };
   },
 };

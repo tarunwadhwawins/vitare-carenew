@@ -307,3 +307,28 @@ export const assignToUser = async ({
     
   })
 }
+
+export const assignAllTemplates = async ({
+  commit
+},data) => {
+  
+  commit('loadingStatus', true)
+  await serviceMethod.common('get', 'assign/questionnaire/template?referenceId='+data.id+'&entityType='+data.entityType, null, null).then((response) => {
+  
+    commit('assignAllTemplates',response.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      commit('errorMsg',error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg',error.response.data.message)
+    }
+    commit('loadingStatus', false)
+    
+    
+  })
+}
+

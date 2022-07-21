@@ -55,4 +55,7 @@ export const questionnaireResponseDetails = async (state, data) => {
 	}
 
 	
+}
+export const  assignAllTemplates = async (state, data) => {
+	state.assignAllTemplates = data.data
 };

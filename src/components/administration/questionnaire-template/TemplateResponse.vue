@@ -137,6 +137,7 @@ export default defineComponent({
     components: {
         TableLoader,
     },
+
     setup() {
         const store = useStore();
         const route = useRoute();
@@ -148,6 +149,7 @@ export default defineComponent({
             checkBoxOption: [],
         });
         const udid = route.params.udid;
+        
         const show = ref(false)
         onMounted(() => {
             store.dispatch("detailsQuestionnaireTemplate", udid);

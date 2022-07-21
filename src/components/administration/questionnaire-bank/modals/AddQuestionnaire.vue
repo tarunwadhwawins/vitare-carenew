@@ -49,14 +49,14 @@
                     <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
 
                         <a-col :span="2" v-if="questionnaire.questionType == 'Test'">
-                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label><br>
-                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
+                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.correct')}}</label>
+                            <a-checkbox :class="index==0 ? 'd-flex ':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
                             </a-radio-group>
                         </a-col>
                         <a-col :span="2">
-                            <label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">{{$t('questionnaire.default')}}</label><br>
+                            <label v-if="index==0" :class="index==0 ? 'd-flex ':''">{{$t('questionnaire.default')}}</label>
                             <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" v-if="questionnaire.dataTypeId==244" @change="checkboxChangeDefault($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value2">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChangeDefault($event)"></a-radio>

@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
+<a-table rowKey="id" :columns="colomns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
     <template #templateName="text">
         <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:text.record.id?text.record.id:'eyrer8758458958495'  }}">
             {{
@@ -83,26 +83,7 @@ import {warningSwal} from "@/commonMethods/commonMethod";
 import { onMounted , ref } from "vue"
 import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
 import AssignToUser from "@/components/administration/questionnaire-template/modals/AssignToUser"
-const columns = [{
-        title: "Questionnaire Template",
-        dataIndex: "templateName",
 
-        slots: {
-            customRender: "templateName",
-        },
-    },
-    {
-        title: "Type",
-        dataIndex: "templateType",
-    },
-    {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-            customRender: "actions",
-        },
-    },
-];
 
 export default {
     emits: ["edit"],
@@ -118,7 +99,10 @@ export default {
         EditOutlined,
         AssignToUser
     },
-    props: {},
+    props: {
+        colomns:Array,
+        endPoint:String
+    },
     setup(props, {
         emit
     }) {
@@ -147,7 +131,7 @@ export default {
                         scroller = maxScroll;
                         meta.value = ""
                         record = data.value
-                        store.dispatch("questionnaireTemplateList", "?page=" + current_page + store.getters.searchTable.value +
+                        store.dispatch(props.endPoint, "?page=" + current_page + store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         });
@@ -199,7 +183,7 @@ export default {
                     filters: filters,
                 });
                 store.dispatch(
-                    "questionnaireTemplateList",
+                    props.endPoint,
                     "?page=" + store.getters.searchTable.value + orderParam
                 );
             } else {
@@ -207,7 +191,7 @@ export default {
                     data: "&orderField=&orderBy=",
                 });
                 store.dispatch(
-                    "questionnaireTemplateList",
+                    props.endPoint,
                     "?page=" +
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
@@ -235,7 +219,6 @@ assignToUserVisible.value = id.show
 
         return {
             assignToUserId,
-            columns,
             data,
             editModal,
             deleteModal,

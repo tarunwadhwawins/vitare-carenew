@@ -155,6 +155,16 @@
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
+                                 <a-tab-pane key="7" tab="Feedback">
+                                    
+                                    <a-row :gutter="24">
+                                        <a-col :sm="24" :xs="24">
+                                            <!-- Documents Table -->
+                                            <QuestionnaireTemplateTable />
+                                            <Loader />
+                                        </a-col>
+                                    </a-row>
+                                </a-tab-pane>
                             </a-tabs>
                         </div>
                     </a-col>
@@ -221,6 +231,7 @@ import DocumentTable from ".././care-coordinator/tables/DocumentTable";
 import StaffDocumentForm from ".././modals/forms/StaffDocuments";
 import Loader from "../loader/Loader"
 import TableLoader from "../loader/TableLoader"
+import QuestionnaireTemplateTable from "@/components/patients/patientSummary/views/QuestionnaireTable"
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod"
@@ -257,7 +268,8 @@ export default defineComponent({
         PersonalInformation,
         MailOutlined,
         PhoneOutlined,
-        TableLoader
+        TableLoader,
+        QuestionnaireTemplateTable
     },
     setup(props, {
         emit
@@ -281,6 +293,7 @@ export default defineComponent({
                 store.dispatch("staffDocuments", router.params.udid);
                 store.dispatch("staffSummaryAppointment", router.params.udid);
                 store.dispatch("staffSummaryPatient", {id:router.params.udid,data:"?page="});
+                store.dispatch("assignAllTemplates",{id:router.params.udid,entityType:246});
             }
         });
 

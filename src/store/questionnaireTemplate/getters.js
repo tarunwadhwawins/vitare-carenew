@@ -39,5 +39,10 @@ export const questionnaireResponseDetails = (state) => {
     return state.questionnaireResponseDetails
   })
 }
+export const assignAllTemplates = (state) => {
+  return computed(() => {
+    return state.assignAllTemplates
+  })
+}
 
 

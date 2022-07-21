@@ -60,6 +60,9 @@
               <div v-if="button == 5">
                 <Escalation :patientId="paramsId"/>
               </div>
+              <div v-if="button == 6">
+                <QuestionnaireTemplate :patientId="paramsId" :userId="patientUdid" :entityType="247"/>
+              </div>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -85,6 +88,8 @@ import Escalation from "@/components/escalations/Escalation"
 import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
+
+import QuestionnaireTemplate from "@/components/patients/patientSummary/views/Questionnaire"
 // import StartCallModal from "@/components/modals/StartCallModal";
 // import VideoCallVue from "../../video-call/videoCall.vue";
 import dayjs from "dayjs"; 
@@ -119,6 +124,7 @@ export default {
     AddTimeLogModal,
     CriticalNotes,
     ChatWithPatientInformation,
+    QuestionnaireTemplate,
     // StartCallModal,
     VideoCallVue:defineAsyncComponent(()=>import('@/components/video-call/PatientVideoCall.vue'))
   },
@@ -497,7 +503,8 @@ export default {
       showButton,
       startOn,
       loader,
-      iconLoading
+      iconLoading,
+      patientUdid
     };
 
     
