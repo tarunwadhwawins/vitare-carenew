@@ -9,7 +9,7 @@
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
-                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text"></LongCard>
+                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text" @click="filterData(special.text)"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -17,10 +17,16 @@
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
-                <LongCard :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text"></LongCard>
+                <LongCard :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text" @click="filterData(network.text)"></LongCard>
             </a-col>
         </a-row>
     </a-col>
+</a-row>
+
+<a-row>
+    <div class="commonTags">
+        <a-tag v-if="route.query.filter" closable @close="filterData('remove')">{{ route.query.filter }}</a-tag>
+    </div>
 </a-row>
 
 <a-row>
@@ -60,8 +66,9 @@ import {
 } from "@/commonMethods/commonMethod"
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-export default {
+import { useRoute, useRouter } from 'vue-router'
 
+export default {
     components: {
         LongCard,
         CoordinatorTable,
@@ -75,9 +82,10 @@ export default {
         const store = useStore()
         const searchoptions = ref([])
         const visible = ref(false)
+        const route = useRoute();
+        const router = useRouter();
+        
         watchEffect(() => {
-            
-            
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
             store.dispatch("staffs")
@@ -86,6 +94,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
         })
+
         const handleOk = (value) => {
             visible.value = value;
         }
@@ -94,7 +103,6 @@ export default {
             store.state.careCoordinator.documentStaffDetails=null
             visible.value = value;
         };
-
       
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
@@ -102,6 +110,26 @@ export default {
                 data: '&orderField=&orderBy='
             })
         })
+
+        function filterData(event) {
+            if (event != "remove") {
+				setTimeout(() => {
+					router.replace({
+						query: {
+							filter: event
+						}
+					})
+				}, 1000)
+				store.dispatch("staffs", "?filter="+event)
+            }
+            else {
+                router.replace({
+                    query: {}
+                })
+                store.dispatch("staffs")
+            }
+        }
+
         return {
             exportExcel,
             screensPermissions:store.getters.screensPermissions,
@@ -112,6 +140,8 @@ export default {
             searchoptions,
             search:store.getters.searchTable,
             staffs: store.getters.staffRecord,
+            filterData,
+            route,
         };
     },
 };
