@@ -1,8 +1,5 @@
 <template>
   <a-row>
-    <a-col :sm="24" :xs="24">
-      <PatientInfoTop :patientDetails="patientDetails"/>
-    </a-col>
     <a-col :span="24">
       <div class="text-right mb-24 mt-28">
         <a-button class="primaryBtn" @click="AddCarePlan">Add Goal</a-button>
@@ -14,7 +11,6 @@
 </template>
 
 <script>
-import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import CarePlanTable from "@/components/patients/patientSummary/CarePlanTable";
 import { ref } from 'vue-demi';
 import AddCarePlanModal from "@/components/modals/AddCarePlanModal";
@@ -25,14 +21,8 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
-    PatientInfoTop,
     CarePlanTable,
     AddCarePlanModal,
-  },
-  props: {
-    patientDetails:{
-      type: Array
-    }
   },
   setup() {
     const store = useStore()

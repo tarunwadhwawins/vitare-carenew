@@ -1272,3 +1272,7 @@ export const patientUdid = (state,data) => {
 export const patientReferenceId = (state, data) => {
   state.patientReferenceId = data
 }
+
+export const filteredVitals = (state, data) => {
+  state.filteredVitals = data
+}

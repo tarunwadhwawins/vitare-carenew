@@ -7,7 +7,7 @@
             
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
                
-                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="onSelectOption(); handleGlobalChange($event); checkChangeInput()" />
+                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :dataId="22" @handleGlobalChange="onSelectOption($event); handleGlobalChange($event); checkChangeInput()" />
             </a-form-item>
           </div>
         </a-col>
@@ -125,9 +125,9 @@ export default {
       return store.state.inventory.deviceModalsList
     });
 
-    const onSelectOption = () => {
-      inventoryForm.deviceModelId =null
-      store.dispatch('deviceModalsList', inventoryForm.deviceType)
+    const onSelectOption = (value) => {
+      inventoryForm.deviceModelId = null
+      store.dispatch('deviceModalsList', value)
     };
     
     const submitForm = () => {

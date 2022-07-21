@@ -51,15 +51,15 @@ export function deCodeString(value) {
 export const dayWeekMonthdate= (data)=>{
 	let from = moment()
 	let to = moment()
-	if (data.globalCodeId == 122) {
+	if (data.globalCodeId && data.globalCodeId == 122) {
 
 		from = moment()
 		to = moment().subtract(data.number, data.intervalType);
-	} else if (data.globalCodeId == 123) {
+	} else if (data.globalCodeId && data.globalCodeId == 123) {
 		from = moment();
 
 		to = moment().subtract(data.number, data.intervalType);
-	} else if (data.globalCodeId == 124) {
+	} else if (data.globalCodeId && data.globalCodeId == 124) {
 		from = moment();
 		to = moment().subtract(data.number, data.intervalType);
 	} else {
@@ -71,7 +71,7 @@ export const dayWeekMonthdate= (data)=>{
 		toDate: ''
 	}
 
-	if (data.globalCodeId == 122) {
+	if (data.globalCodeId && data.globalCodeId == 122) {
 		dateFormate = {
 			fromDate: from ? timeStamp(startimeAdd(from)) : '',
 			toDate: to ? timeStamp(endTimeAdd(to)) : ''
