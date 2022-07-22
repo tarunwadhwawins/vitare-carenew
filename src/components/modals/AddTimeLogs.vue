@@ -13,7 +13,7 @@
 
             <a-col :sm="24" :xs="24" :lg="12" v-if="patientIdParam == null">
                 <div class="form-group">
-                    <a-form-item :label="$t('common.patient')" name="flag" :rules="[{ required: false, message: $t('common.patient')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('common.patient')" name="flag" :rules="[{ required: true, message: $t('common.patient')+' '+$t('global.validation')  }]">
                       <PatientDropDown :editDataPatient="editDataPatient" v-model:value="addTimeLogForm.patientId" @handlePatientChange="handlePatientChange($event);changedValue()" :close="closeValue" />
                     </a-form-item>
                 </div>
