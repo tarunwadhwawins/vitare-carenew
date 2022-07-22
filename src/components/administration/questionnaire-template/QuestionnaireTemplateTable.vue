@@ -40,7 +40,7 @@
             <a class="icons">
                 <EditOutlined @click="editModal(record.id)" /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <!-- <a-tooltip placement="bottom">
             <template #title>
                 <span>Create Url</span>
             </template>
@@ -49,7 +49,7 @@
                     <SendOutlined />
                 </router-link>
             </a>
-        </a-tooltip>
+        </a-tooltip> -->
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {DeleteOutlined,SettingTwoTone,SendOutlined,DiffTwoTone,CopyOutlined,EditOutlined} from "@ant-design/icons-vue"
+import {DeleteOutlined,SettingTwoTone,DiffTwoTone,CopyOutlined,EditOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -93,7 +93,7 @@ export default {
         CopyOutlined,
         Loader,
         SettingTwoTone,
-        SendOutlined,
+       // SendOutlined,
         DiffTwoTone,
         AssignSection,
         EditOutlined,

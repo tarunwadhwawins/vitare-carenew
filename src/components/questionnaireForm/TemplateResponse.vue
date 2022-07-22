@@ -12,7 +12,7 @@
     </a-col>
     <a-col :span="12">
        
-<div class="templateType right"> <div>Status  : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.status :''}}</span></div><div>Filled Date : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.createdAt :''}}</span></div> <div>Score : <a><span @click="getResponse" :title="data ? data[0].program:''"> {{data ? data[0].program.substring(0,10)+'...':''}}</span></a></div></div>
+<div class="templateType right"> <div>Status  : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.status :''}}</span></div><div>Filled Date : <span> {{questionnaireResponseDetails ? questionnaireResponseDetails.createdAt :''}}</span></div> <div>Score : <a><span @click="getResponse" :title="data ? data[0].program:''"> {{data ? data[0].program.substring(0,10)+'...':'score'}}</span></a></div></div>
     </a-col>
     </a-row>
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
@@ -197,7 +197,7 @@ store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTem
                             if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
                                 let checkBox = [];
                                 records.question.options.forEach((item) => {
-                                    console.log("check",item)
+                                    
                                     if (records.question.dataTypeId == 243) {
                                         questionnaireTemplate.radioOption[records.question.id] = true;
                                     }
@@ -206,7 +206,7 @@ store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTem
                                         checkBox.push(item.id);
                                     }
                                 });
-                                console.log("check",questionnaireTemplate.radioOption)
+                                
                                 if (checkBox.length > 0) {
                                     questionnaireTemplate.checkBoxOption[records.question.id] = checkBox;
                                 }

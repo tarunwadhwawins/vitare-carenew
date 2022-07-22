@@ -2,8 +2,9 @@
 <div class="common-bg">
     <h2 class="pageTittle">{{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}</h2>
     <div class="templateType">
-        <div>User Type : <span> {{templateId  ? usertype : 'Staff'}}</span></div>
-        <div>Staff Name : <span> {{templateId ? user.name : ''}}</span></div>
+
+        <div>User Type : <span> {{userType==246 ? 'Staff' : 'Patient'}}</span></div>
+        <div>{{userType==246 ? 'Staff ' : 'Patient '}} Name : <span> {{templateId ? user.name : ''}}</span></div>
         <div>Template Type : <span> {{detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateType : ''}}</span></div>
 
     </div>
@@ -140,7 +141,7 @@ export default defineComponent({
         templateId: String,
         clientResponse: Boolean,
         user:Object,
-        userType:String,
+        userType:Number,
     },
     setup(props, {
         emit

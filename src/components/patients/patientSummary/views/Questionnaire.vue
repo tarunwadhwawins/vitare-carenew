@@ -18,7 +18,7 @@
                 <SearchField endPoint="questionnaire"  class="mb-24" />
             </a-col>
             <a-col :span="24">
-                <QuestionnaireTemplateTable @edit="showModal($event)" @clone="clone($event)"/>
+                <QuestionnaireTemplateTable @edit="showModal($event)" @clone="clone($event)" :entityType="entityType"/>
 
             </a-col>
         </a-row>

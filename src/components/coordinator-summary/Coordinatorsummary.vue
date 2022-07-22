@@ -155,12 +155,12 @@
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
-                                 <a-tab-pane key="7" tab="Questionnaire Response">
+                                 <a-tab-pane key="7" tab="Assign Questionnaire">
                                     
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
                                             <!-- Documents Table -->
-                                            <QuestionnaireTemplateTable />
+                                            <QuestionnaireTemplateTable  :entityType="246"/>
                                             <Loader />
                                         </a-col>
                                     </a-row>

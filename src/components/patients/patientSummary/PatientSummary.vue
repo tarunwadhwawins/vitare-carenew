@@ -27,7 +27,7 @@
                   <a-button @click="showButton(3) ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
                   <a-button @click="showButton(4) ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
                   <a-button @click="showButton(5) ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
-                  <a-button @click="showButton(6) ; actionTrack(paramsId,287,'patient')" :class="button == 6 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Questionnaire</a-button>
+                  <a-button @click="showButton(6) ; actionTrack(paramsId,287,'patient')" :class="button == 6 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Assign Questionnaire</a-button>
                 </div>
               </div>
             </a-col>

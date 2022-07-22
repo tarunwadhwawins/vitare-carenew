@@ -10,11 +10,11 @@
 
         <a-tooltip placement="bottom">
             <template #title>
-                <span>Create Url</span>
+                <span>View</span>
             </template>
             <a class="icons">
 
-                <SendOutlined @click="showQuestionnaireForm(record)" />
+                <EyeOutlined @click="showQuestionnaireForm(record)" />
 
             </a>
         </a-tooltip>
@@ -22,14 +22,16 @@
     </template>
 
 </a-table>
+
 <Loader />
 <a-modal width="80%" v-model:visible="visible" title="Questionnaire" :maskClosable="false" centered @cancel="closeModal()" :footer="false">
-    <TemplateResponse v-if="visible == true" :templateId="templateId" :clientResponse="clientResponse" @is-visible="emitFunction($event)" :user="userName" :userType="userType"/>
+    
+    <TemplateResponse v-if="visible == true" :templateId="templateId" :clientResponse="clientResponse" @is-visible="emitFunction($event)" :user="userName" :userType="entityType"/>
 </a-modal>
 </template>
 
 <script>
-import {SendOutlined} from "@ant-design/icons-vue"
+import {EyeOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -66,10 +68,12 @@ export default {
     emits: ["edit"],
     components: {
         Loader,
-        SendOutlined,
+        EyeOutlined,
         TemplateResponse
     },
-    props: {},
+    props: {
+        entityType:Number
+    },
     setup() {
         const store = useStore();
 
@@ -144,7 +148,7 @@ export default {
         const clientResponse = ref('')
         const showQuestionnaireForm = (id) => {
             userName.value = {name:id.userName,id:id.userId}
-            userType.value = id.userType
+            userType.value = id.entityType
             if (id.clientQuestionnaireTemplateId) {
                 templateId.value = id.clientQuestionnaireTemplateId
                 clientResponse.value = true
