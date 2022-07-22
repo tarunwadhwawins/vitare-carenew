@@ -66,9 +66,35 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Permissions'">
+
+                <!-- Search Box -->
+                <!-- <a-col :md="24" :sm="24" :xs="24" class="mb-24">
+                    <a-input @change="selectedRoles($event)" size="large" placeholder="Search..." id="conditionBox" />
+                </a-col> -->
+
                 <h4><strong>Select Permissions</strong></h4>
 
                 <a-form ref="formRef" :model="addPermissionsForm" @finish="addPermissions" v-if="rolesAndPermissions.rolePermissions.modules">
+
+                    <!-- For Search Start -->
+                    <!-- <a-row>
+                        <template v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
+                            <div v-if="module.id==18"></div>
+                            <a-col v-show="moduleId.length == 0 || moduleId.includes(module.id)" v-else :span="24">
+                                <a-card :title="module.name">
+                                    <div class="screens" v-for="screen in module.screens" :key="screen.moduleId">
+                                        <a-checkbox v-model:checked="addPermissionsForm.screen[screen.id]" @change="checkAll(screen.actions,screen.id); checkChangeInput()"><strong>{{ screen.name }}</strong></a-checkbox>
+                                        <a-divider class="transparent" />
+                                        <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(screen.id,screen.actions); checkChangeInput()">{{ action.name }}</a-checkbox>
+                                        <a-divider class="transparent" />
+                                    </div>
+                                </a-card>
+                                <a-divider class="transparent" />
+                            </a-col>
+                        </template>
+                    </a-row> -->
+                    <!-- For Search End -->
+
                     <a-row>
                         <a-col :span="24" v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
                             <div v-if="module.id==18">
@@ -420,7 +446,42 @@ export default {
             current.value--;
         }
 
+        /* For Search Start */
+
+        // let moduleId = ref([])
+        // const selectedRoles = (event) => {
+        //     const searchedValue = (event.target.value).toLowerCase()
+        //     if(searchedValue == "" || searchedValue == null) {
+        //         moduleId.value = []
+        //     }
+        //     else {
+        //         moduleId.value = []
+        //         rolesAndPermissions.rolePermissions.modules.map(element => {
+        //                 element.screens.map(screen => {
+        //                         screen.actions.map(action => {
+        //                             if (action.name.toLowerCase().includes(searchedValue) || screen.name.toLowerCase().includes(searchedValue) || element.name.toLowerCase().includes(searchedValue)) {
+        //                                 if(moduleId.value.indexOf(element.id) === -1) {
+        //                                     moduleId.value.push(element.id)
+        //                                 }
+        //                                 else {
+        //                                     const indexOfObject = moduleId.value.findIndex(object => {
+        //                                         return object === element.id;
+        //                                     });
+        //                                     moduleId.value.splice(indexOfObject, 1);
+        //                                 }
+        //                             }
+        //                         })
+        //                 })
+        //         })
+        //     }
+        //     console.log('modules', moduleId.value)
+        // }
+
+        /* For Search End */
+
         return {
+            // moduleId,        // For Search
+            // selectedRoles,   // For Search
             checkFieldsData,
             checkChangeInput,
             rolesAndPermissions,

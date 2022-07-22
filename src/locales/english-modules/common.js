@@ -11,7 +11,7 @@ const common = {
   removalReason:"Removal Reason",
   comment:"Comment",
   clearFlag:"Clear Flag On ",
-  
+  patient:'Patient',
   for:"For"
 }
 

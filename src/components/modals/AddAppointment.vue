@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <a-form-item :label="'Time Zone'" name="timezoneId" :rules="[{ required: true, message: 'Time Zone'+' '+$t('global.validation')  }]">
                          <TimeZoneDropDown  v-model:value="appointmentForm.timezoneId" @handleTimeZoneChange="handleTimeZoneChange($event); checkChangeInput()" :close="closeValue" />
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
+                        <ErrorMessage v-if="errorMsg" :name="errorMsg.timezoneId ? errorMsg.timezoneId[0] : ''" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -56,7 +56,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :dataId="1" @handleGlobalChange="handleGlobalChange($event,'appointmentForm.typeOfVisit'); checkChangeInput()" />
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
+                        <ErrorMessage v-if="errorMsg" :name="errorMsg.appointmentTypeId?errorMsg.appointmentTypeId[0]:''" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -250,8 +250,8 @@ export default {
             store.dispatch('addAppointment', {
                 patientId: patientUdid ? patientUdid : appointmentForm.patientId,
                 staffId: appointmentForm.staffId,
-                startDate: timeStamp(date + " " + timeFormat),
-                startTime: timeFormat,
+                startDate: appointmentForm.startDate ? timeStamp(date + " " + timeFormat) : "",
+                startTime: appointmentForm.startTime ? timeFormat : "",
                 durationId: appointmentForm.durationId,
                 appointmentTypeId: appointmentForm.typeOfVisit,
                 note: appointmentForm.note,

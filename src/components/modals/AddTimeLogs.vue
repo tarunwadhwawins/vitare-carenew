@@ -11,10 +11,18 @@
                 </div>
             </a-col>
 
+            <a-col :sm="24" :xs="24" :lg="12" v-if="patientIdParam == null">
+                <div class="form-group">
+                    <a-form-item :label="$t('common.patient')" name="flag" :rules="[{ required: false, message: $t('common.patient')+' '+$t('global.validation')  }]">
+                      <PatientDropDown :editDataPatient="editDataPatient" v-model:value="addTimeLogForm.patientId" @handlePatientChange="handlePatientChange($event);changedValue()" :close="closeValue" />
+                    </a-form-item>
+                </div>
+            </a-col>
+
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy'); changedValue()" :isDisabled="true" />
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.loggedBy" @handleStaffChange="handleStaffChange($event, 'loggedBy'); changedValue()" :isDisabled="patientIdParam != null" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -22,7 +30,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy'); changedValue()" :isDisabled="true" />
+                      <StaffDropDown :getPopupContainer="triggerNode => triggerNode.parentNode" v-model:value="addTimeLogForm.performedBy" @handleStaffChange="handleStaffChange($event, 'performedBy'); changedValue()" :isDisabled="patientIdParam != null" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -30,7 +38,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-                        <a-date-picker @change="changedValue" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabled="true" />
+                        <a-date-picker @change="changedValue" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabled="patientIdParam != null" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -51,7 +59,7 @@
                 </div>
             </a-col>
 
-            <a-col :sm="24" :xs="24">
+            <a-col :sm="24" :xs="24" :lg="patientIdParam == null ? 12 : 24">
                 <div class="form-group">
                     <a-form-item label="Priority" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
                         <ArrayDataSearch @change="changedValue" v-model:value="addTimeLogForm.flag" :globalCode="flagsList" />
@@ -92,14 +100,19 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
 import ArrayDataSearch from "@/components/modals/search/ArrayDataSearch";
 import CptCodeAtivitiesDropDown from "@/components/modals/search/CptCodeActivitiesSearch";
 import FormButtons from "@/components/common/button/FormButtons";
 export default defineComponent({
+  props: {
+    patient: Number
+  },
   components: {
     GlobalCodeDropDown,
     Loader,
     StaffDropDown,
+    PatientDropDown,
     ArrayDataSearch,
     CptCodeAtivitiesDropDown,
     FormButtons,
@@ -110,6 +123,7 @@ export default defineComponent({
     const formRef = ref();
     const dateSelect = ref(moment().add(1, "day"));
     const loggedInUserDetails = JSON.parse(localStorage.getItem("auth"));
+    const patientIdParam = ref(route.params.udid);
 
     const staffList = computed(() => {
       return store.state.common.allStaffList;
@@ -119,16 +133,22 @@ export default defineComponent({
       return store.state.common.timeLogCategories;
     });
 
+    const editDataPatient = computed(() => {
+      return store.state.escalations.editEscalationPatient;
+    });
+
     const addTimeLogForm = reactive({
       category: "",
       loggedBy: loggedInUserDetails.user.staff.fullName,
       performedBy: loggedInUserDetails.user.staff.fullName,
+      patientId: "",
       date: moment(),
       timeAmount: "",
       cptCode: "",
       flag: "",
       note: "",
     });
+
     const form = reactive({
       ...addTimeLogForm,
     });
@@ -186,6 +206,7 @@ export default defineComponent({
     };
 
     const submitForm = () => {
+      const patient = patientIdParam.value ? patientIdParam.value : addTimeLogForm.patientId
       const time = moment(addTimeLogForm.timeAmount).format('HH:mm:ss')
       const timeAmount = getSeconds(time);
       const data = {
@@ -199,14 +220,14 @@ export default defineComponent({
         note: addTimeLogForm.note,
         isAutomatic: false,
       };
-      const patientId = route.params.udid;
       store.dispatch("addTimeLog", {
-        id: patientId,
+        id: patient,
         data: data,
       }).then(() => {
-        store.dispatch("latestTimeLog", route.params.udid);
+        store.dispatch("timeLogReportList");
+        store.dispatch("latestTimeLog", patient);
         store.dispatch("patientTimeline", {
-          id: route.params.udid,
+          id: patient,
           type: "",
         });
         emit("closeModal", false);
@@ -233,8 +254,13 @@ export default defineComponent({
     const handleCptCodeChange = (data) => {
       addTimeLogForm.cptCode =data
     }
+    
+    const handlePatientChange = (data) => {
+      addTimeLogForm.patientId =data
+    }
 
     return {
+      handlePatientChange,
       handleCptCodeChange,
       handleGlobalChange,
       globalDateFormat,
@@ -252,6 +278,8 @@ export default defineComponent({
       flagsList,
       dateSelect,
       handleStaffChange,
+      patientIdParam,
+      editDataPatient,
     };
   },
 });
