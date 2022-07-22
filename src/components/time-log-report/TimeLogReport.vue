@@ -16,6 +16,9 @@
                             </h2>
                         </a-col>
                     </a-row>
+                    <a-row class="addBtn">
+                      <a-button @click="addTimelogModal" class="primaryBtn">{{ $t('timeLogs.addTimeLog') }}</a-button>
+                    </a-row>
                     <a-row>
                         <div class="commonTags">
                             <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
@@ -69,6 +72,7 @@
             </a-layout-content>
         </a-layout>
     </a-layout>
+    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" @closeModal="addTimeLogsClose($event)" />
 </div>
 </template>
 
@@ -88,6 +92,7 @@ import { useStore } from "vuex";
 import TimeLogTable from "./TimeLogTable";
 import moment from "moment";
 import SearchField from "@/components/common/input/SearchField";
+import AddTimeLogsModal from "@/components/modals/AddTimeLogs";
 import { useRoute, useRouter } from "vue-router";
 export default {
   components: {
@@ -97,6 +102,7 @@ export default {
     ExportToExcel,
     DateFilter,
     SearchField,
+    AddTimeLogsModal,
   },
   setup() {
     const store = useStore();
@@ -113,6 +119,11 @@ export default {
     const router = useRouter();
     const timeLineButton = store.getters.timelineReport;
     const customDateShow = ref(false);
+    const addTimeLogsVisible = ref(false);
+
+    const addTimelogModal = () => {
+      addTimeLogsVisible.value = true;
+    };
 
     function dateChange() {
       dateSelect.value = moment(auditTimeLog.endDate).add(1, "day");
@@ -286,7 +297,13 @@ export default {
           "&page="
       );
     }
+
+    const addTimeLogsClose = (value) => {
+      addTimeLogsVisible.value = value;
+    };
+
     return {
+      addTimeLogsClose,
       arrayToObjact,
       screensPermissions: store.getters.screensPermissions,
       exportExcel,
@@ -309,6 +326,8 @@ export default {
       Buttons: store.getters.timelineReport,
       showButton,
       customDateShow,
+      addTimelogModal,
+      addTimeLogsVisible,
     };
   },
 };
