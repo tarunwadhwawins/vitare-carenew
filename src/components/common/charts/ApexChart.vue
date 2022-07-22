@@ -45,17 +45,8 @@ export default {
         const store = useStore()
 
         function clickHandler4(event, chartContext, config) {
-            let color = []
-            chartContext.opts.colors.map((item)=>{
-                   color.push("#0000")
-                   console.log(item)
-            })
-           config.globals.colors = color
-           config.globals.fill.colors = color
-           config.globals.markers.colors = color
-            //chartContext.globals.markers.colors = color
             store.commit('staffSummary', null)
-            console.log(config.globals)
+            //console.log(event, chartContext, config.globals.labels[config.dataPointIndex])
             let filter = ''
             if (props.linkTo) {
                 if (props.type == "bar" && config.globals.labels[config.dataPointIndex] != undefined) {

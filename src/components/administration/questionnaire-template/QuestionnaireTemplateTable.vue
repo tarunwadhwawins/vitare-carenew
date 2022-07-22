@@ -83,8 +83,6 @@ import {warningSwal} from "@/commonMethods/commonMethod";
 import { onMounted , ref } from "vue"
 import AssignSection from "@/components/administration/questionnaire-template/modals/AssignSection"
 import AssignToUser from "@/components/administration/questionnaire-template/modals/AssignToUser"
-
-
 export default {
     emits: ["edit"],
     components: {
@@ -93,15 +91,15 @@ export default {
         CopyOutlined,
         Loader,
         SettingTwoTone,
-       // SendOutlined,
+        // SendOutlined,
         DiffTwoTone,
         AssignSection,
         EditOutlined,
         AssignToUser
     },
     props: {
-        colomns:Array,
-        endPoint:String
+        colomns: Array,
+        endPoint: String
     },
     setup(props, {
         emit
@@ -208,13 +206,12 @@ export default {
             visible.value = e.show
         }
         const assignToUserVisible = ref(false)
-        
+
         const assignToUser = (id) => {
             assignToUserId.value = id.id
- 
-assignToUserVisible.value = id.show
-   
-            
+
+            assignToUserVisible.value = id.show
+
         }
 
         return {
@@ -228,7 +225,7 @@ assignToUserVisible.value = id.show
             showSection,
             clone,
             assignToUser,
-            
+
             assignToUserVisible,
 
         };

@@ -5,7 +5,7 @@
            
 
             <a-col :md="20" :sm="24" :xs="24" class="mb-24">
-                <a-input @change="selectedSection($event,'search')" size="large" placeholder="Search..." id="conditionBox" />
+                <a-input @keyup="selectedSection($event,'search')" size="large" placeholder="Search..." id="conditionBox" />
             </a-col>
             <a-col :span="4">
                 <div class="">
@@ -78,6 +78,7 @@ export default defineComponent({
         const store = useStore();
         const formRef = ref();
         const visible = ref(false)
+         const sectionName = ref('')
         const section = reactive({
 
             sectionId: [],
@@ -88,6 +89,7 @@ export default defineComponent({
         const isValueChanged = ref(false)
         const unSelectedSectionList = ref([])
         const selectedSectionList = ref([])
+         const addSectionButton = ref(false)
         onMounted(() => {
 
             store.dispatch("allSections").then(() => {
@@ -106,11 +108,16 @@ export default defineComponent({
 
         })
         const selectedSection = (event, search) => {
-
+                   
             isValueChanged.value = true;
             const searchedValue = search == 'search' ? event.target.value : event
             unSelectedSectionList.value = []
+            if(sectionType.value.length==0){
+                addSectionButton.value = true
+                sectionName.value = searchedValue
+            }
             sectionType.value.map(function (sectionRecord) {
+                
                 if (sectionRecord.name.toLowerCase().includes(searchedValue.toLowerCase()) == false) {
 
                     addSectionButton.value = true
@@ -211,19 +218,9 @@ export default defineComponent({
                 })
             }
         }
-        const addSectionButton = ref(false)
-        const sectionName = ref('')
-        const sectionSelect = (val) => {
-            if (val.value == false) {
-                console.log(val.input)
-                addSectionButton.value = true
-                sectionName.value = val.input
-            } else {
-                addSectionButton.value = false
-                sectionName.value = ''
-            }
-            //console.log(val)
-        }
+       
+       
+        
 
         function reset() {
             section.sectionId = []
@@ -293,7 +290,7 @@ export default defineComponent({
             detailsQuestionnaireTemplate,
             sectionType,
             reset,
-            sectionSelect,
+           
             addSectionButton,
             sectionName,
             showModal,

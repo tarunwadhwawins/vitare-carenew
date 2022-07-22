@@ -25,8 +25,8 @@
 
 <Loader />
 <a-modal width="80%" v-model:visible="visible" title="Questionnaire" :maskClosable="false" centered @cancel="closeModal()" :footer="false">
-    
-    <TemplateResponse v-if="visible == true" :templateId="templateId" :clientResponse="clientResponse" @is-visible="emitFunction($event)" :user="userName" :userType="entityType"/>
+
+    <TemplateResponse v-if="visible == true" :templateId="templateId" :clientResponse="clientResponse" @is-visible="emitFunction" :user="userName" :userType="entityType" />
 </a-modal>
 </template>
 
@@ -50,10 +50,10 @@ const columns = [{
         title: "Type",
         dataIndex: "templateType",
     },
-      {
+    {
         title: "Status",
         dataIndex: "status",
-        
+
     },
     {
         title: "Actions",
@@ -72,9 +72,11 @@ export default {
         TemplateResponse
     },
     props: {
-        entityType:Number
+        entityType: Number
     },
-    setup() {
+    setup(props, {
+        emit
+    }) {
         const store = useStore();
 
         const visible = ref(false)
@@ -147,7 +149,10 @@ export default {
 
         const clientResponse = ref('')
         const showQuestionnaireForm = (id) => {
-            userName.value = {name:id.userName,id:id.userId}
+            userName.value = {
+                name: id.userName,
+                id: id.userId
+            }
             userType.value = id.entityType
             if (id.clientQuestionnaireTemplateId) {
                 templateId.value = id.clientQuestionnaireTemplateId
@@ -188,9 +193,10 @@ export default {
         }
         const emitFunction = (event) => {
 
-             visible.value = event.show
+            visible.value = event.show
+            emit("is-visible", event)
         }
-        onUnmounted(()=>{
+        onUnmounted(() => {
             store.state.questionnaireTemplate.questionnaireResponseDetails = null
             store.state.questionnaireTemplate.detailsQuestionnaireTemplate = null
             store.state.questionnaireTemplate.templateDetailsList = []

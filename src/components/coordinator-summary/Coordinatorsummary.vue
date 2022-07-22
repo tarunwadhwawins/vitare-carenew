@@ -160,7 +160,7 @@
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
                                             <!-- Documents Table -->
-                                            <QuestionnaireTemplateTable  :entityType="246"/>
+                                            <QuestionnaireTemplateTable  :entityType="246" @is-visible="emitFunction"/>
                                             <Loader />
                                         </a-col>
                                     </a-row>
@@ -471,6 +471,10 @@ export default defineComponent({
 
         }
         onUnmounted(() => {
+            store.state.questionnaireTemplate.questionnaireResponseDetails = null
+            store.state.questionnaireTemplate.detailsQuestionnaireTemplate = null
+            store.state.questionnaireTemplate.templateDetailsList = []
+             store.state.questionnaireTemplate.assignAllTemplates = []
             store.commit('clearStaffFormValidation', false)
              store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -484,6 +488,10 @@ export default defineComponent({
     const saveModal = (value) =>{
       resetPasswordVisible.value = value
     }
+    function emitRecords(){
+              store.dispatch("assignAllTemplates",{id:router.params.udid,entityType:246});
+
+       }
         return {
             resetPasseord,
             resetPasswordVisible,
@@ -513,7 +521,8 @@ export default defineComponent({
             showModalvailability,
             showModalContact,
             handleOk,
-            role
+            role,
+            emitRecords
         };
     },
 });

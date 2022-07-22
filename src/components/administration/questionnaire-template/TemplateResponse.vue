@@ -14,6 +14,7 @@
                         </router-link> -->
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="ansTemplate" @finishFailed="onFinishFailed" v-if="detailsQuestionnaireTemplate">
         <div class="template" v-for="questionList in detailsQuestionnaireTemplate.questionnaireQuestion" :key="questionList.id">
+
             <div v-if="questionList.entityType=='question'">
 
                 <div>
@@ -63,47 +64,98 @@
             </div>
             <div class="healthTemplateBox" v-else>
                 <h4> {{questionList.questionnaireSection.sectionName}}</h4>
-                <div v-for="record,index in questionList.questionnaireSection.questionSection" :key="index">
-                    <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
-                    <div class="templateInner">
-                        <div v-if="record.question.dataTypeId==243">
-                            <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[questionList.questionnaireSection.id+''+record.question.id]">
-                                <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
-                                    <div class="questionOutput">
-                                        <div>{{index+1}}.</div>
-                                        <a-radio v-model:value="options.id"></a-radio>
-                                        <div class="ml-10 ">
-                                            <p>{{ options.option }}</p>
+                <div v-if="clientResponse">
+                    <div v-for="record,index in questionnaireResponseDetails.clientQuestionResponse[questionList.questionnaireSection.sectionName]" :key="index">
+
+                        <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
+                        <div class="templateInner">
+                            <div v-if="record.question.dataTypeId==243">
+
+                                <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[questionList.questionnaireSection.id+''+record.question.id]">
+                                    <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                                        <div class="questionOutput">
+                                            <div>{{index+1}}.</div>
+                                            <a-radio v-model:value="options.id"></a-radio>
+                                            <div class="ml-10 ">
+                                                <p>{{ options.option }}</p>
+                                            </div>
                                         </div>
+                                    </a-col>
+                                </a-radio-group>
+                            </div>
+                            <div v-else-if="record.question.dataTypeId==244">
+                                <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[questionList.questionnaireSection.id+''+record.question.id]">
+                                    <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                                        <div class="questionOutput">
+                                            <div>{{index+1}}.</div>
+                                            <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
+                                            </a-checkbox>
+                                            <div class="ml-10 ">
+                                                <p>{{ options.option }}</p>
+                                            </div>
+                                        </div>
+                                    </a-col>
+                                </a-checkbox-group>
+                            </div>
+                            <div v-else>
+                                <a-col :span="24">
+
+                                    <div class="form-group">
+                                        <a-form-item name="templateName">
+
+                                            <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.questionnaireSection.id+''+record.question.id]" placeholder="Enter Text..." :bordered="false" :rows="2" width="100%" />
+                                            <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
+                                        </a-form-item>
+
                                     </div>
                                 </a-col>
-                            </a-radio-group>
+                            </div>
                         </div>
-                        <div v-else-if="record.question.dataTypeId==244">
-                            <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[questionList.questionnaireSection.id+''+record.question.id]">
-                                <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
-                                    <div class="questionOutput">
-                                        <div>{{index+1}}.</div>
-                                        <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
-                                        </a-checkbox>
-                                        <div class="ml-10 ">
-                                            <p>{{ options.option }}</p>
+                    </div>
+                </div>
+                <div v-else>
+                    <div v-for="record,index in questionList.questionnaireSection.questionSection" :key="index">
+                        <a-typography-title :level="5">{{ record.question.question }}</a-typography-title>
+                        <div class="templateInner">
+                            <div v-if="record.question.dataTypeId==243">
+                                <a-radio-group v-if="record.question.dataTypeId==243" v-model:value="questionnaireTemplate.radioOption[questionList.questionnaireSection.id+''+record.question.id]">
+                                    <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                                        <div class="questionOutput">
+                                            <div>{{index+1}}.</div>
+                                            <a-radio v-model:value="options.id"></a-radio>
+                                            <div class="ml-10 ">
+                                                <p>{{ options.option }}</p>
+                                            </div>
                                         </div>
+                                    </a-col>
+                                </a-radio-group>
+                            </div>
+                            <div v-else-if="record.question.dataTypeId==244">
+                                <a-checkbox-group v-model:value="questionnaireTemplate.checkBoxOption[questionList.questionnaireSection.id+''+record.question.id]">
+                                    <a-col :span="24" v-for="(options,index) in record.question.options" :key="index">
+                                        <div class="questionOutput">
+                                            <div>{{index+1}}.</div>
+                                            <a-checkbox class="ml-10 " v-model:checked="options.defaultOption" v-model:value="options.id">
+                                            </a-checkbox>
+                                            <div class="ml-10 ">
+                                                <p>{{ options.option }}</p>
+                                            </div>
+                                        </div>
+                                    </a-col>
+                                </a-checkbox-group>
+                            </div>
+                            <div v-else>
+                                <a-col :span="24">
+
+                                    <div class="form-group">
+                                        <a-form-item name="templateName">
+                                            <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.questionnaireSection.id+''+record.question.id]" placeholder="Enter Text..." :bordered="false" :rows="2" width="100%" />
+                                            <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
+                                        </a-form-item>
+
                                     </div>
                                 </a-col>
-                            </a-checkbox-group>
-                        </div>
-                        <div v-else>
-                            <a-col :span="24">
-
-                                <div class="form-group">
-                                    <a-form-item name="templateName">
-                                        <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.questionnaireSection.id+''+record.question.id]" placeholder="Enter Text..." :bordered="false" :rows="2" width="100%" />
-                                        <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
-                                    </a-form-item>
-
-                                </div>
-                            </a-col>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,8 +192,8 @@ export default defineComponent({
     props: {
         templateId: String,
         clientResponse: Boolean,
-        user:Object,
-        userType:Number,
+        user: Object,
+        userType: Number,
     },
     setup(props, {
         emit
@@ -155,7 +207,9 @@ export default defineComponent({
             radioOption: [],
             checkBoxOption: [],
         });
-
+        const from = reactive({
+            ...questionnaireTemplate
+        })
         const udid = props.templateId ? props.templateId : route.params.udid
 
         const show = ref(false)
@@ -163,14 +217,96 @@ export default defineComponent({
         onMounted(() => {
             if (props.clientResponse) {
                 store.dispatch("questionnaireResponseDetails", udid).then(() => {
-                    store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.value.questionnaireTemplateId)
-                    //store.dispatch("scoreCount", questionnaireResponseDetails.value.questionnaireTemplateId)
+                    store.dispatch("detailsQuestionnaireTemplate", questionnaireResponseDetails.value.questionnaireTemplateId).then(() => {
+                        detailsQuestionnaireTemplate.value ?
+                            detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
+
+                                if (element.entityType != 'question') {
+
+                                    questionnaireResponseDetails.value ? questionnaireResponseDetails.value.clientQuestionResponse[element.questionnaireSection.sectionName].map((records) => {
+
+                                        if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
+                                            let checkBox = [];
+                                            records.question.options.forEach((item) => {
+
+                                                if (records.question.dataTypeId == 243 && records.answer == item.id) {
+
+                                                    questionnaireTemplate.radioOption[element.questionnaireSection.id + '' + records.question.id] = records.answer;
+                                                }
+                                                if (records.question.dataTypeId == 244) {
+                                                    if (records.answer) {
+
+                                                        records.answer.map((record) => {
+                                                            checkBox.push(record);
+
+                                                        })
+                                                    }
+
+                                                }
+                                            });
+
+                                            if (checkBox.length > 0) {
+                                                questionnaireTemplate.checkBoxOption[element.questionnaireSection.id + '' + records.question.id] = checkBox;
+                                            }
+                                        } else {
+                                            questionnaireTemplate.templateText[element.questionnaireSection.id + '' + records.question.id] = records.answer
+                                        }
+                                    }) : ''
+                                }
+
+                            }) :
+                            "";
+                    })
+
                 })
             } else {
-                store.dispatch("detailsQuestionnaireTemplate", udid);
+                store.dispatch("detailsQuestionnaireTemplate", udid).then(() => {
+                    detailsQuestionnaireTemplate.value ?
+                        detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
+
+                            if (element.entityType != 'question') {
+                                element.questionnaireSection.questionSection.map((records) => {
+
+                                    if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
+                                        let checkBox = [];
+                                        records.question.options.forEach((item) => {
+                                            if (item.defaultOption == 1 && records.question.dataTypeId == 243) {
+                                                questionnaireTemplate.radioOption[element.questionnaireSection.id + '' + records.question.id] = item.id;
+                                            }
+                                            if (item.defaultOption == 1 && records.question.dataTypeId == 244) {
+                                                console.log("test", item.defaultOption)
+                                                checkBox.push(item.id);
+                                            }
+                                        });
+                                        if (checkBox.length > 0) {
+                                            questionnaireTemplate.checkBoxOption[element.questionnaireSection.id + '' + records.question.id] = checkBox;
+                                        }
+                                    }
+                                })
+                            } else {
+                                if (element.question.dataTypeId == 243 || element.question.dataTypeId == 244) {
+                                    let checkBox = [];
+                                    element.question.options.forEach((item) => {
+                                        if (item.defaultOption == 1 && element.question.dataTypeId == 243) {
+                                            questionnaireTemplate.radioOption[element.question.id] = item.id;
+                                        }
+                                        if (item.defaultOption == 1 && element.question.dataTypeId == 244) {
+
+                                            checkBox.push(item.id);
+                                        }
+                                    });
+                                    if (checkBox.length > 0) {
+                                        questionnaireTemplate.checkBoxOption[element.question.id] = checkBox;
+                                    }
+                                }
+                            }
+
+                        }) :
+                        "";
+                })
                 store.dispatch("templateDetailsList", udid);
             }
-           
+
         });
         const detailsQuestionnaireTemplate = store.getters.detailsQuestionnaireTemplate
         const ansTemplate = () => {
@@ -243,7 +379,7 @@ export default defineComponent({
                 id: udid
             }).then(() => {
                 if (props.templateId) {
-
+                    reset()
                     emit("is-visible", {
                         show: false,
                         id: ''
@@ -260,50 +396,14 @@ export default defineComponent({
         const templateDetailsList = store.getters.templateDetailsList;
         watchEffect(() => {
 
-            detailsQuestionnaireTemplate.value ?
-                detailsQuestionnaireTemplate.value.questionnaireQuestion.forEach((element) => {
-
-                    if (element.entityType != 'question') {
-                        element.questionnaireSection.questionSection.map((records) => {
-
-                            if (records.question.dataTypeId == 243 || records.question.dataTypeId == 244) {
-                                let checkBox = [];
-                                records.question.options.forEach((item) => {
-                                    if (item.defaultOption == 1 && records.question.dataTypeId == 243) {
-                                        questionnaireTemplate.radioOption[records.question.id] = item.id;
-                                    }
-                                    if (item.defaultOption == 1 && records.question.dataTypeId == 244) {
-
-                                        checkBox.push(item.id);
-                                    }
-                                });
-                                if (checkBox.length > 0) {
-                                    questionnaireTemplate.checkBoxOption[records.question.id] = checkBox;
-                                }
-                            }
-                        })
-                    } else {
-                        if (element.question.dataTypeId == 243 || element.question.dataTypeId == 244) {
-                            let checkBox = [];
-                            element.question.options.forEach((item) => {
-                                if (item.defaultOption == 1 && element.question.dataTypeId == 243) {
-                                    questionnaireTemplate.radioOption[element.question.id] = item.id;
-                                }
-                                if (item.defaultOption == 1 && element.question.dataTypeId == 244) {
-
-                                    checkBox.push(item.id);
-                                }
-                            });
-                            if (checkBox.length > 0) {
-                                questionnaireTemplate.checkBoxOption[element.question.id] = checkBox;
-                            }
-                        }
-                    }
-
-                }) :
-                "";
         });
 
+        function reset() {
+            Object.assign(questionnaireTemplate, from)
+            questionnaireTemplate.templateText = []
+            questionnaireTemplate.radioOption = []
+            questionnaireTemplate.checkBoxOption = []
+        }
         return {
             udid,
             questionnaireTemplate,
